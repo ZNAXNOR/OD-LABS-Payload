@@ -494,6 +494,10 @@ export interface ContentBlock {
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+        alignment: 'left' | 'center' | 'right';
+        accentLine?: boolean | null;
+        accentLineAlignment?: ('left' | 'right') | null;
+        backgroundColor?: ('none' | 'red' | 'blue' | 'orange') | null;
         richText?: {
           root: {
             type: string;
@@ -529,6 +533,13 @@ export interface ContentBlock {
            */
           appearance?: ('default' | 'outline') | null;
         };
+        id?: string | null;
+      }[]
+    | null;
+  rows?:
+    | {
+        paddingTop?: ('small' | 'medium' | 'large') | null;
+        paddingBottom?: ('small' | 'medium' | 'large') | null;
         id?: string | null;
       }[]
     | null;
@@ -1159,6 +1170,10 @@ export interface ContentBlockSelect<T extends boolean = true> {
     | T
     | {
         size?: T;
+        alignment?: T;
+        accentLine?: T;
+        accentLineAlignment?: T;
+        backgroundColor?: T;
         richText?: T;
         enableLink?: T;
         link?:
@@ -1171,6 +1186,13 @@ export interface ContentBlockSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
+        id?: T;
+      };
+  rows?:
+    | T
+    | {
+        paddingTop?: T;
+        paddingBottom?: T;
         id?: T;
       };
   id?: T;
