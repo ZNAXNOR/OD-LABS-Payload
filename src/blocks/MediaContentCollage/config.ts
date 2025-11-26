@@ -27,6 +27,7 @@ export type Type = {
 
 export const MediaContentCollage: Block = {
   slug: 'media-content-collage',
+  interfaceName: 'MediaContentCollageBlock',
   labels: {
     singular: 'Media Content Collage',
     plural: 'Media Content Collages',

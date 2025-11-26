@@ -13,6 +13,7 @@ export type Type = {
 
 export const Slider: Block = {
   slug: 'slider',
+  interfaceName: 'SliderBlock',
   labels: {
     singular: 'Slider',
     plural: 'Sliders',

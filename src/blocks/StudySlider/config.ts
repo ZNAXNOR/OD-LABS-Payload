@@ -9,6 +9,7 @@ export type Type = {
 
 export const StudySlider: Block = {
   slug: 'study-slider',
+  interfaceName: 'StudySliderBlock',
   labels: {
     singular: 'Study Slider',
     plural: 'Study Sliders',

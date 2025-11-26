@@ -15,6 +15,7 @@ export type Type = {
 
 export const MediaGrid: Block = {
   slug: 'media-grid',
+  interfaceName: 'MediaGridBlock',
   labels: {
     singular: 'Media Grid',
     plural: 'Media Grids',

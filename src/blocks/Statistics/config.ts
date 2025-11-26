@@ -11,6 +11,7 @@ export type Type = {
 
 export const Statistics: Block = {
   slug: 'statistics',
+  interfaceName: 'StatisticsBlock',
   labels: {
     singular: 'Statistics',
     plural: 'Statistic Blocks',

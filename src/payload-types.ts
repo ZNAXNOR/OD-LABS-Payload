@@ -205,7 +205,23 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | SpacerBlock
+    | CTAGridBlock
+    | MediaCollageBlock
+    | MediaContentCollageBlock
+    | MediaGridBlock
+    | MediaStatCollageBlock
+    | SliderBlock
+    | StatisticsBlock
+    | StickyContentBlock
+    | StudySliderBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -798,6 +814,223 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpacerBlock".
+ */
+export interface SpacerBlock {
+  size?: ('small' | 'medium' | 'large') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'spacer';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CTAGridBlock".
+ */
+export interface CTAGridBlock {
+  actions?:
+    | {
+        headline: string;
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta-grid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaCollageBlock".
+ */
+export interface MediaCollageBlock {
+  media?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'media-collage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaContentCollageBlock".
+ */
+export interface MediaContentCollageBlock {
+  backgroundColor?: ('none' | 'red' | 'blue' | 'orange') | null;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  enableCTA?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'media-content-collage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaGridBlock".
+ */
+export interface MediaGridBlock {
+  backgroundColor?: ('none' | 'red' | 'blue' | 'orange') | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  images?:
+    | {
+        image: number | Media;
+        content?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'media-grid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaStatCollageBlock".
+ */
+export interface MediaStatCollageBlock {
+  stats?:
+    | {
+        stat?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'media-stat-collage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SliderBlock".
+ */
+export interface SliderBlock {
+  backgroundColor?: ('none' | 'red' | 'blue' | 'orange') | null;
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'slider';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatisticsBlock".
+ */
+export interface StatisticsBlock {
+  topOverlap?: ('none' | 'small' | 'medium' | 'large') | null;
+  bottomOverlap?: ('none' | 'small' | 'medium' | 'large') | null;
+  stats?:
+    | {
+        stat?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'statistics';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StickyContentBlock".
+ */
+export interface StickyContentBlock {
+  sections?:
+    | {
+        label: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'sticky-content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StudySliderBlock".
+ */
+export interface StudySliderBlock {
+  backgroundColor?: ('none' | 'red' | 'blue' | 'orange') | null;
+  studies: (number | Study)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'study-slider';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "studies".
  */
 export interface Study {
@@ -1127,6 +1360,16 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        spacer?: T | SpacerBlockSelect<T>;
+        'cta-grid'?: T | CTAGridBlockSelect<T>;
+        'media-collage'?: T | MediaCollageBlockSelect<T>;
+        'media-content-collage'?: T | MediaContentCollageBlockSelect<T>;
+        'media-grid'?: T | MediaGridBlockSelect<T>;
+        'media-stat-collage'?: T | MediaStatCollageBlockSelect<T>;
+        slider?: T | SliderBlockSelect<T>;
+        statistics?: T | StatisticsBlockSelect<T>;
+        'sticky-content'?: T | StickyContentBlockSelect<T>;
+        'study-slider'?: T | StudySliderBlockSelect<T>;
       };
   meta?:
     | T
@@ -1235,6 +1478,173 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpacerBlock_select".
+ */
+export interface SpacerBlockSelect<T extends boolean = true> {
+  size?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CTAGridBlock_select".
+ */
+export interface CTAGridBlockSelect<T extends boolean = true> {
+  actions?:
+    | T
+    | {
+        headline?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaCollageBlock_select".
+ */
+export interface MediaCollageBlockSelect<T extends boolean = true> {
+  media?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaContentCollageBlock_select".
+ */
+export interface MediaContentCollageBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  content?: T;
+  enableCTA?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaGridBlock_select".
+ */
+export interface MediaGridBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  content?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        content?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaStatCollageBlock_select".
+ */
+export interface MediaStatCollageBlockSelect<T extends boolean = true> {
+  stats?:
+    | T
+    | {
+        stat?: T;
+        description?: T;
+        id?: T;
+      };
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SliderBlock_select".
+ */
+export interface SliderBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatisticsBlock_select".
+ */
+export interface StatisticsBlockSelect<T extends boolean = true> {
+  topOverlap?: T;
+  bottomOverlap?: T;
+  stats?:
+    | T
+    | {
+        stat?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StickyContentBlock_select".
+ */
+export interface StickyContentBlockSelect<T extends boolean = true> {
+  sections?:
+    | T
+    | {
+        label?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StudySliderBlock_select".
+ */
+export interface StudySliderBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  studies?: T;
   id?: T;
   blockName?: T;
 }

@@ -1,7 +1,8 @@
-import type { Block } from 'payload';
+import type { Block } from 'payload'
 
 export const MediaCollage: Block = {
   slug: 'media-collage',
+  interfaceName: 'MediaCollageBlock',
   labels: {
     singular: 'Media Collage',
     plural: 'Media Collages',
@@ -16,11 +17,11 @@ export const MediaCollage: Block = {
       fields: [
         {
           type: 'upload',
-          name: 'media',
+          name: 'image',
           relationTo: 'media',
           required: true,
         },
       ],
     },
   ],
-};
+}

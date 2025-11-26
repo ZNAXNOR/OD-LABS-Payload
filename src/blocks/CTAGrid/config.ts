@@ -3,6 +3,7 @@ import { link } from '../../fields/link'
 
 export const CTAGrid: Block = {
   slug: 'cta-grid',
+  interfaceName: 'CTAGridBlock',
   labels: {
     singular: 'CTA Grid',
     plural: 'CTA Grids',

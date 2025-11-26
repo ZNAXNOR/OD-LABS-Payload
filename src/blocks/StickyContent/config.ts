@@ -11,6 +11,7 @@ export type Type = {
 
 export const StickyContent: Block = {
   slug: 'sticky-content',
+  interfaceName: 'StickyContentBlock',
   labels: {
     singular: 'Sticky Content Block',
     plural: 'Sticky Content Blocks',

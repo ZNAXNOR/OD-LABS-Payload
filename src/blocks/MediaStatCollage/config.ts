@@ -13,6 +13,7 @@ export type Type = {
 
 export const MediaStatCollage: Block = {
   slug: 'media-stat-collage',
+  interfaceName: 'MediaStatCollageBlock',
   labels: {
     singular: 'Media Stat Collage',
     plural: 'Media Stat Collages',
