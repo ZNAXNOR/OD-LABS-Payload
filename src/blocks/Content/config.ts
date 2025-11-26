@@ -8,6 +8,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { link } from '@/fields/link'
+import { backgroundColor } from '@/fields/backgroundColor'
 
 const columnFields: Field[] = [
   {
@@ -86,33 +87,7 @@ const columnFields: Field[] = [
       layout: 'horizontal',
     },
   },
-  {
-    name: 'backgroundColor',
-    type: 'radio',
-    label: 'Background Color',
-    defaultValue: 'none',
-    admin: {
-      layout: 'horizontal',
-    },
-    options: [
-      {
-        label: 'None',
-        value: 'none',
-      },
-      {
-        label: 'Red',
-        value: 'red',
-      },
-      {
-        label: 'Blue',
-        value: 'blue',
-      },
-      {
-        label: 'Orange',
-        value: 'orange',
-      },
-    ],
-  },
+  backgroundColor,
   {
     name: 'richText',
     type: 'richText',

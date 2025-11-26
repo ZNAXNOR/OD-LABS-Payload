@@ -1,9 +1,9 @@
 import React from 'react'
 
-export const SpacerBlock: React.FC<any> = (props) => {
+export const SliderBlock: React.FC<any> = (props) => {
   return (
     <div className="container">
-      <p>Spacer Block</p>
+      <p>Slider Block</p>
     </div>
   )
 }

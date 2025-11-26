@@ -8,11 +8,13 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { linkGroup } from '../../fields/linkGroup'
+import { backgroundColor } from '@/fields/backgroundColor'
 
 export const CallToAction: Block = {
   slug: 'cta',
   interfaceName: 'CallToActionBlock',
   fields: [
+    backgroundColor,
     {
       name: 'richText',
       type: 'richText',
