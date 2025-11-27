@@ -1,5 +1,6 @@
 import tailwindcssAnimate from 'tailwindcss-animate'
 import typography from '@tailwindcss/typography'
+import { screens, colors, zIndex, maxWidth } from './custom-theme.mjs'
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -38,30 +39,15 @@ const config = {
         xl: '2rem',
       },
       screens: {
-        xs: '480px',
-        s: '600px',
-        m: '850px',
-        l: '1120px',
-        xl: '1680px',
-        xxl: '1920px',
+        ...screens,
       },
     },
     extend: {
       screens: {
-        xs: '480px',
-        s: '600px',
-        m: '850px',
-        l: '1120px',
-        xl: '1680px',
-        xxl: '1920px',
+        ...screens,
       },
       colors: {
-        antique: '#FFF9F2',
-        gray: '#181818',
-        red: '#FF322C',
-        blue: '#9ED1D8',
-        yellow: '#FFEF5E',
-        orange: '#FCB449',
+        ...colors,
         // Keep existing shadcn colors but map them if needed or leave as is
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -103,12 +89,10 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       zIndex: {
-        page: '10',
-        modal: '20',
-        header: '30',
+        ...zIndex,
       },
       maxWidth: {
-        'grid-container': '920px',
+        ...maxWidth,
       },
       fontFamily: {
         mono: ['var(--font-geist-mono)'],
