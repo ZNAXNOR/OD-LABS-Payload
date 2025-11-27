@@ -3,14 +3,57 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --html-font-size: 18px;
+    --baseline-px: 20px;
+  }
+
+  html {
+    font-size: var(--html-font-size);
+  }
+
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    font-size: unset;
-    font-weight: unset;
+    font-weight: normal;
+  }
+
+  h1 {
+    font-size: calc(var(--baseline-px) * 5);
+    line-height: calc(var(--baseline-px) * 5);
+    margin: 0 0 calc(var(--baseline-px) * 2);
+  }
+
+  h2 {
+    font-size: calc(var(--baseline-px) * 4.25);
+    line-height: calc(var(--baseline-px) * 5);
+    margin: calc(var(--baseline-px) * 2) 0;
+  }
+
+  h3 {
+    font-size: calc(var(--baseline-px) * 3.5);
+    line-height: calc(var(--baseline-px) * 4);
+    margin: calc(var(--baseline-px) * 2) 0 calc(var(--baseline-px) * 1.5);
+  }
+
+  h4 {
+    font-size: calc(var(--baseline-px) * 2.25);
+    line-height: calc(var(--baseline-px) * 2.5);
+    margin: calc(var(--baseline-px) * 1.5) 0 calc(var(--baseline-px) * 1);
+  }
+
+  h5 {
+    font-size: calc(var(--baseline-px) * 1.625);
+    line-height: calc(var(--baseline-px) * 2.25);
+    margin: calc(var(--baseline-px) * 1) 0 calc(var(--baseline-px) * 0.5);
+  }
+
+  body {
+    font-size: var(--html-font-size);
+    line-height: calc(var(--baseline-px) * 1.5);
   }
 
   :root {
