@@ -7,6 +7,16 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { SpacerBlock } from '../../blocks/Spacer/config'
+import { CTAGrid } from '../../blocks/CTAGrid/config'
+import { MediaCollage } from '../../blocks/MediaCollage/config'
+import { MediaContentCollage } from '../../blocks/MediaContentCollage/config'
+import { MediaGrid } from '../../blocks/MediaGrid/config'
+import { MediaStatCollage } from '../../blocks/MediaStatCollage/config'
+import { Slider } from '../../blocks/Slider/config'
+import { Statistics } from '../../blocks/Statistics/config'
+import { StickyContent } from '../../blocks/StickyContent/config'
+import { StudySlider } from '../../blocks/StudySlider/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -72,7 +82,23 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              blocks: [
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                SpacerBlock,
+                CTAGrid,
+                MediaCollage,
+                MediaContentCollage,
+                MediaGrid,
+                MediaStatCollage,
+                Slider,
+                Statistics,
+                StickyContent,
+                StudySlider,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

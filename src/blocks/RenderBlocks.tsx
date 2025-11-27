@@ -4,18 +4,36 @@ import type { Page } from '@/payload-types'
 
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { CTAGridBlock } from '@/blocks/CTAGrid/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { MediaCollageBlock } from '@/blocks/MediaCollage/Component'
 import { SpacerBlock } from '@/blocks/Spacer/Component'
+import { MediaContentCollageBlock } from '@/blocks/MediaContentCollage/Component'
+import { MediaGridBlock } from '@/blocks/MediaGrid/Component'
+import { MediaStatCollageBlock } from '@/blocks/MediaStatCollage/Component'
+import { SliderBlock } from '@/blocks/Slider/Component'
+import { StatisticsBlock } from '@/blocks/Statistics/Component'
+import { StickyContentBlock } from '@/blocks/StickyContent/Component'
+import { StudySliderBlock } from '@/blocks/StudySlider/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
+  ctaGrid: CTAGridBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
-  spacerBlock: SpacerBlock,
+  mediaCollage: MediaCollageBlock,
+  spacer: SpacerBlock,
+  mediaContentCollage: MediaContentCollageBlock,
+  mediaGrid: MediaGridBlock,
+  mediaStatCollage: MediaStatCollageBlock,
+  slider: SliderBlock,
+  statistics: StatisticsBlock,
+  stickyContent: StickyContentBlock,
+  studySlider: StudySliderBlock,
 }
 
 export const RenderBlocks: React.FC<{

@@ -1,27 +1,11 @@
-import { Block } from "payload"
+import { SpacerBlock as SpacerBlockProps } from 'src/payload-types'
 
-export const SpacerBlock: Block = {
-    slug: 'spacer',
-    interfaceName: 'SpacerBlock',
-    fields: [
-        {
-            name: 'size',
-            label: 'Size',
-            type: 'radio',
-            options: [
-                {
-                    label: 'Small',
-                    value: 'small',
-                },
-                {
-                    label: 'Medium',
-                    value: 'medium',
-                },
-                {
-                    label: 'Large',
-                    value: 'large',
-                },
-            ],
-        }
-    ]
+import React from 'react'
+
+export const SpacerBlock: React.FC<SpacerBlockProps> = (props) => {
+  return (
+    <div className="container">
+      <p>Spacer Block</p>
+    </div>
+  )
 }
