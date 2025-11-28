@@ -8,12 +8,12 @@ export const screens = {
 }
 
 export const colors = {
-  antique: '#FFF9F2',
-  gray: '#181818',
-  red: '#FF322C',
-  blue: '#9ED1D8',
-  yellow: '#FFEF5E',
-  orange: '#FCB449',
+  'od-antique': '#FFF9F2',
+  'od-gray': '#181818',
+  'od-red': '#FF322C',
+  'od-blue': '#9ED1D8',
+  'od-yellow': '#FFEF5E',
+  'od-orange': '#FCB449',
 }
 
 export const zIndex = {
@@ -24,4 +24,24 @@ export const zIndex = {
 
 export const maxWidth = {
   'grid-container': '920px',
+}
+
+// 10-column grid system
+export const gridColumns = {
+  total: 10,
+  // Standard content (blocks 3-6)
+  content: {
+    start: 3,
+    span: 4,
+  },
+  // Emphasized content (blocks 2-7)
+  emphasized: {
+    start: 2,
+    span: 6,
+  },
+  // Full width (blocks 0-9)
+  full: {
+    start: 0,
+    span: 10,
+  },
 }

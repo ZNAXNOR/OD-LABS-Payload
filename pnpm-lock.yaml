@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@faceless-ui/modal':
+        specifier: ^3.0.0
+        version: 3.0.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@payloadcms/admin-bar':
         specifier: 3.64.0
         version: 3.64.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
