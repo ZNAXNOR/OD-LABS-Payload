@@ -45,3 +45,12 @@ export const gridColumns = {
     span: 10,
   },
 }
+
+// Transition timings
+export const transitions = {
+  slow: '600ms',
+  default: '300ms',
+  fast: '100ms',
+  modal: '400ms',
+  page: '500ms',
+}

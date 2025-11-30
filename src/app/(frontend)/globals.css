@@ -144,3 +144,13 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+.payload__modal-item {
+  opacity: 0;
+  transition: opacity 400ms linear;
+}
+
+.payload__modal-item--enterActive,
+.payload__modal-item--enterDone {
+  opacity: 1;
+}

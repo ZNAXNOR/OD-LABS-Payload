@@ -10,7 +10,7 @@ const Hamburger: React.FC<Props> = ({ active, className }) => {
   return (
     <svg
       className={cn(
-        'w-4 h-4 fill-current pointer-events-none transition-transform duration-300',
+        'w-4 h-4 fill-current pointer-events-none transition-transform duration-[400ms]',
         active && 'scale-110',
         className,
       )}
@@ -20,7 +20,7 @@ const Hamburger: React.FC<Props> = ({ active, className }) => {
     >
       <rect
         className={cn(
-          'origin-center -translate-y-[5px] translate-x-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)]',
+          'origin-center -translate-y-[5px] translate-x-[7px] transition-all duration-[400ms] ease-[cubic-bezier(.5,.85,.25,1.1)]',
           active && 'translate-x-0 translate-y-0 rotate-[315deg]',
         )}
         y="7"
@@ -30,7 +30,7 @@ const Hamburger: React.FC<Props> = ({ active, className }) => {
       />
       <rect
         className={cn(
-          'origin-center transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.8)]',
+          'origin-center transition-all duration-[400ms] ease-[cubic-bezier(.5,.85,.25,1.8)]',
           active && 'rotate-45',
         )}
         y="7"
@@ -40,7 +40,7 @@ const Hamburger: React.FC<Props> = ({ active, className }) => {
       />
       <rect
         className={cn(
-          'origin-center translate-y-[5px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)]',
+          'origin-center translate-y-[5px] transition-all duration-[400ms] ease-[cubic-bezier(.5,.85,.25,1.1)]',
           active && 'translate-y-0 rotate-[135deg]',
         )}
         y="7"

@@ -1,6 +1,6 @@
 import tailwindcssAnimate from 'tailwindcss-animate'
 import typography from '@tailwindcss/typography'
-import { screens, colors, zIndex, maxWidth } from './custom-theme.mjs'
+import { screens, colors, zIndex, maxWidth, transitions } from './custom-theme.mjs'
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -93,6 +93,13 @@ const config = {
       },
       maxWidth: {
         ...maxWidth,
+      },
+      transitionDuration: {
+        slow: transitions.slow,
+        DEFAULT: transitions.default,
+        fast: transitions.fast,
+        modal: transitions.modal,
+        page: transitions.page,
       },
       fontFamily: {
         mono: ['var(--font-geist-mono)'],

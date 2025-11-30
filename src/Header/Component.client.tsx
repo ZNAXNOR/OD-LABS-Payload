@@ -34,27 +34,21 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, megaMenu, soci
 
   return (
     <header
-      className="sticky top-0 z-header bg-background"
+      className="fixed top-0 left-0 right-0 z-header p-10 flex justify-between items-start pointer-events-none"
       {...(theme ? { 'data-theme': theme } : {})}
     >
-      <div className="container mx-auto">
-        <div className="grid grid-cols-10 gap-4 py-8 items-center">
-          {/* Logo at block 1 (column 2) */}
-          <div className="col-start-2 col-span-1">
-            <Link href="/">
-              <Logo loading="eager" priority="high" className="invert dark:invert-0" />
-            </Link>
-          </div>
-          {/* Hamburger at block 9 (column 10) */}
-          <div className="col-start-10 col-span-1 flex justify-end">
-            <HeaderNav
-              data={data}
-              megaMenu={megaMenu}
-              socialMedia={socialMedia}
-              onMenuToggle={setMenuActive}
-            />
-          </div>
-        </div>
+      <div className="pointer-events-auto">
+        <Link href="/" className="block bg-od-red p-3">
+          <Logo loading="eager" priority="high" className="brightness-0 invert" />
+        </Link>
+      </div>
+      <div className="pointer-events-auto">
+        <HeaderNav
+          data={data}
+          megaMenu={megaMenu}
+          socialMedia={socialMedia}
+          onMenuToggle={setMenuActive}
+        />
       </div>
     </header>
   )
