@@ -109,7 +109,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           </div>
         </div>
         <div className="fixed z-50 right-1 bottom-1 -mb-2 s:-right-2 s:-bottom-2 s:-mb-2 m:-right-2 m:-bottom-2 m:-mb-2">
-          <LetsTalk className=" !w-96 !h-96 m:!w-[27rem] m:!h-[27rem] l:!w-[32rem] l:!h-[32rem]" />
+          <LetsTalk className=" !w-60 !h-72 m:!w-[28rem] m:!h-80 l:!w-[34rem] l:!h-[27rem]" />
         </div>
       </Modal>
     </nav>
