@@ -69,7 +69,7 @@ const LetsTalk: React.FC<Props> = ({ className }) => {
       <Link
         href="/contact"
         scroll={false}
-        className="w-full h-full flex flex-col justify-center items-center relative z-20 text-od-antique no-underline"
+        className="w-full h-full flex flex-col justify-center items-center relative z-10 text-od-antique no-underline pointer-events-auto"
       >
         <Arrow className="transform ml-12 mt-32 -rotate-45 transition-all duration-300 ease-linear opacity-[0.125] group-hover:opacity-100 group-hover:translate-x-[25%] group-hover:translate-y-[-25%]" />
         <p className="ml-12 text-3xl m:text-5xl l:text-7xl">Let&apos;s Talk</p>

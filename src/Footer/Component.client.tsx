@@ -30,7 +30,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ footer, socialMedia 
       </Gutter>
 
       {/* Content */}
-      <GridContainer className="pt-20 pb-80 relative z-20">
+      <GridContainer className="pt-20 pb-40 relative z-20">
         <div className="grid grid-cols-10 gap-8">
           {/* Left Column - Navigation Links */}
           {Array.isArray(footer?.navItems) && footer.navItems.length > 0 && (
@@ -119,7 +119,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ footer, socialMedia 
 
       {/* Let's Talk CTA - Positioned higher so footer links are above it */}
       <div className="absolute bottom-8 left-0 z-15">
-        <LetsTalk className="!w-60 !h-72 m:!w-[28rem] m:!h-80 l:!w-[34rem] l:!h-[27rem]" />
+        <LetsTalk className="!w-52 !h-52 m:!w-[28rem] m:!h-80 l:!w-[34rem] l:!h-[27rem]" />
       </div>
 
       {/* Back to Top Button */}

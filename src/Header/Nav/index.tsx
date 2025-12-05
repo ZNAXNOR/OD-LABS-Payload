@@ -82,7 +82,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                   <CMSLink
                     {...link}
                     className={cn(
-                      'text-4xl m:text-5xl font-normal text-white hover:text-od-antique transition-colors',
+                      'text-4xl m:text-5xl font-normal text-white transition-colors duration-300 hover:text-od-blue',
                       i === 0 && 'mt-0',
                     )}
                   />
@@ -97,7 +97,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-lg text-white hover:text-od-antique transition-colors"
+                      className="text-lg text-white transition-colors duration-300 hover:text-od-blue"
                       onClick={handleLinkClick}
                     >
                       {label}
@@ -108,7 +108,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             )}
           </div>
         </div>
-        <div className="fixed z-50 right-1 bottom-1 -mb-2 s:-right-2 s:-bottom-2 s:-mb-2 m:-right-2 m:-bottom-2 m:-mb-2">
+        <div className="fixed z-0 right-1 bottom-1 -mb-2 s:-right-2 s:-bottom-2 s:-mb-2 m:-right-2 m:-bottom-2 m:-mb-2 pointer-events-none">
           <LetsTalk className=" !w-60 !h-72 m:!w-[28rem] m:!h-80 l:!w-[34rem] l:!h-[27rem]" />
         </div>
       </Modal>
