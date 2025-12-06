@@ -14,6 +14,9 @@ importers:
       '@payloadcms/db-postgres':
         specifier: 3.66.0
         version: 3.66.0(payload@3.66.0(graphql@16.12.0)(typescript@5.7.3))
+      '@payloadcms/email-resend':
+        specifier: ^3.66.0
+        version: 3.66.0(payload@3.66.0(graphql@16.12.0)(typescript@5.7.3))
       '@payloadcms/live-preview-react':
         specifier: 3.66.0
         version: 3.66.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -1221,6 +1224,12 @@ packages:
 
   '@payloadcms/drizzle@3.66.0':
     resolution: {integrity: sha512-rU9ys1x4sLWKRe56y7l97Wi+3RqBRZL35B1FgR7nLKZagTkSjQe02Ozd4ZYmfSEGy7/12Omx0tc+ecl/ihtzRw==}
+    peerDependencies:
+      payload: 3.66.0
+
+  '@payloadcms/email-resend@3.66.0':
+    resolution: {integrity: sha512-zTyVqoNIQ6GREbhvr6rolDG5gxlf8FhQDHbzMYOakOuyOcpOCYOgaYWLh9PhkeiHwcHmbnHj404/plQ8ZfXlXw==}
+    engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
       payload: 3.66.0
 
@@ -5804,6 +5813,10 @@ snapshots:
       - prisma
       - sql.js
       - sqlite3
+
+  '@payloadcms/email-resend@3.66.0(payload@3.66.0(graphql@16.12.0)(typescript@5.7.3))':
+    dependencies:
+      payload: 3.66.0(graphql@16.12.0)(typescript@5.7.3)
 
   '@payloadcms/graphql@3.66.0(graphql@16.12.0)(payload@3.66.0(graphql@16.12.0)(typescript@5.7.3))(typescript@5.7.3)':
     dependencies:
