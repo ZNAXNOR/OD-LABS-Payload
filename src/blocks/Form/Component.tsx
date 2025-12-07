@@ -126,8 +126,12 @@ export const FormBlock: React.FC<
           {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
           {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
           {!hasSubmitted && (
-            <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4 last:mb-0">
+            <form
+              id={formID}
+              onSubmit={handleSubmit(onSubmit)}
+              className="mx-auto mt-16 max-w-xl sm:mt-20"
+            >
+              <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                 {formFromProps &&
                   formFromProps.fields &&
                   formFromProps.fields?.map((field, index) => {
@@ -135,25 +139,31 @@ export const FormBlock: React.FC<
                     const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
                     if (Field) {
                       return (
-                        <div className="mb-6 last:mb-0" key={index}>
-                          <Field
-                            form={formFromProps}
-                            {...field}
-                            {...formMethods}
-                            control={control}
-                            errors={errors}
-                            register={register}
-                          />
-                        </div>
+                        <Field
+                          key={index}
+                          form={formFromProps}
+                          {...field}
+                          {...formMethods}
+                          control={control}
+                          errors={errors}
+                          register={register}
+                        />
                       )
                     }
                     return null
                   })}
               </div>
 
-              <Button form={formID} type="submit" variant="default">
-                {submitButtonLabel}
-              </Button>
+              <div className="mt-10">
+                <Button
+                  form={formID}
+                  type="submit"
+                  variant="default"
+                  className="block w-full rounded-md bg-od-brand-primary px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-od-brand-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-od-brand-primary dark:bg-od-brand-primary dark:hover:bg-od-brand-primary/90 dark:focus-visible:outline-od-brand-primary"
+                >
+                  {submitButtonLabel}
+                </Button>
+              </div>
             </form>
           )}
         </FormProvider>

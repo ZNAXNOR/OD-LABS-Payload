@@ -24,41 +24,43 @@ export const Country: React.FC<
 > = ({ name, control, errors, label, required, width }) => {
   return (
     <Width width={width}>
-      <Label className="" htmlFor={name}>
+      <Label htmlFor={name} className="block text-sm/6 font-semibold text-gray-900 dark:text-white">
         {label}
 
         {required && (
-          <span className="required">
+          <span className="required text-red-500">
             * <span className="sr-only">(required)</span>
           </span>
         )}
       </Label>
-      <Controller
-        control={control}
-        defaultValue=""
-        name={name}
-        render={({ field: { onChange, value } }) => {
-          const controlledValue = countryOptions.find((t) => t.value === value)
+      <div className="mt-2.5">
+        <Controller
+          control={control}
+          defaultValue=""
+          name={name}
+          render={({ field: { onChange, value } }) => {
+            const controlledValue = countryOptions.find((t) => t.value === value)
 
-          return (
-            <Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
-              <SelectTrigger className="w-full" id={name}>
-                <SelectValue placeholder={label} />
-              </SelectTrigger>
-              <SelectContent>
-                {countryOptions.map(({ label, value }) => {
-                  return (
-                    <SelectItem key={value} value={value}>
-                      {label}
-                    </SelectItem>
-                  )
-                })}
-              </SelectContent>
-            </Select>
-          )
-        }}
-        rules={{ required }}
-      />
+            return (
+              <Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
+                <SelectTrigger className="w-full" id={name}>
+                  <SelectValue placeholder={label} />
+                </SelectTrigger>
+                <SelectContent>
+                  {countryOptions.map(({ label, value }) => {
+                    return (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    )
+                  })}
+                </SelectContent>
+              </Select>
+            )
+          }}
+          rules={{ required }}
+        />
+      </div>
       {errors[name] && <Error name={name} />}
     </Width>
   )
