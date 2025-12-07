@@ -92,6 +92,9 @@ const config = {
         success: 'hsl(var(--success))',
         error: 'hsl(var(--error))',
         warning: 'hsl(var(--warning))',
+
+        // Manually Added
+        'od-brand-primary': '#E94235',
       },
       fontFamily: {
         mono: ['var(--font-geist-mono)'],
