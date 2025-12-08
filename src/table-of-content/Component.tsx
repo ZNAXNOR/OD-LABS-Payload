@@ -1,6 +1,6 @@
 'use client'
 
-import { Post } from '@/payload-types'
+import type { RequiredDataFromCollectionSlug } from 'payload'
 import { getClientSideURL } from '@/utilities/getURL'
 import { cn } from '@/utilities/ui'
 import { useLivePreview } from '@payloadcms/live-preview-react'
@@ -9,7 +9,7 @@ import { ComponentProps, useEffect, useRef, useState } from 'react'
 import { CompletionCard } from './CompletionCard'
 
 type Props = ComponentProps<'div'> & {
-  post: Post
+  post: RequiredDataFromCollectionSlug<'posts'> | RequiredDataFromCollectionSlug<'documents'>
 }
 
 export const TableOfContents = ({ className, post: initialPost, ...props }: Props) => {
