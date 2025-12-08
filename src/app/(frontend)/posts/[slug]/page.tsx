@@ -66,8 +66,8 @@ export default async function Post({ params: paramsPromise }: Args) {
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container lg:flex lg:gap-12">
           {post.tableOfContents?.isEnabled && (
-            <aside className="hidden w-[250px] shrink-0 lg:block">
-              <div className="sticky top-24">
+            <aside className="w-full shrink-0 lg:w-[250px] mb-8 lg:mb-0">
+              <div className="lg:sticky lg:top-24">
                 <TableOfContents post={post} />
               </div>
             </aside>
@@ -75,6 +75,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 
           <div className="min-w-0 flex-1">
             <RichText className="mx-auto max-w-[48rem]" data={post.content} enableGutter={false} />
+            <div id="article-end-marker" />
             {post.relatedPosts && post.relatedPosts.length > 0 && (
               <RelatedPosts
                 className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
