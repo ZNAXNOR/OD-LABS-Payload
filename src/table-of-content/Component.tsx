@@ -1,7 +1,9 @@
 'use client'
 
 import { Post } from '@/payload-types'
+import { getClientSideURL } from '@/utilities/getURL'
 import { cn } from '@/utilities/ui'
+import { useLivePreview } from '@payloadcms/live-preview-react'
 import { ArrowRight, HashIcon, List, X } from 'lucide-react'
 import { ComponentProps, useEffect, useRef, useState } from 'react'
 import { CompletionCard } from './CompletionCard'
@@ -10,7 +12,12 @@ type Props = ComponentProps<'div'> & {
   post: Post
 }
 
-export const TableOfContents = ({ className, post, ...props }: Props) => {
+export const TableOfContents = ({ className, post: initialPost, ...props }: Props) => {
+  const { data: post } = useLivePreview({
+    initialData: initialPost,
+    serverURL: getClientSideURL(),
+  })
+
   const [activeId, setActiveId] = useState<string>('')
   const [isAtBottom, setIsAtBottom] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
@@ -60,7 +67,7 @@ export const TableOfContents = ({ className, post, ...props }: Props) => {
       const slug = slugify(element.textContent || '')
       element.id = slug
     })
-  }, [])
+  }, [post.content])
 
   // 2. Observer for Active ID
   useEffect(() => {
@@ -84,7 +91,7 @@ export const TableOfContents = ({ className, post, ...props }: Props) => {
 
     headingElements.forEach((element) => observer.observe(element))
     return () => observer.disconnect()
-  }, [])
+  }, [post.content])
 
   // 3. Scroll Handler for Bottom Detection
   useEffect(() => {
@@ -228,7 +235,7 @@ export const TableOfContents = ({ className, post, ...props }: Props) => {
       {/* 1. Mobile Sticky Trigger */}
       <div
         className={cn(
-          'fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden transition-all duration-300',
+          'fixed bottom-6 min-w-80 left-1/2 -translate-x-1/2 z-30 lg:hidden transition-all duration-300',
           showMobileTrigger && !isAtBottom && !isDrawerOpen
             ? 'translate-y-0 opacity-100'
             : 'translate-y-[200%] opacity-0 pointer-events-none',
@@ -246,7 +253,7 @@ export const TableOfContents = ({ className, post, ...props }: Props) => {
       {/* 2. Mobile Drawer Overlay */}
       <div
         className={cn(
-          'fixed inset-0 z-50 lg:hidden transition-all duration-300 bg-black/40 backdrop-blur-[2px]',
+          'fixed inset-0 z-40 lg:hidden transition-all duration-300 bg-black/40 backdrop-blur-[2px]',
           isDrawerOpen ? 'opacity-100' : 'opacity-0 pointer-events-none',
         )}
         onClick={() => setIsDrawerOpen(false)}
@@ -276,7 +283,7 @@ export const TableOfContents = ({ className, post, ...props }: Props) => {
       {/* 3. Mobile Completion Card (Fixed Toast) */}
       <div
         className={cn(
-          'fixed bottom-6 left-4 right-4 z-50 lg:hidden transition-all duration-500 ease-out',
+          'fixed bottom-6 left-4 right-4 z-30 lg:hidden transition-all duration-500 ease-out',
           isAtBottom ? 'translate-y-0 opacity-100' : 'translate-y-[150%] opacity-0',
         )}
       >
