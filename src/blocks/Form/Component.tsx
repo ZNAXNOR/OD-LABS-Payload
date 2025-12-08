@@ -129,7 +129,7 @@ export const FormBlock: React.FC<
             <form
               id={formID}
               onSubmit={handleSubmit(onSubmit)}
-              className="mx-auto mt-16 max-w-xl sm:mt-20"
+              className="mx-auto mt-4 max-w-xl sm:mt-5"
             >
               <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                 {formFromProps &&

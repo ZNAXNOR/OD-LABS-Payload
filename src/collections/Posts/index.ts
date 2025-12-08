@@ -17,6 +17,7 @@ import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
+import { tableOfContents } from '../../table-of-content/config'
 
 import {
   MetaDescriptionField,
@@ -158,6 +159,10 @@ export const Posts: CollectionConfig<'posts'> = {
               descriptionPath: 'meta.description',
             }),
           ],
+        },
+        {
+          fields: [tableOfContents],
+          label: 'Table of Contents',
         },
       ],
     },

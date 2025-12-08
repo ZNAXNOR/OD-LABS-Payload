@@ -252,6 +252,9 @@ export interface Post {
     image?: (number | null) | Media;
     description?: string | null;
   };
+  tableOfContents?: {
+    isEnabled?: boolean | null;
+  };
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
   populatedAuthors?:
@@ -1202,6 +1205,11 @@ export interface PostsSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+      };
+  tableOfContents?:
+    | T
+    | {
+        isEnabled?: T;
       };
   publishedAt?: T;
   authors?: T;
