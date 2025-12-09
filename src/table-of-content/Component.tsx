@@ -37,7 +37,7 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
   const headings = post.content.root.children.filter((child: any) => {
     return (
       child.type === 'heading' &&
-      (child.tag === 'h2' || child.tag === 'h3') &&
+      (child.tag === 'h1' || child.tag === 'h2' || child.tag === 'h3') &&
       child.children &&
       child.children[0]
     )
@@ -46,14 +46,24 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
   const onHeadingClick = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
-      const headerOffset = 100
-      const elementPosition = element.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.scrollY - headerOffset
-
-      window.scrollTo({
-        top: offsetPosition,
+      element.scrollIntoView({
         behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
       })
+
+      // Add a small delay then adjust for header offset
+      setTimeout(() => {
+        const headerOffset = 100
+        const elementPosition = element.getBoundingClientRect().top
+        if (elementPosition < headerOffset) {
+          window.scrollBy({
+            top: elementPosition - headerOffset,
+            behavior: 'smooth',
+          })
+        }
+      }, 100)
+
       setIsDrawerOpen(false)
     }
   }
@@ -61,7 +71,7 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
   // 1. Assign IDs
   useEffect(() => {
     const headingElements = Array.from(
-      (document.querySelector('article') ?? document).querySelectorAll('h2, h3'),
+      (document.querySelector('article') ?? document).querySelectorAll('h1, h2, h3'),
     )
     headingElements.forEach((element) => {
       const slug = slugify(element.textContent || '')
@@ -72,7 +82,7 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
   // 2. Observer for Active ID
   useEffect(() => {
     const headingElements = Array.from(
-      (document.querySelector('article') ?? document).querySelectorAll('h2, h3'),
+      (document.querySelector('article') ?? document).querySelectorAll('h1, h2, h3'),
     )
 
     const observer = new IntersectionObserver(
@@ -134,6 +144,7 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
   /* Ref for list container to calculate item positions */
   const listRef = useRef<HTMLUListElement>(null)
   const [indicatorTop, setIndicatorTop] = useState<number>(0)
+  const isManualClick = useRef(false)
 
   useEffect(() => {
     if (isAtBottom && listRef.current) {
@@ -148,6 +159,33 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
       if (activeLink) {
         const top = activeLink.offsetTop + activeLink.offsetHeight / 2
         setIndicatorTop(top)
+
+        // Only auto-scroll the TOC if it's NOT a manual click
+        if (!isManualClick.current && listRef.current) {
+          // Manually scroll the TOC container without affecting the page
+          const container = listRef.current
+          const linkTop = activeLink.offsetTop
+          const linkHeight = activeLink.offsetHeight
+          const containerHeight = container.clientHeight
+          const containerScrollTop = container.scrollTop
+
+          // Calculate if the link is outside the visible area
+          const linkBottom = linkTop + linkHeight
+          const visibleTop = containerScrollTop
+          const visibleBottom = containerScrollTop + containerHeight
+
+          // Scroll to center the active link in the container
+          if (linkTop < visibleTop || linkBottom > visibleBottom) {
+            const scrollTo = linkTop - containerHeight / 2 + linkHeight / 2
+            container.scrollTo({
+              top: scrollTo,
+              behavior: 'smooth',
+            })
+          }
+        }
+
+        // Reset the manual click flag
+        isManualClick.current = false
       }
     } else if (!activeId) {
       setIndicatorTop(0)
@@ -159,18 +197,36 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
       const text = child.children[0].text
       const id = slugify(text)
       const isActive = activeId === id && !isAtBottom
+      const headingTag = child.tag // 'h1', 'h2', or 'h3'
+
+      // Calculate indentation based on heading level
+      // h1: 0px, h2: 12px (0.75rem), h3: 24px (1.5rem)
+      const getIndentation = (tag: string) => {
+        switch (tag) {
+          case 'h1':
+            return 'pl-0'
+          case 'h2':
+            return 'pl-3'
+          case 'h3':
+            return 'pl-6'
+          default:
+            return 'pl-0'
+        }
+      }
 
       return (
         <a
           key={i}
           onClick={(e) => {
             e.preventDefault()
+            isManualClick.current = true
             onHeadingClick(id)
             setActiveId(id)
           }}
           href={`#${id}`}
           className={cn(
             'group duration-xs flex border-none border-transparent px-2 transition-colors ease-in-out relative',
+            getIndentation(headingTag),
             isActive ? 'bg-surface-soft border-border' : '',
             'hover:bg-surface-soft hover:border-border',
           )}
@@ -200,7 +256,7 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
   return (
     <div className={cn('flex flex-col gap-4', className)} {...props} ref={tocRef}>
       <h3 className="font-semibold text-xl">Table Of Content</h3>
-      <div className="flex flex-row gap-2 relative">
+      <div className="flex flex-row gap-2 relative max-h-[60vh]">
         {/* Left Column: Progress Bar (Hidden in sticky drawer usually, but visible in main component) */}
         <div className="flex flex-col items-center pt-2 w-[10px]">
           <div className="w-[2px] bg-border relative flex-1 rounded-full overflow-hidden">
@@ -214,14 +270,23 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
           </div>
         </div>
 
-        {/* Right Column: List + Card */}
-        <div className="flex flex-col flex-1 gap-4">
-          <ul
-            ref={listRef}
-            className="divide-border-soft list-none divide-y *:py-1.5 flex-1 relative"
-          >
-            {renderListItems()}
-          </ul>
+        {/* Right Column: List + Card with fade effect */}
+        <div className="flex flex-col flex-1 gap-4 min-h-0">
+          {/* Scrollable list container with fade effect */}
+          <div className="relative flex-1 min-h-0">
+            {/* Gradient fade overlay at top */}
+            <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-background to-transparent pointer-events-none z-10" />
+
+            {/* Gradient fade overlay at bottom */}
+            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
+
+            <ul
+              ref={listRef}
+              className="divide-border-soft list-none divide-y *:py-1.5 overflow-y-auto max-h-full pr-2 py-3 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent hover:scrollbar-thumb-border-strong"
+            >
+              {renderListItems()}
+            </ul>
+          </div>
 
           {/* Completion Card (Desktop: Sidebar / Mobile: Hidden here, shows fixed at bottom) */}
           <div className="hidden lg:block">
