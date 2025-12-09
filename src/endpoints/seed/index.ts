@@ -20,7 +20,7 @@ const collections: CollectionSlug[] = [
   'search',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer']
+const globals: GlobalSlug[] = ['header', 'footer', 'contact']
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
 
@@ -44,20 +44,38 @@ export const seed = async ({
   payload.logger.info(`— Clearing collections and globals...`)
 
   // clear the database
-  await Promise.all(
-    globals.map((global) =>
-      payload.updateGlobal({
-        slug: global,
-        data: {
-          navItems: [],
-        },
-        depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
-      }),
-    ),
-  )
+  await Promise.all([
+    payload.updateGlobal({
+      slug: 'header',
+      data: {
+        navItems: [],
+      },
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+    }),
+    payload.updateGlobal({
+      slug: 'footer',
+      data: {
+        navItems: [],
+      },
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+    }),
+    payload.updateGlobal({
+      slug: 'contact',
+      data: {
+        email: '',
+      },
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+    }),
+  ])
 
   await Promise.all(
     collections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
@@ -270,6 +288,34 @@ export const seed = async ({
             },
           },
         ],
+      },
+    }),
+    payload.updateGlobal({
+      slug: 'contact',
+      data: {
+        address: {
+          street: '123 Main Street',
+          city: 'San Francisco',
+          state: 'CA',
+          postalCode: '94102',
+          country: 'United States',
+        },
+        email: 'contact@example.com',
+        phone: '+1 (555) 123-4567',
+        contactPageLink: {
+          type: 'reference',
+          reference: {
+            relationTo: 'pages',
+            value: contactPage.id,
+          },
+        },
+        businessHours:
+          'Monday - Friday: 9:00 AM - 5:00 PM\nSaturday: 10:00 AM - 2:00 PM\nSunday: Closed',
+        facebook: 'https://facebook.com/example',
+        instagram: 'https://instagram.com/example',
+        twitter: 'https://twitter.com/example',
+        linkedin: 'https://linkedin.com/company/example',
+        github: 'https://github.com/example',
       },
     }),
   ])
