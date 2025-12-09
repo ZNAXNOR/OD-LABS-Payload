@@ -20,7 +20,7 @@ export const defaultLexical = lexicalEditor({
     UnorderedListFeature(),
     OrderedListFeature(),
     LinkFeature({
-      enabledCollections: ['pages', 'posts'],
+      enabledCollections: ['pages', 'posts', 'documents'],
       fields: ({ defaultFields }) => {
         const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
           if ('name' in field && field.name === 'url') return false

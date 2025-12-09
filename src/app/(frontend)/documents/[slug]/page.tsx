@@ -5,20 +5,17 @@ import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import { homeStatic } from '@/endpoints/seed/home-static'
 
-import { RenderBlocks } from '@/blocks/RenderBlocks'
-import { RenderHero } from '@/heros/RenderHero'
+import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
-import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import RichText from '@/components/RichText'
 import { TableOfContents } from '@/table-of-content/Component'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
-  const pages = await payload.find({
-    collection: 'pages',
+  const documents = await payload.find({
+    collection: 'documents',
     draft: false,
     limit: 1000,
     overrideAccess: false,
@@ -28,15 +25,11 @@ export async function generateStaticParams() {
     },
   })
 
-  const pageParams = pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
-    })
-    .map(({ slug }) => {
-      return { slug }
-    })
+  const documentParams = documents.docs?.map(({ slug }) => {
+    return { slug }
+  })
 
-  return pageParams || []
+  return documentParams || []
 }
 
 type Args = {
@@ -47,58 +40,78 @@ type Args = {
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = 'home' } = await paramsPromise
+  const { slug } = await paramsPromise
+
+  // If slug is missing, we might want to handle it (e.g., /documents root), but for now assume slug is there.
+  if (!slug) {
+    // Handle missing slug, maybe redirect or 404
+    return <PayloadRedirects url="/documents" />
+  }
+
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
-  const url = '/' + decodedSlug
-  let page: RequiredDataFromCollectionSlug<'pages'> | null
+  const url = '/documents/' + decodedSlug
 
-  page = await queryPageBySlug({
+  const page = await queryDocumentBySlug({
     slug: decodedSlug,
   })
-
-  // Remove this code once your website is seeded
-  if (!page && slug === 'home') {
-    page = homeStatic
-  }
 
   if (!page) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout } = page
+  const { content, tableOfContents } = page
 
   return (
     <article className="pt-16 pb-24">
-      <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
       {draft && <LivePreviewListener />}
 
-      <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} />
+      <PostHero post={page} />
+
+      {content && (
+        <div className="flex flex-col items-center gap-4 mt-16">
+          <div className="container lg:flex lg:gap-12">
+            {tableOfContents?.isEnabled && (
+              <aside className="w-full shrink-0 lg:w-[250px] mb-8 lg:mb-0">
+                <div className="lg:sticky lg:top-24">
+                  <TableOfContents post={page} />
+                </div>
+              </aside>
+            )}
+
+            <div className="min-w-0 flex-1">
+              <RichText className="mx-auto max-w-[48rem]" data={content} enableGutter={false} />
+            </div>
+          </div>
+        </div>
+      )}
     </article>
   )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = 'home' } = await paramsPromise
+  const { slug } = await paramsPromise
+  if (!slug) return {}
+
+  // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
-  const page = await queryPageBySlug({
+  const page = await queryDocumentBySlug({
     slug: decodedSlug,
   })
 
   return generateMeta({ doc: page })
 }
 
-const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryDocumentBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
-    collection: 'pages',
+    collection: 'documents',
     draft,
     limit: 1,
     pagination: false,

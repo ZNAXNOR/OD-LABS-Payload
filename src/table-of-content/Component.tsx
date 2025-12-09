@@ -6,7 +6,7 @@ import { cn } from '@/utilities/ui'
 import { useLivePreview } from '@payloadcms/live-preview-react'
 import { ArrowRight, HashIcon, List, X } from 'lucide-react'
 import { ComponentProps, useEffect, useRef, useState } from 'react'
-import { CompletionCard } from './CompletionCard'
+import { CompletionCard } from './CompletionCard/index'
 
 type Props = ComponentProps<'div'> & {
   post: RequiredDataFromCollectionSlug<'posts'> | RequiredDataFromCollectionSlug<'documents'>
@@ -174,14 +174,12 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
           const visibleTop = containerScrollTop
           const visibleBottom = containerScrollTop + containerHeight
 
-          // Scroll to center the active link in the container
-          if (linkTop < visibleTop || linkBottom > visibleBottom) {
-            const scrollTo = linkTop - containerHeight / 2 + linkHeight / 2
-            container.scrollTo({
-              top: scrollTo,
-              behavior: 'smooth',
-            })
-          }
+          // Always scroll to center the active link in the container
+          const scrollTo = linkTop - containerHeight / 2 + linkHeight / 2
+          container.scrollTo({
+            top: scrollTo,
+            behavior: 'smooth',
+          })
         }
 
         // Reset the manual click flag
@@ -255,8 +253,8 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
 
   return (
     <div className={cn('flex flex-col gap-4', className)} {...props} ref={tocRef}>
-      <h3 className="font-semibold text-xl">Table Of Content</h3>
-      <div className="flex flex-row gap-2 relative max-h-[60vh]">
+      <h3 className="font-semibold -mt-4 text-2xl">Table Of Content</h3>
+      <div className="flex flex-row gap-2 relative max-h-[65vh]">
         {/* Left Column: Progress Bar (Hidden in sticky drawer usually, but visible in main component) */}
         <div className="flex flex-col items-center pt-2 w-[10px]">
           <div className="w-[2px] bg-border relative flex-1 rounded-full overflow-hidden">
@@ -282,7 +280,7 @@ export const TableOfContents = ({ className, post: initialPost, ...props }: Prop
 
             <ul
               ref={listRef}
-              className="divide-border-soft list-none divide-y *:py-1.5 overflow-y-auto max-h-full pr-2 py-3 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent hover:scrollbar-thumb-border-strong"
+              className="divide-border-soft list-none divide-y *:py-1.5 overflow-y-auto max-h-full pr-2 py-8 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent hover:scrollbar-thumb-border-strong"
             >
               {renderListItems()}
             </ul>

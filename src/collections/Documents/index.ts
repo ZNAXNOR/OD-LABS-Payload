@@ -18,7 +18,6 @@ import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidateDocument } from './hooks/revalidateDocument'
-import { hero } from '../../heros/config'
 import { tableOfContents } from '../../table-of-content/config'
 
 import {
@@ -77,7 +76,22 @@ export const Documents: CollectionConfig<'documents'> = {
       tabs: [
         {
           label: 'Hero',
-          fields: [hero],
+          fields: [
+            {
+              name: 'heroImage',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            {
+              name: 'categories',
+              type: 'relationship',
+              admin: {
+                position: 'sidebar',
+              },
+              hasMany: true,
+              relationTo: 'categories',
+            },
+          ],
         },
         {
           fields: [
