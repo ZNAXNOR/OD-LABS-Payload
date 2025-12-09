@@ -70,6 +70,7 @@ export interface Config {
     pages: Page;
     posts: Post;
     documents: Document;
+    services: Service;
     media: Media;
     categories: Category;
     users: User;
@@ -93,6 +94,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -195,6 +197,10 @@ export interface Page {
               | ({
                   relationTo: 'documents';
                   value: number | Document;
+                } | null)
+              | ({
+                  relationTo: 'services';
+                  value: number | Service;
                 } | null);
             url?: string | null;
             label: string;
@@ -495,6 +501,51 @@ export interface Document {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  heroImage?: (number | null) | Media;
+  categories?: (number | Category)[] | null;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  tableOfContents?: {
+    isEnabled?: boolean | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
@@ -530,6 +581,10 @@ export interface CallToActionBlock {
             | ({
                 relationTo: 'documents';
                 value: number | Document;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | Service;
               } | null);
           url?: string | null;
           label: string;
@@ -584,6 +639,10 @@ export interface ContentBlock {
             | ({
                 relationTo: 'documents';
                 value: number | Document;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | Service;
               } | null);
           url?: string | null;
           label: string;
@@ -630,7 +689,7 @@ export interface ArchiveBlock {
     [k: string]: unknown;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: ('posts' | 'documents') | null;
+  relationTo?: ('posts' | 'documents' | 'services') | null;
   categories?: (number | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
@@ -642,6 +701,10 @@ export interface ArchiveBlock {
         | {
             relationTo: 'documents';
             value: number | Document;
+          }
+        | {
+            relationTo: 'services';
+            value: number | Service;
           }
       )[]
     | null;
@@ -1052,6 +1115,10 @@ export interface PayloadLockedDocument {
         value: number | Document;
       } | null)
     | ({
+        relationTo: 'services';
+        value: number | Service;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -1301,6 +1368,34 @@ export interface PostsSelect<T extends boolean = true> {
  * via the `definition` "documents_select".
  */
 export interface DocumentsSelect<T extends boolean = true> {
+  title?: T;
+  heroImage?: T;
+  categories?: T;
+  content?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  tableOfContents?:
+    | T
+    | {
+        isEnabled?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
   categories?: T;
@@ -1759,6 +1854,10 @@ export interface Header {
             | ({
                 relationTo: 'documents';
                 value: number | Document;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | Service;
               } | null);
           url?: string | null;
           label: string;
@@ -1792,6 +1891,10 @@ export interface Footer {
             | ({
                 relationTo: 'documents';
                 value: number | Document;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | Service;
               } | null);
           url?: string | null;
           label: string;
@@ -1835,6 +1938,10 @@ export interface Contact {
       | ({
           relationTo: 'documents';
           value: number | Document;
+        } | null)
+      | ({
+          relationTo: 'services';
+          value: number | Service;
         } | null);
     url?: string | null;
     label: string;
@@ -1973,6 +2080,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'documents';
           value: number | Document;
+        } | null)
+      | ({
+          relationTo: 'services';
+          value: number | Service;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

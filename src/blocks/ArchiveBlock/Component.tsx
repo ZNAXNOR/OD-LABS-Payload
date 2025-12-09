@@ -1,4 +1,4 @@
-import type { Post, Document, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
+import type { Post, Document, Service, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -24,7 +24,7 @@ export const ArchiveBlock: React.FC<
 
   const limit = limitFromProps || 3
 
-  let posts: (Post | Document)[] = []
+  let posts: (Post | Document | Service)[] = []
 
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
@@ -54,7 +54,7 @@ export const ArchiveBlock: React.FC<
     if (selectedDocs?.length) {
       const filteredSelectedPosts = selectedDocs.map((post) => {
         if (typeof post.value === 'object') return post.value
-      }) as (Post | Document)[]
+      }) as (Post | Document | Service)[]
 
       posts = filteredSelectedPosts
     }
