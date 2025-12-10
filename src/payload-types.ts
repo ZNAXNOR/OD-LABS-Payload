@@ -1890,13 +1890,6 @@ export interface Header {
       label: string;
     };
   };
-  offices?:
-    | {
-        city: string;
-        address: string;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1985,6 +1978,13 @@ export interface Contact {
     postalCode?: string | null;
     country?: string | null;
   };
+  offices?:
+    | {
+        city: string;
+        address: string;
+        id?: string | null;
+      }[]
+    | null;
   email: string;
   phone?: string | null;
   /**
@@ -2069,13 +2069,6 @@ export interface HeaderSelect<T extends boolean = true> {
               label?: T;
             };
       };
-  offices?:
-    | T
-    | {
-        city?: T;
-        address?: T;
-        id?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -2139,6 +2132,13 @@ export interface ContactSelect<T extends boolean = true> {
         state?: T;
         postalCode?: T;
         country?: T;
+      };
+  offices?:
+    | T
+    | {
+        city?: T;
+        address?: T;
+        id?: T;
       };
   email?: T;
   phone?: T;

@@ -48,6 +48,23 @@ export const Contact: GlobalConfig = {
               ],
             },
             {
+              name: 'offices',
+              type: 'array',
+              label: 'Our Offices',
+              fields: [
+                {
+                  name: 'city',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'address',
+                  type: 'textarea',
+                  required: true,
+                },
+              ],
+            },
+            {
               name: 'email',
               type: 'email',
               label: 'Contact Email',
