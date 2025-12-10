@@ -25,6 +25,31 @@ export const Header: GlobalConfig = {
         },
       },
     },
+    {
+      name: 'contactLink',
+      type: 'group',
+      fields: [
+        link({
+          appearances: false,
+        }),
+      ],
+    },
+    {
+      name: 'offices',
+      type: 'array',
+      fields: [
+        {
+          name: 'city',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'address',
+          type: 'textarea',
+          required: true,
+        },
+      ],
+    },
   ],
   hooks: {
     afterChange: [revalidateHeader],
