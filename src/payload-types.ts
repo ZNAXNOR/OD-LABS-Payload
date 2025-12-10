@@ -1874,34 +1874,69 @@ export interface Header {
  */
 export interface Footer {
   id: number;
-  navItems?:
+  ctaHeading?: string | null;
+  ctaTitle?: string | null;
+  ctaDescription?: string | null;
+  ctaButton: {
+    link: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null)
+        | ({
+            relationTo: 'documents';
+            value: number | Document;
+          } | null)
+        | ({
+            relationTo: 'services';
+            value: number | Service;
+          } | null);
+      url?: string | null;
+      label: string;
+    };
+  };
+  linkColumns?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null)
-            | ({
-                relationTo: 'documents';
-                value: number | Document;
-              } | null)
-            | ({
-                relationTo: 'services';
-                value: number | Service;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        columnHeading: string;
+        links?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null)
+                  | ({
+                      relationTo: 'documents';
+                      value: number | Document;
+                    } | null)
+                  | ({
+                      relationTo: 'services';
+                      value: number | Service;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  copyrightText?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1998,7 +2033,10 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  ctaHeading?: T;
+  ctaTitle?: T;
+  ctaDescription?: T;
+  ctaButton?:
     | T
     | {
         link?:
@@ -2010,8 +2048,28 @@ export interface FooterSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+      };
+  linkColumns?:
+    | T
+    | {
+        columnHeading?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
         id?: T;
       };
+  copyrightText?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
