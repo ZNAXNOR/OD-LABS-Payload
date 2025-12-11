@@ -1,0 +1,5 @@
+@layer base {
+  :root {
+    --z-modal: 100;
+  }
+}

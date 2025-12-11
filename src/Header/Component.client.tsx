@@ -3,12 +3,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { useModal } from '@faceless-ui/modal'
 
 import type { Header, Contact } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { CMSLink } from '@/components/Link'
-import { SocialIcon } from '@/components/SocialIcon'
+import { Megamenu } from './Megamenu'
 
 interface HeaderClientProps {
   data: Header
@@ -16,60 +17,95 @@ interface HeaderClientProps {
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data, contactData }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const { toggleModal } = useModal()
   const pathname = usePathname()
+
+  const [theme, setTheme] = useState<string | null>(null)
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const headerData = data as any
   const navItems = headerData?.navItems || []
+  const contactLink = headerData?.contactLink?.link
 
-  // Use contactData for contact link if available
-  const contactLink = contactData?.contactPageLink
+  const offices = contactData?.offices || []
 
   // Close menu on route change
   useEffect(() => {
-    setIsOpen(false)
+    // Modal handles this partially, but we might want to ensure it closes on route change if needed.
+    // However, the Megamenu component itself handles 'closeModal' on links.
+    // So we don't strictly need logic here unless we want to force close on ANY route change.
+    // Faceless UI Modal doesn't automatically close on route change in Next.js app dir usually unless configured.
+    // But let's leave it as the Megamenu links handle it.
   }, [pathname])
 
   // Get social links from Contact global
-  const socialLinks = contactData?.socialLinks || []
+  const socialLinks: Array<{ platform: string; url: string }> = []
+  if (contactData?.facebook) socialLinks.push({ platform: 'facebook', url: contactData.facebook })
+  if (contactData?.instagram)
+    socialLinks.push({ platform: 'instagram', url: contactData.instagram })
+  if (contactData?.twitter) socialLinks.push({ platform: 'twitter', url: contactData.twitter })
+  if (contactData?.linkedin) socialLinks.push({ platform: 'linkedin', url: contactData.linkedin })
+  if (contactData?.youtube) socialLinks.push({ platform: 'youtube', url: contactData.youtube })
+  if (contactData?.github) socialLinks.push({ platform: 'github', url: contactData.github })
+  if (contactData?.tiktok) socialLinks.push({ platform: 'tiktok', url: contactData.tiktok })
 
-  // Get offices from Contact global
-  const displayOffices = contactData?.offices || []
+  // Prepare offices data
+  const displayOffices = []
+  if (offices.length > 0) {
+    displayOffices.push(...offices)
+  } else if (contactData?.address) {
+    displayOffices.push({
+      city: contactData.address.city || 'Office',
+      address: `${contactData.address.street || ''}\n${contactData.address.postalCode || ''} ${contactData.address.city || ''}\n${contactData.address.country || ''}`,
+    })
+  }
 
   return (
-    <header>
+    <header className="container relative z-20" {...(theme ? { 'data-theme': theme } : {})}>
       {/* Closed State Header (Absolute Overlay) */}
-      <div
-        className="absolute top-0 right-0 left-0 z-40 py-6"
-        aria-hidden="true"
-        // @ts-expect-error inert is a valid html attribute
-        inert={isOpen ? '' : undefined}
-      >
+      <div className="absolute top-0 right-0 left-0 z-40 py-6" aria-hidden="true">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:max-w-none">
+          <div className="py-6 max-w-2xl lg:max-w-none">
             <div className="flex items-center justify-between">
               <Link aria-label="Home" href="/">
-                <Logo theme="dark" />
+                <Logo loading="eager" priority="high" className="invert dark:invert-0" />
               </Link>
               <div className="flex items-center gap-x-8">
+                {/* Search Icon */}
+                <Link
+                  href="/search"
+                  className="group -m-2.5 rounded-full p-2.5 transition hover:bg-neutral-950/10 dark:hover:bg-white/10"
+                  aria-label="Search"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    className="h-6 w-6 fill-neutral-950 dark:fill-white group-hover:fill-neutral-700 dark:group-hover:fill-neutral-200"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
+                    />
+                  </svg>
+                </Link>
+
                 {contactLink && (
                   <CMSLink
                     {...contactLink}
-                    className="inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition bg-white text-neutral-950 hover:bg-neutral-200"
+                    className="hidden sm:inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
                   />
                 )}
                 <button
                   type="button"
-                  aria-expanded={isOpen}
-                  onClick={() => setIsOpen(true)}
-                  className="group -m-2.5 rounded-full p-2.5 transition hover:bg-white/10"
+                  onClick={() => toggleModal('mega-menu')}
+                  className="group -m-2.5 rounded-full p-2.5 transition hover:bg-neutral-950/10 dark:hover:bg-white/10"
                   aria-label="Toggle navigation"
                 >
                   <svg
                     viewBox="0 0 24 24"
                     aria-hidden="true"
-                    className="h-6 w-6 fill-white group-hover:fill-neutral-200"
+                    className="h-6 w-6 fill-neutral-950 dark:fill-white group-hover:fill-neutral-700 dark:group-hover:fill-neutral-200"
                   >
                     <path d="M2 6h20v2H2zM2 16h20v2H2z" />
                   </svg>
@@ -80,154 +116,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, contactData })
         </div>
       </div>
 
-      {/* Expanded State Drawer (Relative, Pushes Content) */}
-      <div
-        style={{
-          height: isOpen ? 'auto' : '0',
-          visibility: isOpen ? 'visible' : 'hidden', // Hide strictly when closed to avoid blocking clicks
-        }}
-        className={`relative z-50 overflow-hidden bg-neutral-950 transition-all duration-500 ease-in-out ${
-          isOpen ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        <div className="bg-neutral-800">
-          <div className="bg-neutral-950 pb-16">
-            {/* Drawer Top Bar */}
-            <div className="py-6 mx-auto max-w-7xl px-6 lg:px-8">
-              <div className="mx-auto max-w-2xl lg:max-w-none">
-                <div className="flex items-center justify-between">
-                  <Link aria-label="Home" href="/">
-                    <Logo theme="dark" />
-                  </Link>
-                  <div className="flex items-center gap-x-8">
-                    {contactLink && (
-                      <CMSLink
-                        {...contactLink}
-                        className="inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition bg-white text-neutral-950 hover:bg-neutral-200"
-                      />
-                    )}
-                    <button
-                      type="button"
-                      aria-expanded={isOpen}
-                      onClick={() => setIsOpen(false)}
-                      className="group -m-2.5 rounded-full p-2.5 transition hover:bg-white/10"
-                      aria-label="Toggle navigation"
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                        className="h-6 w-6 fill-white group-hover:fill-neutral-200"
-                      >
-                        <path d="m5.636 4.223 14.142 14.142-1.414 1.414L4.222 5.637z" />
-                        <path d="M4.222 18.363 18.364 4.22l1.414 1.414L5.636 19.777z" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Navigation Grid */}
-            <nav className="mt-px font-display text-5xl font-medium tracking-tight text-white">
-              <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="mx-auto max-w-2xl lg:max-w-none">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-neutral-800 border-y border-neutral-800">
-                    {navItems.map(({ link }: any, i: number) => (
-                      <CMSLink
-                        key={i}
-                        {...link}
-                        className="group relative isolate -mx-6 bg-neutral-950 px-6 py-10 sm:mx-0 sm:px-0 sm:py-16 sm:odd:pr-16 sm:even:pl-16 block"
-                      >
-                        {link.label}
-                        <span className="absolute inset-y-0 -z-10 w-screen bg-neutral-900 opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
-                      </CMSLink>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </nav>
-
-            {/* Footer Information in Drawer */}
-            <div className="relative bg-neutral-950">
-              <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="mx-auto max-w-2xl lg:max-w-none">
-                  <div className="grid grid-cols-1 gap-y-10 pt-10 pb-16 sm:grid-cols-2 sm:pt-16">
-                    {/* Offices */}
-                    {displayOffices.length > 0 && (
-                      <div>
-                        <h2 className="font-display text-base font-semibold text-white">
-                          Our offices
-                        </h2>
-                        <ul role="list" className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2">
-                          {displayOffices.map((office: any, i: number) => (
-                            <li key={i}>
-                              <address className="text-sm not-italic text-neutral-300">
-                                <strong className="text-white">{office.label}</strong>
-                                <br />
-                                {office.street && (
-                                  <>
-                                    {office.street}
-                                    <br />
-                                  </>
-                                )}
-                                {office.city}, {office.state} {office.postalCode}
-                                <br />
-                                {office.country}
-                                {office.email && (
-                                  <>
-                                    <br />
-                                    <a
-                                      href={`mailto:${office.email}`}
-                                      className="hover:text-white transition-colors"
-                                    >
-                                      {office.email}
-                                    </a>
-                                  </>
-                                )}
-                                {office.phone && (
-                                  <>
-                                    <br />
-                                    <a
-                                      href={`tel:${office.phone}`}
-                                      className="hover:text-white transition-colors"
-                                    >
-                                      {office.phone}
-                                    </a>
-                                  </>
-                                )}
-                              </address>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Socials */}
-                    <div className="sm:border-l sm:border-transparent sm:pl-16">
-                      <h2 className="font-display text-base font-semibold text-white">Follow us</h2>
-                      <ul role="list" className="flex gap-x-10 text-white mt-6">
-                        {socialLinks.map((social: any, i: number) => (
-                          <li key={i}>
-                            <a
-                              aria-label={social.platform}
-                              className="transition hover:text-neutral-200"
-                              href={social.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <SocialIcon platform={social.platform} />
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Megamenu
+        navItems={navItems}
+        contactLink={contactLink}
+        displayOffices={displayOffices}
+        socialLinks={socialLinks}
+      />
     </header>
   )
 }

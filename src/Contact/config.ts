@@ -67,6 +67,7 @@ export const Contact: GlobalConfig = {
                 },
               ],
             },
+
             {
               name: 'email',
               type: 'email',

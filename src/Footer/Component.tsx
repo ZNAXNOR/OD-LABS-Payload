@@ -39,7 +39,7 @@ export async function Footer() {
 
   return (
     <div className="relative bg-gradient-to-r from-[#FFDAB9] to-[hsl(var(--ring))]">
-      <footer className="bg-white/95 dark:bg-black/95 backdrop-blur-sm relative">
+      <footer className="bg-white/95 dark:bg-black/95 backdrop-blur-sm relative overflow-hidden">
         <div className="px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:max-w-7xl">
             {/* CTA Section */}
