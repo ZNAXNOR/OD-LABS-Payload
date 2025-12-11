@@ -33,4 +33,9 @@ const nextConfig = {
   redirects,
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+export default withPayload(nextConfig, {
+  devBundleServerPackages: false,
+  allowedDevOrigins: [
+    'https://3000-firebase-od-labs-payload-1765415991356.cluster-zumahodzirciuujpqvsniawo3o.cloudworkstations.dev',
+  ],
+})
