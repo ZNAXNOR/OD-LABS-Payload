@@ -490,6 +490,10 @@ export interface Document {
     isEnabled?: boolean | null;
   };
   publishedAt?: string | null;
+  websiteUrl?: string | null;
+  websiteName?: string | null;
+  companyAddress?: string | null;
+  companyContact?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -535,6 +539,10 @@ export interface Service {
     isEnabled?: boolean | null;
   };
   publishedAt?: string | null;
+  websiteUrl?: string | null;
+  websiteName?: string | null;
+  companyAddress?: string | null;
+  companyContact?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1385,6 +1393,10 @@ export interface DocumentsSelect<T extends boolean = true> {
         isEnabled?: T;
       };
   publishedAt?: T;
+  websiteUrl?: T;
+  websiteName?: T;
+  companyAddress?: T;
+  companyContact?: T;
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;
@@ -1413,6 +1425,10 @@ export interface ServicesSelect<T extends boolean = true> {
         isEnabled?: T;
       };
   publishedAt?: T;
+  websiteUrl?: T;
+  websiteName?: T;
+  companyAddress?: T;
+  companyContact?: T;
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;
@@ -1865,38 +1881,6 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
-  contactLink: {
-    link: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null)
-        | ({
-            relationTo: 'documents';
-            value: number | Document;
-          } | null)
-        | ({
-            relationTo: 'services';
-            value: number | Service;
-          } | null);
-      url?: string | null;
-      label: string;
-    };
-  };
-  offices?:
-    | {
-        city: string;
-        address: string;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1978,14 +1962,26 @@ export interface Footer {
  */
 export interface Contact {
   id: number;
-  address?: {
-    street?: string | null;
-    city?: string | null;
-    state?: string | null;
-    postalCode?: string | null;
-    country?: string | null;
-  };
+  offices?:
+    | {
+        label: string;
+        street?: string | null;
+        city?: string | null;
+        state?: string | null;
+        postalCode?: string | null;
+        country?: string | null;
+        email?: string | null;
+        phone?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Primary email for general inquiries (if different from office emails)
+   */
   email: string;
+  /**
+   * Primary phone for general inquiries (if different from office phones)
+   */
   phone?: string | null;
   /**
    * Link to your primary contact page
@@ -2013,23 +2009,17 @@ export interface Contact {
     url?: string | null;
     label: string;
   };
-  /**
-   * Optional: Display your business hours
-   */
-  businessHours?: string | null;
-  facebook?: string | null;
-  instagram?: string | null;
-  twitter?: string | null;
-  linkedin?: string | null;
-  youtube?: string | null;
-  github?: string | null;
-  tiktok?: string | null;
-  /**
-   * Add any additional social media platforms
-   */
-  customSocial?:
+  workingHours?:
     | {
-        platform: string;
+        day: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+        openTime?: string | null;
+        closeTime?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  socialLinks?:
+    | {
+        platform: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'youtube' | 'github' | 'tiktok';
         url: string;
         id?: string | null;
       }[]
@@ -2054,26 +2044,6 @@ export interface HeaderSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
-        id?: T;
-      };
-  contactLink?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-            };
-      };
-  offices?:
-    | T
-    | {
-        city?: T;
-        address?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -2131,14 +2101,18 @@ export interface FooterSelect<T extends boolean = true> {
  * via the `definition` "contact_select".
  */
 export interface ContactSelect<T extends boolean = true> {
-  address?:
+  offices?:
     | T
     | {
+        label?: T;
         street?: T;
         city?: T;
         state?: T;
         postalCode?: T;
         country?: T;
+        email?: T;
+        phone?: T;
+        id?: T;
       };
   email?: T;
   phone?: T;
@@ -2151,15 +2125,15 @@ export interface ContactSelect<T extends boolean = true> {
         url?: T;
         label?: T;
       };
-  businessHours?: T;
-  facebook?: T;
-  instagram?: T;
-  twitter?: T;
-  linkedin?: T;
-  youtube?: T;
-  github?: T;
-  tiktok?: T;
-  customSocial?:
+  workingHours?:
+    | T
+    | {
+        day?: T;
+        openTime?: T;
+        closeTime?: T;
+        id?: T;
+      };
+  socialLinks?:
     | T
     | {
         platform?: T;

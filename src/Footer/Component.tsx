@@ -23,7 +23,7 @@ const GridCorner = () => (
 
 export async function Footer() {
   const footerData = (await getCachedGlobal('footer', 1)()) as Footer
-  const contactData = (await getCachedGlobal('contact', 1)()) as Contact
+  const contactData = (await getCachedGlobal('contact', 1)()) as any
 
   const ctaHeading = footerData?.ctaHeading || 'Get started'
   const ctaTitle = footerData?.ctaTitle || 'Ready to dive in? Start your free trial today.'
@@ -35,15 +35,7 @@ export async function Footer() {
   const copyrightText = footerData?.copyrightText || `© ${new Date().getFullYear()} Radiant Inc.`
 
   // Get social links from Contact global
-  const socialLinks: Array<{ platform: string; url: string }> = []
-  if (contactData?.facebook) socialLinks.push({ platform: 'facebook', url: contactData.facebook })
-  if (contactData?.instagram)
-    socialLinks.push({ platform: 'instagram', url: contactData.instagram })
-  if (contactData?.twitter) socialLinks.push({ platform: 'twitter', url: contactData.twitter })
-  if (contactData?.linkedin) socialLinks.push({ platform: 'linkedin', url: contactData.linkedin })
-  if (contactData?.youtube) socialLinks.push({ platform: 'youtube', url: contactData.youtube })
-  if (contactData?.github) socialLinks.push({ platform: 'github', url: contactData.github })
-  if (contactData?.tiktok) socialLinks.push({ platform: 'tiktok', url: contactData.tiktok })
+  const socialLinks = contactData?.socialLinks || []
 
   return (
     <div className="relative bg-gradient-to-r from-[#FFDAB9] to-[hsl(var(--ring))]">
@@ -205,7 +197,7 @@ export async function Footer() {
                         >
                           <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z" />
                         </svg>
-                        {socialLinks.map((social, index) => (
+                        {socialLinks.map((social: any, index: number) => (
                           <a
                             key={index}
                             target="_blank"

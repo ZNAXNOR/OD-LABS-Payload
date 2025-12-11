@@ -13,10 +13,15 @@ import {
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { Archive } from '../../blocks/ArchiveBlock/config'
 import { Banner } from '../../blocks/Banner/config'
+import { CallToAction } from '../../blocks/CallToAction/config'
 import { Code } from '../../blocks/Code/config'
+import { Content } from '../../blocks/Content/config'
+import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { populateCompanyInfo } from '../../hooks/populateCompanyInfo'
 import { revalidateDelete, revalidateDocument } from './hooks/revalidateDocument'
 import { tableOfContents } from '../../table-of-content/config'
 
@@ -106,7 +111,9 @@ export const Documents: CollectionConfig<'documents'> = {
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
                     UnorderedListFeature(),
                     OrderedListFeature(),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                    BlocksFeature({
+                      blocks: [Banner, Code, MediaBlock, Archive, CallToAction, Content, FormBlock],
+                    }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
@@ -172,9 +179,42 @@ export const Documents: CollectionConfig<'documents'> = {
         ],
       },
     },
+    {
+      name: 'websiteUrl',
+      type: 'text',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'websiteName',
+      type: 'text',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'companyAddress',
+      type: 'textarea',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'companyContact',
+      type: 'text',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
+    },
     slugField(),
   ],
   hooks: {
+    beforeChange: [populateCompanyInfo],
     afterChange: [revalidateDocument],
     afterDelete: [revalidateDelete],
   },

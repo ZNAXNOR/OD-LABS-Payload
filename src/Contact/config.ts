@@ -17,9 +17,19 @@ export const Contact: GlobalConfig = {
           description: 'Primary contact details for use in contact pages, CTAs, and footers',
           fields: [
             {
-              name: 'address',
-              type: 'group',
+              name: 'offices',
+              type: 'array',
+              label: 'Offices',
               fields: [
+                {
+                  name: 'label',
+                  type: 'text',
+                  label: 'Office Label',
+                  required: true,
+                  admin: {
+                    placeholder: 'e.g. Headquarters, San Francisco Office',
+                  },
+                },
                 {
                   name: 'street',
                   type: 'text',
@@ -45,18 +55,36 @@ export const Contact: GlobalConfig = {
                   type: 'text',
                   label: 'Country',
                 },
+                {
+                  name: 'email',
+                  type: 'email',
+                  label: 'Office Email',
+                },
+                {
+                  name: 'phone',
+                  type: 'text',
+                  label: 'Office Phone',
+                },
               ],
             },
             {
               name: 'email',
               type: 'email',
-              label: 'Contact Email',
+              label: 'General Contact Email',
               required: true,
+              admin: {
+                description:
+                  'Primary email for general inquiries (if different from office emails)',
+              },
             },
             {
               name: 'phone',
               type: 'text',
-              label: 'Phone Number',
+              label: 'General Phone Number',
+              admin: {
+                description:
+                  'Primary phone for general inquiries (if different from office phones)',
+              },
             },
             link({
               appearances: false,
@@ -68,14 +96,48 @@ export const Contact: GlobalConfig = {
                 },
               },
             }),
-
             {
-              name: 'businessHours',
-              type: 'textarea',
-              label: 'Business Hours',
-              admin: {
-                description: 'Optional: Display your business hours',
-              },
+              name: 'workingHours',
+              type: 'array',
+              label: 'Working Hours',
+              fields: [
+                {
+                  name: 'day',
+                  type: 'select',
+                  options: [
+                    { label: 'Monday', value: 'monday' },
+                    { label: 'Tuesday', value: 'tuesday' },
+                    { label: 'Wednesday', value: 'wednesday' },
+                    { label: 'Thursday', value: 'thursday' },
+                    { label: 'Friday', value: 'friday' },
+                    { label: 'Saturday', value: 'saturday' },
+                    { label: 'Sunday', value: 'sunday' },
+                  ],
+                  required: true,
+                },
+                {
+                  name: 'openTime',
+                  type: 'date',
+                  label: 'Open Time',
+                  admin: {
+                    date: {
+                      pickerAppearance: 'timeOnly',
+                      displayFormat: 'h:mm a',
+                    },
+                  },
+                },
+                {
+                  name: 'closeTime',
+                  type: 'date',
+                  label: 'Close Time',
+                  admin: {
+                    date: {
+                      pickerAppearance: 'timeOnly',
+                      displayFormat: 'h:mm a',
+                    },
+                  },
+                },
+              ],
             },
           ],
         },
@@ -84,82 +146,35 @@ export const Contact: GlobalConfig = {
           description: 'Social media links for use across your site',
           fields: [
             {
-              name: 'facebook',
-              type: 'text',
-              label: 'Facebook URL',
-              admin: {
-                placeholder: 'https://facebook.com/yourpage',
-              },
-            },
-            {
-              name: 'instagram',
-              type: 'text',
-              label: 'Instagram URL',
-              admin: {
-                placeholder: 'https://instagram.com/yourprofile',
-              },
-            },
-            {
-              name: 'twitter',
-              type: 'text',
-              label: 'Twitter/X URL',
-              admin: {
-                placeholder: 'https://twitter.com/yourhandle',
-              },
-            },
-            {
-              name: 'linkedin',
-              type: 'text',
-              label: 'LinkedIn URL',
-              admin: {
-                placeholder: 'https://linkedin.com/company/yourcompany',
-              },
-            },
-            {
-              name: 'youtube',
-              type: 'text',
-              label: 'YouTube URL',
-              admin: {
-                placeholder: 'https://youtube.com/@yourchannel',
-              },
-            },
-            {
-              name: 'github',
-              type: 'text',
-              label: 'GitHub URL',
-              admin: {
-                placeholder: 'https://github.com/yourorg',
-              },
-            },
-            {
-              name: 'tiktok',
-              type: 'text',
-              label: 'TikTok URL',
-              admin: {
-                placeholder: 'https://tiktok.com/@yourhandle',
-              },
-            },
-            {
-              name: 'customSocial',
+              name: 'socialLinks',
               type: 'array',
-              label: 'Other Social Media',
+              label: 'Social Links',
               fields: [
                 {
                   name: 'platform',
-                  type: 'text',
-                  label: 'Platform Name',
+                  type: 'select',
+                  label: 'Platform',
                   required: true,
+                  options: [
+                    { label: 'Facebook', value: 'facebook' },
+                    { label: 'Instagram', value: 'instagram' },
+                    { label: 'Twitter/X', value: 'twitter' },
+                    { label: 'LinkedIn', value: 'linkedin' },
+                    { label: 'YouTube', value: 'youtube' },
+                    { label: 'GitHub', value: 'github' },
+                    { label: 'TikTok', value: 'tiktok' },
+                  ],
                 },
                 {
                   name: 'url',
                   type: 'text',
                   label: 'URL',
                   required: true,
+                  admin: {
+                    placeholder: 'https://...',
+                  },
                 },
               ],
-              admin: {
-                description: 'Add any additional social media platforms',
-              },
             },
           ],
         },

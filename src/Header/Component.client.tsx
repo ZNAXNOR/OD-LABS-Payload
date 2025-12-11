@@ -12,7 +12,7 @@ import { SocialIcon } from '@/components/SocialIcon'
 
 interface HeaderClientProps {
   data: Header
-  contactData: Contact
+  contactData: any
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data, contactData }) => {
@@ -22,8 +22,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, contactData })
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const headerData = data as any
   const navItems = headerData?.navItems || []
-  const offices = headerData?.offices || []
-  const contactLink = headerData?.contactLink?.link
+
+  // Use contactData for contact link if available
+  const contactLink = contactData?.contactPageLink
 
   // Close menu on route change
   useEffect(() => {
@@ -31,26 +32,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, contactData })
   }, [pathname])
 
   // Get social links from Contact global
-  const socialLinks: Array<{ platform: string; url: string }> = []
-  if (contactData?.facebook) socialLinks.push({ platform: 'facebook', url: contactData.facebook })
-  if (contactData?.instagram)
-    socialLinks.push({ platform: 'instagram', url: contactData.instagram })
-  if (contactData?.twitter) socialLinks.push({ platform: 'twitter', url: contactData.twitter })
-  if (contactData?.linkedin) socialLinks.push({ platform: 'linkedin', url: contactData.linkedin })
-  if (contactData?.youtube) socialLinks.push({ platform: 'youtube', url: contactData.youtube })
-  if (contactData?.github) socialLinks.push({ platform: 'github', url: contactData.github })
-  if (contactData?.tiktok) socialLinks.push({ platform: 'tiktok', url: contactData.tiktok })
+  const socialLinks = contactData?.socialLinks || []
 
-  // Prepare offices data - prioritize contactData.address
-  const displayOffices = []
-  if (contactData?.address) {
-    displayOffices.push({
-      city: contactData.address.city || 'Office',
-      address: `${contactData.address.street || ''}\n${contactData.address.postalCode || ''} ${contactData.address.city || ''}\n${contactData.address.country || ''}`,
-    })
-  } else if (offices.length > 0) {
-    displayOffices.push(...offices)
-  }
+  // Get offices from Contact global
+  const displayOffices = contactData?.offices || []
 
   return (
     <header>
@@ -177,9 +162,39 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, contactData })
                           {displayOffices.map((office: any, i: number) => (
                             <li key={i}>
                               <address className="text-sm not-italic text-neutral-300">
-                                <strong className="text-white">{office.city}</strong>
+                                <strong className="text-white">{office.label}</strong>
                                 <br />
-                                <span className="whitespace-pre-line">{office.address}</span>
+                                {office.street && (
+                                  <>
+                                    {office.street}
+                                    <br />
+                                  </>
+                                )}
+                                {office.city}, {office.state} {office.postalCode}
+                                <br />
+                                {office.country}
+                                {office.email && (
+                                  <>
+                                    <br />
+                                    <a
+                                      href={`mailto:${office.email}`}
+                                      className="hover:text-white transition-colors"
+                                    >
+                                      {office.email}
+                                    </a>
+                                  </>
+                                )}
+                                {office.phone && (
+                                  <>
+                                    <br />
+                                    <a
+                                      href={`tel:${office.phone}`}
+                                      className="hover:text-white transition-colors"
+                                    >
+                                      {office.phone}
+                                    </a>
+                                  </>
+                                )}
                               </address>
                             </li>
                           ))}
@@ -191,7 +206,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, contactData })
                     <div className="sm:border-l sm:border-transparent sm:pl-16">
                       <h2 className="font-display text-base font-semibold text-white">Follow us</h2>
                       <ul role="list" className="flex gap-x-10 text-white mt-6">
-                        {socialLinks.map((social, i) => (
+                        {socialLinks.map((social: any, i: number) => (
                           <li key={i}>
                             <a
                               aria-label={social.platform}
