@@ -490,10 +490,26 @@ export interface Document {
     isEnabled?: boolean | null;
   };
   publishedAt?: string | null;
+  /**
+   * {{websiteUrl}}
+   */
   websiteUrl?: string | null;
+  /**
+   * {{websiteName}}
+   */
   websiteName?: string | null;
+  /**
+   * {{companyAddress}}
+   */
   companyAddress?: string | null;
-  companyContact?: string | null;
+  /**
+   * {{companyPhone}}
+   */
+  companyPhone?: string | null;
+  /**
+   * {{companyEmail}}
+   */
+  companyEmail?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1396,7 +1412,8 @@ export interface DocumentsSelect<T extends boolean = true> {
   websiteUrl?: T;
   websiteName?: T;
   companyAddress?: T;
-  companyContact?: T;
+  companyPhone?: T;
+  companyEmail?: T;
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;

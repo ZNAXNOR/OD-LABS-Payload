@@ -21,15 +21,17 @@ export const populateCompanyInfo: CollectionBeforeChangeHook = async ({ data, re
     const companyAddress = addressParts.join(', ')
 
     // Format contact
-    const contactParts = [contact.phone, contact.email].filter(Boolean)
-    const companyContact = contactParts.join(' | ')
+    // Format contact
+    const companyPhone = contact.phone
+    const companyEmail = contact.email
 
     return {
       ...data,
       websiteUrl: process.env.NEXT_PUBLIC_SERVER_URL || 'https://example.com',
-      websiteName: process.env.NEXT_PUBLIC_SITE_NAME || 'OD LABS',
+      websiteName: data.websiteName || process.env.NEXT_PUBLIC_SITE_NAME || 'OD LABS',
       companyAddress: companyAddress || '123 Innovation Drive, Tech City, CA 94000, USA',
-      companyContact: companyContact || '+1 (555) 0123-4567 | info@example.com',
+      companyPhone: companyPhone || '+1 (555) 0123-4567',
+      companyEmail: companyEmail || 'info@example.com',
     }
   } catch (error) {
     console.warn('Error populating company info:', error)

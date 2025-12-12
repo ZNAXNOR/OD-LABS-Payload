@@ -185,14 +185,16 @@ export const Documents: CollectionConfig<'documents'> = {
       admin: {
         readOnly: true,
         position: 'sidebar',
+        description: '{{websiteUrl}}',
       },
     },
     {
       name: 'websiteName',
       type: 'text',
       admin: {
-        readOnly: true,
+        // readOnly: true, // User requested this to be editable
         position: 'sidebar',
+        description: '{{websiteName}}',
       },
     },
     {
@@ -201,16 +203,28 @@ export const Documents: CollectionConfig<'documents'> = {
       admin: {
         readOnly: true,
         position: 'sidebar',
+        description: '{{companyAddress}}',
       },
     },
     {
-      name: 'companyContact',
+      name: 'companyPhone',
       type: 'text',
       admin: {
         readOnly: true,
         position: 'sidebar',
+        description: '{{companyPhone}}',
       },
     },
+    {
+      name: 'companyEmail',
+      type: 'text',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+        description: '{{companyEmail}}',
+      },
+    },
+
     slugField(),
   ],
   hooks: {
