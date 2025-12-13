@@ -629,6 +629,7 @@ export interface CallToActionBlock {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
+  appearance?: ('grid' | 'split') | null;
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
@@ -675,6 +676,14 @@ export interface ContentBlock {
            */
           appearance?: ('default' | 'outline') | null;
         };
+        id?: string | null;
+      }[]
+    | null;
+  media?: (number | null) | Media;
+  features?:
+    | {
+        title: string;
+        description: string;
         id?: string | null;
       }[]
     | null;
@@ -1296,6 +1305,7 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
  * via the `definition` "ContentBlock_select".
  */
 export interface ContentBlockSelect<T extends boolean = true> {
+  appearance?: T;
   columns?:
     | T
     | {
@@ -1312,6 +1322,14 @@ export interface ContentBlockSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
+        id?: T;
+      };
+  media?: T;
+  features?:
+    | T
+    | {
+        title?: T;
+        description?: T;
         id?: T;
       };
   id?: T;

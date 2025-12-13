@@ -8,6 +8,7 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  allowedDevOrigins: ['**.cloudworkstations.dev'],
   images: {
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
@@ -18,6 +19,12 @@ const nextConfig = {
           protocol: url.protocol.replace(':', ''),
         }
       }),
+      {
+        protocol: 'https',
+        hostname: '**.cloudworkstations.dev',
+        port: '',
+        pathname: '/api/media/**',
+      },
     ],
   },
   webpack: (webpackConfig) => {
@@ -33,9 +40,4 @@ const nextConfig = {
   redirects,
 }
 
-export default withPayload(nextConfig, {
-  devBundleServerPackages: false,
-  allowedDevOrigins: [
-    'https://3000-firebase-od-labs-payload-1765415991356.cluster-zumahodzirciuujpqvsniawo3o.cloudworkstations.dev',
-  ],
-})
+export default withPayload(nextConfig, { devBundleServerPackages: false })

@@ -68,12 +68,58 @@ export const Content: Block = {
   interfaceName: 'ContentBlock',
   fields: [
     {
+      name: 'appearance',
+      type: 'select',
+      defaultValue: 'grid',
+      options: [
+        {
+          label: 'Grid',
+          value: 'grid',
+        },
+        {
+          label: 'Split',
+          value: 'split',
+        },
+      ],
+    },
+    {
       name: 'columns',
       type: 'array',
       admin: {
         initCollapsed: true,
+        condition: (_, siblingData) => siblingData.appearance === 'grid',
       },
       fields: columnFields,
+    },
+    {
+      name: 'media',
+      type: 'upload',
+      relationTo: 'media',
+      required: true,
+      admin: {
+        condition: (_, siblingData) => siblingData.appearance === 'split',
+      },
+    },
+    {
+      name: 'features',
+      type: 'array',
+      minRows: 1,
+      maxRows: 4,
+      admin: {
+        condition: (_, siblingData) => siblingData.appearance === 'split',
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          required: true,
+        },
+      ],
     },
   ],
 }
