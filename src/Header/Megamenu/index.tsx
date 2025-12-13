@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import React from 'react'
 import { Modal, useModal } from '@faceless-ui/modal'
@@ -24,7 +25,7 @@ export const Megamenu: React.FC<MegamenuProps> = ({
   return (
     <Modal
       slug="mega-menu"
-      className="fixed inset-0 h-[100dvh] z-50 overflow-hidden bg-neutral-950 transition-all duration-300 ease-in-out"
+      className="fixed inset-0 w-screen h-screen z-50 overflow-hidden bg-neutral-950 transition-all duration-300 ease-in-out"
     >
       <div className="bg-neutral-800 h-full overflow-y-auto">
         <div className="bg-neutral-950 pb-16 min-h-full">
@@ -61,7 +62,7 @@ export const Megamenu: React.FC<MegamenuProps> = ({
           </div>
 
           {/* Navigation Grid */}
-          <nav className="mt-px font-display text-5xl font-medium tracking-tight text-white w-full">
+          <nav className="mt-px font-display text-3xl sm:text-5xl font-medium tracking-tight text-white w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-neutral-800 border-y border-neutral-800 w-full">
               {navItems.map(({ link }: any, i: number) => (
                 <CMSLink

@@ -1898,31 +1898,6 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
-  contactLink: {
-    link: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null)
-        | ({
-            relationTo: 'documents';
-            value: number | Document;
-          } | null)
-        | ({
-            relationTo: 'services';
-            value: number | Service;
-          } | null);
-      url?: string | null;
-      label: string;
-    };
-  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2087,19 +2062,6 @@ export interface HeaderSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
-      };
-  contactLink?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-            };
       };
   updatedAt?: T;
   createdAt?: T;

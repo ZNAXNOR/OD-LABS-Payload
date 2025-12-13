@@ -25,15 +25,6 @@ export const Header: GlobalConfig = {
         },
       },
     },
-    {
-      name: 'contactLink',
-      type: 'group',
-      fields: [
-        link({
-          appearances: false,
-        }),
-      ],
-    },
   ],
   hooks: {
     afterChange: [revalidateHeader],
