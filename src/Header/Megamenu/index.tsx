@@ -64,16 +64,30 @@ export const Megamenu: React.FC<MegamenuProps> = ({
           {/* Navigation Grid */}
           <nav className="mt-px font-display text-3xl sm:text-5xl font-medium tracking-tight text-white w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-neutral-800 border-y border-neutral-800 w-full">
-              {navItems.map(({ link }: any, i: number) => (
-                <CMSLink
-                  key={i}
-                  {...link}
-                  className="group relative isolate bg-neutral-950 px-6 py-10 sm:px-16 sm:py-16 block"
-                  onClick={() => closeModal('mega-menu')}
-                >
-                  <span className="absolute inset-y-0 -z-10 w-full bg-neutral-900 opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
-                </CMSLink>
-              ))}
+              {navItems.map(({ link }: any, i: number) => {
+                const isEven = i % 2 === 0
+                return (
+                  <CMSLink
+                    key={i}
+                    {...link}
+                    className={
+                      'group relative isolate bg-neutral-950 px-6 py-10 sm:py-16 block ' +
+                      (isEven ? 'sm:text-left ' : 'sm:text-left ')
+                    }
+                    style={{
+                      // For left items (even index in 0-based), apply padding left based on container
+                      // For right items (odd index), apply standard padding or calc if right-alignment desired
+                      // Assuming container is max-w-7xl (roughly 80rem = 1280px) and px-8 (2rem)
+                      // We use logic: max(2rem, (100vw - 80rem)/2 + 2rem)
+                      paddingLeft: isEven ? 'max(2rem, calc((100vw - 80rem)/2 + 2rem))' : '2rem',
+                      paddingRight: !isEven ? 'max(2rem, calc((100vw - 80rem)/2 + 2rem))' : '2rem',
+                    }}
+                    onClick={() => closeModal('mega-menu')}
+                  >
+                    <span className="absolute inset-y-0 -z-10 w-full bg-neutral-900 opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
+                  </CMSLink>
+                )
+              })}
             </div>
           </nav>
 

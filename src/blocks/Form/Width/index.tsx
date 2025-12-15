@@ -9,7 +9,7 @@ export const Width: React.FC<{
 
   return (
     <div
-      className={`${className} ${isFullWidth ? 'sm:col-span-2' : ''}`}
+      className={`${className} ${isFullWidth ? 'sm:col-span-2' : ''} group w-full`}
       style={{ maxWidth: undefined }}
     >
       {children}
