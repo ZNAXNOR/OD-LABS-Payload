@@ -3,10 +3,12 @@ import { Country } from './Country'
 import { Email } from './Email'
 import { Message } from './Message'
 import { Number } from './Number'
+import { Radio } from './Radio'
 import { Select } from './Select'
 import { State } from './State'
 import { Text } from './Text'
 import { Textarea } from './Textarea'
+import { Telephone } from './Telephone'
 
 export const fields = {
   checkbox: Checkbox,
@@ -14,8 +16,10 @@ export const fields = {
   email: Email,
   message: Message,
   number: Number,
+  radio: Radio,
   select: Select,
   state: State,
+  telephone: Telephone,
   text: Text,
   textarea: Textarea,
 }

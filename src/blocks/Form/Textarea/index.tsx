@@ -1,8 +1,6 @@
 import type { TextField } from '@payloadcms/plugin-form-builder/types'
 import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
 
-import { Label } from '@/components/ui/label'
-import { Textarea as TextAreaComponent } from '@/components/ui/textarea'
 import React from 'react'
 
 import { Error } from '../Error'
@@ -17,27 +15,24 @@ export const Textarea: React.FC<
 > = ({ name, defaultValue, errors, label, register, required, rows = 3, width }) => {
   return (
     <Width width={width}>
-      <Label htmlFor={name} className="block text-sm/6 font-semibold text-gray-900 dark:text-white">
-        {label}
-
-        {required && (
-          <span className="required text-red-500">
-            * <span className="sr-only">(required)</span>
-          </span>
-        )}
-      </Label>
-
-      <div className="mt-2.5">
-        <TextAreaComponent
-          defaultValue={defaultValue}
+      <div className="relative z-0 transition-all focus-within:z-10">
+        <textarea
           id={name}
+          defaultValue={defaultValue}
           rows={rows}
+          placeholder=" "
+          className="peer block w-full resize-none border border-neutral-300 dark:border-neutral-700 bg-transparent px-6 pt-12 pb-4 text-base/6 transition group-first:rounded-t-2xl group-last:rounded-b-2xl"
           {...register(name, { required: required })}
-          className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-od-brand-primary dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-od-brand-primary"
         />
+        <label
+          htmlFor={name}
+          className="pointer-events-none absolute top-1/2 left-6 -mt-9 origin-left text-base/6 transition-all duration-200 -translate-y-4 scale-75 font-semibold text-neutral-950 dark:text-white peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:font-normal peer-placeholder-shown:text-neutral-500 dark:peer-placeholder-shown:text-neutral-400 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-gray-900 dark:peer-focus:text-gray-100"
+        >
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
+        </label>
+        {errors[name] && <Error name={name} />}
       </div>
-
-      {errors[name] && <Error name={name} />}
     </Width>
   )
 }

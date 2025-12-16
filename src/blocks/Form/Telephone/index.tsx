@@ -1,27 +1,35 @@
 import type { TextField } from '@payloadcms/plugin-form-builder/types'
-import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
+import type { Control, FieldErrorsImpl, FieldValues } from 'react-hook-form'
 
 import React from 'react'
+import { Controller } from 'react-hook-form'
+import PhoneInput from 'react-phone-number-input/input'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
 
-export const Number: React.FC<
+export const Telephone: React.FC<
   TextField & {
+    control: Control<FieldValues, any>
     errors: Partial<FieldErrorsImpl>
-    register: UseFormRegister<FieldValues>
   }
-> = ({ name, defaultValue, errors, label, register, required, width }) => {
+> = ({ name, control, errors, label, width, required }) => {
   return (
     <Width width={width}>
       <div className="relative z-0 transition-all focus-within:z-10">
-        <input
-          type="number"
-          id={name}
-          defaultValue={defaultValue}
-          placeholder=" "
-          className="peer block w-full border border-neutral-300 dark:border-neutral-700 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 dark:text-white transition group-first:rounded-t-2xl group-last:rounded-b-2xl focus:border-neutral-950 dark:focus:border-white focus:ring-0 focus:outline-hidden"
-          {...register(name, { required })}
+        <Controller
+          control={control}
+          name={name}
+          rules={{ required }}
+          render={({ field: { onChange, value } }) => (
+            <PhoneInput
+              id={name}
+              placeholder=" "
+              className="peer block w-full border border-neutral-300 dark:border-neutral-700 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 dark:text-white transition group-first:rounded-t-2xl group-last:rounded-b-2xl focus:border-od-brand-primary dark:focus:border-od-brand-primary focus:ring-0 focus:outline-hidden"
+              value={value as string}
+              onChange={onChange}
+            />
+          )}
         />
         <label
           htmlFor={name}

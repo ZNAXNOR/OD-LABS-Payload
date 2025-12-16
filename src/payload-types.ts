@@ -767,6 +767,23 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  appearance?: ('default' | 'split') | null;
+  splitContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  enableContactInfo?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -884,6 +901,16 @@ export interface Form {
             id?: string | null;
             blockName?: string | null;
             blockType: 'textarea';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'telephone';
           }
       )[]
     | null;
@@ -1366,6 +1393,9 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  appearance?: T;
+  splitContent?: T;
+  enableContactInfo?: T;
   id?: T;
   blockName?: T;
 }
@@ -1729,6 +1759,17 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        telephone?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              defaultValue?: T;
               id?: T;
               blockName?: T;
             };
