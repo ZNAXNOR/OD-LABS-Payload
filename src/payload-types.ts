@@ -256,6 +256,9 @@ export interface Post {
     };
     [k: string]: unknown;
   };
+  /**
+   * Link to other posts to display as related posts.
+   */
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
   meta?: {
