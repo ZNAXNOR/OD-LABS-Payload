@@ -110,6 +110,7 @@ export const Posts: CollectionConfig<'posts'> = {
               type: 'relationship',
               admin: {
                 position: 'sidebar',
+                description: 'Link to other posts to display as related posts.',
               },
               filterOptions: ({ id }) => {
                 return {
