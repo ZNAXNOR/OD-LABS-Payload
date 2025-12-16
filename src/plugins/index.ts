@@ -15,7 +15,7 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { TelephoneBlock } from '@/blocks/Form/Telephone/config'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | OD LABS` : 'OD LABS'
 }
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   const url = getServerSideURL()

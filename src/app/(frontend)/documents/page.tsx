@@ -57,6 +57,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Documents`,
+    title: `OD LABS Documents`,
   }
 }
