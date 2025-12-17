@@ -198,6 +198,7 @@ export const Posts: CollectionConfig<'posts'> = {
       type: 'array',
       access: {
         update: () => false,
+        read: () => false,
       },
       admin: {
         disabled: true,
