@@ -74,7 +74,11 @@ export default buildConfig({
     },
   }),
   collections: [Pages, Posts, Documents, Services, Media, Categories, Users],
-  cors: [getServerSideURL()].filter(Boolean),
+  cors: [
+    getServerSideURL(),
+    `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`,
+    process.env.VERCEL_BRANCH_URL,
+  ].filter(Boolean),
   globals: [Header, Footer, Contact],
 
   plugins: [
