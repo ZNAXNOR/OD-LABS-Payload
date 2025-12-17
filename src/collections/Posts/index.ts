@@ -203,6 +203,7 @@ export const Posts: CollectionConfig<'posts'> = {
       admin: {
         disabled: true,
         readOnly: true,
+        hidden: true,
       },
       fields: [
         {
