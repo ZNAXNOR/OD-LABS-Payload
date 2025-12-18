@@ -75,6 +75,7 @@ export const Pages: CollectionConfig<'pages'> = {
               blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
               required: true,
               admin: {
+                description: 'Add and arrange content blocks to build the page layout.',
                 initCollapsed: true,
               },
             },
