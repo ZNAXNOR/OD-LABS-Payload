@@ -214,6 +214,9 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
+  /**
+   * Add and arrange content blocks to build the page layout.
+   */
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
   meta?: {
     title?: string | null;
