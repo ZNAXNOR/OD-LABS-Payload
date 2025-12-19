@@ -24,6 +24,7 @@ import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateCompanyInfo } from '../../hooks/populateCompanyInfo'
 import { revalidateDelete, revalidateDocument } from './hooks/revalidateDocument'
 import { tableOfContents } from '../../table-of-content/config'
+import { populatePublishedAt } from './hooks/populatePublishedAt'
 
 import {
   MetaDescriptionField,
@@ -169,14 +170,7 @@ export const Documents: CollectionConfig<'documents'> = {
         position: 'sidebar',
       },
       hooks: {
-        beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
-              return new Date()
-            }
-            return value
-          },
-        ],
+        beforeChange: [populatePublishedAt],
       },
     },
     {
