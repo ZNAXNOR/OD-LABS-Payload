@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [payload]
+  push:
+    branches: [payload]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:6
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+        env:
+          PAYLOAD_SECRET: test-secret
+          DATABASE_URI: mongodb://localhost:27017/payload-test
+
+      - name: Build (Admin + Server)
+        run: pnpm build
