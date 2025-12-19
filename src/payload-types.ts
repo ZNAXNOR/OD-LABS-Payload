@@ -441,7 +441,7 @@ export interface Category {
  */
 export interface User {
   id: number;
-  name?: string | null;
+  name: string;
   updatedAt: string;
   createdAt: string;
   email: string;
