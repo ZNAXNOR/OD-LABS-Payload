@@ -1,10 +1,10 @@
-name: CI
+name: PR MERGE
 
 on:
   pull_request:
-    branches: [payload]
+    branches: [ main, master, payload ]
   push:
-    branches: [payload]
+    branches: [ main, master, payload ]
 
 jobs:
   test:
@@ -26,8 +26,13 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Install pnpm
-        run: corepack enable
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
+      - name: Verify pnpm
+        run: pnpm --version
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -41,5 +46,5 @@ jobs:
           PAYLOAD_SECRET: test-secret
           DATABASE_URI: mongodb://localhost:27017/payload-test
 
-      - name: Build (Admin + Server)
+      - name: Build
         run: pnpm build
