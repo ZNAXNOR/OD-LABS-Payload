@@ -80,7 +80,8 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
     },
   },
   meta: {
-    description: 'An open-source website built with Payload and Next.js.',
+    description:
+      'We integrate advanced marketing strategies, technical expertise, and cloud-based management to elevate your business with robust, secure, and high-performance digital infrastructure.',
     title: 'OD LABS',
   },
   title: 'Home',
