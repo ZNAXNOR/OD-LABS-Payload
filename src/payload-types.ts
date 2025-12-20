@@ -217,7 +217,7 @@ export interface Page {
   /**
    * Add and arrange content blocks to build the page layout.
    */
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | FeaturedSectionBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -298,6 +298,9 @@ export interface Post {
  */
 export interface Media {
   id: number;
+  /**
+   * Describes the appearance and function of the image for screen readers and search engines.
+   */
   alt?: string | null;
   caption?: {
     root: {
@@ -980,6 +983,24 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedSectionBlock".
+ */
+export interface FeaturedSectionBlock {
+  header: string;
+  subheader?: string | null;
+  logos?:
+    | {
+        logo: number | Media;
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featuredSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1294,6 +1315,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        featuredSection?: T | FeaturedSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1402,6 +1424,23 @@ export interface FormBlockSelect<T extends boolean = true> {
   appearance?: T;
   splitContent?: T;
   enableContactInfo?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedSectionBlock_select".
+ */
+export interface FeaturedSectionBlockSelect<T extends boolean = true> {
+  header?: T;
+  subheader?: T;
+  logos?:
+    | T
+    | {
+        logo?: T;
+        link?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
