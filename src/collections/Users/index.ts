@@ -20,6 +20,9 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      admin: {
+        description: 'The full name of the user. This is used for display purposes in the admin panel.',
+      },
     },
   ],
   timestamps: true,
