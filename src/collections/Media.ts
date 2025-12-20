@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import MediaAltDescription from '../components/MediaAltDescription'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -55,6 +56,11 @@ export const Media: CollectionConfig = {
       name: 'alt',
       type: 'text',
       //required: true,
+      admin: {
+        components: {
+          Description: MediaAltDescription,
+        },
+      },
     },
     {
       name: 'caption',

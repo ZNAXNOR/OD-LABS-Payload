@@ -53,6 +53,40 @@ export const hero: Field = {
       }),
       label: false,
     },
+    {
+      name: 'textAlignment',
+      type: 'radio',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description: 'Choose the alignment of the text content.',
+        layout: 'horizontal',
+      },
+      defaultValue: 'center',
+      options: [
+        {
+          label: 'Left',
+          value: 'left',
+        },
+        {
+          label: 'Center',
+          value: 'center',
+        },
+        {
+          label: 'Right',
+          value: 'right',
+        },
+      ],
+    },
+    {
+      name: 'emphasizeText',
+      type: 'checkbox',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description:
+          'When enabled, adds a visual effect to improve text readability (shadow or blur).',
+      },
+      defaultValue: false,
+    },
     linkGroup({
       overrides: {
         maxRows: 2,

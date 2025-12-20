@@ -22,6 +22,7 @@ export const Users: CollectionConfig = {
       type: 'text',
       admin: {
         description: 'The user‘s full name. This will be used throughout the admin panel and in public-facing content.',
+        description: 'The full name of the user. This is used for display purposes in the admin panel.',
       },
     },
   ],
