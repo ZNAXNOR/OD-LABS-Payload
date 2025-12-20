@@ -180,6 +180,14 @@ export interface Page {
       };
       [k: string]: unknown;
     } | null;
+    /**
+     * Choose the alignment of the text content.
+     */
+    textAlignment?: ('left' | 'center' | 'right') | null;
+    /**
+     * When enabled, adds a visual effect to improve text readability (shadow or blur).
+     */
+    emphasizeText?: boolean | null;
     links?:
       | {
           link: {
@@ -1290,6 +1298,8 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         type?: T;
         richText?: T;
+        textAlignment?: T;
+        emphasizeText?: T;
         links?:
           | T
           | {
