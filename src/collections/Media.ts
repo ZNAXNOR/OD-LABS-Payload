@@ -29,18 +29,20 @@ export const Media: CollectionConfig = {
       ({ req }) => {
         const file = req.file
         if (file) {
+          // NOTE: It is not recommended to allow SVGs to be uploaded without server-side sanitization.
+          // This is because SVGs can contain malicious code that can be used to perform XSS attacks.
+          // If you do need to allow SVGs, you should sanitize them on the server before storing them.
           const allowedMimeTypes = [
             'image/png',
             'image/jpeg',
             'image/webp',
             'image/gif',
-            'image/svg+xml',
           ]
           const maxFileSize = 5 * 1024 * 1024 // 5MB
 
           if (!allowedMimeTypes.includes(file.mimetype)) {
             throw new Error(
-              `Invalid file type: ${file.mimetype}. Only PNG, JPEG, WEBP, GIF, and SVG files are allowed.`,
+              `Invalid file type: ${file.mimetype}. Only PNG, JPEG, WEBP, and GIF files are allowed.`,
             )
           }
 
