@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { useField } from 'payload/components/forms'
+import { useField } from '@payloadcms/ui'
 
 const MediaAltDescription: React.FC = () => {
   const { value } = useField({ path: 'alt' })
