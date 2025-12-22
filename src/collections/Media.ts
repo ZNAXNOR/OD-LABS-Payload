@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import MediaAltDescription from '../components/MediaAltDescription'
+import { validateFile } from './Media/hooks/validateFile'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,31 +26,7 @@ export const Media: CollectionConfig = {
     update: authenticated,
   },
   hooks: {
-    beforeValidate: [
-      ({ req }) => {
-        const file = req.file
-        if (file) {
-          const allowedMimeTypes = [
-            'image/png',
-            'image/jpeg',
-            'image/webp',
-            'image/gif',
-            'image/svg+xml',
-          ]
-          const maxFileSize = 5 * 1024 * 1024 // 5MB
-
-          if (!allowedMimeTypes.includes(file.mimetype)) {
-            throw new Error(
-              `Invalid file type: ${file.mimetype}. Only PNG, JPEG, WEBP, GIF, and SVG files are allowed.`,
-            )
-          }
-
-          if (file.size > maxFileSize) {
-            throw new Error(`File size cannot exceed 5MB.`)
-          }
-        }
-      },
-    ],
+    beforeValidate: [validateFile],
   },
   fields: [
     {
