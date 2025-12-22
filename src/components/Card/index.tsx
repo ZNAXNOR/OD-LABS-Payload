@@ -10,6 +10,10 @@ import { Media } from '@/components/Media'
 
 export type CardPostData = Pick<Post | Document | Service, 'slug' | 'categories' | 'meta' | 'title'>
 
+// The `Card` component is wrapped in `React.memo` to prevent unnecessary re-renders.
+// This is a performance optimization that is especially beneficial when this component is
+// used in lists, as it will only re-render if its own props have changed, not when
+// the parent list component re-renders.
 export const Card: React.FC<{
   alignItems?: 'center'
   className?: string
@@ -17,7 +21,7 @@ export const Card: React.FC<{
   relationTo?: 'posts' | 'documents' | 'services'
   showCategories?: boolean
   title?: string
-}> = (props) => {
+}> = React.memo((props) => {
   const { card, link } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
@@ -82,4 +86,6 @@ export const Card: React.FC<{
       </div>
     </article>
   )
-}
+})
+
+Card.displayName = 'Card'
