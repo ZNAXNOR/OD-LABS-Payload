@@ -57,6 +57,7 @@ export const Media: CollectionConfig = {
       type: 'text',
       //required: true,
       admin: {
+        placeholder: 'A brief, descriptive summary of the image.',
         components: {
           Description: MediaAltDescription,
         },
