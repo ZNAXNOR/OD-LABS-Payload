@@ -186,6 +186,7 @@ export const Posts: CollectionConfig<'posts'> = {
       type: 'relationship',
       admin: {
         position: 'sidebar',
+        description: 'Select one or more authors for this post.',
       },
       hasMany: true,
       relationTo: 'users',
