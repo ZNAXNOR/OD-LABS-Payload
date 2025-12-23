@@ -10,7 +10,6 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
-import MediaAltDescription from '../components/MediaAltDescription'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -53,13 +52,22 @@ export const Media: CollectionConfig = {
   },
   fields: [
     {
+      name: 'isDecorative',
+      type: 'checkbox',
+      label: 'Is this image decorative?',
+      defaultValue: false,
+      admin: {
+        description:
+          'Check this box if the image is purely for decoration and does not convey important information.',
+      },
+    },
+    {
       name: 'alt',
       type: 'text',
-      //required: true,
+      required: ({ data }) => !data?.isDecorative,
       admin: {
-        components: {
-          Description: MediaAltDescription,
-        },
+        condition: ({ isDecorative }) => !isDecorative,
+        description: 'Descriptive text for accessibility and SEO.',
       },
     },
     {

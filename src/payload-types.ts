@@ -307,7 +307,11 @@ export interface Post {
 export interface Media {
   id: number;
   /**
-   * Describes the appearance and function of the image for screen readers and search engines.
+   * Check this box if the image is purely for decoration and does not convey important information.
+   */
+  isDecorative?: boolean | null;
+  /**
+   * Descriptive text for accessibility and SEO.
    */
   alt?: string | null;
   caption?: {
@@ -452,7 +456,10 @@ export interface Category {
  */
 export interface User {
   id: number;
-  name: string;
+  /**
+   * The full name of the user. This is used for display purposes in the admin panel.
+   */
+  name?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1560,6 +1567,7 @@ export interface ServicesSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  isDecorative?: T;
   alt?: T;
   caption?: T;
   folder?: T;
