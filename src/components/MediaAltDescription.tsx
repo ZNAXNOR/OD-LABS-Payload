@@ -3,7 +3,8 @@ import { useField } from '@payloadcms/ui'
 import React from 'react'
 
 const MediaAltDescription: React.FC = () => {
-  const { value } = useField({ path: 'alt' })
+  const { value: altValue } = useField({ path: 'alt' })
+  const { value: isDecorative } = useField({ path: 'isDecorative' })
 
   const standardDescription =
     'Essential for accessibility and SEO. Describes the image for screen readers.'
@@ -30,19 +31,17 @@ const MediaAltDescription: React.FC = () => {
     fontSize: '14px',
   }
 
-  const isValueEmpty = !value
+  const showWarning = !altValue && !isDecorative
 
   return (
     <div>
       <p>{standardDescription}</p>
-      {isValueEmpty && (
+      {showWarning && (
         <div style={warningBoxStyle}>
-          <h3 style={headingStyle}>Heads up! Alt text is empty.</h3>
+          <h3 style={headingStyle}>Heads up! Alt text is missing.</h3>
           <p style={paragraphStyle}>
-            For <strong>informative images</strong>, providing descriptive alt text is crucial.
-          </p>
-          <p style={paragraphStyle}>
-            If this image is purely <strong>decorative</strong>, you can leave this field blank.
+            Alt text is required for informative images. If this image is purely decorative, please
+            check the &quot;Is this image decorative?&quot; box below.
           </p>
         </div>
       )}
