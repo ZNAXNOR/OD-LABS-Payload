@@ -2,7 +2,9 @@
 import { useField } from '@payloadcms/ui'
 import React from 'react'
 
-const MediaAltDescription: React.FC = () => {
+// Using React.memo to prevent unnecessary re-renders of this component
+// This is especially useful in the Media collection's upload wizard, where many fields can trigger re-renders.
+const MediaAltDescription: React.FC = React.memo(() => {
   const { value } = useField({ path: 'alt' })
 
   const standardDescription =
@@ -48,6 +50,7 @@ const MediaAltDescription: React.FC = () => {
       )}
     </div>
   )
-}
+})
+MediaAltDescription.displayName = 'MediaAltDescription'
 
 export default MediaAltDescription

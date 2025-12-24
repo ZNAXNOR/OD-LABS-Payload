@@ -22,3 +22,6 @@ node_modules/
 
 # Playwright
 /playwright/.auth/
+
+# Local development logs
+dev.log
