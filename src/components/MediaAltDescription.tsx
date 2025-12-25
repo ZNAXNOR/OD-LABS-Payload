@@ -50,4 +50,8 @@ const MediaAltDescription: React.FC = () => {
   )
 }
 
-export default MediaAltDescription
+// Memoize the component to prevent unnecessary re-renders, improving admin UI performance.
+const MemoizedMediaAltDescription = React.memo(MediaAltDescription)
+MemoizedMediaAltDescription.displayName = 'MediaAltDescription'
+
+export default MemoizedMediaAltDescription
