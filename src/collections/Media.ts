@@ -53,10 +53,17 @@ export const Media: CollectionConfig = {
   },
   fields: [
     {
+      name: 'isDecorative',
+      type: 'checkbox',
+      label: 'This image is decorative',
+      defaultValue: false,
+    },
+    {
       name: 'alt',
       type: 'text',
-      //required: true,
+      required: ({ data }) => data?.isDecorative === false,
       admin: {
+        condition: (data) => data?.isDecorative === false,
         components: {
           Description: MediaAltDescription,
         },

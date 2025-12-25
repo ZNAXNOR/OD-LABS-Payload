@@ -1,9 +1,9 @@
-
 import { useField } from '@payloadcms/ui'
 import React from 'react'
 
 const MediaAltDescription: React.FC = () => {
-  const { value } = useField({ path: 'alt' })
+  const { value: altValue } = useField({ path: 'alt' })
+  const { value: isDecorativeValue } = useField({ path: 'isDecorative' })
 
   const standardDescription =
     'Essential for accessibility and SEO. Describes the image for screen readers.'
@@ -30,19 +30,21 @@ const MediaAltDescription: React.FC = () => {
     fontSize: '14px',
   }
 
-  const isValueEmpty = !value
+  const isAltEmpty = !altValue
+  const isDecorative = isDecorativeValue === true
+
+  // The warning should only show for non-decorative images that have empty alt text.
+  const showWarning = isAltEmpty && !isDecorative
 
   return (
     <div>
       <p>{standardDescription}</p>
-      {isValueEmpty && (
+      {showWarning && (
         <div style={warningBoxStyle}>
           <h3 style={headingStyle}>Heads up! Alt text is empty.</h3>
           <p style={paragraphStyle}>
-            For <strong>informative images</strong>, providing descriptive alt text is crucial.
-          </p>
-          <p style={paragraphStyle}>
-            If this image is purely <strong>decorative</strong>, you can leave this field blank.
+            For <strong>informative images</strong>, providing descriptive alt text is crucial for
+            accessibility and SEO.
           </p>
         </div>
       )}
