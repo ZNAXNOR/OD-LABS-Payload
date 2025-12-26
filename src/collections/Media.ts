@@ -53,10 +53,29 @@ export const Media: CollectionConfig = {
   },
   fields: [
     {
+      name: 'isDecorative',
+      type: 'checkbox',
+      label: 'This image is decorative',
+      admin: {
+        description:
+          'Check this box if the image is purely for decoration and does not convey information.',
+      },
+    },
+    {
       name: 'alt',
       type: 'text',
-      //required: true,
+      required: true,
+      validate: (value, { siblingData }) => {
+        if (siblingData?.isDecorative) {
+          return true
+        }
+        if (!value) {
+          return 'Alt text is required for non-decorative images.'
+        }
+        return true
+      },
       admin: {
+        condition: ({ siblingData }) => !siblingData?.isDecorative,
         components: {
           Description: MediaAltDescription,
         },
