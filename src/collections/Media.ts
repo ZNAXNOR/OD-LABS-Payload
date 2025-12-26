@@ -53,10 +53,21 @@ export const Media: CollectionConfig = {
   },
   fields: [
     {
+      name: 'isDecorative',
+      label: 'Decorative Image',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description:
+          'Check this box if the image is purely decorative and does not convey information. Alt text will be hidden and not required.',
+      },
+    },
+    {
       name: 'alt',
       type: 'text',
-      //required: true,
+      required: true,
       admin: {
+        condition: data => !data.isDecorative,
         components: {
           Description: MediaAltDescription,
         },

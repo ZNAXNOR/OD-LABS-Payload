@@ -3,7 +3,8 @@ import { useField } from '@payloadcms/ui'
 import React from 'react'
 
 const MediaAltDescription: React.FC = () => {
-  const { value } = useField({ path: 'alt' })
+  const { value: altText } = useField({ path: 'alt' })
+  const { value: isDecorative } = useField({ path: 'isDecorative' })
 
   const standardDescription =
     'Essential for accessibility and SEO. Describes the image for screen readers.'
@@ -30,12 +31,12 @@ const MediaAltDescription: React.FC = () => {
     fontSize: '14px',
   }
 
-  const isValueEmpty = !value
+  const isValueEmpty = !altText
 
   return (
     <div>
       <p>{standardDescription}</p>
-      {isValueEmpty && (
+      {isValueEmpty && !isDecorative && (
         <div style={warningBoxStyle}>
           <h3 style={headingStyle}>Heads up! Alt text is empty.</h3>
           <p style={paragraphStyle}>
