@@ -29,18 +29,19 @@ export const Media: CollectionConfig = {
       ({ req }) => {
         const file = req.file
         if (file) {
+          // NOTE: SVGs are disabled due to potential XSS vulnerabilities.
+          // Do not add `image/svg+xml` back unless you have a server-side sanitizer.
           const allowedMimeTypes = [
             'image/png',
             'image/jpeg',
             'image/webp',
             'image/gif',
-            'image/svg+xml',
           ]
           const maxFileSize = 5 * 1024 * 1024 // 5MB
 
           if (!allowedMimeTypes.includes(file.mimetype)) {
             throw new Error(
-              `Invalid file type: ${file.mimetype}. Only PNG, JPEG, WEBP, GIF, and SVG files are allowed.`,
+              `Invalid file type: ${file.mimetype}. Only PNG, JPEG, WEBP, and GIF files are allowed.`,
             )
           }
 
