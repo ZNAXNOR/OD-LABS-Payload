@@ -2,7 +2,10 @@
 import { useField } from '@payloadcms/ui'
 import React from 'react'
 
-const MediaAltDescription: React.FC = () => {
+// Using React.memo to prevent unnecessary re-renders.
+// This component was re-rendering whenever any field in the parent form changed.
+// Now it only re-renders when its specific field ('alt') changes.
+const MediaAltDescription: React.FC = React.memo(() => {
   const { value } = useField({ path: 'alt' })
 
   const standardDescription =
@@ -48,6 +51,9 @@ const MediaAltDescription: React.FC = () => {
       )}
     </div>
   )
-}
+})
+
+// Adding displayName for better debugging and to satisfy linting rules.
+MediaAltDescription.displayName = 'MediaAltDescription'
 
 export default MediaAltDescription
