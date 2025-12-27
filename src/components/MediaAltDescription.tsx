@@ -56,4 +56,11 @@ const MediaAltDescription: React.FC = React.memo(() => {
 // Adding displayName for better debugging and to satisfy linting rules.
 MediaAltDescription.displayName = 'MediaAltDescription'
 
-export default MediaAltDescription
+// By wrapping the component in React.memo, we prevent it from re-rendering
+// if its props have not changed. This is a performance optimization for the admin UI,
+// particularly useful in forms where typing into one field doesn't cause unrelated
+// description components to re-render.
+const MemoizedMediaAltDescription = React.memo(MediaAltDescription)
+MemoizedMediaAltDescription.displayName = 'MediaAltDescription' // Added for better debugging and to satisfy lint rules.
+
+export default MemoizedMediaAltDescription
