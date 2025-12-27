@@ -25,6 +25,14 @@ export const Media: CollectionConfig = {
     update: authenticated,
   },
   hooks: {
+    beforeChange: [
+      ({ data }) => {
+        if (data.isDecorative) {
+          return { ...data, alt: '' }
+        }
+        return data
+      },
+    ],
     beforeValidate: [
       ({ req }) => {
         const file = req.file
@@ -53,10 +61,21 @@ export const Media: CollectionConfig = {
   },
   fields: [
     {
+      name: 'isDecorative',
+      label: 'Decorative Image',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description:
+          'Check this if the image is purely decorative and does not add information. Alt text will be disabled.',
+      },
+    },
+    {
       name: 'alt',
       type: 'text',
-      //required: true,
+      required: ({ data }) => !data?.isDecorative,
       admin: {
+        readOnly: ({ data }) => data?.isDecorative,
         components: {
           Description: MediaAltDescription,
         },

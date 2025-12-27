@@ -307,8 +307,9 @@ export interface Post {
 export interface Media {
   id: number;
   /**
-   * Describes the appearance and function of the image for screen readers and search engines.
+   * Check this if the image is purely decorative and does not add information. Alt text will be disabled.
    */
+  isDecorative?: boolean | null;
   alt?: string | null;
   caption?: {
     root: {
@@ -452,7 +453,10 @@ export interface Category {
  */
 export interface User {
   id: number;
-  name: string;
+  /**
+   * The full name of the user. This is used for display purposes in the admin panel.
+   */
+  name?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1560,6 +1564,7 @@ export interface ServicesSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  isDecorative?: T;
   alt?: T;
   caption?: T;
   folder?: T;
