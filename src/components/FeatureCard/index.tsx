@@ -2,10 +2,14 @@
 import React from 'react'
 import { Divider } from '../Divider'
 
+// The `FeatureCard` component is wrapped in `React.memo` to prevent unnecessary re-renders.
+// This is a performance optimization that is especially beneficial when this component is
+// used in lists, as it will only re-render if its own props have changed, not when
+// the parent list component re-renders.
 export const FeatureCard: React.FC<{
   title: string
   description: string
-}> = ({ title, description }) => {
+}> = React.memo(({ title, description }) => {
   return (
     <li className="group mt-10 first:mt-0">
       <div className="pt-10 group-first:pt-0">
@@ -19,4 +23,6 @@ export const FeatureCard: React.FC<{
       </div>
     </li>
   )
-}
+})
+
+FeatureCard.displayName = 'FeatureCard'
