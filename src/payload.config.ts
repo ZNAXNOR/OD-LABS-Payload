@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
 import { Documents } from './collections/Documents'
-import { Media } from './collections/Media'
+import { Media } from './collections/Media/index'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Services } from './collections/Services'
