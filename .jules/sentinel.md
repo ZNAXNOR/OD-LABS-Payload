@@ -1,0 +1,4 @@
+## 2024-08-01 - Disable SVG uploads to prevent Stored XSS
+**Vulnerability:** The application allowed file uploads with the `image/svg+xml` MIME type without performing any server-side sanitization.
+**Learning:** SVGs are XML-based and can contain embedded scripts (e.g., `<script>` tags or `onload` attributes). When a malicious SVG is uploaded and then rendered in a user's browser, the script can execute, leading to a Stored Cross-Site Scripting (XSS) vulnerability. This could be used to steal session cookies, impersonate users, or perform unauthorized actions.
+**Prevention:** Disallow SVG uploads entirely unless there is a strict business requirement. If they must be allowed, ensure they are processed through a server-side sanitization library (like DOMPurify) to strip out any potentially malicious content before being stored and served. A simple MIME type check is insufficient.
