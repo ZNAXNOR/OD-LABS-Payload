@@ -79,6 +79,10 @@ export const Media: CollectionConfig = {
           return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
         },
       }),
+      admin: {
+        description:
+          'A brief caption for the image. 280 characters max. This will be displayed below the image.',
+      },
     },
   ],
   upload: {
