@@ -12,9 +12,9 @@ const MediaAltDescription: React.FC = React.memo(() => {
     'Essential for accessibility and SEO. Describes the image for screen readers.'
 
   const warningBoxStyle: React.CSSProperties = {
-    backgroundColor: 'var(--theme-error-100)',
-    border: '1px solid var(--theme-error-500)',
-    color: 'var(--theme-error-700)',
+    backgroundColor: 'var(--theme-warning-100)',
+    border: '1px solid var(--theme-warning-500)',
+    color: 'var(--theme-warning-700)',
     padding: '12px',
     borderRadius: '4px',
     marginTop: '10px',
@@ -56,11 +56,4 @@ const MediaAltDescription: React.FC = React.memo(() => {
 // Adding displayName for better debugging and to satisfy linting rules.
 MediaAltDescription.displayName = 'MediaAltDescription'
 
-// By wrapping the component in React.memo, we prevent it from re-rendering
-// if its props have not changed. This is a performance optimization for the admin UI,
-// particularly useful in forms where typing into one field doesn't cause unrelated
-// description components to re-render.
-const MemoizedMediaAltDescription = React.memo(MediaAltDescription)
-MemoizedMediaAltDescription.displayName = 'MediaAltDescription' // Added for better debugging and to satisfy lint rules.
-
-export default MemoizedMediaAltDescription
+export default MediaAltDescription
