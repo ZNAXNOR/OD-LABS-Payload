@@ -40,12 +40,12 @@ const MediaAltDescription: React.FC = React.memo(() => {
       <p>{standardDescription}</p>
       {isValueEmpty && (
         <div style={warningBoxStyle}>
-          <h3 style={headingStyle}>Heads up! Alt text is empty.</h3>
+          <h3 style={headingStyle}>Is this image decorative?</h3>
           <p style={paragraphStyle}>
-            For <strong>informative images</strong>, providing descriptive alt text is crucial.
+            If so, check the "Is this image decorative?" box above.
           </p>
           <p style={paragraphStyle}>
-            If this image is purely <strong>decorative</strong>, you can leave this field blank.
+            Otherwise, please provide descriptive alt text for accessibility.
           </p>
         </div>
       )}

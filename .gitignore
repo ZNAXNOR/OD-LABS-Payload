@@ -22,3 +22,6 @@ node_modules/
 
 # Playwright
 /playwright/.auth/
+
+# Jules development logs
+dev.log
