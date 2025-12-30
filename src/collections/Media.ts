@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import MediaAltDescription from '../components/MediaAltDescription'
+import CharacterCount from '../components/CharacterCount'
 import { validateFile } from './Media/hooks/validateFile'
 
 const filename = fileURLToPath(import.meta.url)
@@ -82,6 +83,9 @@ export const Media: CollectionConfig = {
       admin: {
         description:
           'A brief caption for the image. 280 characters max. This will be displayed below the image.',
+        components: {
+          Description: CharacterCount,
+        }
       },
     },
   ],
