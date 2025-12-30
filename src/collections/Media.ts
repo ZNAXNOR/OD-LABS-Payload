@@ -79,6 +79,33 @@ export const Media: CollectionConfig = {
           return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
         },
       }),
+      validate: (value) => {
+        // value is a JSON object from the Lexical editor
+        if (!value || !value.root || !value.root.children) {
+          return true // No content, so it's valid
+        }
+
+        const getTextLength = (nodes: any[]): number => {
+          let length = 0
+          for (const node of nodes) {
+            if (node.type === 'text' && typeof node.text === 'string') {
+              length += node.text.length
+            }
+            if (node.children) {
+              length += getTextLength(node.children)
+            }
+          }
+          return length
+        }
+
+        const totalLength = getTextLength(value.root.children)
+
+        if (totalLength > 280) {
+          return `Caption must be 280 characters or less. You have entered ${totalLength} characters.`
+        }
+
+        return true
+      },
       admin: {
         description:
           'A brief caption for the image. 280 characters max. This will be displayed below the image.',
