@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import MediaAltDescription from '../components/MediaAltDescription'
+import { optimizeImages } from './Media/hooks/optimizeImages'
 import { validateFile } from './Media/hooks/validateFile'
 
 const filename = fileURLToPath(import.meta.url)
@@ -26,6 +27,7 @@ export const Media: CollectionConfig = {
     update: authenticated,
   },
   hooks: {
+    beforeChange: [optimizeImages],
     beforeValidate: [validateFile],
   },
   fields: [
