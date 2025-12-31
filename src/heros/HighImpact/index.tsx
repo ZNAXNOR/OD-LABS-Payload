@@ -50,9 +50,9 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                     : 'justify-start'
               }`}
             >
-              {links.map(({ link }, i) => {
+              {links.map(({ link, id }, i) => {
                 return (
-                  <li key={i}>
+                  <li key={id || i}>
                     <CMSLink {...link} />
                   </li>
                 )

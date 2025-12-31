@@ -8,9 +8,8 @@ import type { Header, Contact } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { Megamenu } from './Megamenu'
-import { ModalToggler } from '@faceless-ui/modal'
-import { CMSLink } from '@/components/Link'
-import { SearchIcon } from 'lucide-react'
+import { useModal } from '@faceless-ui/modal'
+import { HeaderNav } from './Nav'
 
 interface HeaderClientProps {
   data: Header
@@ -33,6 +32,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, contact }) => 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerTheme])
 
+  const { isModalOpen } = useModal()
+  const isMegaMenuOpen = isModalOpen('mega-menu')
+
+  const effectiveTheme = isMegaMenuOpen ? 'dark' : theme
+
   const navItems = data?.navItems || []
   const contactLink = contact?.contactPageLink
   const socialLinks = contact?.socialLinks || []
@@ -47,54 +51,26 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, contact }) => 
     })) || []
 
   return (
-    <header className="container relative z-20" {...(theme ? { 'data-theme': theme } : {})}>
+    <header
+      className="container sticky top-0 z-[120] transition-all duration-300"
+      {...(effectiveTheme ? { 'data-theme': effectiveTheme } : {})}
+    >
       <div className="py-[31px] flex justify-between items-center">
         <Link href="/">
-          <Logo loading="eager" priority="high" theme={theme as 'light' | 'dark' | undefined} />
+          <Logo
+            loading="eager"
+            priority="high"
+            theme={effectiveTheme as 'light' | 'dark' | undefined}
+          />
         </Link>
-
-        <div className="flex items-center gap-4">
-          {contactLink && (
-            <CMSLink
-              {...contactLink}
-              className="hidden sm:inline-flex rounded-full px-5 py-2 text-sm font-semibold transition bg-primary text-primary-foreground hover:bg-primary/90"
-              appearance="default" // Override appearance to ensure proper specific styling if needed, or rely on className
-              label="Let's Talk" // Ensure label is present if not in link object, though CMSLink usually handles it
-            />
-          )}
-
-          <Link
-            href="/search"
-            className="group relative flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground transition hover:opacity-90"
-          >
-            <span className="sr-only">Search</span>
-            <SearchIcon className="w-5 text-primary-foreground" />
-          </Link>
-
-          <ModalToggler
-            slug="mega-menu"
-            className="group relative flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground transition hover:opacity-90"
-            aria-label="Open menu"
-          >
-            {/* Solid circle is handled by bg-primary/rounded-full. Icon inside: */}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
-              <path
-                d="M4 6h16M4 12h16M4 18h16"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </ModalToggler>
-        </div>
-
-        <Megamenu
-          navItems={navItems}
-          contactLink={contactLink}
-          displayOffices={displayOffices}
-          socialLinks={socialLinks as any} // Cast to satisfy type if there's a strict mismatch in generated types
-        />
+        <HeaderNav data={data} contact={contact} />
       </div>
+      <Megamenu
+        navItems={navItems}
+        contactLink={contactLink}
+        displayOffices={displayOffices}
+        socialLinks={socialLinks as any}
+      />
     </header>
   )
 }

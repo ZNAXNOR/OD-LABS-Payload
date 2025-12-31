@@ -10,7 +10,7 @@ export const Providers: React.FC<{
   return (
     <ThemeProvider>
       <HeaderThemeProvider>
-        <ModalProvider transTime={250} zIndex="var(--z-modal)">
+        <ModalProvider transTime={500} zIndex="var(--z-modal)">
           {children}
         </ModalProvider>
       </HeaderThemeProvider>

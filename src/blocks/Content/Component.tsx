@@ -54,7 +54,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
           </div>
           <ul role="list" className="space-y-8">
             {features?.map((feature, i) => (
-              <FeatureCard key={i} {...feature} />
+              <FeatureCard key={feature.id || i} {...feature} />
             ))}
           </ul>
         </div>

@@ -20,82 +20,73 @@ export const Megamenu: React.FC<MegamenuProps> = ({
   displayOffices,
   socialLinks,
 }) => {
-  const { closeModal } = useModal()
+  const { closeModal, isModalOpen } = useModal()
+  const isOpen = isModalOpen('mega-menu')
+  const [isPresented, setIsPresented] = React.useState(false)
+
+  React.useEffect(() => {
+    let timeout: NodeJS.Timeout
+    if (isOpen) {
+      // Small delay to ensure the browser has painted the initial opacity-0 state
+      timeout = setTimeout(() => {
+        setIsPresented(true)
+      }, 50)
+    } else {
+      setIsPresented(false)
+    }
+    return () => clearTimeout(timeout)
+  }, [isOpen])
 
   return (
-    <Modal
-      slug="mega-menu"
-      className="fixed inset-0 w-screen h-screen z-50 overflow-hidden bg-neutral-950 transition-all duration-300 ease-in-out"
-    >
-      <div className="bg-neutral-800 h-full overflow-y-auto">
-        <div className="bg-neutral-950 pb-16 min-h-full">
-          {/* Drawer Top Bar */}
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="py-16 flex items-center justify-between">
-              <Link aria-label="Home" href="/" onClick={() => closeModal('mega-menu')}>
-                <Logo theme="dark" />
-              </Link>
-              <div className="flex items-center gap-x-8">
-                {contactLink && (
-                  <CMSLink
-                    {...contactLink}
-                    className="inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition bg-white text-neutral-950 hover:bg-neutral-200"
-                  />
-                )}
-                <button
-                  type="button"
-                  onClick={() => closeModal('mega-menu')}
-                  className="group -m-2.5 rounded-full p-2.5 transition hover:bg-white/10"
-                  aria-label="Close navigation"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                    className="h-6 w-6 fill-white group-hover:fill-neutral-200"
-                  >
-                    <path d="m5.636 4.223 14.142 14.142-1.414 1.414L4.222 5.637z" />
-                    <path d="M4.222 18.363 18.364 4.22l1.414 1.414L5.636 19.777z" />
-                  </svg>
-                </button>
+    <Modal slug="mega-menu" className="fixed inset-0 w-screen h-screen z-50 overflow-hidden">
+      <div
+        className={`fixed inset-0 bg-neutral-950 transition-opacity duration-500 ease-in-out ${
+          isPresented ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+      <div
+        className={`relative h-full overflow-y-auto transition-all duration-500 ease-in-out ${
+          isPresented ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}
+      >
+        <div className="container pb-16 pt-32 sm:pt-40">
+          <div className="min-h-full">
+            {/* Navigation Grid */}
+            <nav className="mt-px font-display text-3xl sm:text-5xl font-medium tracking-tight text-white w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-neutral-800 border-y border-neutral-800 w-full">
+                {navItems.map(({ link }: any, i: number) => {
+                  const isEven = i % 2 === 0
+                  return (
+                    <CMSLink
+                      key={i}
+                      {...link}
+                      className={
+                        'group relative isolate bg-neutral-950 px-6 py-10 sm:py-16 block ' +
+                        (isEven ? 'sm:text-left ' : 'sm:text-left ')
+                      }
+                      style={{
+                        // For left items (even index in 0-based), apply padding left based on container
+                        // For right items (odd index), apply standard padding or calc if right-alignment desired
+                        // Assuming container is max-w-7xl (roughly 80rem = 1280px) and px-8 (2rem)
+                        // We use logic: max(2rem, (100vw - 80rem)/2 + 2rem)
+                        paddingLeft: isEven ? 'max(2rem, calc((100vw - 80rem)/2 + 2rem))' : '2rem',
+                        paddingRight: !isEven
+                          ? 'max(2rem, calc((100vw - 80rem)/2 + 2rem))'
+                          : '2rem',
+                      }}
+                      onClick={() => closeModal('mega-menu')}
+                    >
+                      <span className="absolute inset-y-0 -z-10 w-full bg-neutral-900 opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
+                    </CMSLink>
+                  )
+                })}
               </div>
-            </div>
-          </div>
+            </nav>
 
-          {/* Navigation Grid */}
-          <nav className="mt-px font-display text-3xl sm:text-5xl font-medium tracking-tight text-white w-full">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-neutral-800 border-y border-neutral-800 w-full">
-              {navItems.map(({ link }: any, i: number) => {
-                const isEven = i % 2 === 0
-                return (
-                  <CMSLink
-                    key={i}
-                    {...link}
-                    className={
-                      'group relative isolate bg-neutral-950 px-6 py-10 sm:py-16 block ' +
-                      (isEven ? 'sm:text-left ' : 'sm:text-left ')
-                    }
-                    style={{
-                      // For left items (even index in 0-based), apply padding left based on container
-                      // For right items (odd index), apply standard padding or calc if right-alignment desired
-                      // Assuming container is max-w-7xl (roughly 80rem = 1280px) and px-8 (2rem)
-                      // We use logic: max(2rem, (100vw - 80rem)/2 + 2rem)
-                      paddingLeft: isEven ? 'max(2rem, calc((100vw - 80rem)/2 + 2rem))' : '2rem',
-                      paddingRight: !isEven ? 'max(2rem, calc((100vw - 80rem)/2 + 2rem))' : '2rem',
-                    }}
-                    onClick={() => closeModal('mega-menu')}
-                  >
-                    <span className="absolute inset-y-0 -z-10 w-full bg-neutral-900 opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100" />
-                  </CMSLink>
-                )
-              })}
-            </div>
-          </nav>
-
-          {/* Footer Information in Drawer */}
-          <div className="relative bg-neutral-950">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <div className="mx-auto max-w-2xl lg:max-w-none">
-                <div className="grid grid-cols-1 gap-y-10 pt-10 pb-16 sm:grid-cols-2 sm:pt-16">
+            {/* Footer Information in Drawer */}
+            <div className="relative">
+              <div className="py-10 sm:py-16">
+                <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2">
                   {/* Offices */}
                   {displayOffices.length > 0 && (
                     <div>
