@@ -5,6 +5,7 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -82,6 +83,15 @@ export const Media: CollectionConfig = {
       admin: {
         description:
           'A brief caption for the image. 280 characters max. This will be displayed below the image.',
+      },
+      validate: async (value) => {
+        if (value) {
+          const text = convertLexicalToPlaintext(value)
+          if (text.length > 280) {
+            return 'Caption must be 280 characters or less.'
+          }
+        }
+        return true
       },
     },
   ],
