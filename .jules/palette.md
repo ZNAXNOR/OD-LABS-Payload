@@ -1,3 +1,3 @@
-## 2024-05-23 - Use Themed CSS Variables for UI Consistency
-**Learning:** Custom React components in the Payload admin UI should use the framework's CSS variables (e.g., `var(--theme-error-500)`) for styling to ensure consistency with the current theme, instead of using hardcoded color values. This makes the UI more robust and adaptable to theme changes.
-**Action:** When implementing custom components or modifying existing ones, always inspect the available CSS variables and use them to ensure a consistent and professional look.
+## 2024-08-01 - Real-time Feedback for Rich Text Fields
+**Learning:** Adding a character counter to a Payload CMS `richText` (Lexical) field provides immediate, valuable feedback to editors, but it's not straightforward. The field's value is a JSON object, so a simple string length check is inaccurate. The correct approach is to use the `@payloadcms/richtext-lexical/plaintext` utility to convert the editor's state to a plain text string for an accurate count.
+**Action:** When a rich text field has a suggested length limit, create a custom admin component that uses the `useField` hook and `convertLexicalToPlaintext` to display a live character count. This small addition significantly improves the content editing experience by preventing guesswork.

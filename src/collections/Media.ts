@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import CaptionCharCount from '../components/CaptionCharCount'
 import MediaAltDescription from '../components/MediaAltDescription'
 import { validateFile } from './Media/hooks/validateFile'
 
@@ -81,8 +82,9 @@ export const Media: CollectionConfig = {
         },
       }),
       admin: {
-        description:
-          'A brief caption for the image. 280 characters max. This will be displayed below the image.',
+        components: {
+          Description: CaptionCharCount,
+        },
       },
       validate: async (value) => {
         if (value) {
