@@ -1,6 +1,10 @@
 import React from 'react'
 
-export const SocialIcon = ({ platform }: { platform: string }) => {
+// The `SocialIcon` component is wrapped in `React.memo` to prevent unnecessary re-renders.
+// This is a performance optimization that is especially beneficial when this component is
+// used in lists, as it will only re-render if its own props have changed, not when
+// the parent list component re-renders.
+export const SocialIcon = React.memo(({ platform }: { platform: string }) => {
   const normalizedPlatform = platform.toLowerCase()
 
   switch (normalizedPlatform) {
@@ -54,4 +58,5 @@ export const SocialIcon = ({ platform }: { platform: string }) => {
     default:
       return null
   }
-}
+})
+SocialIcon.displayName = 'SocialIcon'
