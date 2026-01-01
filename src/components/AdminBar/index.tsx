@@ -29,11 +29,11 @@ const collectionLabels = {
   },
 }
 
-const Title: React.FC = () => <span>Dashboard</span>
+function Title() {
+  return <span>Dashboard</span>
+}
 
-export const AdminBar: React.FC<{
-  adminBarProps?: PayloadAdminBarProps
-}> = (props) => {
+export function AdminBar(props: { adminBarProps?: PayloadAdminBarProps }) {
   const { adminBarProps } = props || {}
   const segments = useSelectedLayoutSegments()
   const [show, setShow] = useState(false)

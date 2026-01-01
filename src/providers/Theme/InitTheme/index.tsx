@@ -3,7 +3,7 @@ import React from 'react'
 
 import { defaultTheme, themeLocalStorageKey } from '../ThemeSelector/types'
 
-export const InitTheme: React.FC = () => {
+export function InitTheme() {
   return (
     // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document
     <Script
