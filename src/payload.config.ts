@@ -4,6 +4,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import dotenv from 'dotenv'
 
 // Collections
 import { Users } from './collections/Users'
@@ -18,6 +19,10 @@ import { Header } from './globals/Header/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+dotenv.config({
+  path: path.resolve(dirname, '../.env'),
+})
 
 export default buildConfig({
   admin: {
@@ -35,7 +40,7 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || '',
+      connectionString: process.env.DATABASE_URL || '',
     },
   }),
   sharp,
