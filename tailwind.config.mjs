@@ -92,6 +92,9 @@ const config = {
         success: 'hsl(var(--success))',
         error: 'hsl(var(--error))',
         warning: 'hsl(var(--warning))',
+
+        // Custom colors
+        'brand-primary': 'var(--brand-primary)',
       },
       fontFamily: {
         mono: ['var(--font-geist-mono)'],

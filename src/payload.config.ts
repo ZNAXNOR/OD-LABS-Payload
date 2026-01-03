@@ -28,7 +28,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: {
-      baseDir: path.resolve(dirname),
+      baseDir: path.resolve(dirname, '..'),
     },
   },
   collections: [Users, Media, Services, Legal],

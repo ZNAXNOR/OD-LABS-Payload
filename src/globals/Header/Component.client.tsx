@@ -6,8 +6,11 @@ import React, { useEffect, useState } from 'react'
 
 import type { Header } from '@/payload-types'
 
-import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
+import { HeaderBar } from './HeaderBar'
+import { cn } from '@/utilities/ui'
+
+import { useHeaderScroll } from './hooks/useHeaderScroll'
 
 interface HeaderClientProps {
   data: Header
@@ -18,6 +21,10 @@ export function HeaderClient({ data }: HeaderClientProps) {
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  const isScrolled = useHeaderScroll()
 
   useEffect(() => {
     setHeaderTheme(null)
@@ -29,14 +36,43 @@ export function HeaderClient({ data }: HeaderClientProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerTheme])
 
+  const { navLinks, megaMenu, mobileMenu } = HeaderNav({
+    data,
+    isScrolled,
+    openDropdown,
+    setOpenDropdown,
+    isMobileMenuOpen,
+    setIsMobileMenuOpen,
+  })
+
+  const isMegaMenuVisible =
+    openDropdown !== null && data.tabs?.[openDropdown] && data.tabs[openDropdown].enableDropdown
+
   return (
-    <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-8 flex justify-between">
-        <Link href="/">
-          <Logo loading="eager" priority="high" className="invert dark:invert-0" />
-        </Link>
-        <HeaderNav data={data} />
-      </div>
+    <header
+      className="fixed top-0 left-0 right-0 z-50 w-full"
+      {...(theme ? { 'data-theme': theme } : {})}
+    >
+      <HeaderBar
+        isScrolled={isScrolled}
+        openDropdown={openDropdown}
+        isMobileMenuOpen={isMobileMenuOpen}
+        navLinks={navLinks}
+      />
+
+      {/* MegaMenu Area (Behind) */}
+      {megaMenu}
+
+      {/* Mobile Menu Modal (Separate from bar context) */}
+      {mobileMenu}
+
+      {/* Global Backdrop Blur - Only for Dropdowns */}
+      <div
+        className={cn(
+          'fixed inset-0 bg-black/40 backdrop-blur-sm transition-all duration-500 pointer-events-none -z-10',
+          isMegaMenuVisible ? 'opacity-100' : 'opacity-0 invisible',
+        )}
+      />
     </header>
   )
 }

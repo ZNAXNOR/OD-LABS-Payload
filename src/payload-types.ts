@@ -607,17 +607,139 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
-  navItems?:
+  tabs?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          url?: string | null;
-          label: string;
+        label: string;
+        enableDirectLink?: boolean | null;
+        enableDropdown?: boolean | null;
+        directLink?: {
+          link?: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'legal';
+                  value: number | Legal;
+                } | null)
+              | ({
+                  relationTo: 'services';
+                  value: number | Service;
+                } | null);
+            url?: string | null;
+          };
+        };
+        dropdown?: {
+          description?: string | null;
+          descriptionLinks?:
+            | {
+                link: {
+                  type?: ('reference' | 'custom') | null;
+                  newTab?: boolean | null;
+                  reference?:
+                    | ({
+                        relationTo: 'legal';
+                        value: number | Legal;
+                      } | null)
+                    | ({
+                        relationTo: 'services';
+                        value: number | Service;
+                      } | null);
+                  url?: string | null;
+                  label: string;
+                };
+                id?: string | null;
+              }[]
+            | null;
+          navItems?:
+            | {
+                style?: ('default' | 'featured' | 'list') | null;
+                defaultLink?: {
+                  link: {
+                    type?: ('reference' | 'custom') | null;
+                    newTab?: boolean | null;
+                    reference?:
+                      | ({
+                          relationTo: 'legal';
+                          value: number | Legal;
+                        } | null)
+                      | ({
+                          relationTo: 'services';
+                          value: number | Service;
+                        } | null);
+                    url?: string | null;
+                    label: string;
+                  };
+                  description?: string | null;
+                };
+                featuredLink?: {
+                  tag?: string | null;
+                  label?: string | null;
+                  links?:
+                    | {
+                        link: {
+                          type?: ('reference' | 'custom') | null;
+                          newTab?: boolean | null;
+                          reference?:
+                            | ({
+                                relationTo: 'legal';
+                                value: number | Legal;
+                              } | null)
+                            | ({
+                                relationTo: 'services';
+                                value: number | Service;
+                              } | null);
+                          url?: string | null;
+                          label: string;
+                        };
+                        id?: string | null;
+                      }[]
+                    | null;
+                };
+                listLinks?: {
+                  tag?: string | null;
+                  links?:
+                    | {
+                        link: {
+                          type?: ('reference' | 'custom') | null;
+                          newTab?: boolean | null;
+                          reference?:
+                            | ({
+                                relationTo: 'legal';
+                                value: number | Legal;
+                              } | null)
+                            | ({
+                                relationTo: 'services';
+                                value: number | Service;
+                              } | null);
+                          url?: string | null;
+                          label: string;
+                        };
+                        id?: string | null;
+                      }[]
+                    | null;
+                };
+                id?: string | null;
+              }[]
+            | null;
         };
         id?: string | null;
       }[]
     | null;
+  menuCta: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'legal';
+          value: number | Legal;
+        } | null)
+      | ({
+          relationTo: 'services';
+          value: number | Service;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -626,18 +748,112 @@ export interface Header {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
-  navItems?:
+  tabs?:
     | T
     | {
-        link?:
+        label?: T;
+        enableDirectLink?: T;
+        enableDropdown?: T;
+        directLink?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              url?: T;
-              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                  };
+            };
+        dropdown?:
+          | T
+          | {
+              description?: T;
+              descriptionLinks?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                        };
+                    id?: T;
+                  };
+              navItems?:
+                | T
+                | {
+                    style?: T;
+                    defaultLink?:
+                      | T
+                      | {
+                          link?:
+                            | T
+                            | {
+                                type?: T;
+                                newTab?: T;
+                                reference?: T;
+                                url?: T;
+                                label?: T;
+                              };
+                          description?: T;
+                        };
+                    featuredLink?:
+                      | T
+                      | {
+                          tag?: T;
+                          label?: T;
+                          links?:
+                            | T
+                            | {
+                                link?:
+                                  | T
+                                  | {
+                                      type?: T;
+                                      newTab?: T;
+                                      reference?: T;
+                                      url?: T;
+                                      label?: T;
+                                    };
+                                id?: T;
+                              };
+                        };
+                    listLinks?:
+                      | T
+                      | {
+                          tag?: T;
+                          links?:
+                            | T
+                            | {
+                                link?:
+                                  | T
+                                  | {
+                                      type?: T;
+                                      newTab?: T;
+                                      reference?: T;
+                                      url?: T;
+                                      label?: T;
+                                    };
+                                id?: T;
+                              };
+                        };
+                    id?: T;
+                  };
             };
         id?: T;
+      };
+  menuCta?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
       };
   updatedAt?: T;
   createdAt?: T;

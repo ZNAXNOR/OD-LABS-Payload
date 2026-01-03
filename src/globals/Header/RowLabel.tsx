@@ -1,13 +1,18 @@
 'use client'
-import { Header } from '@/payload-types'
 import { useRowLabel } from '@payloadcms/ui'
 
 export function RowLabel() {
-  const data = useRowLabel<NonNullable<Header['navItems']>[number]>()
+  const { data, rowNumber } = useRowLabel<any>()
+  const label = data?.label || `Tab ${rowNumber !== undefined ? rowNumber + 1 : ''}`
+  return <div>{label}</div>
+}
 
-  const label = data?.data?.link?.label
-    ? `Nav item ${data.rowNumber !== undefined ? data.rowNumber + 1 : ''}: ${data?.data?.link?.label}`
-    : 'Row'
-
+export function NavItemRowLabel() {
+  const { data, rowNumber } = useRowLabel<any>()
+  const label =
+    data?.defaultLink?.link?.label ||
+    data?.featuredLink?.label ||
+    data?.listLinks?.tag ||
+    `Item ${rowNumber !== undefined ? rowNumber + 1 : ''}`
   return <div>{label}</div>
 }

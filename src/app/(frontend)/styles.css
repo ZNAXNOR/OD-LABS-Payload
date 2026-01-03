@@ -47,6 +47,8 @@
     --success: 196 52% 74%;
     --warning: 34 89% 85%;
     --error: 10 100% 86%;
+
+    --brand-primary: #e94235;
   }
 
   [data-theme='dark'] {
@@ -100,4 +102,16 @@ html {
 html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
+}
+
+@layer components {
+  /* Custom Glassmorphism Card */
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-2xl;
+  }
+
+  /* Custom Brand Button */
+  .btn-brand {
+    @apply bg-brand-primary text-white font-bold px-6 py-2.5 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg shadow-brand-primary/20;
+  }
 }
