@@ -11,6 +11,7 @@ import { Providers } from '@/providers'
 import { AdminBar } from '@/components/AdminBar'
 
 import { draftMode } from 'next/headers'
+import { Footer } from '@/globals/Footer/Component'
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',
@@ -38,7 +39,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
           <Header />
           {children}
-          {/* <Footer /> */}
+          <Footer />
         </Providers>
       </body>
     </html>

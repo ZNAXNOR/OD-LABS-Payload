@@ -16,6 +16,7 @@ import { Legal } from './pages/Legal'
 
 // Globals
 import { Header } from './globals/Header/config'
+import { Footer } from './globals/Footer/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -32,7 +33,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Services, Legal],
-  globals: [Header],
+  globals: [Header, Footer],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

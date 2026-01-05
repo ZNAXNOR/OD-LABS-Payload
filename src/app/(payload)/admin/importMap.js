@@ -27,6 +27,7 @@ import { FolderField as FolderField_ab83ff7e88da8d3530831f296ec4756a } from '@pa
 import { FolderTypeField as FolderTypeField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { NavItemRowLabel as NavItemRowLabel_128d150653f0c42e15fa949c89900850 } from 'src/globals/Header/RowLabel'
 import { RowLabel as RowLabel_128d150653f0c42e15fa949c89900850 } from 'src/globals/Header/RowLabel'
+import { RowLabel as RowLabel_e5f2ea2a3ff3620de63526e885e3b034 } from '@/globals/Footer/RowLabel'
 import { CollectionCards as CollectionCards_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 
 export const importMap = {
@@ -59,5 +60,6 @@ export const importMap = {
   "@payloadcms/ui#FolderTypeField": FolderTypeField_3817bf644402e67bfe6577f60ef982de,
   "src/globals/Header/RowLabel#NavItemRowLabel": NavItemRowLabel_128d150653f0c42e15fa949c89900850,
   "src/globals/Header/RowLabel#RowLabel": RowLabel_128d150653f0c42e15fa949c89900850,
+  "@/globals/Footer/RowLabel#RowLabel": RowLabel_e5f2ea2a3ff3620de63526e885e3b034,
   "@payloadcms/ui/rsc#CollectionCards": CollectionCards_ab83ff7e88da8d3530831f296ec4756a
 }

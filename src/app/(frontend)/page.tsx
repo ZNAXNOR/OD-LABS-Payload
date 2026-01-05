@@ -155,26 +155,6 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="py-12 border-t mt-auto">
-        <div className="container px-4 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center gap-8">
-            <span className="font-bold text-xl">OD Labs</span>
-            <div className="flex gap-6 text-sm text-muted-foreground">
-              <CMSLink url="/legal/privacy" appearance="link">
-                Privacy Policy
-              </CMSLink>
-              <CMSLink url="/legal/terms" appearance="link">
-                Terms & Conditions
-              </CMSLink>
-            </div>
-          </div>
-          <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} OD Labs. Built with Payload CMS.
-          </p>
-        </div>
-      </footer>
     </div>
   )
 }
