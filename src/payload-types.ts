@@ -69,8 +69,11 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    services: Service;
-    legal: Legal;
+    pages: Page;
+    blogs: BlogPage;
+    services: ServicePage;
+    legal: LegalPage;
+    contacts: ContactPage;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
@@ -85,8 +88,11 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    blogs: BlogsSelect<false> | BlogsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     legal: LegalSelect<false> | LegalSelect<true>;
+    contacts: ContactsSelect<false> | ContactsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -100,10 +106,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    contact: Contact;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    contact: ContactSelect<false> | ContactSelect<true>;
   };
   locale: null;
   user: User & {
@@ -277,9 +285,61 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  slug?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs".
+ */
+export interface BlogPage {
+  id: number;
+  title: string;
+  slug?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "services".
  */
-export interface Service {
+export interface ServicePage {
   id: number;
   title: string;
   slug?: string | null;
@@ -305,7 +365,33 @@ export interface Service {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "legal".
  */
-export interface Legal {
+export interface LegalPage {
+  id: number;
+  title: string;
+  slug?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts".
+ */
+export interface ContactPage {
   id: number;
   title: string;
   slug?: string | null;
@@ -360,12 +446,24 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'blogs';
+        value: number | BlogPage;
+      } | null)
+    | ({
         relationTo: 'services';
-        value: number | Service;
+        value: number | ServicePage;
       } | null)
     | ({
         relationTo: 'legal';
-        value: number | Legal;
+        value: number | LegalPage;
+      } | null)
+    | ({
+        relationTo: 'contacts';
+        value: number | ContactPage;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -531,6 +629,28 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs_select".
+ */
+export interface BlogsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "services_select".
  */
 export interface ServicesSelect<T extends boolean = true> {
@@ -545,6 +665,17 @@ export interface ServicesSelect<T extends boolean = true> {
  * via the `definition` "legal_select".
  */
 export interface LegalSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts_select".
+ */
+export interface ContactsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   content?: T;
@@ -620,12 +751,24 @@ export interface Header {
             newTab?: boolean | null;
             reference?:
               | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'blogs';
+                  value: number | BlogPage;
+                } | null)
+              | ({
                   relationTo: 'legal';
-                  value: number | Legal;
+                  value: number | LegalPage;
                 } | null)
               | ({
                   relationTo: 'services';
-                  value: number | Service;
+                  value: number | ServicePage;
+                } | null)
+              | ({
+                  relationTo: 'contacts';
+                  value: number | ContactPage;
                 } | null);
             url?: string | null;
           };
@@ -639,12 +782,24 @@ export interface Header {
                   newTab?: boolean | null;
                   reference?:
                     | ({
+                        relationTo: 'pages';
+                        value: number | Page;
+                      } | null)
+                    | ({
+                        relationTo: 'blogs';
+                        value: number | BlogPage;
+                      } | null)
+                    | ({
                         relationTo: 'legal';
-                        value: number | Legal;
+                        value: number | LegalPage;
                       } | null)
                     | ({
                         relationTo: 'services';
-                        value: number | Service;
+                        value: number | ServicePage;
+                      } | null)
+                    | ({
+                        relationTo: 'contacts';
+                        value: number | ContactPage;
                       } | null);
                   url?: string | null;
                   label: string;
@@ -661,12 +816,24 @@ export interface Header {
                     newTab?: boolean | null;
                     reference?:
                       | ({
+                          relationTo: 'pages';
+                          value: number | Page;
+                        } | null)
+                      | ({
+                          relationTo: 'blogs';
+                          value: number | BlogPage;
+                        } | null)
+                      | ({
                           relationTo: 'legal';
-                          value: number | Legal;
+                          value: number | LegalPage;
                         } | null)
                       | ({
                           relationTo: 'services';
-                          value: number | Service;
+                          value: number | ServicePage;
+                        } | null)
+                      | ({
+                          relationTo: 'contacts';
+                          value: number | ContactPage;
                         } | null);
                     url?: string | null;
                     label: string;
@@ -683,12 +850,24 @@ export interface Header {
                           newTab?: boolean | null;
                           reference?:
                             | ({
+                                relationTo: 'pages';
+                                value: number | Page;
+                              } | null)
+                            | ({
+                                relationTo: 'blogs';
+                                value: number | BlogPage;
+                              } | null)
+                            | ({
                                 relationTo: 'legal';
-                                value: number | Legal;
+                                value: number | LegalPage;
                               } | null)
                             | ({
                                 relationTo: 'services';
-                                value: number | Service;
+                                value: number | ServicePage;
+                              } | null)
+                            | ({
+                                relationTo: 'contacts';
+                                value: number | ContactPage;
                               } | null);
                           url?: string | null;
                           label: string;
@@ -706,12 +885,24 @@ export interface Header {
                           newTab?: boolean | null;
                           reference?:
                             | ({
+                                relationTo: 'pages';
+                                value: number | Page;
+                              } | null)
+                            | ({
+                                relationTo: 'blogs';
+                                value: number | BlogPage;
+                              } | null)
+                            | ({
                                 relationTo: 'legal';
-                                value: number | Legal;
+                                value: number | LegalPage;
                               } | null)
                             | ({
                                 relationTo: 'services';
-                                value: number | Service;
+                                value: number | ServicePage;
+                              } | null)
+                            | ({
+                                relationTo: 'contacts';
+                                value: number | ContactPage;
                               } | null);
                           url?: string | null;
                           label: string;
@@ -732,12 +923,24 @@ export interface Header {
     newTab?: boolean | null;
     reference?:
       | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'blogs';
+          value: number | BlogPage;
+        } | null)
+      | ({
           relationTo: 'legal';
-          value: number | Legal;
+          value: number | LegalPage;
         } | null)
       | ({
           relationTo: 'services';
-          value: number | Service;
+          value: number | ServicePage;
+        } | null)
+      | ({
+          relationTo: 'contacts';
+          value: number | ContactPage;
         } | null);
     url?: string | null;
     label: string;
@@ -761,12 +964,24 @@ export interface Footer {
                 newTab?: boolean | null;
                 reference?:
                   | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'blogs';
+                      value: number | BlogPage;
+                    } | null)
+                  | ({
                       relationTo: 'legal';
-                      value: number | Legal;
+                      value: number | LegalPage;
                     } | null)
                   | ({
                       relationTo: 'services';
-                      value: number | Service;
+                      value: number | ServicePage;
+                    } | null)
+                  | ({
+                      relationTo: 'contacts';
+                      value: number | ContactPage;
                     } | null);
                 url?: string | null;
                 label: string;
@@ -774,6 +989,36 @@ export interface Footer {
               id?: string | null;
             }[]
           | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact".
+ */
+export interface Contact {
+  id: number;
+  columns?:
+    | {
+        label: string;
+        content: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
         id?: string | null;
       }[]
     | null;
@@ -919,6 +1164,22 @@ export interface FooterSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact_select".
+ */
+export interface ContactSelect<T extends boolean = true> {
+  columns?:
+    | T
+    | {
+        label?: T;
+        content?: T;
         id?: T;
       };
   updatedAt?: T;

@@ -19,9 +19,21 @@ const collectionLabels = {
     plural: 'Pages',
     singular: 'Page',
   },
-  posts: {
-    plural: 'Posts',
-    singular: 'Post',
+  blogs: {
+    plural: 'Blog Pages',
+    singular: 'Blog Page',
+  },
+  services: {
+    plural: 'Services Pages',
+    singular: 'Service Page',
+  },
+  legal: {
+    plural: 'Legal Pages',
+    singular: 'Legal Page',
+  },
+  contacts: {
+    plural: 'Contact Pages',
+    singular: 'Contact Page',
   },
   projects: {
     plural: 'Projects',
@@ -38,8 +50,8 @@ export function AdminBar(props: { adminBarProps?: PayloadAdminBarProps }) {
   const segments = useSelectedLayoutSegments()
   const [show, setShow] = useState(false)
   const collection = (
-    segments?.[1] && collectionLabels[segments[1] as keyof typeof collectionLabels]
-      ? segments[1]
+    segments?.[0] && collectionLabels[segments[0] as keyof typeof collectionLabels]
+      ? segments[0]
       : 'pages'
   ) as keyof typeof collectionLabels
   const router = useRouter()

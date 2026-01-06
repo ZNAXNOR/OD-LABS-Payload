@@ -1,7 +1,14 @@
 import type { CollectionConfig } from 'payload'
 
-export const Services: CollectionConfig = {
+export const ServicesPages: CollectionConfig = {
   slug: 'services',
+  typescript: {
+    interface: 'ServicePage',
+  },
+  labels: {
+    singular: 'Service Page',
+    plural: 'Service Pages',
+  },
   admin: {
     useAsTitle: 'title',
     group: 'Pages',

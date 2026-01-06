@@ -3,7 +3,7 @@ import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
 
-import type { Legal, Service } from '@/payload-types'
+import type { Page, BlogPage, LegalPage, ServicePage, ContactPage } from '@/payload-types'
 
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
@@ -12,8 +12,8 @@ type CMSLinkType = {
   label?: string | null
   newTab?: boolean | null
   reference?: {
-    relationTo: 'services' | 'legal'
-    value: Service | Legal | string | number
+    relationTo: 'pages' | 'blogs' | 'legal' | 'services' | 'contacts'
+    value: Page | BlogPage | LegalPage | ServicePage | ContactPage | string | number
   } | null
   size?: ButtonProps['size'] | null
   type?: 'custom' | 'reference' | null
@@ -37,9 +37,7 @@ export function CMSLink(props: CMSLinkType) {
 
   const href =
     type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
-      ? `${reference?.relationTo !== 'services' ? `/${reference?.relationTo}` : '/services'}/${
-          reference.value.slug
-        }`
+      ? `/${reference.relationTo}/${reference.value.slug}`
       : url
 
   if (!href) return null

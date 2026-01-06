@@ -1,13 +1,13 @@
 import type { CollectionConfig } from 'payload'
 
-export const LegalPages: CollectionConfig = {
-  slug: 'legal',
+export const ContactPages: CollectionConfig = {
+  slug: 'contacts',
   typescript: {
-    interface: 'LegalPage',
+    interface: 'ContactPage',
   },
   labels: {
-    singular: 'Legal Page',
-    plural: 'Legal Pages',
+    singular: 'Contact Page',
+    plural: 'Contact Pages',
   },
   admin: {
     useAsTitle: 'title',
