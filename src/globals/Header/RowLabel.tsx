@@ -1,18 +1,15 @@
 'use client'
-import { useRowLabel } from '@payloadcms/ui'
+import { GenericRowLabel } from '@/components/RowLabel'
 
-export function RowLabel() {
-  const { data, rowNumber } = useRowLabel<any>()
-  const label = data?.label || `Tab ${rowNumber !== undefined ? rowNumber + 1 : ''}`
-  return <div>{label}</div>
+export const RowLabel = () => {
+  return <GenericRowLabel fields={['label']} prefix="Tab" />
 }
 
-export function NavItemRowLabel() {
-  const { data, rowNumber } = useRowLabel<any>()
-  const label =
-    data?.defaultLink?.link?.label ||
-    data?.featuredLink?.label ||
-    data?.listLinks?.tag ||
-    `Item ${rowNumber !== undefined ? rowNumber + 1 : ''}`
-  return <div>{label}</div>
+export const NavItemRowLabel = () => {
+  return (
+    <GenericRowLabel
+      fields={['defaultLink.link.label', 'featuredLink.label', 'listLinks.tag']}
+      prefix="Item"
+    />
+  )
 }

@@ -25,9 +25,11 @@ import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f
 import { FolderTableCell as FolderTableCell_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 import { FolderField as FolderField_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 import { FolderTypeField as FolderTypeField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
-import { NavItemRowLabel as NavItemRowLabel_128d150653f0c42e15fa949c89900850 } from 'src/globals/Header/RowLabel'
-import { RowLabel as RowLabel_128d150653f0c42e15fa949c89900850 } from 'src/globals/Header/RowLabel'
+import { NavItemRowLabel as NavItemRowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
+import { RowLabel as RowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
 import { RowLabel as RowLabel_e5f2ea2a3ff3620de63526e885e3b034 } from '@/globals/Footer/RowLabel'
+import { default as default_d84be1e5f36447d6591237ff3ab5b444 } from '@/components/UniqueSelect'
+import { SocialMediaRowLabel as SocialMediaRowLabel_29026d598ab3a4a634d5808f990deaa5 } from '@/globals/Contact/RowLabels'
 import { CollectionCards as CollectionCards_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 
 export const importMap = {
@@ -58,8 +60,10 @@ export const importMap = {
   "@payloadcms/ui/rsc#FolderTableCell": FolderTableCell_ab83ff7e88da8d3530831f296ec4756a,
   "@payloadcms/ui/rsc#FolderField": FolderField_ab83ff7e88da8d3530831f296ec4756a,
   "@payloadcms/ui#FolderTypeField": FolderTypeField_3817bf644402e67bfe6577f60ef982de,
-  "src/globals/Header/RowLabel#NavItemRowLabel": NavItemRowLabel_128d150653f0c42e15fa949c89900850,
-  "src/globals/Header/RowLabel#RowLabel": RowLabel_128d150653f0c42e15fa949c89900850,
+  "@/globals/Header/RowLabel#NavItemRowLabel": NavItemRowLabel_17c6ef4bfe47bfa29d923fb5718170b7,
+  "@/globals/Header/RowLabel#RowLabel": RowLabel_17c6ef4bfe47bfa29d923fb5718170b7,
   "@/globals/Footer/RowLabel#RowLabel": RowLabel_e5f2ea2a3ff3620de63526e885e3b034,
+  "@/components/UniqueSelect#default": default_d84be1e5f36447d6591237ff3ab5b444,
+  "@/globals/Contact/RowLabels#SocialMediaRowLabel": SocialMediaRowLabel_29026d598ab3a4a634d5808f990deaa5,
   "@payloadcms/ui/rsc#CollectionCards": CollectionCards_ab83ff7e88da8d3530831f296ec4756a
 }

@@ -1,32 +1,24 @@
 import type { GlobalConfig } from 'payload'
 
-import { link } from '@/fields/link'
+import { revalidateContactGlobal } from './hooks/revalidateContact'
+import { authenticated } from '@/access/authenticated'
+
+import { SocialMediaTab } from './tabs/SocialMedia'
 
 export const ContactGlobal: GlobalConfig = {
   slug: 'contact',
   access: {
     read: () => true,
+    update: authenticated,
   },
-  label: {
-    singular: 'Contact Global',
-    plural: 'Contact Globals',
-  },
+  label: 'Contact Global',
   fields: [
     {
-      name: 'columns',
-      type: 'array',
-      fields: [
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'content',
-          type: 'richText',
-          required: true,
-        },
-      ],
+      type: 'tabs',
+      tabs: [SocialMediaTab],
     },
   ],
+  hooks: {
+    afterChange: [revalidateContactGlobal],
+  },
 }

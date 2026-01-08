@@ -10,14 +10,15 @@ export const Header: GlobalConfig = {
     read: () => true,
     update: authenticated,
   },
+  label: 'Header',
   fields: [
     {
       name: 'tabs',
-      dbName: 'h_tabs',
+      dbName: 'header_tabs',
       type: 'array',
       admin: {
         components: {
-          RowLabel: 'src/globals/Header/RowLabel#RowLabel',
+          RowLabel: '@/globals/Header/RowLabel#RowLabel',
         },
       },
       fields: [
@@ -71,7 +72,7 @@ export const Header: GlobalConfig = {
             },
             {
               name: 'descriptionLinks',
-              dbName: 'h_dlnks',
+              dbName: 'header_description',
               type: 'array',
               fields: [
                 link({
@@ -81,11 +82,11 @@ export const Header: GlobalConfig = {
             },
             {
               name: 'navItems',
-              dbName: 'h_nav',
+              dbName: 'header_nav_items',
               type: 'array',
               admin: {
                 components: {
-                  RowLabel: 'src/globals/Header/RowLabel#NavItemRowLabel',
+                  RowLabel: '@/globals/Header/RowLabel#NavItemRowLabel',
                 },
               },
               fields: [
@@ -118,7 +119,7 @@ export const Header: GlobalConfig = {
                     { name: 'label', type: 'text' },
                     {
                       name: 'links',
-                      dbName: 'h_flnks',
+                      dbName: 'header_featured',
                       type: 'array',
                       fields: [link({ appearances: false })],
                     },
@@ -134,7 +135,7 @@ export const Header: GlobalConfig = {
                     { name: 'tag', type: 'text' },
                     {
                       name: 'links',
-                      dbName: 'h_llnks',
+                      dbName: 'header_list',
                       type: 'array',
                       fields: [link({ appearances: false })],
                     },

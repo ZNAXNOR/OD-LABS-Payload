@@ -6,6 +6,9 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import dotenv from 'dotenv'
 
+// Plugins
+import { plugins } from './plugins'
+
 // Collections
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -49,5 +52,5 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [],
+  plugins,
 })
