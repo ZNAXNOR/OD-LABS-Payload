@@ -21,7 +21,18 @@ const generateURL: GenerateURL<Page | BlogPage | ServicePage | LegalPage | Conta
   return doc?.slug ? `${url}/${doc.slug}` : url
 }
 
+import { dashboardAnalytics } from 'payload-dashboard-analytics'
+import path from 'path'
+
 export const plugins: Plugin[] = [
+  dashboardAnalytics({
+    provider: {
+      source: 'google',
+      propertyId: process.env.GA_PROPERTY_ID || '',
+      credentials: path.resolve(process.cwd(), process.env.GA_CREDENTIALS_PATH || ''),
+    },
+    cache: true,
+  }),
   seoPlugin({
     generateTitle,
     generateURL,

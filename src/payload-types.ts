@@ -74,6 +74,7 @@ export interface Config {
     services: ServicePage;
     legal: LegalPage;
     contacts: ContactPage;
+    analyticsData: AnalyticsDatum;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
@@ -95,6 +96,7 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     legal: LegalSelect<false> | LegalSelect<true>;
     contacts: ContactsSelect<false> | ContactsSelect<true>;
+    analyticsData: AnalyticsDataSelect<false> | AnalyticsDataSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -626,6 +628,26 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analyticsData".
+ */
+export interface AnalyticsDatum {
+  id: number;
+  cacheKey?: string | null;
+  cacheTimestamp?: string | null;
+  data?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
@@ -692,6 +714,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contacts';
         value: number | ContactPage;
+      } | null)
+    | ({
+        relationTo: 'analyticsData';
+        value: number | AnalyticsDatum;
       } | null)
     | ({
         relationTo: 'forms';
@@ -926,6 +952,17 @@ export interface ContactsSelect<T extends boolean = true> {
         enableSidebar?: T;
         content?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analyticsData_select".
+ */
+export interface AnalyticsDataSelect<T extends boolean = true> {
+  cacheKey?: T;
+  cacheTimestamp?: T;
+  data?: T;
   updatedAt?: T;
   createdAt?: T;
 }

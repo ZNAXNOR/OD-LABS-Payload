@@ -38,6 +38,57 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname, '..'),
     },
+    dashboard: {
+      widgets: [
+        {
+          slug: 'viewsChart',
+          ComponentPath: 'payload-dashboard-analytics/ui#GlobalViewsChart',
+          minWidth: 'full',
+        },
+        {
+          slug: 'topPages',
+          ComponentPath: 'payload-dashboard-analytics/ui#TopPages',
+          minWidth: 'full',
+        },
+        {
+          slug: 'infrastructure',
+          ComponentPath: 'src/components/DashboardCollections#DashboardCollections',
+          minWidth: 'full',
+        },
+        {
+          slug: 'pages',
+          ComponentPath: 'src/components/DashboardCollections#DashboardCollections',
+          minWidth: 'full',
+        },
+        {
+          slug: 'globals',
+          ComponentPath: 'src/components/DashboardCollections#DashboardCollections',
+          minWidth: 'full',
+        },
+      ],
+      defaultLayout: [
+        {
+          widgetSlug: 'viewsChart',
+          width: 'full',
+        },
+        {
+          widgetSlug: 'topPages',
+          width: 'full',
+        },
+        {
+          widgetSlug: 'infrastructure',
+          width: 'full',
+        },
+        {
+          widgetSlug: 'pages',
+          width: 'full',
+        },
+        {
+          widgetSlug: 'globals',
+          width: 'full',
+        },
+      ],
+    },
   },
   collections: [Users, Media, Pages, BlogPages, ServicesPages, LegalPages, ContactPages],
   globals: [Header, Footer, ContactGlobal],
