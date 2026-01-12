@@ -13,7 +13,7 @@ import { AdminBar } from '@/components/AdminBar'
 import { draftMode } from 'next/headers'
 import { Footer } from '@/globals/Footer/Component'
 
-import { GoogleAnalytics } from '@/components/GoogleAnalytics'
+import { GoogleAnalytics } from '@/app/(frontend)/GoogleAnalytics'
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',

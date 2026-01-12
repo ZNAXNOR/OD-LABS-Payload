@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateContact, revalidateDelete } from './hooks/revalidateContacts'
 
 export const ContactPages: CollectionConfig = {
   slug: 'contacts',
@@ -15,6 +16,13 @@ export const ContactPages: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  versions: {
+    drafts: true,
+  },
+  hooks: {
+    afterChange: [revalidateContact],
+    afterDelete: [revalidateDelete],
   },
   fields: [
     {

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { getPayload } from 'payload'
 import React from 'react'
 import config from '@/payload.config'
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/CMSLink'
 import { ArrowRight, CheckCircle2, ShieldCheck, Zap } from 'lucide-react'
 
 export default async function HomePage() {
@@ -25,7 +25,7 @@ export default async function HomePage() {
         {/* Abstract Background Image */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <Image
-            src="/hero.png"
+            src="/media/hero.jpg"
             alt="Premium Hero"
             fill
             className="object-cover scale-110 animate-pulse duration-[10000ms] opacity-60"

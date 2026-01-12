@@ -1,5 +1,5 @@
 import type { Header as HeaderType } from '@/payload-types'
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/CMSLink'
 import { ArrowRight } from 'lucide-react'
 import { cn } from '@/utilities/ui'
 

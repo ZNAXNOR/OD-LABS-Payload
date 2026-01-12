@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import type { Header as HeaderType } from '@/payload-types'
 import { MobileMenuToggle, MobileMenuModal } from './Mobile'
 import { DesktopNavLinks, DesktopMegaMenu } from './Desktop'
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/CMSLink'
 import { cn } from '@/utilities/ui'
 import { usePathname } from 'next/navigation'
 

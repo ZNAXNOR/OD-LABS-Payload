@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateLegal, revalidateDelete } from './hooks/revalidateLegal'
 
 export const LegalPages: CollectionConfig = {
   slug: 'legal',
@@ -15,6 +16,13 @@ export const LegalPages: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  versions: {
+    drafts: true,
+  },
+  hooks: {
+    afterChange: [revalidateLegal],
+    afterDelete: [revalidateDelete],
   },
   fields: [
     {

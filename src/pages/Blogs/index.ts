@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateBlog, revalidateDelete } from './hooks/revalidateBlogs'
 
 export const BlogPages: CollectionConfig = {
   slug: 'blogs',
@@ -15,6 +16,13 @@ export const BlogPages: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  versions: {
+    drafts: true,
+  },
+  hooks: {
+    afterChange: [revalidateBlog],
+    afterDelete: [revalidateDelete],
   },
   fields: [
     {
@@ -43,6 +51,15 @@ export const BlogPages: CollectionConfig = {
           },
         ],
       },
+    },
+    {
+      name: 'categories',
+      type: 'relationship',
+      admin: {
+        position: 'sidebar',
+      },
+      hasMany: true,
+      relationTo: 'categories',
     },
     {
       name: 'content',

@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateService, revalidateDelete } from './hooks/revalidateServices'
 
 export const ServicesPages: CollectionConfig = {
   slug: 'services',
@@ -15,6 +16,13 @@ export const ServicesPages: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  versions: {
+    drafts: true,
+  },
+  hooks: {
+    afterChange: [revalidateService],
+    afterDelete: [revalidateDelete],
   },
   fields: [
     {
@@ -43,6 +51,15 @@ export const ServicesPages: CollectionConfig = {
           },
         ],
       },
+    },
+    {
+      name: 'categories',
+      type: 'relationship',
+      admin: {
+        position: 'sidebar',
+      },
+      hasMany: true,
+      relationTo: 'categories',
     },
     {
       name: 'content',
