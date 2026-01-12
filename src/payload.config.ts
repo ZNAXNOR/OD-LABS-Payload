@@ -12,6 +12,7 @@ import { plugins } from './plugins'
 // Collections
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Categories } from './collections/Categories'
 
 // Pages
 import { Pages } from './pages/Pages'
@@ -24,6 +25,7 @@ import { ContactPages } from './pages/Contacts'
 import { Header } from './globals/Header/config'
 import { Footer } from './globals/Footer/config'
 import { ContactGlobal } from './globals/Contact/config'
+import { defaultLexical } from './fields/defaultLexical'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -90,9 +92,18 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, Pages, BlogPages, ServicesPages, LegalPages, ContactPages],
+  collections: [
+    Users,
+    Media,
+    Categories,
+    Pages,
+    BlogPages,
+    ServicesPages,
+    LegalPages,
+    ContactPages,
+  ],
   globals: [Header, Footer, ContactGlobal],
-  editor: lexicalEditor(),
+  editor: defaultLexical,
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
