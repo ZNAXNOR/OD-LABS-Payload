@@ -4,7 +4,7 @@ import { cn } from '@/utilities/ui'
 import React from 'react'
 import { RichText } from '@/components/RichText'
 
-import type { MediaBlock as MediaBlockProps } from '@/payload-types'
+import type { PayloadMediaBlock as MediaBlockProps } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 
@@ -59,7 +59,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
             captionClassName,
           )}
         >
-          <RichText data={caption} enableGutter={false} />
+          <RichText content={caption} />
         </div>
       )}
     </div>

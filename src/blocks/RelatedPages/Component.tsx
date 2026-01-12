@@ -4,7 +4,7 @@ import { RichText } from '@/components/RichText'
 
 import type { Page, BlogPage, ServicePage, LegalPage, ContactPage } from '@/payload-types'
 
-import { Card } from '@/components/ui/card'
+import { Card } from '@/components/Card'
 import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 export type RelatedPagesProps = {
@@ -18,7 +18,7 @@ export const RelatedPages: React.FC<RelatedPagesProps> = (props) => {
 
   return (
     <div className={clsx('lg:container', className)}>
-      {introContent && <RichText data={introContent} enableGutter={false} />}
+      {introContent && <RichText content={introContent} />}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 items-stretch">
         {docs?.map((doc, index) => {

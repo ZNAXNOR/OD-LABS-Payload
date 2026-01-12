@@ -29,7 +29,7 @@ export const ArchiveBlock: React.FC<
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
 
-    const flattenedCategories = categories?.map((category: string | { id: string }) => {
+    const flattenedCategories = categories?.map((category: any) => {
       if (typeof category === 'object') return category.id
       else return category
     })
@@ -67,7 +67,7 @@ export const ArchiveBlock: React.FC<
     <div className="my-16" id={`block-${id}`}>
       {introContent && (
         <div className="container mb-16">
-          <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
+          <RichText className="ms-0 max-w-[48rem]" content={introContent} />
         </div>
       )}
       <CollectionArchive posts={posts} />

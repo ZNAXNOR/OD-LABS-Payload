@@ -10,12 +10,15 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 
+import { Download } from '@/components/blocks/Download'
+
 const blockComponents = {
   archive: ArchiveBlock,
   banner: BannerBlock,
   code: CodeBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
+  downloadBlock: Download,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
 }
