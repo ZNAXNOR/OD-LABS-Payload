@@ -1,8 +1,4 @@
 ---
-trigger: always_on
----
-
----
 title: Field Type Guards
 description: Runtime field type checking and safe type narrowing
 tags: [payload, typescript, type-guards, fields]

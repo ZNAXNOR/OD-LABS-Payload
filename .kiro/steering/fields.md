@@ -1,9 +1,4 @@
 ---
-trigger: glob
-globs: Explains common field definitions and configuration patterns. Use as reference when defining or modifying collection fields.
----
-
----
 title: Fields
 description: Field types, patterns, and configurations
 tags: [payload, fields, validation, conditional]

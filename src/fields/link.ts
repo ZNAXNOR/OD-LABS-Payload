@@ -2,16 +2,20 @@ import type { Field, GroupField } from 'payload'
 
 import deepMerge from '@/utilities/deepMerge'
 
-export type LinkAppearances = 'default' | 'outline'
+export type LinkAppearances = 'default' | 'primary' | 'secondary'
 
 export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
   default: {
     label: 'Default',
     value: 'default',
   },
-  outline: {
-    label: 'Outline',
-    value: 'outline',
+  primary: {
+    label: 'Primary',
+    value: 'primary',
+  },
+  secondary: {
+    label: 'Secondary',
+    value: 'secondary',
   },
 }
 
@@ -75,7 +79,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
         condition: (_, siblingData) => siblingData?.type === 'reference',
       },
       label: 'Document to link to',
-      relationTo: ['pages', 'blogs', 'legal', 'services', 'contacts'],
+      relationTo: ['pages', 'blogs', 'services'],
       required: true,
     },
     {
@@ -118,7 +122,11 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
   }
 
   if (appearances !== false) {
-    let appearanceOptionsToUse = [appearanceOptions.default, appearanceOptions.outline]
+    let appearanceOptionsToUse = [
+      appearanceOptions.default,
+      appearanceOptions.primary,
+      appearanceOptions.secondary,
+    ]
 
     if (appearances) {
       appearanceOptionsToUse = appearances.map((appearance) => appearanceOptions[appearance])
@@ -137,3 +145,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 
   return deepMerge(linkResult, overrides)
 }
+
+// Export as linkField for use in blocks (matching design specification)
+export const linkField = link()

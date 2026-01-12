@@ -1,8 +1,4 @@
 ---
-trigger: always_on
----
-
----
 title: Payload CMS Overview
 description: Core principles and quick reference for Payload CMS development
 tags: [payload, overview, quickstart]

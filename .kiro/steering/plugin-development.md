@@ -1,9 +1,4 @@
 ---
-trigger: manual
-description: This Rule will apply
----
-
----
 title: Plugin Development
 description: Creating Payload CMS plugins with TypeScript patterns
 tags: [payload, plugins, architecture, patterns]

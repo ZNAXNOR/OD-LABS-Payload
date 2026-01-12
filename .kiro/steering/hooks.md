@@ -1,9 +1,4 @@
 ---
-trigger: model_decision
-description: Apply this rule when implementing or modifying lifecycle hooks (before/after create, update, delete). Use it only when hooks are relevant to the requested change.
----
-
----
 title: Hooks
 description: Collection hooks, field hooks, and context patterns
 tags: [payload, hooks, lifecycle, context]

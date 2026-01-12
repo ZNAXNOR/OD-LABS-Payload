@@ -1,9 +1,4 @@
 ---
-trigger: model_decision
-description: Use this rule when generating, optimizing, or reviewing Payload queries. Apply only if the task involves querying data, performance, or access filtering.
----
-
----
 title: Queries
 description: Local API, REST, and GraphQL query patterns
 tags: [payload, queries, local-api, rest, graphql]

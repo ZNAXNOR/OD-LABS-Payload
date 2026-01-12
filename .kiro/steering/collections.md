@@ -1,9 +1,4 @@
 ---
-trigger: glob
-globs: Defines global collection structure, relationships, and conventions. Use as reference to maintain schema consistency across the project.
----
-
----
 title: Collections
 description: Collection configurations and patterns
 tags: [payload, collections, auth, upload, drafts]

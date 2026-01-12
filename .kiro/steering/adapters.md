@@ -1,9 +1,4 @@
 ---
-trigger: glob
-globs: Provides project-wide guidance on adapter usage and integration patterns. Use as background context to ensure compatibility and correct infrastructure decisions.
----
-
----
 title: Database Adapters & Transactions
 description: Database adapters, storage, email, and transaction patterns
 tags: [payload, database, mongodb, postgres, sqlite, transactions]
