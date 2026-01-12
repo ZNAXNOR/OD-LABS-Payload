@@ -58,13 +58,13 @@ This implementation plan breaks down the creation of a comprehensive Pages colle
   - Handle circular reference detection
   - _Requirements: 3.2, 3.3, 3.4, 3.5_
 
-- [ ] 5. Create access control functions
+- [x] 5. Create access control functions
   - Verify `src/access/authenticated.ts` exists with authenticated check
   - Verify `src/access/authenticatedOrPublished.ts` exists
   - If missing, create authenticatedOrPublished function that returns true for authenticated users or query constraint `{ _status: { equals: 'published' } }` for public
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 6. Create main Pages collection
+- [x] 6. Create main Pages collection
   - Create `src/pages/Pages/index.ts` file
   - Import all blocks, hooks, and access functions
   - Define collection config with slug 'pages', interface 'Page'
