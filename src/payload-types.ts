@@ -1192,16 +1192,8 @@ export interface Header {
                   value: number | BlogPage;
                 } | null)
               | ({
-                  relationTo: 'legal';
-                  value: number | LegalPage;
-                } | null)
-              | ({
                   relationTo: 'services';
                   value: number | ServicePage;
-                } | null)
-              | ({
-                  relationTo: 'contacts';
-                  value: number | ContactPage;
                 } | null);
             url?: string | null;
           };
@@ -1223,16 +1215,8 @@ export interface Header {
                         value: number | BlogPage;
                       } | null)
                     | ({
-                        relationTo: 'legal';
-                        value: number | LegalPage;
-                      } | null)
-                    | ({
                         relationTo: 'services';
                         value: number | ServicePage;
-                      } | null)
-                    | ({
-                        relationTo: 'contacts';
-                        value: number | ContactPage;
                       } | null);
                   url?: string | null;
                   label: string;
@@ -1257,16 +1241,8 @@ export interface Header {
                           value: number | BlogPage;
                         } | null)
                       | ({
-                          relationTo: 'legal';
-                          value: number | LegalPage;
-                        } | null)
-                      | ({
                           relationTo: 'services';
                           value: number | ServicePage;
-                        } | null)
-                      | ({
-                          relationTo: 'contacts';
-                          value: number | ContactPage;
                         } | null);
                     url?: string | null;
                     label: string;
@@ -1291,16 +1267,8 @@ export interface Header {
                                 value: number | BlogPage;
                               } | null)
                             | ({
-                                relationTo: 'legal';
-                                value: number | LegalPage;
-                              } | null)
-                            | ({
                                 relationTo: 'services';
                                 value: number | ServicePage;
-                              } | null)
-                            | ({
-                                relationTo: 'contacts';
-                                value: number | ContactPage;
                               } | null);
                           url?: string | null;
                           label: string;
@@ -1326,16 +1294,8 @@ export interface Header {
                                 value: number | BlogPage;
                               } | null)
                             | ({
-                                relationTo: 'legal';
-                                value: number | LegalPage;
-                              } | null)
-                            | ({
                                 relationTo: 'services';
                                 value: number | ServicePage;
-                              } | null)
-                            | ({
-                                relationTo: 'contacts';
-                                value: number | ContactPage;
                               } | null);
                           url?: string | null;
                           label: string;
@@ -1364,16 +1324,8 @@ export interface Header {
           value: number | BlogPage;
         } | null)
       | ({
-          relationTo: 'legal';
-          value: number | LegalPage;
-        } | null)
-      | ({
           relationTo: 'services';
           value: number | ServicePage;
-        } | null)
-      | ({
-          relationTo: 'contacts';
-          value: number | ContactPage;
         } | null);
     url?: string | null;
     label: string;
@@ -1405,16 +1357,8 @@ export interface Footer {
                       value: number | BlogPage;
                     } | null)
                   | ({
-                      relationTo: 'legal';
-                      value: number | LegalPage;
-                    } | null)
-                  | ({
                       relationTo: 'services';
                       value: number | ServicePage;
-                    } | null)
-                  | ({
-                      relationTo: 'contacts';
-                      value: number | ContactPage;
                     } | null);
                 url?: string | null;
                 label: string;

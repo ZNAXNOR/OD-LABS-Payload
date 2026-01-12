@@ -12,7 +12,7 @@ This implementation plan breaks down the creation of a comprehensive Pages colle
   - Export as `linkField` for use in blocks
   - _Requirements: 2.1, 2.2_
 
-- [-] 2. Create content blocks
+- [x] 2. Create content blocks
   - [x] 2.1 Create Hero block
     - Define Hero block with type, richText, media, and links fields
     - Set slug to 'hero' and interfaceName to 'HeroBlock'
@@ -29,12 +29,12 @@ This implementation plan breaks down the creation of a comprehensive Pages colle
     - Set slug to 'cta' and interfaceName to 'CallToActionBlock'
     - _Requirements: 2.1, 2.2_
 
-  - [ ] 2.4 Create Media block
+  - [x] 2.4 Create Media block
     - Define Media block with position, media, and caption fields
     - Set slug to 'mediaBlock' and interfaceName to 'MediaBlock'
     - _Requirements: 2.1, 2.2_
 
-  - [ ] 2.5 Create Archive block
+  - [x] 2.5 Create Archive block
     - Define Archive block with introContent, populateBy, relationTo, categories, selectedDocs, and limit
     - Implement conditional field display based on populateBy value
     - Set slug to 'archive' and interfaceName to 'ArchiveBlock'
