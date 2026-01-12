@@ -1,31 +1,33 @@
 'use client'
 
-import React, { createContext, useCallback, use, useEffect, useState } from 'react'
+import canUseDom from '@/utilities/can-use-dom'
+import React, { createContext, use, useCallback, useEffect, useState } from 'react'
 
-import type { Theme, ThemeContextType } from './types'
+import type { Theme, ThemePreferenceContextType } from './types'
 
-import canUseDOM from '@/utilities/canUseDOM'
 import { defaultTheme, getImplicitPreference, themeLocalStorageKey } from './shared'
 import { themeIsValid } from './types'
 
-const initialContext: ThemeContextType = {
+const initialContext: ThemePreferenceContextType = {
   setTheme: () => null,
   theme: undefined,
 }
 
-const ThemeContext = createContext(initialContext)
+const ThemePreferenceContext = createContext(initialContext)
 
-export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const ThemePreferenceProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme | undefined>(
-    canUseDOM ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined,
+    canUseDom ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined,
   )
 
-  const setTheme = useCallback((themeToSet: Theme | null) => {
+  const setTheme = useCallback((themeToSet: null | Theme) => {
     if (themeToSet === null) {
       window.localStorage.removeItem(themeLocalStorageKey)
       const implicitPreference = getImplicitPreference()
       document.documentElement.setAttribute('data-theme', implicitPreference || '')
-      if (implicitPreference) setThemeState(implicitPreference)
+      if (implicitPreference) {
+        setThemeState(implicitPreference)
+      }
     } else {
       setThemeState(themeToSet)
       window.localStorage.setItem(themeLocalStorageKey, themeToSet)
@@ -51,7 +53,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     setThemeState(themeToSet)
   }, [])
 
-  return <ThemeContext value={{ setTheme, theme }}>{children}</ThemeContext>
+  return <ThemePreferenceContext value={{ setTheme, theme }}>{children}</ThemePreferenceContext>
 }
 
-export const useTheme = (): ThemeContextType => use(ThemeContext)
+export const useThemePreference = (): ThemePreferenceContextType => use(ThemePreferenceContext)

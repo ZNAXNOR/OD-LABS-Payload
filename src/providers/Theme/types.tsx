@@ -1,8 +1,8 @@
 export type Theme = 'dark' | 'light'
 
-export interface ThemeContextType {
-  setTheme: (theme: Theme | null) => void
-  theme?: Theme | null
+export interface ThemePreferenceContextType {
+  setTheme: (theme: null | Theme) => void
+  theme?: null | Theme
 }
 
 export function themeIsValid(string: null | string): string is Theme {

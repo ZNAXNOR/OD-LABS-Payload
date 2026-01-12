@@ -11,11 +11,11 @@ import React, { useState } from 'react'
 
 import type { Theme } from './types'
 
-import { useTheme } from '..'
-import { themeLocalStorageKey } from './types'
+import { useThemePreference } from '..'
+import { themeLocalStorageKey } from '../shared'
 
 export function ThemeSelector() {
-  const { setTheme } = useTheme()
+  const { setTheme } = useThemePreference()
   const [value, setValue] = useState('')
 
   const onThemeChange = (themeToSet: Theme & 'auto') => {

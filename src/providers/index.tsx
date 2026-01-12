@@ -2,7 +2,7 @@
 import React from 'react'
 
 import { HeaderThemeProvider } from './HeaderTheme'
-import { ThemeProvider } from './Theme'
+import { ThemePreferenceProvider as ThemeProvider } from './Theme'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
