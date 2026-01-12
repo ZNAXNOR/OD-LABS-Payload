@@ -38,6 +38,14 @@ export const Media: CollectionConfig = {
         },
       }),
     },
+    {
+      name: 'darkModeFallback',
+      type: 'upload',
+      admin: {
+        description: 'Choose a version of this image to use in dark mode (optional).',
+      },
+      relationTo: 'media',
+    },
   ],
   upload: {
     // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
