@@ -40,7 +40,7 @@ This implementation plan breaks down the creation of a comprehensive Pages colle
     - Set slug to 'archive' and interfaceName to 'ArchiveBlock'
     - _Requirements: 2.1, 2.2_
 
-- [ ] 3. Create revalidation hook
+- [x] 3. Create revalidation hook
   - Create `src/pages/Pages/hooks/revalidatePage.ts` file
   - Implement `revalidatePage` hook that calls Next.js `revalidatePath`
   - Handle published status changes (publish and unpublish)
