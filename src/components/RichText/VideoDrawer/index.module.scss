@@ -1,4 +1,4 @@
-@use '@scss/common' as *;
+@use '../../../css/common' as *;
 .videoDrawerToggler {
   @include btnReset;
   width: 100%;
@@ -60,11 +60,10 @@
       height: 0.5rem;
     }
   }
-}
-html[data-theme='light'] {
-  .videoDrawerToggler {
+  @include data-theme-selector('light') {
     background: var(--theme-elevation-100);
     border-bottom: 2px solid var(--theme-elevation-400);
+
     &:hover {
       background: var(--theme-elevation-150);
     }

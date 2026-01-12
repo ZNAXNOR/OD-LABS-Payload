@@ -51,6 +51,7 @@ export const DownloadBlock: Block = {
                 { label: 'Contain', value: 'contain' },
               ],
               required: true,
+              dbName: 'thumb_appearance',
             },
             {
               name: 'background',

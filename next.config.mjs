@@ -12,6 +12,9 @@ const nextConfig = {
 
     return webpackConfig
   },
+  sassOptions: {
+    includePaths: ['./src'],
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

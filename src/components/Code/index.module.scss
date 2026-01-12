@@ -1,4 +1,4 @@
-@use '@scss/common.scss' as *;
+@use '../../css/common' as *;
 
 $curve: cubic-bezier(0.165, 0.84, 0.44, 1);
 
@@ -26,109 +26,105 @@ $curve: cubic-bezier(0.165, 0.84, 0.44, 1);
   white-space: pre;
   word-spacing: normal;
   word-break: normal;
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
   tab-size: 4;
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
   hyphens: none;
   position: relative;
 
   @include dark-custom-scrollbar;
+}
 
-  :global {
-    .token.comment,
-    .token.prolog,
-    .token.doctype,
-    .token.cdata,
-    .token.punctuation {
-      color: var(--color-base-500);
-    }
-
-    .token.plain,
-    .token.atrule,
-    .token.attr-value,
-    .token.keyword {
-      color: var(--color-success-250);
-    }
-
-    .token.tag,
-    .token.boolean,
-    .token.number,
-    .token.constant,
-    .token.symbol,
-    .token.deleted {
-      color: var(--color-error-500);
-    }
-
-    .token.attr-name,
-    .token.char,
-    .token.builtin,
-    .token.inserted {
-      color: var(--color-base-100);
-    }
-
-    .token.operator,
-    .token.entity,
-    .token.url,
-    .language-css .token.string,
-    .style .token.string {
-      color: var(--color-base-500);
-    }
-
-    .token.selector,
-    .token-property,
-    .token.function {
-      color: var(--color-success-500);
-    }
-
-    .token.regex,
-    .token.important,
-    .token.variable,
-    .token.string,
-    .token.class-name {
-      color: var(--color-warning-500);
-    }
-
-    .token.important,
-    .token.bold {
-      font-weight: bold;
-    }
-
-    .token.italic {
-      font-style: italic;
-    }
-
-    .token.entity {
-      cursor: help;
-    }
-
-    .token-line {
-      display: block;
-      text-wrap: nowrap;
-    }
-
-    .token-line:not(:last-child) {
-      height: initial;
-      min-height: 1rem;
-    }
-  }
-
-  @include large-break {
+@include large-break {
+  .code {
     font-size: 13px;
   }
+}
 
-  @include mid-break {
+@include mid-break {
+  .code {
     padding: 1rem;
     font-size: 13px;
+  }
 
-    .highlight {
-      &:before {
-        right: calc(var(--gutter-h) * -1);
-        left: calc(var(--gutter-h) * -1);
-      }
-    }
+  .code .highlight::before {
+    right: calc(var(--gutter-h) * -1);
+    left: calc(var(--gutter-h) * -1);
+  }
+}
+
+// Prism tokens - using individual :global wrappers for Turbopack compatibility
+.code :global(.token.comment),
+.code :global(.token.prolog),
+.code :global(.token.doctype),
+.code :global(.token.cdata),
+.code :global(.token.punctuation) {
+  color: var(--color-base-500);
+}
+
+.code :global(.token.plain),
+.code :global(.token.atrule),
+.code :global(.token.attr-value),
+.code :global(.token.keyword) {
+  color: var(--color-success-250);
+}
+
+.code :global(.token.tag),
+.code :global(.token.boolean),
+.code :global(.token.number),
+.code :global(.token.constant),
+.code :global(.token.symbol),
+.code :global(.token.deleted) {
+  color: var(--color-error-500);
+}
+
+.code :global(.token.attr-name),
+.code :global(.token.char),
+.code :global(.token.builtin),
+.code :global(.token.inserted) {
+  color: var(--color-base-100);
+}
+
+.code :global(.token.operator),
+.code :global(.token.entity),
+.code :global(.token.url),
+.code :global(.language-css) :global(.token.string),
+.code :global(.style) :global(.token.string) {
+  color: var(--color-base-500);
+}
+
+.code :global(.token.selector),
+.code :global(.token-property),
+.code :global(.token.function) {
+  color: var(--color-success-500);
+}
+
+.code :global(.token.regex),
+.code :global(.token.important),
+.code :global(.token.variable),
+.code :global(.token.string),
+.code :global(.token.class-name) {
+  color: var(--color-warning-500);
+}
+
+.code :global(.token.important),
+.code :global(.token.bold) {
+  font-weight: bold;
+}
+
+.code :global(.token.italic) {
+  font-style: italic;
+}
+
+.code :global(.token.entity) {
+  cursor: help;
+}
+
+.code :global(.token-line) {
+  display: block;
+  white-space: nowrap;
+
+  &:not(:last-child) {
+    height: initial;
+    min-height: 1rem;
   }
 }
 
@@ -172,7 +168,7 @@ $curve: cubic-bezier(0.165, 0.84, 0.44, 1);
   display: inline-block;
 
   span {
-    text-wrap: nowrap;
+    white-space: nowrap;
   }
 }
 
@@ -183,8 +179,10 @@ $curve: cubic-bezier(0.165, 0.84, 0.44, 1);
   color: var(--theme-elevation-400);
   padding-right: 1.5rem;
   width: 2.5rem;
+}
 
-  @include mid-break {
+@include mid-break {
+  .lineNumber {
     display: none;
   }
 }

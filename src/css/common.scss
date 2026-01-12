@@ -1,0 +1,122 @@
+@mixin code {
+  font-family: var(--font-geist-mono), Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-size: 0.9rem;
+  line-height: 1.25;
+}
+
+@mixin label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+@mixin body {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@mixin large-body {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+@mixin h4 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+@mixin h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+@mixin small {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin extra-small-break {
+  @media (max-width: 576px) {
+    @content;
+  }
+}
+
+@mixin small-break {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin mid-break {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin large-break {
+  @media (max-width: 1440px) {
+    @content;
+  }
+}
+
+@mixin color-links {
+  a {
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s ease-in-out;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+@mixin outline {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+@mixin btnReset {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  appearance: none;
+}
+
+@mixin data-theme-selector($theme) {
+  :global([data-theme='#{$theme}']) & {
+    @content;
+  }
+}
+
+@mixin blur-bg {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@mixin dark-custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--theme-elevation-100);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--theme-elevation-400);
+    border-radius: 5px;
+
+    &:hover {
+      background: var(--theme-elevation-500);
+    }
+  }
+}

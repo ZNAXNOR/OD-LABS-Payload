@@ -47,11 +47,11 @@ export default buildConfig({
           ComponentPath: 'payload-dashboard-analytics/ui#GlobalViewsChart',
           minWidth: 'full',
         },
-        {
-          slug: 'topPages',
-          ComponentPath: 'payload-dashboard-analytics/ui#TopPages',
-          minWidth: 'full',
-        },
+        // {
+        //   slug: 'topPages',
+        //   ComponentPath: 'payload-dashboard-analytics/ui#TopPages',
+        //   minWidth: 'full',
+        // },
         {
           slug: 'infrastructure',
           ComponentPath: 'src/components/DashboardCollections#DashboardCollections',
@@ -73,10 +73,10 @@ export default buildConfig({
           widgetSlug: 'viewsChart',
           width: 'full',
         },
-        {
-          widgetSlug: 'topPages',
-          width: 'full',
-        },
+        // {
+        //   widgetSlug: 'topPages',
+        //   width: 'full',
+        // },
         {
           widgetSlug: 'infrastructure',
           width: 'full',
