@@ -41,15 +41,16 @@ export const Archive: Block = {
         condition: (_, siblingData) => siblingData?.populateBy === 'collection',
       },
     },
-    {
-      name: 'categories',
-      type: 'relationship',
-      relationTo: 'categories',
-      hasMany: true,
-      admin: {
-        condition: (_, siblingData) => siblingData?.populateBy === 'collection',
-      },
-    },
+    // Note: Categories field commented out - requires 'categories' collection to be created
+    // {
+    //   name: 'categories',
+    //   type: 'relationship',
+    //   relationTo: 'categories',
+    //   hasMany: true,
+    //   admin: {
+    //     condition: (_, siblingData) => siblingData?.populateBy === 'collection',
+    //   },
+    // },
     {
       name: 'selectedDocs',
       type: 'relationship',

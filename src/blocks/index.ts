@@ -1,5 +1,7 @@
 export { Hero } from './Hero'
 export { Content } from './Content'
 export { CallToAction } from './CallToAction'
-export { MediaBlock } from './MediaBlock'
+export { MediaBlock } from './MediaBlock/config'
 export { Archive } from './Archive'
+export { Banner } from './Banner/config'
+export { Code } from './Code/config'
