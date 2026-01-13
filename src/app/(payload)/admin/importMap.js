@@ -30,9 +30,6 @@ import { RowLabel as RowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals
 import { RowLabel as RowLabel_e5f2ea2a3ff3620de63526e885e3b034 } from '@/globals/Footer/RowLabel'
 import { default as default_d84be1e5f36447d6591237ff3ab5b444 } from '@/components/UniqueSelect'
 import { SocialMediaRowLabel as SocialMediaRowLabel_29026d598ab3a4a634d5808f990deaa5 } from '@/globals/Contact/RowLabels'
-import { GlobalViewsChart as GlobalViewsChart_53b23cf9cedcd349aa66a62552d1f083 } from 'payload-dashboard-analytics/ui'
-import { TopPages as TopPages_53b23cf9cedcd349aa66a62552d1f083 } from 'payload-dashboard-analytics/ui'
-import { DashboardCollections as DashboardCollections_c858c3da37493add0452314edf9756fe } from 'src/components/DashboardCollections'
 import { CollectionCards as CollectionCards_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 
 export const importMap = {
@@ -68,8 +65,5 @@ export const importMap = {
   "@/globals/Footer/RowLabel#RowLabel": RowLabel_e5f2ea2a3ff3620de63526e885e3b034,
   "@/components/UniqueSelect#default": default_d84be1e5f36447d6591237ff3ab5b444,
   "@/globals/Contact/RowLabels#SocialMediaRowLabel": SocialMediaRowLabel_29026d598ab3a4a634d5808f990deaa5,
-  "payload-dashboard-analytics/ui#GlobalViewsChart": GlobalViewsChart_53b23cf9cedcd349aa66a62552d1f083,
-  "payload-dashboard-analytics/ui#TopPages": TopPages_53b23cf9cedcd349aa66a62552d1f083,
-  "src/components/DashboardCollections#DashboardCollections": DashboardCollections_c858c3da37493add0452314edf9756fe,
   "@payloadcms/ui/rsc#CollectionCards": CollectionCards_ab83ff7e88da8d3530831f296ec4756a
 }

@@ -4,8 +4,10 @@ import type { CollectionConfig } from 'payload'
 import { Hero } from '@/blocks/Hero'
 import { Content } from '@/blocks/Content'
 import { CallToAction } from '@/blocks/CallToAction'
-import { MediaBlock } from '@/blocks/MediaBlock'
+import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { Archive } from '@/blocks/Archive'
+import { Banner } from '@/blocks/Banner/config'
+import { Code } from '@/blocks/Code/config'
 
 // Import hooks
 import { revalidatePage } from './hooks/revalidatePage'
@@ -115,7 +117,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [Hero, Content, CallToAction, MediaBlock, Archive],
+      blocks: [Hero, Content, CallToAction, MediaBlock, Archive, Banner, Code],
     },
   ],
 }

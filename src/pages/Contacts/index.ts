@@ -1,5 +1,14 @@
 import type { CollectionConfig } from 'payload'
 
+// Import hooks
+import { revalidateContact } from './hooks/revalidateContact'
+import { generateSlug } from './hooks/generateSlug'
+import { auditTrail } from './hooks/auditTrail'
+
+// Import access control functions
+import { authenticated } from '@/access/authenticated'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+
 export const ContactPages: CollectionConfig = {
   slug: 'contacts',
   typescript: {
@@ -11,10 +20,27 @@ export const ContactPages: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     group: 'Pages',
   },
   access: {
-    read: () => true,
+    create: authenticated,
+    read: authenticatedOrPublished,
+    update: authenticated,
+    delete: authenticated,
+  },
+  versions: {
+    drafts: {
+      autosave: true,
+      schedulePublish: true,
+      validate: false,
+    },
+    maxPerDoc: 50,
+  },
+  hooks: {
+    beforeValidate: [generateSlug],
+    beforeChange: [auditTrail],
+    afterChange: [revalidateContact],
   },
   fields: [
     {
@@ -29,19 +55,6 @@ export const ContactPages: CollectionConfig = {
       index: true,
       admin: {
         position: 'sidebar',
-      },
-      hooks: {
-        beforeValidate: [
-          ({ value, data }) => {
-            if (!value && data?.title) {
-              return data.title
-                .toLowerCase()
-                .replace(/ /g, '-')
-                .replace(/[^\w-]+/g, '')
-            }
-            return value
-          },
-        ],
       },
     },
     {
@@ -145,6 +158,23 @@ export const ContactPages: CollectionConfig = {
           ],
         },
       ],
+    },
+    // Audit trail fields (hidden from admin)
+    {
+      name: 'createdBy',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: {
+        hidden: true,
+      },
+    },
+    {
+      name: 'updatedBy',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: {
+        hidden: true,
+      },
     },
   ],
 }

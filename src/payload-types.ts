@@ -78,6 +78,7 @@ export interface Config {
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
+    'payload-jobs': PayloadJob;
     'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -100,6 +101,7 @@ export interface Config {
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
+    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -124,7 +126,13 @@ export interface Config {
     collection: 'users';
   };
   jobs: {
-    tasks: unknown;
+    tasks: {
+      schedulePublish: TaskSchedulePublish;
+      inline: {
+        input: unknown;
+        output: unknown;
+      };
+    };
     workflows: unknown;
   };
 }
@@ -297,7 +305,29 @@ export interface Page {
   id: number;
   title: string;
   slug?: string | null;
-  content?: {
+  parent?: (number | null) | Page;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Page;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  layout?:
+    | (HeroBlock | ContentBlock | CallToActionBlock | MediaBlock | ArchiveBlock | BannerBlock | CodeBlock)[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock".
+ */
+export interface HeroBlock {
+  type: 'default' | 'centered' | 'minimal';
+  richText: {
     root: {
       type: string;
       children: {
@@ -311,9 +341,47 @@ export interface Page {
       version: number;
     };
     [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
+  };
+  media?: (number | null) | Media;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'blogs';
+                value: number | BlogPage;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | ServicePage;
+              } | null)
+            | ({
+                relationTo: 'legal';
+                value: number | LegalPage;
+              } | null)
+            | ({
+                relationTo: 'contacts';
+                value: number | ContactPage;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'secondary' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -323,7 +391,11 @@ export interface BlogPage {
   id: number;
   title: string;
   slug?: string | null;
-  content?: {
+  /**
+   * Brief description of the blog post for previews and SEO
+   */
+  excerpt?: string | null;
+  content: {
     root: {
       type: string;
       children: {
@@ -337,9 +409,20 @@ export interface BlogPage {
       version: number;
     };
     [k: string]: unknown;
-  } | null;
+  };
+  publishedDate?: string | null;
+  author?: (number | null) | User;
+  tags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  createdBy?: (number | null) | User;
+  updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -349,7 +432,20 @@ export interface ServicePage {
   id: number;
   title: string;
   slug?: string | null;
-  content?: {
+  serviceType?: ('web-dev' | 'mobile-dev' | 'design' | 'consulting' | 'support' | 'marketing' | 'other') | null;
+  /**
+   * Feature this service on the homepage
+   */
+  featured?: boolean | null;
+  pricing?: {
+    /**
+     * Starting price for this service
+     */
+    startingPrice?: number | null;
+    currency?: ('USD' | 'EUR' | 'GBP' | 'INR') | null;
+    pricingModel?: ('fixed' | 'hourly' | 'monthly' | 'custom') | null;
+  };
+  content: {
     root: {
       type: string;
       children: {
@@ -363,9 +459,12 @@ export interface ServicePage {
       version: number;
     };
     [k: string]: unknown;
-  } | null;
+  };
+  createdBy?: (number | null) | User;
+  updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -375,7 +474,16 @@ export interface LegalPage {
   id: number;
   title: string;
   slug?: string | null;
-  content?: {
+  documentType?: ('privacy' | 'terms' | 'cookies' | 'gdpr' | 'disclaimer' | 'license' | 'other') | null;
+  /**
+   * When this legal document becomes effective
+   */
+  effectiveDate?: string | null;
+  /**
+   * Last modification date of this document
+   */
+  lastUpdated?: string | null;
+  content: {
     root: {
       type: string;
       children: {
@@ -389,9 +497,12 @@ export interface LegalPage {
       version: number;
     };
     [k: string]: unknown;
-  } | null;
+  };
+  createdBy?: (number | null) | User;
+  updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -449,8 +560,11 @@ export interface ContactPage {
       [k: string]: unknown;
     } | null;
   };
+  createdBy?: (number | null) | User;
+  updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -628,6 +742,213 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentBlock".
+ */
+export interface ContentBlock {
+  columns?:
+    | {
+        size: 'oneThird' | 'half' | 'twoThirds' | 'full';
+        richText?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        enableLink?: boolean | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'blogs';
+                value: number | BlogPage;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | ServicePage;
+              } | null)
+            | ({
+                relationTo: 'legal';
+                value: number | LegalPage;
+              } | null)
+            | ({
+                relationTo: 'contacts';
+                value: number | ContactPage;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'secondary' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock".
+ */
+export interface CallToActionBlock {
+  richText: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'blogs';
+                value: number | BlogPage;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | ServicePage;
+              } | null)
+            | ({
+                relationTo: 'legal';
+                value: number | LegalPage;
+              } | null)
+            | ({
+                relationTo: 'contacts';
+                value: number | ContactPage;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'secondary' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlock".
+ */
+export interface ArchiveBlock {
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  populateBy: 'collection' | 'selection';
+  relationTo?: ('blogs' | 'services') | null;
+  selectedDocs?:
+    | (
+        | {
+            relationTo: 'blogs';
+            value: number | BlogPage;
+          }
+        | {
+            relationTo: 'services';
+            value: number | ServicePage;
+          }
+      )[]
+    | null;
+  limit?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'archive';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlock".
+ */
+export interface BannerBlock {
+  style: 'info' | 'warning' | 'error' | 'success';
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'banner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CodeBlock".
+ */
+export interface CodeBlock {
+  language?: ('typescript' | 'javascript' | 'css') | null;
+  code: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "analyticsData".
  */
 export interface AnalyticsDatum {
@@ -679,6 +1000,98 @@ export interface PayloadKv {
     | number
     | boolean
     | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs".
+ */
+export interface PayloadJob {
+  id: number;
+  /**
+   * Input data provided to the job
+   */
+  input?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  taskStatus?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  completedAt?: string | null;
+  totalTried?: number | null;
+  /**
+   * If hasError is true this job will not be retried
+   */
+  hasError?: boolean | null;
+  /**
+   * If hasError is true, this is the error that caused it
+   */
+  error?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Task execution log
+   */
+  log?:
+    | {
+        executedAt: string;
+        completedAt: string;
+        taskSlug: 'inline' | 'schedulePublish';
+        taskID: string;
+        input?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        output?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        state: 'failed' | 'succeeded';
+        error?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  taskSlug?: ('inline' | 'schedulePublish') | null;
+  queue?: string | null;
+  waitUntil?: string | null;
+  processing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -896,9 +1309,147 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  content?: T;
+  parent?: T;
+  breadcrumbs?:
+    | T
+    | {
+        doc?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  layout?:
+    | T
+    | {
+        hero?: T | HeroBlockSelect<T>;
+        content?: T | ContentBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+        archive?: T | ArchiveBlockSelect<T>;
+        banner?: T | BannerBlockSelect<T>;
+        code?: T | CodeBlockSelect<T>;
+      };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock_select".
+ */
+export interface HeroBlockSelect<T extends boolean = true> {
+  type?: T;
+  richText?: T;
+  media?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentBlock_select".
+ */
+export interface ContentBlockSelect<T extends boolean = true> {
+  columns?:
+    | T
+    | {
+        size?: T;
+        richText?: T;
+        enableLink?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock_select".
+ */
+export interface CallToActionBlockSelect<T extends boolean = true> {
+  richText?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock_select".
+ */
+export interface MediaBlockSelect<T extends boolean = true> {
+  media?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlock_select".
+ */
+export interface ArchiveBlockSelect<T extends boolean = true> {
+  introContent?: T;
+  populateBy?: T;
+  relationTo?: T;
+  selectedDocs?: T;
+  limit?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlock_select".
+ */
+export interface BannerBlockSelect<T extends boolean = true> {
+  style?: T;
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CodeBlock_select".
+ */
+export interface CodeBlockSelect<T extends boolean = true> {
+  language?: T;
+  code?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -907,9 +1458,21 @@ export interface PagesSelect<T extends boolean = true> {
 export interface BlogsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  excerpt?: T;
   content?: T;
+  publishedDate?: T;
+  author?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  createdBy?: T;
+  updatedBy?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -918,9 +1481,21 @@ export interface BlogsSelect<T extends boolean = true> {
 export interface ServicesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  serviceType?: T;
+  featured?: T;
+  pricing?:
+    | T
+    | {
+        startingPrice?: T;
+        currency?: T;
+        pricingModel?: T;
+      };
   content?: T;
+  createdBy?: T;
+  updatedBy?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -929,9 +1504,15 @@ export interface ServicesSelect<T extends boolean = true> {
 export interface LegalSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  documentType?: T;
+  effectiveDate?: T;
+  lastUpdated?: T;
   content?: T;
+  createdBy?: T;
+  updatedBy?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -952,8 +1533,11 @@ export interface ContactsSelect<T extends boolean = true> {
         enableSidebar?: T;
         content?: T;
       };
+  createdBy?: T;
+  updatedBy?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1125,6 +1709,37 @@ export interface PayloadKvSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs_select".
+ */
+export interface PayloadJobsSelect<T extends boolean = true> {
+  input?: T;
+  taskStatus?: T;
+  completedAt?: T;
+  totalTried?: T;
+  hasError?: T;
+  error?: T;
+  log?:
+    | T
+    | {
+        executedAt?: T;
+        completedAt?: T;
+        taskSlug?: T;
+        taskID?: T;
+        input?: T;
+        output?: T;
+        state?: T;
+        error?: T;
+        id?: T;
+      };
+  taskSlug?: T;
+  queue?: T;
+  waitUntil?: T;
+  processing?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-folders_select".
  */
 export interface PayloadFoldersSelect<T extends boolean = true> {
@@ -1194,6 +1809,14 @@ export interface Header {
               | ({
                   relationTo: 'services';
                   value: number | ServicePage;
+                } | null)
+              | ({
+                  relationTo: 'legal';
+                  value: number | LegalPage;
+                } | null)
+              | ({
+                  relationTo: 'contacts';
+                  value: number | ContactPage;
                 } | null);
             url?: string | null;
           };
@@ -1217,6 +1840,14 @@ export interface Header {
                     | ({
                         relationTo: 'services';
                         value: number | ServicePage;
+                      } | null)
+                    | ({
+                        relationTo: 'legal';
+                        value: number | LegalPage;
+                      } | null)
+                    | ({
+                        relationTo: 'contacts';
+                        value: number | ContactPage;
                       } | null);
                   url?: string | null;
                   label: string;
@@ -1243,6 +1874,14 @@ export interface Header {
                       | ({
                           relationTo: 'services';
                           value: number | ServicePage;
+                        } | null)
+                      | ({
+                          relationTo: 'legal';
+                          value: number | LegalPage;
+                        } | null)
+                      | ({
+                          relationTo: 'contacts';
+                          value: number | ContactPage;
                         } | null);
                     url?: string | null;
                     label: string;
@@ -1269,6 +1908,14 @@ export interface Header {
                             | ({
                                 relationTo: 'services';
                                 value: number | ServicePage;
+                              } | null)
+                            | ({
+                                relationTo: 'legal';
+                                value: number | LegalPage;
+                              } | null)
+                            | ({
+                                relationTo: 'contacts';
+                                value: number | ContactPage;
                               } | null);
                           url?: string | null;
                           label: string;
@@ -1296,6 +1943,14 @@ export interface Header {
                             | ({
                                 relationTo: 'services';
                                 value: number | ServicePage;
+                              } | null)
+                            | ({
+                                relationTo: 'legal';
+                                value: number | LegalPage;
+                              } | null)
+                            | ({
+                                relationTo: 'contacts';
+                                value: number | ContactPage;
                               } | null);
                           url?: string | null;
                           label: string;
@@ -1326,6 +1981,14 @@ export interface Header {
       | ({
           relationTo: 'services';
           value: number | ServicePage;
+        } | null)
+      | ({
+          relationTo: 'legal';
+          value: number | LegalPage;
+        } | null)
+      | ({
+          relationTo: 'contacts';
+          value: number | ContactPage;
         } | null);
     url?: string | null;
     label: string;
@@ -1359,6 +2022,14 @@ export interface Footer {
                   | ({
                       relationTo: 'services';
                       value: number | ServicePage;
+                    } | null)
+                  | ({
+                      relationTo: 'legal';
+                      value: number | LegalPage;
+                    } | null)
+                  | ({
+                      relationTo: 'contacts';
+                      value: number | ContactPage;
                     } | null);
                 url?: string | null;
                 label: string;
@@ -1554,6 +2225,40 @@ export interface ContactSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSchedulePublish".
+ */
+export interface TaskSchedulePublish {
+  input: {
+    type?: ('publish' | 'unpublish') | null;
+    locale?: string | null;
+    doc?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'blogs';
+          value: number | BlogPage;
+        } | null)
+      | ({
+          relationTo: 'services';
+          value: number | ServicePage;
+        } | null)
+      | ({
+          relationTo: 'legal';
+          value: number | LegalPage;
+        } | null)
+      | ({
+          relationTo: 'contacts';
+          value: number | ContactPage;
+        } | null);
+    global?: string | null;
+    user?: (number | null) | User;
+  };
+  output?: unknown;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
