@@ -102,12 +102,9 @@ export const handleAsyncError = <T extends any[], R>(
 
       // Log the error with context
       if (req?.payload?.logger) {
-        req.payload.logger.error(`Error in ${fn.name}:`, {
-          error: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack : undefined,
-          context,
-          functionName: fn.name,
-        })
+        req.payload.logger.error(
+          `Error in ${fn.name}: ${error instanceof Error ? error.message : String(error)}`,
+        )
       } else {
         console.error(`Error in ${fn.name}:`, error)
       }
@@ -283,7 +280,7 @@ export const withRetry = async <T>(
   maxRetries: number = 3,
   baseDelay: number = 1000,
 ): Promise<T> => {
-  let lastError: Error
+  let lastError: Error | undefined
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
@@ -301,11 +298,12 @@ export const withRetry = async <T>(
     }
   }
 
+  // lastError is guaranteed to be defined here since we've had at least one error
   throw new PayloadError(
-    `Operation failed after ${maxRetries + 1} attempts: ${lastError.message}`,
+    `Operation failed after ${maxRetries + 1} attempts: ${lastError!.message}`,
     500,
     'RETRY_EXHAUSTED',
-    { maxRetries, lastError: lastError.message },
+    { maxRetries, lastError: lastError!.message },
   )
 }
 

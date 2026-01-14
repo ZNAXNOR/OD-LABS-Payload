@@ -12,6 +12,7 @@ import { Code } from '@/blocks/Code/config'
 // Import hooks
 import { revalidatePage } from './hooks/revalidatePage'
 import { populateBreadcrumbs } from './hooks/populateBreadcrumbs'
+import { createSlugGenerationHook } from '@/utilities/slugGeneration'
 
 // Import access control functions
 import { authenticated } from '@/access/authenticated'
@@ -47,16 +48,12 @@ export const Pages: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [
-      ({ data, operation }) => {
-        // Auto-generate slug from title if not provided
-        if (operation === 'create' && data?.title && !data?.slug) {
-          data.slug = data.title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with hyphens
-            .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-        }
-        return data
-      },
+      createSlugGenerationHook('pages', {
+        sourceField: 'title',
+        enforceUniqueness: true,
+        maxLength: 100,
+        reservedSlugs: ['home', 'index'],
+      }),
     ],
     beforeChange: [populateBreadcrumbs],
     afterChange: [revalidatePage],
@@ -82,35 +79,62 @@ export const Pages: CollectionConfig = {
       relationTo: 'pages',
       admin: {
         position: 'sidebar',
+        description: 'Select a parent page to create a hierarchical structure',
       },
-      filterOptions: ({ id }) => {
-        // Exclude self to prevent circular references
-        return {
-          id: {
-            not_equals: id,
-          },
+      validate: (value: any, { data, siblingData }: any) => {
+        // Prevent self-reference
+        if (value && (value === data?.id || value === siblingData?.id)) {
+          return 'A page cannot be its own parent'
         }
+        return true
+      },
+      filterOptions: ({ id, data }) => {
+        const filters: any = {}
+
+        // Exclude self to prevent circular references
+        if (id) {
+          filters.id = { not_equals: id }
+        }
+
+        // Only show published pages as potential parents (optional)
+        // filters._status = { equals: 'published' }
+
+        return filters
       },
     },
     {
       name: 'breadcrumbs',
       type: 'array',
+      label: 'Breadcrumbs',
       admin: {
-        hidden: true,
+        readOnly: true,
+        description: 'Automatically generated breadcrumb trail based on page hierarchy',
+        components: {
+          Cell: '/src/components/BreadcrumbCell',
+        },
       },
       fields: [
         {
           name: 'doc',
           type: 'relationship',
           relationTo: 'pages',
+          admin: {
+            readOnly: true,
+          },
         },
         {
           name: 'url',
           type: 'text',
+          admin: {
+            readOnly: true,
+          },
         },
         {
           name: 'label',
           type: 'text',
+          admin: {
+            readOnly: true,
+          },
         },
       ],
     },

@@ -57,7 +57,7 @@ export const createCascadingDeleteHook = (
     try {
       // Find and delete related documents
       const relatedDocs = await req.payload.find({
-        collection: relatedCollection,
+        collection: relatedCollection as any, // Type assertion for collection slug
         where: { [relationField]: { equals: id } },
         req, // Maintain transaction context
       })
@@ -65,7 +65,7 @@ export const createCascadingDeleteHook = (
       // Delete related documents in the same transaction
       for (const relatedDoc of relatedDocs.docs) {
         await req.payload.delete({
-          collection: relatedCollection,
+          collection: relatedCollection as any, // Type assertion for collection slug
           id: relatedDoc.id,
           req, // Critical: maintain transaction context
         })
@@ -102,7 +102,7 @@ export const createRelatedUpdateHook = (
     try {
       // Find related documents
       const relatedDocs = await req.payload.find({
-        collection: relatedCollection,
+        collection: relatedCollection as any, // Type assertion for collection slug
         where: { [relationField]: { equals: doc.id } },
         req, // Maintain transaction context
       })
@@ -110,7 +110,7 @@ export const createRelatedUpdateHook = (
       // Update each related document
       for (const relatedDoc of relatedDocs.docs) {
         await req.payload.update({
-          collection: relatedCollection,
+          collection: relatedCollection as any, // Type assertion for collection slug
           id: relatedDoc.id,
           data: updateData(doc),
           context: { skipRelatedUpdates: true }, // Prevent infinite loops
@@ -153,7 +153,7 @@ export const createAuditTrailHook = (
       }
 
       await req.payload.create({
-        collection: auditCollection,
+        collection: auditCollection as any, // Type assertion for collection slug
         data: auditData,
         req, // Maintain transaction context
       })

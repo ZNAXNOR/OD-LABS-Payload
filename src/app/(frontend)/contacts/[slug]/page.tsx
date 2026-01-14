@@ -79,7 +79,11 @@ export default async function ContactPage({ params }: PageProps) {
         <div className="mt-12 p-6 bg-muted rounded-lg">
           <p className="text-sm text-muted-foreground">
             Contact form integration: Form ID{' '}
-            {typeof page.form === 'string' ? page.form : page.form.id}
+            {typeof page.form === 'string'
+              ? page.form
+              : typeof page.form === 'object' && page.form && 'id' in page.form
+                ? page.form.id
+                : 'Unknown'}
           </p>
         </div>
       )}

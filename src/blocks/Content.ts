@@ -44,12 +44,13 @@ export const Content: Block = {
           type: 'checkbox',
           label: 'Enable Link',
         },
-        {
-          ...link(),
-          admin: {
-            condition: (_, siblingData) => siblingData?.enableLink === true,
+        link({
+          overrides: {
+            admin: {
+              condition: (_, siblingData) => siblingData?.enableLink === true,
+            },
           },
-        },
+        }),
       ],
     },
   ],

@@ -1,12 +1,7 @@
-import type { CollectionBeforeValidateHook } from 'payload'
+import { createSlugGenerationHook } from '@/utilities/slugGeneration'
 
-export const generateSlug: CollectionBeforeValidateHook = ({ data, operation }) => {
-  // Auto-generate slug from title if not provided
-  if (operation === 'create' && data?.title && !data?.slug) {
-    data.slug = data.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with hyphens
-      .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-  }
-  return data
-}
+export const generateSlug = createSlugGenerationHook('services', {
+  sourceField: 'title',
+  enforceUniqueness: true,
+  maxLength: 100,
+})
