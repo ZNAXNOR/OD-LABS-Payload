@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { revalidateMedia } from './hooks/revalidateMedia'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -124,5 +125,6 @@ export const Media: CollectionConfig = {
         return data
       },
     ],
+    afterChange: [revalidateMedia],
   },
 }

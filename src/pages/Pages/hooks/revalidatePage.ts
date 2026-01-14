@@ -1,39 +1,61 @@
 import type { CollectionAfterChangeHook } from 'payload'
 
-export const revalidatePage: CollectionAfterChangeHook = ({
+/**
+ * Comprehensive revalidation hook for Pages collection
+ * Handles special cases like home page and hierarchical page relationships
+ */
+export const revalidatePage: CollectionAfterChangeHook = async ({
   doc,
   previousDoc,
-  req: { payload, context },
+  req,
+  context,
 }) => {
-  // Check if revalidation is disabled via context flag
-  if (context.disableRevalidate) {
-    return doc
-  }
+  // Skip revalidation if disabled via context
+  if (context.disableRevalidate) return doc
 
-  // Handle published status changes
-  if (doc._status === 'published') {
-    // Determine the path to revalidate
-    const path = doc.slug === 'home' ? '/' : `/${doc.slug}`
+  try {
+    const { revalidatePath } = await import('next/cache')
 
-    payload.logger.info(`Page published at path: ${path}`)
+    // Revalidate current page if published
+    if (doc._status === 'published') {
+      const path = doc.slug === 'home' ? '/' : `/${doc.slug}`
+      revalidatePath(path)
+      req.payload.logger.info(`Revalidated page path: ${path}`)
+    }
 
-    // In a production environment, you might want to trigger revalidation
-    // via an API route or webhook instead of directly calling revalidatePath
-    // For now, we'll just log the action
-  }
+    // Revalidate old page if unpublished or slug changed
+    if (previousDoc?._status === 'published') {
+      if (doc._status !== 'published' || doc.slug !== previousDoc.slug) {
+        const oldPath = previousDoc.slug === 'home' ? '/' : `/${previousDoc.slug}`
+        revalidatePath(oldPath)
+        req.payload.logger.info(`Revalidated old page path: ${oldPath}`)
+      }
+    }
 
-  // Handle unpublish (when previously published but now not)
-  if (previousDoc?._status === 'published' && doc._status !== 'published') {
-    const oldPath = previousDoc.slug === 'home' ? '/' : `/${previousDoc.slug}`
+    // If this page has children, revalidate them too (they may show breadcrumbs)
+    if (doc.id && (doc._status === 'published' || previousDoc?._status === 'published')) {
+      try {
+        const childPages = await req.payload.find({
+          collection: 'pages',
+          where: { parent: { equals: doc.id } },
+          req, // Maintain transaction context
+        })
 
-    payload.logger.info(`Page unpublished at path: ${oldPath}`)
-  }
-
-  // Handle slug changes (revalidate both old and new paths)
-  if (previousDoc?.slug && doc.slug !== previousDoc.slug && previousDoc._status === 'published') {
-    const oldPath = previousDoc.slug === 'home' ? '/' : `/${previousDoc.slug}`
-
-    payload.logger.info(`Page slug changed from ${oldPath} to /${doc.slug}`)
+        for (const childPage of childPages.docs) {
+          if (childPage._status === 'published') {
+            const childPath = childPage.slug === 'home' ? '/' : `/${childPage.slug}`
+            revalidatePath(childPath)
+            req.payload.logger.info(`Revalidated child page path: ${childPath}`)
+          }
+        }
+      } catch (error) {
+        req.payload.logger.error(`Failed to revalidate child pages: ${error}`)
+        // Don't throw - child revalidation failure shouldn't break the operation
+      }
+    }
+  } catch (error) {
+    req.payload.logger.error(`Page revalidation failed: ${error}`)
+    // Don't throw - revalidation failure shouldn't break the operation
   }
 
   return doc

@@ -1,40 +1,43 @@
 import type { CollectionAfterChangeHook } from 'payload'
 
-export const revalidateBlog: CollectionAfterChangeHook = ({
+/**
+ * Comprehensive revalidation hook for Blogs collection
+ * Revalidates both the specific blog page and related pages that may display blog content
+ */
+export const revalidateBlog: CollectionAfterChangeHook = async ({
   doc,
   previousDoc,
-  req: { payload, context },
+  req,
+  context,
 }) => {
-  // Check if revalidation is disabled via context flag
-  if (context.disableRevalidate) {
-    return doc
-  }
+  // Skip revalidation if disabled via context
+  if (context.disableRevalidate) return doc
 
-  // Handle published status changes
-  if (doc._status === 'published') {
-    // Determine the path to revalidate
-    const path = `/blog/${doc.slug}`
+  try {
+    const { revalidatePath } = await import('next/cache')
 
-    payload.logger.info(`Blog published at path: ${path}`)
+    // Revalidate current blog page if published
+    if (doc._status === 'published') {
+      const path = `/blogs/${doc.slug}`
+      revalidatePath(path)
+      req.payload.logger.info(`Revalidated blog path: ${path}`)
+    }
 
-    // In a production environment, you might want to trigger revalidation
-    // via an API route or webhook instead of directly calling revalidatePath
-    // For now, we'll just log the action
-  }
+    // Revalidate old blog page if unpublished or slug changed
+    if (previousDoc?._status === 'published') {
+      if (doc._status !== 'published' || doc.slug !== previousDoc.slug) {
+        const oldPath = `/blogs/${previousDoc.slug}`
+        revalidatePath(oldPath)
+        req.payload.logger.info(`Revalidated old blog path: ${oldPath}`)
+      }
+    }
 
-  // Handle unpublish (when previously published but now not)
-  if (previousDoc?._status === 'published' && doc._status !== 'published') {
-    const oldPath = `/blog/${previousDoc.slug}`
-
-    payload.logger.info(`Blog unpublished at path: ${oldPath}`)
-  }
-
-  // Handle slug changes (revalidate both old and new paths)
-  if (previousDoc?.slug && doc.slug !== previousDoc.slug && previousDoc._status === 'published') {
-    const oldPath = `/blog/${previousDoc.slug}`
-    const newPath = `/blog/${doc.slug}`
-
-    payload.logger.info(`Blog slug changed from ${oldPath} to ${newPath}`)
+    // Revalidate homepage as it may display recent blog posts
+    revalidatePath('/')
+    req.payload.logger.info('Revalidated homepage for blog changes')
+  } catch (error) {
+    req.payload.logger.error(`Blog revalidation failed: ${error}`)
+    // Don't throw - revalidation failure shouldn't break the operation
   }
 
   return doc
