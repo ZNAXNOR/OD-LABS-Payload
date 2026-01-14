@@ -2,10 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 // Import blocks
 import { HeroBlock } from '@/blocks/enhanced/Hero'
-import { Content } from '@/blocks/Content'
-import { CallToAction } from '@/blocks/CallToAction'
+import { ContentBlock } from '@/blocks/Content/config'
+import { CallToActionBlock } from '@/blocks/CallToAction/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
-import { Archive } from '@/blocks/Archive'
+import { ArchiveBlock } from '@/blocks/Archive/config'
 import { Banner } from '@/blocks/Banner/config'
 import { Code } from '@/blocks/Code/config'
 
@@ -141,7 +141,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [HeroBlock, Content, CallToAction, MediaBlock, Archive, Banner, Code],
+      blocks: [HeroBlock, ContentBlock, CallToActionBlock, MediaBlock, ArchiveBlock, Banner, Code],
     },
   ],
 }

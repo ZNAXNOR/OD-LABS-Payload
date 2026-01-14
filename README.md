@@ -38,6 +38,29 @@ To do so, follow these steps:
 
 The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
 
+### Project Structure
+
+This project follows official Payload CMS conventions for organization and maintainability:
+
+```
+src/
+├── blocks/              # Content blocks with config.ts pattern
+├── collections/         # All collection configurations
+├── components/          # React components (directory-based)
+├── globals/            # Global configurations
+├── pages/              # Shared utilities for page-type collections
+└── payload.config.ts   # Main Payload configuration
+```
+
+**Key Conventions:**
+
+- **Directory-Based Components**: All components follow `ComponentName/index.tsx` pattern
+- **Block Organization**: Blocks have dedicated directories with `config.ts` for configuration
+- **Collection Location**: Collections are organized in `src/collections/` with hooks co-located
+- **Named Exports for Blocks**: Block configs use named exports with `Block` suffix
+
+For details on the structure refactor, see [MIGRATION.md](./MIGRATION.md).
+
 ### Collections
 
 See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
@@ -48,9 +71,43 @@ See the [Collections](https://payloadcms.com/docs/configuration/collections) doc
 
   For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
 
+- #### Pages
+
+  Pages collection for managing website pages with layout builder support. Located in `src/collections/Pages/`.
+
+- #### Blogs
+
+  Blog posts collection with slug generation and revalidation hooks. Located in `src/collections/Blogs/`.
+
+- #### Contacts
+
+  Contact pages collection. Located in `src/collections/Contacts/`.
+
+- #### Legal
+
+  Legal documents collection. Located in `src/collections/Legal/`.
+
+- #### Services
+
+  Services collection for service pages. Located in `src/collections/Services/`.
+
 - #### Media
 
   This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+
+### Blocks
+
+Content blocks for the layout builder:
+
+- **Hero**: Hero section block
+- **Content**: Rich content block
+- **Call To Action**: CTA block with components
+- **Archive**: Archive listing block
+- **Banner**: Banner block with components
+- **Code**: Code block with syntax highlighting
+- **Media Block**: Media display block
+
+All blocks follow the pattern: `src/blocks/BlockName/config.ts`
 
 ### Docker
 

@@ -25,7 +25,7 @@ export default async function HomePage() {
         {/* Abstract Background Image */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <Image
-            src="/hero.png"
+            src="/media/hero.webp"
             alt="Premium Hero"
             fill
             className="object-cover scale-110 animate-pulse duration-[10000ms] opacity-60"

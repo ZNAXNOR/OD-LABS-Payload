@@ -1363,7 +1363,7 @@ export interface ContentBlock {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
-  richText: {
+  richText?: {
     root: {
       type: string;
       children: {
@@ -1377,7 +1377,7 @@ export interface CallToActionBlock {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
   links?:
     | {
         link: {
@@ -1409,7 +1409,7 @@ export interface CallToActionBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ('default' | 'secondary' | 'outline') | null;
+          appearance?: ('default' | 'outline') | null;
         };
         id?: string | null;
       }[]

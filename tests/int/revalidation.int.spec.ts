@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { revalidatePage } from '../../src/pages/Pages/hooks/revalidatePage'
-import { revalidateBlog } from '../../src/pages/Blogs/hooks/revalidateBlog'
-import { revalidateService } from '../../src/pages/Services/hooks/revalidateService'
+import { revalidatePage } from '../../src/collections/Pages/hooks/revalidatePage'
+import { revalidateBlog } from '../../src/collections/Blogs/hooks/revalidateBlog'
+import { revalidateService } from '../../src/collections/Services/hooks/revalidateService'
 
 // Mock Next.js cache functions
 const mockRevalidatePath = vi.fn()
