@@ -48,8 +48,8 @@ export default async function HomePage() {
           </h1>
 
           <p className="text-xl md:text-2xl text-white/60 max-w-2xl mx-auto mb-10 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-300">
-            Build high-performance, content-rich applications with OD Labs' cutting-edge Payload CMS
-            foundation.
+            Build high-performance, content-rich applications with OD Labs&apos; cutting-edge
+            Payload CMS foundation.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-16 duration-1000 delay-500">
