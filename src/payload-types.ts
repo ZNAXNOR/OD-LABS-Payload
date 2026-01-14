@@ -184,7 +184,10 @@ export interface User {
  */
 export interface Media {
   id: number;
-  alt?: string | null;
+  /**
+   * Alt text is required for accessibility compliance
+   */
+  alt: string;
   caption?: {
     root: {
       type: string;
@@ -200,6 +203,13 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Click to set the focal point for responsive cropping
+   *
+   * @minItems 2
+   * @maxItems 2
+   */
+  focalPoint?: [number, number] | null;
   folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
@@ -221,7 +231,7 @@ export interface Media {
       filesize?: number | null;
       filename?: string | null;
     };
-    square?: {
+    card?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -229,7 +239,7 @@ export interface Media {
       filesize?: number | null;
       filename?: string | null;
     };
-    small?: {
+    feature?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -237,23 +247,7 @@ export interface Media {
       filesize?: number | null;
       filename?: string | null;
     };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    large?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    xlarge?: {
+    hero?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -1215,6 +1209,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  focalPoint?: T;
   folder?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1240,7 +1235,7 @@ export interface MediaSelect<T extends boolean = true> {
               filesize?: T;
               filename?: T;
             };
-        square?:
+        card?:
           | T
           | {
               url?: T;
@@ -1250,7 +1245,7 @@ export interface MediaSelect<T extends boolean = true> {
               filesize?: T;
               filename?: T;
             };
-        small?:
+        feature?:
           | T
           | {
               url?: T;
@@ -1260,27 +1255,7 @@ export interface MediaSelect<T extends boolean = true> {
               filesize?: T;
               filename?: T;
             };
-        medium?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        large?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        xlarge?:
+        hero?:
           | T
           | {
               url?: T;
