@@ -1222,6 +1222,73 @@ export interface Form {
         id?: string | null;
       }[]
     | null;
+  emailNotifications?: {
+    /**
+     * Send email notifications when forms are submitted
+     */
+    enabled?: boolean | null;
+    /**
+     * Email addresses that will receive form submission notifications
+     */
+    recipients?:
+      | {
+          email: string;
+          /**
+           * Optional name for this recipient
+           */
+          name?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Subject line for notification emails
+     */
+    subject?: string | null;
+    /**
+     * Email address for replies (leave empty to use submitter email)
+     */
+    replyTo?: string | null;
+    /**
+     * Include form submission data in the notification email
+     */
+    includeSubmissionData?: boolean | null;
+  };
+  validationSettings?: {
+    /**
+     * Add hidden field to prevent spam bot submissions
+     */
+    enableHoneypot?: boolean | null;
+    /**
+     * Limit number of submissions per IP address
+     */
+    enableRateLimit?: boolean | null;
+    /**
+     * Time window for rate limiting (1-1440 minutes)
+     */
+    rateLimitWindow?: number | null;
+    /**
+     * Maximum number of submissions allowed per IP in the time window
+     */
+    maxSubmissionsPerWindow?: number | null;
+    /**
+     * Only allow authenticated users to submit this form
+     */
+    requireAuthentication?: boolean | null;
+  };
+  responseSettings?: {
+    /**
+     * Message shown after successful form submission
+     */
+    successMessage?: string | null;
+    /**
+     * Message shown when form submission fails
+     */
+    errorMessage?: string | null;
+    /**
+     * Optional URL to redirect to after successful submission
+     */
+    redirectUrl?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -2373,6 +2440,37 @@ export interface FormsSelect<T extends boolean = true> {
         subject?: T;
         message?: T;
         id?: T;
+      };
+  emailNotifications?:
+    | T
+    | {
+        enabled?: T;
+        recipients?:
+          | T
+          | {
+              email?: T;
+              name?: T;
+              id?: T;
+            };
+        subject?: T;
+        replyTo?: T;
+        includeSubmissionData?: T;
+      };
+  validationSettings?:
+    | T
+    | {
+        enableHoneypot?: T;
+        enableRateLimit?: T;
+        rateLimitWindow?: T;
+        maxSubmissionsPerWindow?: T;
+        requireAuthentication?: T;
+      };
+  responseSettings?:
+    | T
+    | {
+        successMessage?: T;
+        errorMessage?: T;
+        redirectUrl?: T;
       };
   updatedAt?: T;
   createdAt?: T;

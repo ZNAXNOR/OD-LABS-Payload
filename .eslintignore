@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+.next
+out
+dist
+build
+
+# Testing
+coverage
+.nyc_output
+
+# Payload generated types
+src/payload-types.ts
+
+# Playwright
+test-results
+playwright-report
+
+# Config files
+next.config.mjs
+postcss.config.js
+tailwind.config.mjs
+vitest.config.mts
+playwright.config.ts
+next-sitemap.config.cjs
