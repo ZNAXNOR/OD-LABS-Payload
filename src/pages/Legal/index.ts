@@ -95,6 +95,7 @@ export const LegalPages: CollectionConfig = {
             if (operation === 'update') {
               return new Date()
             }
+            return undefined
           },
         ],
       },

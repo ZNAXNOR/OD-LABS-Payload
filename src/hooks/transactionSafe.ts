@@ -199,7 +199,7 @@ function getChanges(previousDoc: any, currentDoc: any): Record<string, any> {
 export const createBusinessRuleValidationHook = (
   validator: (doc: any, req: any) => Promise<void> | void,
 ): CollectionAfterChangeHook => {
-  return async ({ data, req, operation }) => {
+  return async ({ data, req }) => {
     try {
       await validator(data, req)
     } catch (error) {

@@ -336,10 +336,16 @@ export function getSlugSuggestions(title: string, count = 5): string[] {
 
   if (words.length > 1) {
     // First word only
-    suggestions.push(generateSlugFromText(words[0]))
+    const firstWord = words[0]
+    if (firstWord) {
+      suggestions.push(generateSlugFromText(firstWord))
+    }
 
     // Last word only
-    suggestions.push(generateSlugFromText(words[words.length - 1]))
+    const lastWord = words[words.length - 1]
+    if (lastWord) {
+      suggestions.push(generateSlugFromText(lastWord))
+    }
 
     // First two words
     if (words.length > 2) {

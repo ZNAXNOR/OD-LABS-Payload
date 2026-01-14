@@ -7,7 +7,6 @@ import type { CollectionBeforeChangeHook } from 'payload'
 export const populateBreadcrumbs: CollectionBeforeChangeHook = async ({
   data,
   req,
-  operation,
   originalDoc,
 }) => {
   try {

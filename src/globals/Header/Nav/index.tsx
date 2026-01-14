@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import type { Header as HeaderType } from '@/payload-types'
 import { MobileMenuToggle, MobileMenuModal } from './Mobile'

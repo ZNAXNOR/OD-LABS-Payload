@@ -29,7 +29,9 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ block, className }) => {
 
   // Handle parallax effect
   useEffect(() => {
-    if (!settings?.enableParallax || (!media && !videoUrl)) return
+    if (!settings?.enableParallax || (!media && !videoUrl)) {
+      return
+    }
 
     setHasParallax(true)
 
@@ -66,6 +68,7 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ block, className }) => {
         video.removeEventListener('error', handleError)
       }
     }
+    return undefined
   }, [videoUrl])
 
   // Determine theme classes

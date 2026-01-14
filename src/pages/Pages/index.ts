@@ -88,7 +88,7 @@ export const Pages: CollectionConfig = {
         }
         return true
       },
-      filterOptions: ({ id, data }) => {
+      filterOptions: ({ id }) => {
         const filters: any = {}
 
         // Exclude self to prevent circular references

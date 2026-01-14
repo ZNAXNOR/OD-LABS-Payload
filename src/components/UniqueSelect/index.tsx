@@ -20,8 +20,11 @@ const UniqueSelect: SelectFieldClientComponent = (props) => {
       keyParts.pop()
       const keyPrefix = keyParts.join('.')
       if (keyPrefix === siblingPrefix && keyFieldName === fieldName) {
-        const val = fields[key].value as string
-        if (val) values.push(val)
+        const field = fields[key]
+        if (field) {
+          const val = field.value as string
+          if (val) values.push(val)
+        }
       }
     })
     return values

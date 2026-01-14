@@ -132,7 +132,7 @@ export const handleAsyncError = <T extends any[], R>(
  * @returns Method decorator
  */
 export const createErrorBoundary = (operation: string) => {
-  return (target: any, propertyName: string, descriptor: PropertyDescriptor) => {
+  return (_target: any, propertyName: string, descriptor: PropertyDescriptor) => {
     const method = descriptor.value
 
     descriptor.value = handleAsyncError(method, { operation, method: propertyName })

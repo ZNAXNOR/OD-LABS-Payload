@@ -22,6 +22,7 @@ export function MobileMenuModal({ tabs, isOpen, setIsOpen, menuCta }: MobileMenu
       const timer = setTimeout(() => setActiveTabIdx(null), 500)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [isOpen])
 
   const activeTab = activeTabIdx !== null ? tabs[activeTabIdx] : null

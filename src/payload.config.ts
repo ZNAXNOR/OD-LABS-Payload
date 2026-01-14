@@ -26,7 +26,6 @@ import { Footer } from './globals/Footer/config'
 import { ContactGlobal } from './globals/Contact/config'
 
 // Utilities
-import { GraphQLPerformanceMonitor } from './utilities/graphql'
 import { validateEnv, isDevelopment, isProduction } from './utilities/validateEnv'
 
 const filename = fileURLToPath(import.meta.url)
@@ -38,9 +37,6 @@ dotenv.config({
 
 // Validate environment variables
 validateEnv()
-
-// Initialize GraphQL performance monitor
-const graphqlMonitor = new GraphQLPerformanceMonitor()
 
 export default buildConfig({
   admin: {

@@ -7,15 +7,6 @@ import type { Payload } from 'payload'
  */
 export const createGraphQLErrorHandler = (payload: Payload) => {
   return (error: GraphQLError) => {
-    // Extract error details
-    const errorDetails = {
-      message: error.message,
-      path: error.path,
-      locations: error.locations,
-      extensions: error.extensions,
-      timestamp: new Date().toISOString(),
-    }
-
     // Log error with appropriate severity
     if (error.extensions?.code === 'INTERNAL_SERVER_ERROR') {
       payload.logger.error('GraphQL Internal Error: ' + error.message)

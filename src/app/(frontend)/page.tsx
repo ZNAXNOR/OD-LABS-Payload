@@ -10,7 +10,7 @@ export default async function HomePage() {
   const headers = await getHeaders()
   const payloadConfig = await config
   const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
+  await payload.auth({ headers })
 
   // Fetch services to display on the homepage
   const { docs: services } = await payload.find({

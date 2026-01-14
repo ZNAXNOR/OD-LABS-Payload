@@ -161,7 +161,7 @@ export const HeroBlock: Block = {
           defaultValue: false,
           admin: {
             description: 'Enable parallax scrolling effect for background media',
-            condition: (data, siblingData) => {
+            condition: (_data, siblingData) => {
               return siblingData?.parent?.media || siblingData?.parent?.videoUrl
             },
           },
@@ -172,7 +172,7 @@ export const HeroBlock: Block = {
           label: 'Background Overlay',
           admin: {
             description: 'Add overlay to improve text readability over background media',
-            condition: (data, siblingData) => {
+            condition: (_data, siblingData) => {
               return siblingData?.parent?.media || siblingData?.parent?.videoUrl
             },
           },

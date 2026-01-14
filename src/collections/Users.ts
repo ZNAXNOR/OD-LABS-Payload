@@ -124,7 +124,7 @@ export const Users: CollectionConfig = {
           await req.payload.update({
             collection: 'users',
             id: user.id,
-            data: { lastLoginAt: new Date() },
+            data: { lastLoginAt: new Date().toISOString() },
             req, // Maintain transaction context
           })
         }

@@ -229,7 +229,7 @@ function escapeHtml(text: string): string {
     '"': '&quot;',
     "'": '&#039;',
   }
-  return text.replace(/[&<>"']/g, (m) => map[m])
+  return text.replace(/[&<>"']/g, (m) => map[m] || m)
 }
 
 /**
@@ -246,7 +246,9 @@ export function validateEmailConfig(form: Form): {
     return { valid: false, errors }
   }
 
-  if (!form.emailNotifications.enabled) {
+  // Check if enabled property exists (extended type)
+  const emailConfig = form.emailNotifications as any
+  if (!emailConfig.enabled) {
     errors.push('Email notifications are not enabled')
     return { valid: false, errors }
   }
