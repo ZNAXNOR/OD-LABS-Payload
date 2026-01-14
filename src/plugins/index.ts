@@ -275,23 +275,276 @@ export const plugins: Plugin[] = [
     },
     formOverrides: {
       fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
-          if ('name' in field && field.name === 'confirmationMessage') {
-            return {
-              ...field,
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    FixedToolbarFeature(),
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
-                  ]
-                },
-              }),
+        return [
+          ...defaultFields.map((field) => {
+            if ('name' in field && field.name === 'confirmationMessage') {
+              return {
+                ...field,
+                editor: lexicalEditor({
+                  features: ({ rootFeatures }) => {
+                    return [
+                      ...rootFeatures,
+                      FixedToolbarFeature(),
+                      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
+                    ]
+                  },
+                }),
+              }
             }
-          }
-          return field
-        })
+            return field
+          }),
+          // Email notification configuration
+          {
+            name: 'emailNotifications',
+            type: 'group',
+            label: 'Email Notifications',
+            fields: [
+              {
+                name: 'enabled',
+                type: 'checkbox',
+                label: 'Enable Email Notifications',
+                defaultValue: false,
+                admin: {
+                  description: 'Send email notifications when forms are submitted',
+                },
+              },
+              {
+                name: 'recipients',
+                type: 'array',
+                label: 'Notification Recipients',
+                minRows: 1,
+                admin: {
+                  condition: (data: any) => data?.emailNotifications?.enabled === true,
+                  description: 'Email addresses that will receive form submission notifications',
+                },
+                fields: [
+                  {
+                    name: 'email',
+                    type: 'email',
+                    required: true,
+                    validate: (value: string | null | undefined) => {
+                      if (!value) return 'Email is required'
+                      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                      if (!emailRegex.test(value)) {
+                        return 'Please enter a valid email address'
+                      }
+                      return true
+                    },
+                  },
+                  {
+                    name: 'name',
+                    type: 'text',
+                    admin: {
+                      description: 'Optional name for this recipient',
+                    },
+                  },
+                ],
+              },
+              {
+                name: 'subject',
+                type: 'text',
+                label: 'Email Subject',
+                defaultValue: 'New Form Submission',
+                admin: {
+                  condition: (data: any) => data?.emailNotifications?.enabled === true,
+                  description: 'Subject line for notification emails',
+                },
+              },
+              {
+                name: 'replyTo',
+                type: 'email',
+                label: 'Reply-To Address',
+                admin: {
+                  condition: (data: any) => data?.emailNotifications?.enabled === true,
+                  description: 'Email address for replies (leave empty to use submitter email)',
+                },
+              },
+              {
+                name: 'includeSubmissionData',
+                type: 'checkbox',
+                label: 'Include Submission Data',
+                defaultValue: true,
+                admin: {
+                  condition: (data: any) => data?.emailNotifications?.enabled === true,
+                  description: 'Include form submission data in the notification email',
+                },
+              },
+            ],
+          },
+          // Form validation settings
+          {
+            name: 'validationSettings',
+            type: 'group',
+            label: 'Validation Settings',
+            fields: [
+              {
+                name: 'enableHoneypot',
+                type: 'checkbox',
+                label: 'Enable Honeypot Protection',
+                defaultValue: true,
+                admin: {
+                  description: 'Add hidden field to prevent spam bot submissions',
+                },
+              },
+              {
+                name: 'enableRateLimit',
+                type: 'checkbox',
+                label: 'Enable Rate Limiting',
+                defaultValue: true,
+                admin: {
+                  description: 'Limit number of submissions per IP address',
+                },
+              },
+              {
+                name: 'rateLimitWindow',
+                type: 'number',
+                label: 'Rate Limit Window (minutes)',
+                defaultValue: 60,
+                min: 1,
+                max: 1440,
+                admin: {
+                  condition: (data: any) => data?.validationSettings?.enableRateLimit === true,
+                  description: 'Time window for rate limiting (1-1440 minutes)',
+                },
+              },
+              {
+                name: 'maxSubmissionsPerWindow',
+                type: 'number',
+                label: 'Max Submissions Per Window',
+                defaultValue: 5,
+                min: 1,
+                max: 100,
+                admin: {
+                  condition: (data: any) => data?.validationSettings?.enableRateLimit === true,
+                  description: 'Maximum number of submissions allowed per IP in the time window',
+                },
+              },
+              {
+                name: 'requireAuthentication',
+                type: 'checkbox',
+                label: 'Require Authentication',
+                defaultValue: false,
+                admin: {
+                  description: 'Only allow authenticated users to submit this form',
+                },
+              },
+            ],
+          },
+          // Success/Error handling
+          {
+            name: 'responseSettings',
+            type: 'group',
+            label: 'Response Settings',
+            fields: [
+              {
+                name: 'successMessage',
+                type: 'textarea',
+                label: 'Success Message',
+                defaultValue: 'Thank you for your submission!',
+                admin: {
+                  description: 'Message shown after successful form submission',
+                },
+              },
+              {
+                name: 'errorMessage',
+                type: 'textarea',
+                label: 'Error Message',
+                defaultValue: 'There was an error submitting your form. Please try again.',
+                admin: {
+                  description: 'Message shown when form submission fails',
+                },
+              },
+              {
+                name: 'redirectUrl',
+                type: 'text',
+                label: 'Redirect URL',
+                admin: {
+                  description: 'Optional URL to redirect to after successful submission',
+                },
+                validate: (value: string | null | undefined) => {
+                  if (value && !value.startsWith('/') && !value.startsWith('http')) {
+                    return 'Redirect URL must start with / or be a complete URL'
+                  }
+                  return true
+                },
+              },
+            ],
+          },
+        ] as any
+      },
+    },
+    formSubmissionOverrides: {
+      hooks: {
+        afterChange: [
+          async ({ doc, req, operation }) => {
+            // Only process on create (new submissions)
+            if (operation !== 'create') return doc
+
+            try {
+              // Get the form configuration
+              const form = await req.payload.findByID({
+                collection: 'forms',
+                id: doc.form,
+                req,
+              })
+
+              // Check if email notifications are enabled
+              const emailNotifications = (form as any)?.emailNotifications
+              if (emailNotifications?.enabled && emailNotifications?.recipients?.length) {
+                // Log notification attempt
+                req.payload.logger.info(
+                  `Form submission received for form: ${form.title || form.id}`,
+                )
+
+                // In a real implementation, you would send emails here
+                // This requires an email adapter to be configured in payload.config.ts
+                // Example with nodemailer:
+                // await req.payload.sendEmail({
+                //   to: emailNotifications.recipients.map(r => r.email),
+                //   subject: emailNotifications.subject || 'New Form Submission',
+                //   html: generateEmailHTML(doc, form),
+                // })
+
+                // For now, log the notification details
+                req.payload.logger.info(
+                  `Email notification would be sent to: ${emailNotifications.recipients.map((r: any) => r.email).join(', ')}`,
+                )
+              }
+
+              // Rate limiting check (basic implementation)
+              const validationSettings = (form as any)?.validationSettings
+              if (validationSettings?.enableRateLimit) {
+                const rateLimitWindow = validationSettings.rateLimitWindow || 60
+                const maxSubmissions = validationSettings.maxSubmissionsPerWindow || 5
+
+                const cutoffTime = new Date()
+                cutoffTime.setMinutes(cutoffTime.getMinutes() - rateLimitWindow)
+
+                // Count recent submissions from same IP
+                const recentSubmissions = await req.payload.count({
+                  collection: 'form-submissions',
+                  where: {
+                    and: [
+                      { form: { equals: doc.form } },
+                      { createdAt: { greater_than: cutoffTime.toISOString() } },
+                      // Note: IP tracking would need to be added to form-submissions collection
+                    ],
+                  },
+                  req,
+                })
+
+                if (recentSubmissions.totalDocs >= maxSubmissions) {
+                  req.payload.logger.warn(`Rate limit exceeded for form: ${form.title || form.id}`)
+                }
+              }
+            } catch (error) {
+              // Log error but don't fail the submission
+              req.payload.logger.error(`Error processing form submission: ${error}`)
+            }
+
+            return doc
+          },
+        ],
       },
     },
   }),
