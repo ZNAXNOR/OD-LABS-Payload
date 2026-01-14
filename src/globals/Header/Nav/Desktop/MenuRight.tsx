@@ -32,7 +32,7 @@ export function MenuRight({ dropdown, active, direction }: MenuRightProps) {
                 </span>
               )}
               <p className="text-lg font-medium text-white/80 leading-snug group-hover/card:text-white transition-colors">
-                "{item.featuredLink?.label}"
+                &quot;{item.featuredLink?.label}&quot;
               </p>
               <div className="space-y-3 pt-6 mt-8 border-t border-white/5">
                 {item.featuredLink?.links?.map((fl, fidx) => (

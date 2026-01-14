@@ -317,6 +317,94 @@ export interface Page {
   layout?:
     | (HeroBlock | ContentBlock | CallToActionBlock | MediaBlock | ArchiveBlock | BannerBlock | CodeBlock)[]
     | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated keywords relevant to this content
+     */
+    keywords?: string | null;
+    robots?: {
+      /**
+       * Check this to prevent search engines from indexing this page
+       */
+      noIndex?: boolean | null;
+      /**
+       * Check this to tell search engines not to follow links on this page
+       */
+      noFollow?: boolean | null;
+      /**
+       * Prevent search engines from showing cached versions of this page
+       */
+      noArchive?: boolean | null;
+      /**
+       * Prevent search engines from showing text snippets in search results
+       */
+      noSnippet?: boolean | null;
+    };
+    /**
+     * The canonical URL for this page (leave empty to use the page URL)
+     */
+    canonical?: string | null;
+    structured?: {
+      /**
+       * Select the most appropriate schema type for this content
+       */
+      type?:
+        | (
+            | 'Article'
+            | 'BlogPosting'
+            | 'WebPage'
+            | 'Organization'
+            | 'Service'
+            | 'LocalBusiness'
+            | 'FAQPage'
+            | 'ContactPage'
+            | 'AboutPage'
+            | 'custom'
+          )
+        | null;
+      /**
+       * Enter custom JSON-LD structured data
+       */
+      customSchema?: string | null;
+      /**
+       * Author of this content (for articles and blog posts)
+       */
+      author?: (number | null) | User;
+      /**
+       * Publication date (for articles and blog posts)
+       */
+      datePublished?: string | null;
+      /**
+       * Last modification date (for articles and blog posts)
+       */
+      dateModified?: string | null;
+    };
+    social?: {
+      twitter?: {
+        card?: ('summary' | 'summary_large_image' | 'app' | 'player') | null;
+        /**
+         * Twitter username for the website
+         */
+        site?: string | null;
+        /**
+         * Twitter username for the content creator
+         */
+        creator?: string | null;
+      };
+      facebook?: {
+        /**
+         * Facebook App ID for analytics
+         */
+        appId?: string | null;
+      };
+    };
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -465,6 +553,94 @@ export interface BlogPage {
     | null;
   createdBy?: (number | null) | User;
   updatedBy?: (number | null) | User;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated keywords relevant to this content
+     */
+    keywords?: string | null;
+    robots?: {
+      /**
+       * Check this to prevent search engines from indexing this page
+       */
+      noIndex?: boolean | null;
+      /**
+       * Check this to tell search engines not to follow links on this page
+       */
+      noFollow?: boolean | null;
+      /**
+       * Prevent search engines from showing cached versions of this page
+       */
+      noArchive?: boolean | null;
+      /**
+       * Prevent search engines from showing text snippets in search results
+       */
+      noSnippet?: boolean | null;
+    };
+    /**
+     * The canonical URL for this page (leave empty to use the page URL)
+     */
+    canonical?: string | null;
+    structured?: {
+      /**
+       * Select the most appropriate schema type for this content
+       */
+      type?:
+        | (
+            | 'Article'
+            | 'BlogPosting'
+            | 'WebPage'
+            | 'Organization'
+            | 'Service'
+            | 'LocalBusiness'
+            | 'FAQPage'
+            | 'ContactPage'
+            | 'AboutPage'
+            | 'custom'
+          )
+        | null;
+      /**
+       * Enter custom JSON-LD structured data
+       */
+      customSchema?: string | null;
+      /**
+       * Author of this content (for articles and blog posts)
+       */
+      author?: (number | null) | User;
+      /**
+       * Publication date (for articles and blog posts)
+       */
+      datePublished?: string | null;
+      /**
+       * Last modification date (for articles and blog posts)
+       */
+      dateModified?: string | null;
+    };
+    social?: {
+      twitter?: {
+        card?: ('summary' | 'summary_large_image' | 'app' | 'player') | null;
+        /**
+         * Twitter username for the website
+         */
+        site?: string | null;
+        /**
+         * Twitter username for the content creator
+         */
+        creator?: string | null;
+      };
+      facebook?: {
+        /**
+         * Facebook App ID for analytics
+         */
+        appId?: string | null;
+      };
+    };
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -507,6 +683,94 @@ export interface ServicePage {
   };
   createdBy?: (number | null) | User;
   updatedBy?: (number | null) | User;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated keywords relevant to this content
+     */
+    keywords?: string | null;
+    robots?: {
+      /**
+       * Check this to prevent search engines from indexing this page
+       */
+      noIndex?: boolean | null;
+      /**
+       * Check this to tell search engines not to follow links on this page
+       */
+      noFollow?: boolean | null;
+      /**
+       * Prevent search engines from showing cached versions of this page
+       */
+      noArchive?: boolean | null;
+      /**
+       * Prevent search engines from showing text snippets in search results
+       */
+      noSnippet?: boolean | null;
+    };
+    /**
+     * The canonical URL for this page (leave empty to use the page URL)
+     */
+    canonical?: string | null;
+    structured?: {
+      /**
+       * Select the most appropriate schema type for this content
+       */
+      type?:
+        | (
+            | 'Article'
+            | 'BlogPosting'
+            | 'WebPage'
+            | 'Organization'
+            | 'Service'
+            | 'LocalBusiness'
+            | 'FAQPage'
+            | 'ContactPage'
+            | 'AboutPage'
+            | 'custom'
+          )
+        | null;
+      /**
+       * Enter custom JSON-LD structured data
+       */
+      customSchema?: string | null;
+      /**
+       * Author of this content (for articles and blog posts)
+       */
+      author?: (number | null) | User;
+      /**
+       * Publication date (for articles and blog posts)
+       */
+      datePublished?: string | null;
+      /**
+       * Last modification date (for articles and blog posts)
+       */
+      dateModified?: string | null;
+    };
+    social?: {
+      twitter?: {
+        card?: ('summary' | 'summary_large_image' | 'app' | 'player') | null;
+        /**
+         * Twitter username for the website
+         */
+        site?: string | null;
+        /**
+         * Twitter username for the content creator
+         */
+        creator?: string | null;
+      };
+      facebook?: {
+        /**
+         * Facebook App ID for analytics
+         */
+        appId?: string | null;
+      };
+    };
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -545,6 +809,94 @@ export interface LegalPage {
   };
   createdBy?: (number | null) | User;
   updatedBy?: (number | null) | User;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated keywords relevant to this content
+     */
+    keywords?: string | null;
+    robots?: {
+      /**
+       * Check this to prevent search engines from indexing this page
+       */
+      noIndex?: boolean | null;
+      /**
+       * Check this to tell search engines not to follow links on this page
+       */
+      noFollow?: boolean | null;
+      /**
+       * Prevent search engines from showing cached versions of this page
+       */
+      noArchive?: boolean | null;
+      /**
+       * Prevent search engines from showing text snippets in search results
+       */
+      noSnippet?: boolean | null;
+    };
+    /**
+     * The canonical URL for this page (leave empty to use the page URL)
+     */
+    canonical?: string | null;
+    structured?: {
+      /**
+       * Select the most appropriate schema type for this content
+       */
+      type?:
+        | (
+            | 'Article'
+            | 'BlogPosting'
+            | 'WebPage'
+            | 'Organization'
+            | 'Service'
+            | 'LocalBusiness'
+            | 'FAQPage'
+            | 'ContactPage'
+            | 'AboutPage'
+            | 'custom'
+          )
+        | null;
+      /**
+       * Enter custom JSON-LD structured data
+       */
+      customSchema?: string | null;
+      /**
+       * Author of this content (for articles and blog posts)
+       */
+      author?: (number | null) | User;
+      /**
+       * Publication date (for articles and blog posts)
+       */
+      datePublished?: string | null;
+      /**
+       * Last modification date (for articles and blog posts)
+       */
+      dateModified?: string | null;
+    };
+    social?: {
+      twitter?: {
+        card?: ('summary' | 'summary_large_image' | 'app' | 'player') | null;
+        /**
+         * Twitter username for the website
+         */
+        site?: string | null;
+        /**
+         * Twitter username for the content creator
+         */
+        creator?: string | null;
+      };
+      facebook?: {
+        /**
+         * Facebook App ID for analytics
+         */
+        appId?: string | null;
+      };
+    };
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -607,6 +959,94 @@ export interface ContactPage {
   };
   createdBy?: (number | null) | User;
   updatedBy?: (number | null) | User;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated keywords relevant to this content
+     */
+    keywords?: string | null;
+    robots?: {
+      /**
+       * Check this to prevent search engines from indexing this page
+       */
+      noIndex?: boolean | null;
+      /**
+       * Check this to tell search engines not to follow links on this page
+       */
+      noFollow?: boolean | null;
+      /**
+       * Prevent search engines from showing cached versions of this page
+       */
+      noArchive?: boolean | null;
+      /**
+       * Prevent search engines from showing text snippets in search results
+       */
+      noSnippet?: boolean | null;
+    };
+    /**
+     * The canonical URL for this page (leave empty to use the page URL)
+     */
+    canonical?: string | null;
+    structured?: {
+      /**
+       * Select the most appropriate schema type for this content
+       */
+      type?:
+        | (
+            | 'Article'
+            | 'BlogPosting'
+            | 'WebPage'
+            | 'Organization'
+            | 'Service'
+            | 'LocalBusiness'
+            | 'FAQPage'
+            | 'ContactPage'
+            | 'AboutPage'
+            | 'custom'
+          )
+        | null;
+      /**
+       * Enter custom JSON-LD structured data
+       */
+      customSchema?: string | null;
+      /**
+       * Author of this content (for articles and blog posts)
+       */
+      author?: (number | null) | User;
+      /**
+       * Publication date (for articles and blog posts)
+       */
+      datePublished?: string | null;
+      /**
+       * Last modification date (for articles and blog posts)
+       */
+      dateModified?: string | null;
+    };
+    social?: {
+      twitter?: {
+        card?: ('summary' | 'summary_large_image' | 'app' | 'player') | null;
+        /**
+         * Twitter username for the website
+         */
+        site?: string | null;
+        /**
+         * Twitter username for the content creator
+         */
+        creator?: string | null;
+      };
+      facebook?: {
+        /**
+         * Facebook App ID for analytics
+         */
+        appId?: string | null;
+      };
+    };
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1355,6 +1795,48 @@ export interface PagesSelect<T extends boolean = true> {
         banner?: T | BannerBlockSelect<T>;
         code?: T | CodeBlockSelect<T>;
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        keywords?: T;
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+              noArchive?: T;
+              noSnippet?: T;
+            };
+        canonical?: T;
+        structured?:
+          | T
+          | {
+              type?: T;
+              customSchema?: T;
+              author?: T;
+              datePublished?: T;
+              dateModified?: T;
+            };
+        social?:
+          | T
+          | {
+              twitter?:
+                | T
+                | {
+                    card?: T;
+                    site?: T;
+                    creator?: T;
+                  };
+              facebook?:
+                | T
+                | {
+                    appId?: T;
+                  };
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1514,6 +1996,48 @@ export interface BlogsSelect<T extends boolean = true> {
       };
   createdBy?: T;
   updatedBy?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        keywords?: T;
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+              noArchive?: T;
+              noSnippet?: T;
+            };
+        canonical?: T;
+        structured?:
+          | T
+          | {
+              type?: T;
+              customSchema?: T;
+              author?: T;
+              datePublished?: T;
+              dateModified?: T;
+            };
+        social?:
+          | T
+          | {
+              twitter?:
+                | T
+                | {
+                    card?: T;
+                    site?: T;
+                    creator?: T;
+                  };
+              facebook?:
+                | T
+                | {
+                    appId?: T;
+                  };
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1537,6 +2061,48 @@ export interface ServicesSelect<T extends boolean = true> {
   content?: T;
   createdBy?: T;
   updatedBy?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        keywords?: T;
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+              noArchive?: T;
+              noSnippet?: T;
+            };
+        canonical?: T;
+        structured?:
+          | T
+          | {
+              type?: T;
+              customSchema?: T;
+              author?: T;
+              datePublished?: T;
+              dateModified?: T;
+            };
+        social?:
+          | T
+          | {
+              twitter?:
+                | T
+                | {
+                    card?: T;
+                    site?: T;
+                    creator?: T;
+                  };
+              facebook?:
+                | T
+                | {
+                    appId?: T;
+                  };
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1554,6 +2120,48 @@ export interface LegalSelect<T extends boolean = true> {
   content?: T;
   createdBy?: T;
   updatedBy?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        keywords?: T;
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+              noArchive?: T;
+              noSnippet?: T;
+            };
+        canonical?: T;
+        structured?:
+          | T
+          | {
+              type?: T;
+              customSchema?: T;
+              author?: T;
+              datePublished?: T;
+              dateModified?: T;
+            };
+        social?:
+          | T
+          | {
+              twitter?:
+                | T
+                | {
+                    card?: T;
+                    site?: T;
+                    creator?: T;
+                  };
+              facebook?:
+                | T
+                | {
+                    appId?: T;
+                  };
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1579,6 +2187,48 @@ export interface ContactsSelect<T extends boolean = true> {
       };
   createdBy?: T;
   updatedBy?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        keywords?: T;
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+              noArchive?: T;
+              noSnippet?: T;
+            };
+        canonical?: T;
+        structured?:
+          | T
+          | {
+              type?: T;
+              customSchema?: T;
+              author?: T;
+              datePublished?: T;
+              dateModified?: T;
+            };
+        social?:
+          | T
+          | {
+              twitter?:
+                | T
+                | {
+                    card?: T;
+                    site?: T;
+                    creator?: T;
+                  };
+              facebook?:
+                | T
+                | {
+                    appId?: T;
+                  };
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2037,6 +2687,94 @@ export interface Header {
     url?: string | null;
     label: string;
   };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated keywords relevant to this content
+     */
+    keywords?: string | null;
+    robots?: {
+      /**
+       * Check this to prevent search engines from indexing this page
+       */
+      noIndex?: boolean | null;
+      /**
+       * Check this to tell search engines not to follow links on this page
+       */
+      noFollow?: boolean | null;
+      /**
+       * Prevent search engines from showing cached versions of this page
+       */
+      noArchive?: boolean | null;
+      /**
+       * Prevent search engines from showing text snippets in search results
+       */
+      noSnippet?: boolean | null;
+    };
+    /**
+     * The canonical URL for this page (leave empty to use the page URL)
+     */
+    canonical?: string | null;
+    structured?: {
+      /**
+       * Select the most appropriate schema type for this content
+       */
+      type?:
+        | (
+            | 'Article'
+            | 'BlogPosting'
+            | 'WebPage'
+            | 'Organization'
+            | 'Service'
+            | 'LocalBusiness'
+            | 'FAQPage'
+            | 'ContactPage'
+            | 'AboutPage'
+            | 'custom'
+          )
+        | null;
+      /**
+       * Enter custom JSON-LD structured data
+       */
+      customSchema?: string | null;
+      /**
+       * Author of this content (for articles and blog posts)
+       */
+      author?: (number | null) | User;
+      /**
+       * Publication date (for articles and blog posts)
+       */
+      datePublished?: string | null;
+      /**
+       * Last modification date (for articles and blog posts)
+       */
+      dateModified?: string | null;
+    };
+    social?: {
+      twitter?: {
+        card?: ('summary' | 'summary_large_image' | 'app' | 'player') | null;
+        /**
+         * Twitter username for the website
+         */
+        site?: string | null;
+        /**
+         * Twitter username for the content creator
+         */
+        creator?: string | null;
+      };
+      facebook?: {
+        /**
+         * Facebook App ID for analytics
+         */
+        appId?: string | null;
+      };
+    };
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2084,6 +2822,94 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated keywords relevant to this content
+     */
+    keywords?: string | null;
+    robots?: {
+      /**
+       * Check this to prevent search engines from indexing this page
+       */
+      noIndex?: boolean | null;
+      /**
+       * Check this to tell search engines not to follow links on this page
+       */
+      noFollow?: boolean | null;
+      /**
+       * Prevent search engines from showing cached versions of this page
+       */
+      noArchive?: boolean | null;
+      /**
+       * Prevent search engines from showing text snippets in search results
+       */
+      noSnippet?: boolean | null;
+    };
+    /**
+     * The canonical URL for this page (leave empty to use the page URL)
+     */
+    canonical?: string | null;
+    structured?: {
+      /**
+       * Select the most appropriate schema type for this content
+       */
+      type?:
+        | (
+            | 'Article'
+            | 'BlogPosting'
+            | 'WebPage'
+            | 'Organization'
+            | 'Service'
+            | 'LocalBusiness'
+            | 'FAQPage'
+            | 'ContactPage'
+            | 'AboutPage'
+            | 'custom'
+          )
+        | null;
+      /**
+       * Enter custom JSON-LD structured data
+       */
+      customSchema?: string | null;
+      /**
+       * Author of this content (for articles and blog posts)
+       */
+      author?: (number | null) | User;
+      /**
+       * Publication date (for articles and blog posts)
+       */
+      datePublished?: string | null;
+      /**
+       * Last modification date (for articles and blog posts)
+       */
+      dateModified?: string | null;
+    };
+    social?: {
+      twitter?: {
+        card?: ('summary' | 'summary_large_image' | 'app' | 'player') | null;
+        /**
+         * Twitter username for the website
+         */
+        site?: string | null;
+        /**
+         * Twitter username for the content creator
+         */
+        creator?: string | null;
+      };
+      facebook?: {
+        /**
+         * Facebook App ID for analytics
+         */
+        appId?: string | null;
+      };
+    };
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2217,6 +3043,48 @@ export interface HeaderSelect<T extends boolean = true> {
         url?: T;
         label?: T;
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        keywords?: T;
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+              noArchive?: T;
+              noSnippet?: T;
+            };
+        canonical?: T;
+        structured?:
+          | T
+          | {
+              type?: T;
+              customSchema?: T;
+              author?: T;
+              datePublished?: T;
+              dateModified?: T;
+            };
+        social?:
+          | T
+          | {
+              twitter?:
+                | T
+                | {
+                    card?: T;
+                    site?: T;
+                    creator?: T;
+                  };
+              facebook?:
+                | T
+                | {
+                    appId?: T;
+                  };
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -2245,6 +3113,48 @@ export interface FooterSelect<T extends boolean = true> {
               id?: T;
             };
         id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        keywords?: T;
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+              noArchive?: T;
+              noSnippet?: T;
+            };
+        canonical?: T;
+        structured?:
+          | T
+          | {
+              type?: T;
+              customSchema?: T;
+              author?: T;
+              datePublished?: T;
+              dateModified?: T;
+            };
+        social?:
+          | T
+          | {
+              twitter?:
+                | T
+                | {
+                    card?: T;
+                    site?: T;
+                    creator?: T;
+                  };
+              facebook?:
+                | T
+                | {
+                    appId?: T;
+                  };
+            };
       };
   updatedAt?: T;
   createdAt?: T;

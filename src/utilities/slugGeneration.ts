@@ -149,7 +149,7 @@ export async function generateUniqueSlug(
   req: PayloadRequest,
   excludeId?: string | number,
 ): Promise<string> {
-  let slug = baseSlug
+  const slug = baseSlug
   let counter = 1
 
   // Check if base slug is unique
