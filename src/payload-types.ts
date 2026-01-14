@@ -299,7 +299,13 @@ export interface Page {
   id: number;
   title: string;
   slug?: string | null;
+  /**
+   * Select a parent page to create a hierarchical structure
+   */
   parent?: (number | null) | Page;
+  /**
+   * Automatically generated breadcrumb trail based on page hierarchy
+   */
   breadcrumbs?:
     | {
         doc?: (number | null) | Page;
@@ -320,25 +326,38 @@ export interface Page {
  * via the `definition` "HeroBlock".
  */
 export interface HeroBlock {
-  type: 'default' | 'centered' | 'minimal';
-  richText: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
+  /**
+   * Choose the hero layout style
+   */
+  type: 'default' | 'centered' | 'minimal' | 'video';
+  /**
+   * Small text above the main heading
+   */
+  eyebrow?: string | null;
+  /**
+   * Main hero heading - keep it impactful and concise
+   */
+  heading: string;
+  /**
+   * Supporting text below the heading
+   */
+  subheading?: string | null;
+  /**
+   * Background image or featured media
+   */
   media?: (number | null) | Media;
-  links?:
+  /**
+   * URL for background video (MP4 format recommended for best compatibility)
+   */
+  videoUrl?: string | null;
+  /**
+   * Call-to-action buttons (maximum 3 for optimal UX)
+   */
+  actions?:
     | {
+        /**
+         * Configure the action button
+         */
         link: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
@@ -370,9 +389,41 @@ export interface HeroBlock {
            */
           appearance?: ('default' | 'secondary' | 'outline') | null;
         };
+        /**
+         * Button priority affects styling and placement
+         */
+        priority?: ('primary' | 'secondary') | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Customize the appearance and behavior of the hero section
+   */
+  settings?: {
+    /**
+     * Text color theme - auto will adapt based on background
+     */
+    theme?: ('light' | 'dark' | 'auto') | null;
+    /**
+     * Hero section height - auto adjusts to content
+     */
+    height?: ('small' | 'medium' | 'large' | 'auto') | null;
+    /**
+     * Enable parallax scrolling effect for background media
+     */
+    enableParallax?: boolean | null;
+    /**
+     * Add overlay to improve text readability over background media
+     */
+    overlay?: {
+      enabled?: boolean | null;
+      /**
+       * Overlay opacity (0-100%)
+       */
+      opacity?: number | null;
+      color?: ('black' | 'white' | 'primary') | null;
+    };
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'hero';
@@ -1314,9 +1365,12 @@ export interface PagesSelect<T extends boolean = true> {
  */
 export interface HeroBlockSelect<T extends boolean = true> {
   type?: T;
-  richText?: T;
+  eyebrow?: T;
+  heading?: T;
+  subheading?: T;
   media?: T;
-  links?:
+  videoUrl?: T;
+  actions?:
     | T
     | {
         link?:
@@ -1329,7 +1383,22 @@ export interface HeroBlockSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
+        priority?: T;
         id?: T;
+      };
+  settings?:
+    | T
+    | {
+        theme?: T;
+        height?: T;
+        enableParallax?: T;
+        overlay?:
+          | T
+          | {
+              enabled?: T;
+              opacity?: T;
+              color?: T;
+            };
       };
   id?: T;
   blockName?: T;

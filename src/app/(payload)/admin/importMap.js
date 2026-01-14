@@ -24,6 +24,7 @@ import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { FolderTableCell as FolderTableCell_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 import { FolderField as FolderField_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
+import { default as default_80344c3bbe36fd717cc750cc97993cfe } from '../../../../src/components/BreadcrumbCell'
 import { FolderTypeField as FolderTypeField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { NavItemRowLabel as NavItemRowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
 import { RowLabel as RowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
@@ -59,6 +60,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/ui/rsc#FolderTableCell": FolderTableCell_ab83ff7e88da8d3530831f296ec4756a,
   "@payloadcms/ui/rsc#FolderField": FolderField_ab83ff7e88da8d3530831f296ec4756a,
+  "/src/components/BreadcrumbCell#default": default_80344c3bbe36fd717cc750cc97993cfe,
   "@payloadcms/ui#FolderTypeField": FolderTypeField_3817bf644402e67bfe6577f60ef982de,
   "@/globals/Header/RowLabel#NavItemRowLabel": NavItemRowLabel_17c6ef4bfe47bfa29d923fb5718170b7,
   "@/globals/Header/RowLabel#RowLabel": RowLabel_17c6ef4bfe47bfa29d923fb5718170b7,

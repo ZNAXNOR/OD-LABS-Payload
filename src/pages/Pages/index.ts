@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 // Import blocks
-import { Hero } from '@/blocks/Hero'
+import { HeroBlock } from '@/blocks/enhanced/Hero'
 import { Content } from '@/blocks/Content'
 import { CallToAction } from '@/blocks/CallToAction'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
@@ -141,7 +141,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [Hero, Content, CallToAction, MediaBlock, Archive, Banner, Code],
+      blocks: [HeroBlock, Content, CallToAction, MediaBlock, Archive, Banner, Code],
     },
   ],
 }
