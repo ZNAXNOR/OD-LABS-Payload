@@ -5,6 +5,10 @@ import { ServicesGridBlock } from '@/components/blocks/ServicesGrid'
 import { TechStackBlock } from '@/components/blocks/TechStack'
 import { ProcessStepsBlock } from '@/components/blocks/ProcessSteps'
 import { PricingTableBlock } from '@/components/blocks/PricingTable'
+import { ProjectShowcaseBlock } from '@/components/blocks/ProjectShowcase'
+import { CaseStudyBlock } from '@/components/blocks/CaseStudy'
+import { BeforeAfterBlock } from '@/components/blocks/BeforeAfter'
+import { TestimonialBlock } from '@/components/blocks/Testimonial'
 
 interface RenderBlocksProps {
   blocks: Page['layout']
@@ -105,6 +109,18 @@ export function RenderBlocks({ blocks }: RenderBlocksProps) {
 
           case 'pricingTable':
             return <PricingTableBlock key={index} block={block} />
+
+          case 'projectShowcase':
+            return <ProjectShowcaseBlock key={index} block={block} />
+
+          case 'caseStudy':
+            return <CaseStudyBlock key={index} block={block} />
+
+          case 'beforeAfter':
+            return <BeforeAfterBlock key={index} block={block} />
+
+          case 'testimonial':
+            return <TestimonialBlock key={index} block={block} />
 
           default:
             return null

@@ -312,7 +312,24 @@ export interface Page {
   /**
    * Build your page layout using content blocks
    */
-  layout?: (ContentBlock | CallToActionBlock | MediaBlock | ArchiveBlock | BannerBlock | CodeBlock)[] | null;
+  layout?:
+    | (
+        | ContentBlock
+        | CallToActionBlock
+        | MediaBlock
+        | ArchiveBlock
+        | BannerBlock
+        | CodeBlock
+        | ServicesGridBlock
+        | TechStackBlock
+        | ProcessStepsBlock
+        | PricingTableBlock
+        | ProjectShowcaseBlock
+        | CaseStudyBlock
+        | BeforeAfterBlock
+        | TestimonialBlock
+      )[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1566,6 +1583,751 @@ export interface CodeBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesGridBlock".
+ */
+export interface ServicesGridBlock {
+  /**
+   * Optional heading for the services section
+   */
+  heading?: string | null;
+  /**
+   * Optional description text
+   */
+  description?: string | null;
+  /**
+   * Number of columns in the grid
+   */
+  columns: '2' | '3' | '4';
+  /**
+   * Add service cards to display
+   */
+  services?:
+    | {
+        /**
+         * Lucide icon name (e.g., Code, Palette, Rocket)
+         */
+        icon?: string | null;
+        /**
+         * Service title
+         */
+        title: string;
+        /**
+         * Service description
+         */
+        description: string;
+        /**
+         * List of key features for this service
+         */
+        features?:
+          | {
+              feature: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Optional link to service details page
+         */
+        link: {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'blogs';
+                  value: number | BlogPage;
+                } | null)
+              | ({
+                  relationTo: 'services';
+                  value: number | ServicePage;
+                } | null)
+              | ({
+                  relationTo: 'legal';
+                  value: number | LegalPage;
+                } | null)
+              | ({
+                  relationTo: 'contacts';
+                  value: number | ContactPage;
+                } | null);
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'secondary' | 'outline') | null;
+          };
+        };
+        /**
+         * Highlight this service card
+         */
+        highlighted?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Visual style of the service cards
+   */
+  style: 'cards' | 'minimal' | 'bordered';
+  /**
+   * Display icons on service cards
+   */
+  showIcons?: boolean | null;
+  /**
+   * Optional call-to-action button text
+   */
+  ctaText?: string | null;
+  /**
+   * Link for the call-to-action button
+   */
+  ctaLink?: {
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'blogs';
+            value: number | BlogPage;
+          } | null)
+        | ({
+            relationTo: 'services';
+            value: number | ServicePage;
+          } | null)
+        | ({
+            relationTo: 'legal';
+            value: number | LegalPage;
+          } | null)
+        | ({
+            relationTo: 'contacts';
+            value: number | ContactPage;
+          } | null);
+      url?: string | null;
+      /**
+       * Choose how the link should be rendered.
+       */
+      appearance?: ('default' | 'secondary' | 'outline') | null;
+    };
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TechStackBlock".
+ */
+export interface TechStackBlock {
+  /**
+   * Optional heading for the tech stack section
+   */
+  heading?: string | null;
+  /**
+   * Optional description text
+   */
+  description?: string | null;
+  /**
+   * How to display the technologies
+   */
+  layout: 'grid' | 'carousel' | 'list';
+  /**
+   * Add technologies to display
+   */
+  technologies?:
+    | {
+        /**
+         * Technology name
+         */
+        name: string;
+        /**
+         * Technology logo/icon (upload or use icon name)
+         */
+        icon?: (number | null) | Media;
+        /**
+         * Lucide icon name if not using uploaded icon
+         */
+        iconName?: string | null;
+        /**
+         * Technology category for filtering
+         */
+        category: 'frontend' | 'backend' | 'database' | 'devops' | 'tools' | 'other';
+        /**
+         * Optional description of the technology
+         */
+        description?: string | null;
+        /**
+         * Your proficiency level with this technology
+         */
+        proficiency?: ('beginner' | 'intermediate' | 'advanced' | 'expert') | null;
+        /**
+         * Years of experience with this technology
+         */
+        yearsExperience?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Show technology descriptions
+   */
+  showDescriptions?: boolean | null;
+  /**
+   * Enable category filtering
+   */
+  enableFiltering?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'techStack';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessStepsBlock".
+ */
+export interface ProcessStepsBlock {
+  /**
+   * Optional heading for the process section
+   */
+  heading?: string | null;
+  /**
+   * Optional description text
+   */
+  description?: string | null;
+  /**
+   * How to display the process steps
+   */
+  layout: 'vertical' | 'horizontal' | 'grid';
+  /**
+   * Visual style of the steps
+   */
+  style: 'numbered' | 'icons' | 'timeline';
+  /**
+   * Add process steps
+   */
+  steps?:
+    | {
+        /**
+         * Lucide icon name (used when style is "icons")
+         */
+        icon?: string | null;
+        /**
+         * Step title
+         */
+        title: string;
+        /**
+         * Step description
+         */
+        description: string;
+        /**
+         * Optional duration for this step
+         */
+        duration?: string | null;
+        /**
+         * Optional additional details
+         */
+        details?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Show connecting lines between steps (for timeline style)
+   */
+  showConnectors?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'processSteps';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PricingTableBlock".
+ */
+export interface PricingTableBlock {
+  /**
+   * Optional heading for the pricing section
+   */
+  heading?: string | null;
+  /**
+   * Optional description text
+   */
+  description?: string | null;
+  /**
+   * Billing period options to display
+   */
+  billingPeriod: 'monthly' | 'yearly' | 'both';
+  /**
+   * Add pricing tiers (max 4 recommended)
+   */
+  tiers?:
+    | {
+        /**
+         * Tier name
+         */
+        name: string;
+        /**
+         * Optional tier description
+         */
+        description?: string | null;
+        /**
+         * Price amount
+         */
+        price: number;
+        /**
+         * Currency code
+         */
+        currency: string;
+        /**
+         * Billing period
+         */
+        period: 'month' | 'year' | 'project' | 'hour';
+        /**
+         * List of features for this tier
+         */
+        features?:
+          | {
+              text: string;
+              /**
+               * Is this feature included?
+               */
+              included?: boolean | null;
+              /**
+               * Optional tooltip text for more info
+               */
+              tooltip?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Highlight this tier (e.g., "Most Popular")
+         */
+        highlighted?: boolean | null;
+        /**
+         * Optional badge text
+         */
+        badge?: string | null;
+        /**
+         * Call-to-action button text
+         */
+        ctaText: string;
+        /**
+         * Link for the call-to-action button
+         */
+        ctaLink?: {
+          link?: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'blogs';
+                  value: number | BlogPage;
+                } | null)
+              | ({
+                  relationTo: 'services';
+                  value: number | ServicePage;
+                } | null)
+              | ({
+                  relationTo: 'legal';
+                  value: number | LegalPage;
+                } | null)
+              | ({
+                  relationTo: 'contacts';
+                  value: number | ContactPage;
+                } | null);
+            url?: string | null;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'secondary' | 'outline') | null;
+          };
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Show detailed feature comparison table
+   */
+  showComparison?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pricingTable';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectShowcaseBlock".
+ */
+export interface ProjectShowcaseBlock {
+  /**
+   * Optional heading for the project showcase section
+   */
+  heading?: string | null;
+  /**
+   * Optional description text
+   */
+  description?: string | null;
+  /**
+   * Layout style for displaying projects
+   */
+  layout: 'grid' | 'masonry' | 'carousel';
+  /**
+   * Number of columns in the grid
+   */
+  columns?: ('2' | '3' | '4') | null;
+  /**
+   * Add projects to showcase
+   */
+  projects?:
+    | {
+        /**
+         * Project title
+         */
+        title: string;
+        /**
+         * Brief project description
+         */
+        description: string;
+        /**
+         * Project thumbnail or hero image
+         */
+        image: number | Media;
+        /**
+         * Technologies used in this project
+         */
+        technologies?:
+          | {
+              technology: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Project category for filtering
+         */
+        category: string;
+        /**
+         * Optional link to project details page
+         */
+        link: {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'blogs';
+                  value: number | BlogPage;
+                } | null)
+              | ({
+                  relationTo: 'services';
+                  value: number | ServicePage;
+                } | null)
+              | ({
+                  relationTo: 'legal';
+                  value: number | LegalPage;
+                } | null)
+              | ({
+                  relationTo: 'contacts';
+                  value: number | ContactPage;
+                } | null);
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'secondary' | 'outline') | null;
+          };
+        };
+        /**
+         * GitHub repository URL
+         */
+        githubUrl?: string | null;
+        /**
+         * Live project URL
+         */
+        liveUrl?: string | null;
+        /**
+         * Mark as featured project
+         */
+        featured?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Enable category filtering for projects
+   */
+  enableFiltering?: boolean | null;
+  /**
+   * Categories to show in filter (leave empty to auto-generate from projects)
+   */
+  filterCategories?:
+    | {
+        category: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Show "Load More" button for pagination
+   */
+  showLoadMore?: boolean | null;
+  /**
+   * Number of projects to show per page
+   */
+  itemsPerPage?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'projectShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CaseStudyBlock".
+ */
+export interface CaseStudyBlock {
+  /**
+   * Client or company name
+   */
+  client: string;
+  /**
+   * Project name
+   */
+  project: string;
+  /**
+   * Project duration
+   */
+  duration?: string | null;
+  /**
+   * Your role in the project
+   */
+  role?: string | null;
+  /**
+   * Describe the challenge or problem
+   */
+  challenge: {
+    /**
+     * Section heading
+     */
+    heading: string;
+    /**
+     * Describe the problem or challenge
+     */
+    content: string;
+    /**
+     * Optional image for this section
+     */
+    image?: (number | null) | Media;
+  };
+  /**
+   * Describe your approach and methodology
+   */
+  approach: {
+    /**
+     * Section heading
+     */
+    heading: string;
+    /**
+     * Describe your approach to solving the problem
+     */
+    content: string;
+    /**
+     * Key steps in your approach
+     */
+    steps?:
+      | {
+          step: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Describe the solution you delivered
+   */
+  solution: {
+    /**
+     * Section heading
+     */
+    heading: string;
+    /**
+     * Describe the solution you delivered
+     */
+    content: string;
+    /**
+     * Technologies used in the solution
+     */
+    technologies?:
+      | {
+          technology: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Optional image for this section
+     */
+    image?: (number | null) | Media;
+  };
+  /**
+   * Showcase the results and impact
+   */
+  results: {
+    /**
+     * Section heading
+     */
+    heading: string;
+    /**
+     * Key metrics and results
+     */
+    metrics?:
+      | {
+          /**
+           * Metric label
+           */
+          label: string;
+          /**
+           * Metric value
+           */
+          value: string;
+          /**
+           * Change indicator (e.g., +50%, -30%)
+           */
+          change?: string | null;
+          /**
+           * Lucide icon name
+           */
+          icon?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Optional client testimonial
+     */
+    testimonial?: {
+      /**
+       * Client testimonial
+       */
+      quote?: string | null;
+      /**
+       * Testimonial author name
+       */
+      author?: string | null;
+      /**
+       * Author role or title
+       */
+      role?: string | null;
+    };
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'caseStudy';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BeforeAfterBlock".
+ */
+export interface BeforeAfterBlock {
+  /**
+   * Optional heading for the comparison section
+   */
+  heading?: string | null;
+  /**
+   * Optional description text
+   */
+  description?: string | null;
+  /**
+   * Image showing the "before" state
+   */
+  beforeImage: number | Media;
+  /**
+   * Image showing the "after" state
+   */
+  afterImage: number | Media;
+  /**
+   * Label for the before image
+   */
+  beforeLabel?: string | null;
+  /**
+   * Label for the after image
+   */
+  afterLabel?: string | null;
+  /**
+   * Slider orientation
+   */
+  orientation: 'horizontal' | 'vertical';
+  /**
+   * Default slider position (0-100)
+   */
+  defaultPosition: number;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'beforeAfter';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialBlock".
+ */
+export interface TestimonialBlock {
+  /**
+   * Optional heading for the testimonials section
+   */
+  heading?: string | null;
+  /**
+   * Layout style for displaying testimonials
+   */
+  layout: 'single' | 'grid' | 'carousel';
+  /**
+   * Add testimonials to display
+   */
+  testimonials?:
+    | {
+        /**
+         * Testimonial quote
+         */
+        quote: string;
+        /**
+         * Author name
+         */
+        author: string;
+        /**
+         * Author role or title
+         */
+        role: string;
+        /**
+         * Company name
+         */
+        company?: string | null;
+        /**
+         * Author avatar image
+         */
+        avatar?: (number | null) | Media;
+        /**
+         * Rating (1-5 stars)
+         */
+        rating?: number | null;
+        /**
+         * Testimonial date
+         */
+        date?: string | null;
+        /**
+         * Type of project
+         */
+        projectType?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Display star ratings
+   */
+  showRatings?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonial';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "analyticsData".
  */
 export interface AnalyticsDatum {
@@ -1924,6 +2686,14 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         banner?: T | BannerBlockSelect<T>;
         code?: T | CodeBlockSelect<T>;
+        servicesGrid?: T | ServicesGridBlockSelect<T>;
+        techStack?: T | TechStackBlockSelect<T>;
+        processSteps?: T | ProcessStepsBlockSelect<T>;
+        pricingTable?: T | PricingTableBlockSelect<T>;
+        projectShowcase?: T | ProjectShowcaseBlockSelect<T>;
+        caseStudy?: T | CaseStudyBlockSelect<T>;
+        beforeAfter?: T | BeforeAfterBlockSelect<T>;
+        testimonial?: T | TestimonialBlockSelect<T>;
       };
   meta?:
     | T
@@ -2142,6 +2912,314 @@ export interface BannerBlockSelect<T extends boolean = true> {
 export interface CodeBlockSelect<T extends boolean = true> {
   language?: T;
   code?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesGridBlock_select".
+ */
+export interface ServicesGridBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  columns?: T;
+  services?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        features?:
+          | T
+          | {
+              feature?: T;
+              id?: T;
+            };
+        link?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
+                  };
+            };
+        highlighted?: T;
+        id?: T;
+      };
+  style?: T;
+  showIcons?: T;
+  ctaText?: T;
+  ctaLink?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              appearance?: T;
+            };
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TechStackBlock_select".
+ */
+export interface TechStackBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  layout?: T;
+  technologies?:
+    | T
+    | {
+        name?: T;
+        icon?: T;
+        iconName?: T;
+        category?: T;
+        description?: T;
+        proficiency?: T;
+        yearsExperience?: T;
+        id?: T;
+      };
+  showDescriptions?: T;
+  enableFiltering?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessStepsBlock_select".
+ */
+export interface ProcessStepsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  layout?: T;
+  style?: T;
+  steps?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        duration?: T;
+        details?: T;
+        id?: T;
+      };
+  showConnectors?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PricingTableBlock_select".
+ */
+export interface PricingTableBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  billingPeriod?: T;
+  tiers?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        price?: T;
+        currency?: T;
+        period?: T;
+        features?:
+          | T
+          | {
+              text?: T;
+              included?: T;
+              tooltip?: T;
+              id?: T;
+            };
+        highlighted?: T;
+        badge?: T;
+        ctaText?: T;
+        ctaLink?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    appearance?: T;
+                  };
+            };
+        id?: T;
+      };
+  showComparison?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectShowcaseBlock_select".
+ */
+export interface ProjectShowcaseBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  layout?: T;
+  columns?: T;
+  projects?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        technologies?:
+          | T
+          | {
+              technology?: T;
+              id?: T;
+            };
+        category?: T;
+        link?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
+                  };
+            };
+        githubUrl?: T;
+        liveUrl?: T;
+        featured?: T;
+        id?: T;
+      };
+  enableFiltering?: T;
+  filterCategories?:
+    | T
+    | {
+        category?: T;
+        id?: T;
+      };
+  showLoadMore?: T;
+  itemsPerPage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CaseStudyBlock_select".
+ */
+export interface CaseStudyBlockSelect<T extends boolean = true> {
+  client?: T;
+  project?: T;
+  duration?: T;
+  role?: T;
+  challenge?:
+    | T
+    | {
+        heading?: T;
+        content?: T;
+        image?: T;
+      };
+  approach?:
+    | T
+    | {
+        heading?: T;
+        content?: T;
+        steps?:
+          | T
+          | {
+              step?: T;
+              id?: T;
+            };
+      };
+  solution?:
+    | T
+    | {
+        heading?: T;
+        content?: T;
+        technologies?:
+          | T
+          | {
+              technology?: T;
+              id?: T;
+            };
+        image?: T;
+      };
+  results?:
+    | T
+    | {
+        heading?: T;
+        metrics?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              change?: T;
+              icon?: T;
+              id?: T;
+            };
+        testimonial?:
+          | T
+          | {
+              quote?: T;
+              author?: T;
+              role?: T;
+            };
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BeforeAfterBlock_select".
+ */
+export interface BeforeAfterBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  beforeImage?: T;
+  afterImage?: T;
+  beforeLabel?: T;
+  afterLabel?: T;
+  orientation?: T;
+  defaultPosition?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialBlock_select".
+ */
+export interface TestimonialBlockSelect<T extends boolean = true> {
+  heading?: T;
+  layout?: T;
+  testimonials?:
+    | T
+    | {
+        quote?: T;
+        author?: T;
+        role?: T;
+        company?: T;
+        avatar?: T;
+        rating?: T;
+        date?: T;
+        projectType?: T;
+        id?: T;
+      };
+  showRatings?: T;
   id?: T;
   blockName?: T;
 }

@@ -9,6 +9,18 @@ import { ArchiveBlock } from '@/blocks/Archive/config'
 import { Banner } from '@/blocks/Banner/config'
 import { Code } from '@/blocks/Code/config'
 
+// Import services blocks
+import { ServicesGridBlock } from '@/blocks/services/ServicesGrid/config'
+import { TechStackBlock } from '@/blocks/services/TechStack/config'
+import { ProcessStepsBlock } from '@/blocks/services/ProcessSteps/config'
+import { PricingTableBlock } from '@/blocks/services/PricingTable/config'
+
+// Import portfolio blocks
+import { ProjectShowcaseBlock } from '@/blocks/portfolio/ProjectShowcase/config'
+import { CaseStudyBlock } from '@/blocks/portfolio/CaseStudy/config'
+import { BeforeAfterBlock } from '@/blocks/portfolio/BeforeAfter/config'
+import { TestimonialBlock } from '@/blocks/portfolio/Testimonial/config'
+
 // Import hooks
 import { revalidatePage } from './hooks/revalidatePage'
 import { populateBreadcrumbs } from './hooks/populateBreadcrumbs'
@@ -96,7 +108,22 @@ export const Pages: CollectionConfig = {
               name: 'layout',
               type: 'blocks',
               label: 'Page Layout',
-              blocks: [ContentBlock, CallToActionBlock, MediaBlock, ArchiveBlock, Banner, Code],
+              blocks: [
+                ContentBlock,
+                CallToActionBlock,
+                MediaBlock,
+                ArchiveBlock,
+                Banner,
+                Code,
+                ServicesGridBlock,
+                TechStackBlock,
+                ProcessStepsBlock,
+                PricingTableBlock,
+                ProjectShowcaseBlock,
+                CaseStudyBlock,
+                BeforeAfterBlock,
+                TestimonialBlock,
+              ],
               admin: {
                 description: 'Build your page layout using content blocks',
               },

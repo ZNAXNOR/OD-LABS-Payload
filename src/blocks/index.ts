@@ -11,3 +11,9 @@ export { ServicesGridBlock } from './services/ServicesGrid/config'
 export { TechStackBlock } from './services/TechStack/config'
 export { ProcessStepsBlock } from './services/ProcessSteps/config'
 export { PricingTableBlock } from './services/PricingTable/config'
+
+// Portfolio Blocks
+export { ProjectShowcaseBlock } from './portfolio/ProjectShowcase/config'
+export { CaseStudyBlock } from './portfolio/CaseStudy/config'
+export { BeforeAfterBlock } from './portfolio/BeforeAfter/config'
+export { TestimonialBlock } from './portfolio/Testimonial/config'
