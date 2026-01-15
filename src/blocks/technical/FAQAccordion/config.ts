@@ -3,6 +3,13 @@ import type { Block } from 'payload'
 export const FAQAccordionBlock: Block = {
   slug: 'faqAccordion',
   interfaceName: 'FAQAccordionBlock',
+  labels: {
+    singular: 'FAQ Accordion Block',
+    plural: 'FAQ Accordion Blocks',
+  },
+  admin: {
+    group: 'Technical',
+  },
   fields: [
     {
       name: 'heading',

@@ -7,6 +7,9 @@ export const TechStackBlock: Block = {
     singular: 'Tech Stack Block',
     plural: 'Tech Stack Blocks',
   },
+  admin: {
+    group: 'Services',
+  },
   fields: [
     {
       name: 'heading',

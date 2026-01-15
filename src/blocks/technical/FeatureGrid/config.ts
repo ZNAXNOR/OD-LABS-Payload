@@ -3,6 +3,13 @@ import type { Block } from 'payload'
 export const FeatureGridBlock: Block = {
   slug: 'featureGrid',
   interfaceName: 'FeatureGridBlock',
+  labels: {
+    singular: 'Feature Grid Block',
+    plural: 'Feature Grid Blocks',
+  },
+  admin: {
+    group: 'Technical',
+  },
   fields: [
     {
       name: 'heading',

@@ -1,0 +1,315 @@
+{
+  "title": "Services - Example Page",
+  "slug": "services-example",
+  "hero": {
+    "blockType": "hero",
+    "variant": "split",
+    "eyebrow": "What We Do",
+    "heading": "Comprehensive Web Development Services",
+    "subheading": "From concept to deployment, we provide end-to-end solutions tailored to your business needs.",
+    "splitLayout": {
+      "contentSide": "left",
+      "mediaType": "code"
+    },
+    "actions": [
+      {
+        "link": {
+          "type": "custom",
+          "url": "/contact",
+          "label": "Get Started"
+        },
+        "priority": "primary"
+      }
+    ],
+    "settings": {
+      "theme": "auto",
+      "height": "large",
+      "enableParallax": false
+    }
+  },
+  "layout": [
+    {
+      "blockType": "servicesGrid",
+      "heading": "Our Core Services",
+      "description": "We offer a comprehensive range of web development services to help your business succeed online.",
+      "columns": "3",
+      "services": [
+        {
+          "icon": "Code",
+          "title": "Web Development",
+          "description": "Custom web applications built with modern technologies and best practices.",
+          "features": [
+            { "feature": "Responsive design" },
+            { "feature": "Performance optimization" },
+            { "feature": "SEO-friendly architecture" },
+            { "feature": "Scalable infrastructure" }
+          ],
+          "highlighted": true
+        },
+        {
+          "icon": "Smartphone",
+          "title": "Mobile Development",
+          "description": "Native and cross-platform mobile applications for iOS and Android.",
+          "features": [
+            { "feature": "React Native development" },
+            { "feature": "Native iOS & Android" },
+            { "feature": "App Store optimization" },
+            { "feature": "Push notifications" }
+          ],
+          "highlighted": false
+        },
+        {
+          "icon": "Palette",
+          "title": "UI/UX Design",
+          "description": "Beautiful, intuitive interfaces that users love to interact with.",
+          "features": [
+            { "feature": "User research" },
+            { "feature": "Wireframing & prototyping" },
+            { "feature": "Visual design" },
+            { "feature": "Usability testing" }
+          ],
+          "highlighted": false
+        },
+        {
+          "icon": "Cloud",
+          "title": "Cloud Infrastructure",
+          "description": "Scalable, secure cloud solutions on AWS, Azure, or Google Cloud.",
+          "features": [
+            { "feature": "Infrastructure as Code" },
+            { "feature": "Auto-scaling" },
+            { "feature": "Monitoring & alerts" },
+            { "feature": "Disaster recovery" }
+          ],
+          "highlighted": false
+        },
+        {
+          "icon": "ShoppingCart",
+          "title": "E-commerce Solutions",
+          "description": "Complete e-commerce platforms with payment processing and inventory management.",
+          "features": [
+            { "feature": "Payment gateway integration" },
+            { "feature": "Inventory management" },
+            { "feature": "Order tracking" },
+            { "feature": "Analytics dashboard" }
+          ],
+          "highlighted": false
+        },
+        {
+          "icon": "Wrench",
+          "title": "Maintenance & Support",
+          "description": "Ongoing maintenance, updates, and technical support for your applications.",
+          "features": [
+            { "feature": "24/7 monitoring" },
+            { "feature": "Security updates" },
+            { "feature": "Performance optimization" },
+            { "feature": "Bug fixes" }
+          ],
+          "highlighted": false
+        }
+      ],
+      "style": "cards",
+      "showIcons": true,
+      "ctaText": "View All Services",
+      "ctaLink": {
+        "type": "custom",
+        "url": "/services"
+      }
+    },
+    {
+      "blockType": "processSteps",
+      "heading": "Our Development Process",
+      "description": "A proven methodology that ensures successful project delivery",
+      "layout": "vertical",
+      "steps": [
+        {
+          "number": 1,
+          "icon": "MessageSquare",
+          "title": "Discovery & Planning",
+          "description": "We start by understanding your business goals, target audience, and project requirements.",
+          "duration": "1-2 weeks"
+        },
+        {
+          "number": 2,
+          "icon": "Pencil",
+          "title": "Design & Prototyping",
+          "description": "Our designers create wireframes and high-fidelity mockups for your approval.",
+          "duration": "2-3 weeks"
+        },
+        {
+          "number": 3,
+          "icon": "Code",
+          "title": "Development",
+          "description": "Our developers build your application using agile methodology with regular updates.",
+          "duration": "4-12 weeks"
+        },
+        {
+          "number": 4,
+          "icon": "TestTube",
+          "title": "Testing & QA",
+          "description": "Comprehensive testing ensures your application works flawlessly across all devices.",
+          "duration": "1-2 weeks"
+        },
+        {
+          "number": 5,
+          "icon": "Rocket",
+          "title": "Launch & Deployment",
+          "description": "We deploy your application to production and monitor its performance closely.",
+          "duration": "1 week"
+        },
+        {
+          "number": 6,
+          "icon": "LifeBuoy",
+          "title": "Support & Maintenance",
+          "description": "Ongoing support, updates, and optimization to keep your application running smoothly.",
+          "duration": "Ongoing"
+        }
+      ],
+      "style": "numbered"
+    },
+    {
+      "blockType": "pricingTable",
+      "heading": "Transparent Pricing",
+      "description": "Choose the package that best fits your needs",
+      "billingPeriod": "monthly",
+      "tiers": [
+        {
+          "name": "Starter",
+          "description": "Perfect for small projects and MVPs",
+          "price": 5000,
+          "currency": "USD",
+          "period": "project",
+          "features": [
+            { "text": "Up to 5 pages", "included": true },
+            { "text": "Responsive design", "included": true },
+            { "text": "Basic SEO", "included": true },
+            { "text": "Contact form", "included": true },
+            { "text": "1 month support", "included": true },
+            { "text": "E-commerce", "included": false },
+            { "text": "Custom integrations", "included": false }
+          ],
+          "highlighted": false,
+          "ctaText": "Get Started",
+          "ctaLink": {
+            "type": "custom",
+            "url": "/contact"
+          }
+        },
+        {
+          "name": "Professional",
+          "description": "Ideal for growing businesses",
+          "price": 15000,
+          "currency": "USD",
+          "period": "project",
+          "features": [
+            { "text": "Up to 15 pages", "included": true },
+            { "text": "Responsive design", "included": true },
+            { "text": "Advanced SEO", "included": true },
+            { "text": "Contact & custom forms", "included": true },
+            { "text": "3 months support", "included": true },
+            { "text": "E-commerce (up to 100 products)", "included": true },
+            { "text": "Basic integrations", "included": true },
+            { "text": "Analytics dashboard", "included": true }
+          ],
+          "highlighted": true,
+          "ctaText": "Most Popular",
+          "ctaLink": {
+            "type": "custom",
+            "url": "/contact"
+          },
+          "badge": "Popular"
+        },
+        {
+          "name": "Enterprise",
+          "description": "For large-scale applications",
+          "price": 50000,
+          "currency": "USD",
+          "period": "project",
+          "features": [
+            { "text": "Unlimited pages", "included": true },
+            { "text": "Responsive design", "included": true },
+            { "text": "Enterprise SEO", "included": true },
+            { "text": "Custom forms & workflows", "included": true },
+            { "text": "12 months support", "included": true },
+            { "text": "E-commerce (unlimited)", "included": true },
+            { "text": "Custom integrations", "included": true },
+            { "text": "Advanced analytics", "included": true },
+            { "text": "Dedicated account manager", "included": true },
+            { "text": "Priority support", "included": true }
+          ],
+          "highlighted": false,
+          "ctaText": "Contact Sales",
+          "ctaLink": {
+            "type": "custom",
+            "url": "/contact"
+          }
+        }
+      ],
+      "showComparison": true
+    },
+    {
+      "blockType": "faqAccordion",
+      "heading": "Frequently Asked Questions",
+      "description": "Find answers to common questions about our services",
+      "faqs": [
+        {
+          "question": "How long does a typical project take?",
+          "answer": "Project timelines vary based on complexity, but most projects take 8-16 weeks from start to finish. We'll provide a detailed timeline during the planning phase.",
+          "category": "General"
+        },
+        {
+          "question": "Do you offer ongoing maintenance and support?",
+          "answer": "Yes! We offer comprehensive maintenance and support packages to keep your application running smoothly. This includes security updates, bug fixes, and feature enhancements.",
+          "category": "Support"
+        },
+        {
+          "question": "What technologies do you work with?",
+          "answer": "We specialize in modern web technologies including React, Next.js, Node.js, TypeScript, and various cloud platforms. We choose the best technology stack for each project.",
+          "category": "Technical"
+        },
+        {
+          "question": "Can you work with our existing codebase?",
+          "answer": "Absolutely! We have extensive experience working with existing codebases, whether it's adding new features, refactoring, or migrating to new technologies.",
+          "category": "Technical"
+        },
+        {
+          "question": "What is your pricing model?",
+          "answer": "We offer both fixed-price projects and hourly rates depending on your needs. We'll provide a detailed quote after understanding your requirements.",
+          "category": "Pricing"
+        },
+        {
+          "question": "Do you sign NDAs?",
+          "answer": "Yes, we're happy to sign NDAs and other confidentiality agreements to protect your intellectual property and business information.",
+          "category": "Legal"
+        }
+      ],
+      "allowMultipleOpen": false,
+      "showSearch": true
+    },
+    {
+      "blockType": "cta",
+      "variant": "centered",
+      "heading": "Ready to Get Started?",
+      "description": "Let's discuss your project and how we can help you achieve your goals.",
+      "links": [
+        {
+          "link": {
+            "type": "custom",
+            "url": "/contact",
+            "label": "Schedule a Consultation"
+          },
+          "appearance": "default"
+        },
+        {
+          "link": {
+            "type": "custom",
+            "url": "/portfolio",
+            "label": "View Our Work"
+          },
+          "appearance": "outline"
+        }
+      ],
+      "backgroundColor": "primary",
+      "pattern": "waves"
+    }
+  ]
+}

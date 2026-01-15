@@ -7,6 +7,9 @@ export const DividerBlock: Block = {
     singular: 'Divider Block',
     plural: 'Divider Blocks',
   },
+  admin: {
+    group: 'Layout',
+  },
   fields: [
     {
       name: 'style',

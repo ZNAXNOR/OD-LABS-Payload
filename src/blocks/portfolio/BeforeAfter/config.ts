@@ -7,6 +7,9 @@ export const BeforeAfterBlock: Block = {
     singular: 'Before/After Comparison Block',
     plural: 'Before/After Comparison Blocks',
   },
+  admin: {
+    group: 'Portfolio',
+  },
   fields: [
     {
       name: 'heading',

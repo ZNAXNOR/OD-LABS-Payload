@@ -3,6 +3,13 @@ import type { Block } from 'payload'
 export const SocialProofBlock: Block = {
   slug: 'socialProof',
   interfaceName: 'SocialProofBlock',
+  labels: {
+    singular: 'Social Proof Block',
+    plural: 'Social Proof Blocks',
+  },
+  admin: {
+    group: 'CTA & Conversion',
+  },
   fields: [
     {
       name: 'heading',

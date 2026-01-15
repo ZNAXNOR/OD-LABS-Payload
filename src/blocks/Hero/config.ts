@@ -8,6 +8,9 @@ export const HeroBlock: Block = {
     singular: 'Hero Block',
     plural: 'Hero Blocks',
   },
+  admin: {
+    group: 'Hero',
+  },
   fields: [
     {
       name: 'variant',

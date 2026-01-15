@@ -7,6 +7,9 @@ export const ContainerBlock: Block = {
     singular: 'Container Block',
     plural: 'Container Blocks',
   },
+  admin: {
+    group: 'Layout',
+  },
   fields: [
     {
       name: 'blocks',

@@ -8,6 +8,9 @@ export const ProjectShowcaseBlock: Block = {
     singular: 'Project Showcase Block',
     plural: 'Project Showcase Blocks',
   },
+  admin: {
+    group: 'Portfolio',
+  },
   fields: [
     {
       name: 'heading',

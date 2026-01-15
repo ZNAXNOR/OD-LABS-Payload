@@ -7,6 +7,9 @@ export const SpacerBlock: Block = {
     singular: 'Spacer Block',
     plural: 'Spacer Blocks',
   },
+  admin: {
+    group: 'Layout',
+  },
   fields: [
     {
       name: 'heightMobile',

@@ -8,6 +8,9 @@ export const ContentBlock: Block = {
     singular: 'Content Block',
     plural: 'Content Blocks',
   },
+  admin: {
+    group: 'Content',
+  },
   fields: [
     {
       name: 'columns',

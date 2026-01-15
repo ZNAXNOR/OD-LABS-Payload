@@ -12,6 +12,13 @@ import { linkGroup } from '../../fields/linkGroup'
 export const CallToActionBlock: Block = {
   slug: 'cta',
   interfaceName: 'CallToActionBlock',
+  labels: {
+    plural: 'Calls to Action',
+    singular: 'Call to Action',
+  },
+  admin: {
+    group: 'CTA & Conversion',
+  },
   fields: [
     {
       name: 'variant',

@@ -3,6 +3,13 @@ import type { Block } from 'payload'
 export const ArchiveBlock: Block = {
   slug: 'archive',
   interfaceName: 'ArchiveBlock',
+  labels: {
+    singular: 'Archive Block',
+    plural: 'Archive Blocks',
+  },
+  admin: {
+    group: 'Content',
+  },
   fields: [
     {
       name: 'introContent',

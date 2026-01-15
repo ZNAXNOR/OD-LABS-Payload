@@ -3,6 +3,13 @@ import type { Block } from 'payload'
 export const TimelineBlock: Block = {
   slug: 'timeline',
   interfaceName: 'TimelineBlock',
+  labels: {
+    singular: 'Timeline Block',
+    plural: 'Timeline Blocks',
+  },
+  admin: {
+    group: 'Technical',
+  },
   fields: [
     {
       name: 'heading',

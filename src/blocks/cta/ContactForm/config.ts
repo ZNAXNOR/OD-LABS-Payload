@@ -3,6 +3,13 @@ import type { Block } from 'payload'
 export const ContactFormBlock: Block = {
   slug: 'contactForm',
   interfaceName: 'ContactFormBlock',
+  labels: {
+    singular: 'Contact Form Block',
+    plural: 'Contact Form Blocks',
+  },
+  admin: {
+    group: 'CTA & Conversion',
+  },
   fields: [
     {
       name: 'heading',

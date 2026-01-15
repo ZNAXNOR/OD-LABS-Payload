@@ -7,6 +7,9 @@ export const TestimonialBlock: Block = {
     singular: 'Testimonial Block',
     plural: 'Testimonial Blocks',
   },
+  admin: {
+    group: 'Portfolio',
+  },
   fields: [
     {
       name: 'heading',

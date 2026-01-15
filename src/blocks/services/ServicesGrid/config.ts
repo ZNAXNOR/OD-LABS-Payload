@@ -8,6 +8,9 @@ export const ServicesGridBlock: Block = {
     singular: 'Services Grid Block',
     plural: 'Services Grid Blocks',
   },
+  admin: {
+    group: 'Services',
+  },
   fields: [
     {
       name: 'heading',

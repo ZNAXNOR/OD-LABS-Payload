@@ -2,6 +2,14 @@ import type { Block } from 'payload'
 
 export const Banner: Block = {
   slug: 'banner',
+  interfaceName: 'BannerBlock',
+  labels: {
+    singular: 'Banner Block',
+    plural: 'Banner Blocks',
+  },
+  admin: {
+    group: 'Content',
+  },
   fields: [
     {
       name: 'style',

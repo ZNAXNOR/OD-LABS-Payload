@@ -1,0 +1,195 @@
+{
+  "title": "Portfolio - Example Page",
+  "slug": "portfolio-example",
+  "hero": {
+    "blockType": "hero",
+    "variant": "gradient",
+    "heading": "Our Work",
+    "subheading": "Explore our portfolio of successful projects and see how we've helped businesses achieve their goals.",
+    "gradientConfig": {
+      "colors": [{ "color": "#3b82f6" }, { "color": "#8b5cf6" }, { "color": "#ec4899" }],
+      "animation": "wave"
+    },
+    "settings": {
+      "theme": "dark",
+      "height": "medium",
+      "enableParallax": false
+    }
+  },
+  "layout": [
+    {
+      "blockType": "projectShowcase",
+      "heading": "Featured Projects",
+      "description": "A selection of our most impactful work",
+      "layout": "grid",
+      "columns": "3",
+      "projects": [
+        {
+          "title": "E-commerce Platform Redesign",
+          "description": "Complete redesign and rebuild of a major e-commerce platform, resulting in 40% increase in conversions.",
+          "technologies": ["Next.js", "TypeScript", "Stripe", "PostgreSQL"],
+          "category": "E-commerce",
+          "featured": true
+        },
+        {
+          "title": "SaaS Dashboard Application",
+          "description": "Built a comprehensive analytics dashboard for a B2B SaaS company with real-time data visualization.",
+          "technologies": ["React", "D3.js", "Node.js", "MongoDB"],
+          "category": "SaaS",
+          "featured": true
+        },
+        {
+          "title": "Mobile Banking App",
+          "description": "Developed a secure mobile banking application with biometric authentication and real-time transactions.",
+          "technologies": ["React Native", "Node.js", "AWS", "PostgreSQL"],
+          "category": "FinTech",
+          "featured": false
+        },
+        {
+          "title": "Healthcare Portal",
+          "description": "Created a patient portal for a healthcare provider with appointment scheduling and telemedicine features.",
+          "technologies": ["Next.js", "TypeScript", "Twilio", "HIPAA Compliance"],
+          "category": "Healthcare",
+          "featured": false
+        },
+        {
+          "title": "Real Estate Marketplace",
+          "description": "Built a property listing platform with advanced search, virtual tours, and integrated CRM.",
+          "technologies": ["Next.js", "Mapbox", "Stripe", "PostgreSQL"],
+          "category": "Real Estate",
+          "featured": false
+        },
+        {
+          "title": "Educational Platform",
+          "description": "Developed an online learning platform with video streaming, quizzes, and progress tracking.",
+          "technologies": ["React", "Node.js", "AWS S3", "MongoDB"],
+          "category": "Education",
+          "featured": false
+        }
+      ],
+      "enableFiltering": true,
+      "filterCategories": [
+        "E-commerce",
+        "SaaS",
+        "FinTech",
+        "Healthcare",
+        "Real Estate",
+        "Education"
+      ],
+      "showLoadMore": true,
+      "itemsPerPage": 6
+    },
+    {
+      "blockType": "divider",
+      "style": "solid",
+      "thickness": 1,
+      "width": "full",
+      "alignment": "center",
+      "spacingTop": "xl",
+      "spacingBottom": "xl"
+    },
+    {
+      "blockType": "caseStudy",
+      "client": "TechCorp Inc.",
+      "project": "E-commerce Platform Transformation",
+      "duration": "6 months",
+      "role": "Lead Development Team",
+      "challenge": {
+        "heading": "The Challenge",
+        "content": "TechCorp's existing e-commerce platform was outdated, slow, and difficult to maintain. They were losing customers due to poor user experience and frequent downtime."
+      },
+      "approach": {
+        "heading": "Our Approach",
+        "content": "We conducted a thorough analysis of the existing system and user behavior, then designed a modern, scalable solution.",
+        "steps": [
+          { "step": "User research and competitive analysis" },
+          { "step": "Architecture design and technology selection" },
+          { "step": "Iterative development with weekly demos" },
+          { "step": "Performance optimization and testing" },
+          { "step": "Gradual migration and deployment" }
+        ]
+      },
+      "solution": {
+        "heading": "The Solution",
+        "content": "We built a modern, headless e-commerce platform using Next.js, with a focus on performance, scalability, and user experience.",
+        "technologies": [
+          { "technology": "Next.js 14" },
+          { "technology": "TypeScript" },
+          { "technology": "Stripe" },
+          { "technology": "PostgreSQL" },
+          { "technology": "Redis" },
+          { "technology": "AWS" }
+        ]
+      },
+      "results": {
+        "heading": "The Results",
+        "metrics": [
+          {
+            "label": "Conversion Rate",
+            "value": "+40%",
+            "change": "+40%",
+            "icon": "TrendingUp"
+          },
+          {
+            "label": "Page Load Time",
+            "value": "1.2s",
+            "change": "-65%",
+            "icon": "Zap"
+          },
+          {
+            "label": "Revenue",
+            "value": "+$2.5M",
+            "change": "+35%",
+            "icon": "DollarSign"
+          },
+          {
+            "label": "Customer Satisfaction",
+            "value": "4.8/5",
+            "change": "+25%",
+            "icon": "Star"
+          }
+        ],
+        "testimonial": {
+          "quote": "The new platform exceeded all our expectations. Our sales have increased significantly, and our customers love the improved experience.",
+          "author": "Sarah Johnson",
+          "role": "CEO, TechCorp Inc."
+        }
+      }
+    },
+    {
+      "blockType": "beforeAfter",
+      "heading": "Visual Transformation",
+      "description": "See the dramatic improvement in design and user experience",
+      "beforeLabel": "Old Platform",
+      "afterLabel": "New Platform",
+      "orientation": "horizontal",
+      "defaultPosition": 50
+    },
+    {
+      "blockType": "cta",
+      "variant": "split",
+      "heading": "Have a Project in Mind?",
+      "description": "Let's discuss how we can help you achieve similar results.",
+      "links": [
+        {
+          "link": {
+            "type": "custom",
+            "url": "/contact",
+            "label": "Start Your Project"
+          },
+          "appearance": "default"
+        },
+        {
+          "link": {
+            "type": "custom",
+            "url": "/services",
+            "label": "View Our Services"
+          },
+          "appearance": "outline"
+        }
+      ],
+      "backgroundColor": "dark",
+      "pattern": "grid"
+    }
+  ]
+}

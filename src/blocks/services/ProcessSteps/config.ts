@@ -7,6 +7,9 @@ export const ProcessStepsBlock: Block = {
     singular: 'Process Steps Block',
     plural: 'Process Steps Blocks',
   },
+  admin: {
+    group: 'Services',
+  },
   fields: [
     {
       name: 'heading',

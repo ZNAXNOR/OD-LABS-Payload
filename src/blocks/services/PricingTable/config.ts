@@ -8,6 +8,9 @@ export const PricingTableBlock: Block = {
     singular: 'Pricing Table Block',
     plural: 'Pricing Table Blocks',
   },
+  admin: {
+    group: 'Services',
+  },
   fields: [
     {
       name: 'heading',

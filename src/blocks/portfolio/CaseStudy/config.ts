@@ -7,6 +7,9 @@ export const CaseStudyBlock: Block = {
     singular: 'Case Study Block',
     plural: 'Case Study Blocks',
   },
+  admin: {
+    group: 'Portfolio',
+  },
   fields: [
     {
       name: 'client',

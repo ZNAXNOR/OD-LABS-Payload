@@ -3,6 +3,13 @@ import type { Block } from 'payload'
 export const StatsCounterBlock: Block = {
   slug: 'statsCounter',
   interfaceName: 'StatsCounterBlock',
+  labels: {
+    singular: 'Stats Counter Block',
+    plural: 'Stats Counter Blocks',
+  },
+  admin: {
+    group: 'Technical',
+  },
   fields: [
     {
       name: 'heading',
