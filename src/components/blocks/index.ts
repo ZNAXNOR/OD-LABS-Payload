@@ -20,3 +20,13 @@ export { BeforeAfterBlock } from './BeforeAfter'
 export { default as BeforeAfterBlockDefault } from './BeforeAfter'
 export { TestimonialBlock } from './Testimonial'
 export { default as TestimonialBlockDefault } from './Testimonial'
+
+// Technical Blocks
+export { FeatureGridBlock } from './FeatureGrid'
+export { default as FeatureGridBlockDefault } from './FeatureGrid'
+export { StatsCounterBlock } from './StatsCounter'
+export { default as StatsCounterBlockDefault } from './StatsCounter'
+export { FAQAccordionBlock } from './FAQAccordion'
+export { default as FAQAccordionBlockDefault } from './FAQAccordion'
+export { TimelineBlock } from './Timeline'
+export { default as TimelineBlockDefault } from './Timeline'

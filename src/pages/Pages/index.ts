@@ -21,6 +21,12 @@ import { CaseStudyBlock } from '@/blocks/portfolio/CaseStudy/config'
 import { BeforeAfterBlock } from '@/blocks/portfolio/BeforeAfter/config'
 import { TestimonialBlock } from '@/blocks/portfolio/Testimonial/config'
 
+// Import technical blocks
+import { FeatureGridBlock } from '@/blocks/technical/FeatureGrid/config'
+import { StatsCounterBlock } from '@/blocks/technical/StatsCounter/config'
+import { FAQAccordionBlock } from '@/blocks/technical/FAQAccordion/config'
+import { TimelineBlock } from '@/blocks/technical/Timeline/config'
+
 // Import hooks
 import { revalidatePage } from './hooks/revalidatePage'
 import { populateBreadcrumbs } from './hooks/populateBreadcrumbs'
@@ -123,6 +129,10 @@ export const Pages: CollectionConfig = {
                 CaseStudyBlock,
                 BeforeAfterBlock,
                 TestimonialBlock,
+                FeatureGridBlock,
+                StatsCounterBlock,
+                FAQAccordionBlock,
+                TimelineBlock,
               ],
               admin: {
                 description: 'Build your page layout using content blocks',

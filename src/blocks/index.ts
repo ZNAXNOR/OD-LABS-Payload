@@ -17,3 +17,9 @@ export { ProjectShowcaseBlock } from './portfolio/ProjectShowcase/config'
 export { CaseStudyBlock } from './portfolio/CaseStudy/config'
 export { BeforeAfterBlock } from './portfolio/BeforeAfter/config'
 export { TestimonialBlock } from './portfolio/Testimonial/config'
+
+// Technical Blocks
+export { FeatureGridBlock } from './technical/FeatureGrid/config'
+export { StatsCounterBlock } from './technical/StatsCounter/config'
+export { FAQAccordionBlock } from './technical/FAQAccordion/config'
+export { TimelineBlock } from './technical/Timeline/config'

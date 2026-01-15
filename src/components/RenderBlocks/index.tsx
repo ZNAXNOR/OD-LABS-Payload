@@ -9,6 +9,10 @@ import { ProjectShowcaseBlock } from '@/components/blocks/ProjectShowcase'
 import { CaseStudyBlock } from '@/components/blocks/CaseStudy'
 import { BeforeAfterBlock } from '@/components/blocks/BeforeAfter'
 import { TestimonialBlock } from '@/components/blocks/Testimonial'
+import { FeatureGridBlock } from '@/components/blocks/FeatureGrid'
+import { StatsCounterBlock } from '@/components/blocks/StatsCounter'
+import { FAQAccordionBlock } from '@/components/blocks/FAQAccordion'
+import { TimelineBlock } from '@/components/blocks/Timeline'
 
 interface RenderBlocksProps {
   blocks: Page['layout']
@@ -121,6 +125,18 @@ export function RenderBlocks({ blocks }: RenderBlocksProps) {
 
           case 'testimonial':
             return <TestimonialBlock key={index} block={block} />
+
+          case 'featureGrid':
+            return <FeatureGridBlock key={index} block={block} />
+
+          case 'statsCounter':
+            return <StatsCounterBlock key={index} block={block} />
+
+          case 'faqAccordion':
+            return <FAQAccordionBlock key={index} block={block} />
+
+          case 'timeline':
+            return <TimelineBlock key={index} block={block} />
 
           default:
             return null
