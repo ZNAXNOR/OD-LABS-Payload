@@ -328,6 +328,10 @@ export interface Page {
         | CaseStudyBlock
         | BeforeAfterBlock
         | TestimonialBlock
+        | FeatureGridBlock
+        | StatsCounterBlock
+        | FAQAccordionBlock
+        | TimelineBlock
       )[]
     | null;
   meta?: {
@@ -1441,6 +1445,21 @@ export interface ContentBlock {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
+  /**
+   * Choose the layout style for the call-to-action
+   */
+  variant?: ('centered' | 'split' | 'banner' | 'card') | null;
+  /**
+   * Main heading for the CTA
+   */
+  heading: string;
+  /**
+   * Optional description text
+   */
+  description?: string | null;
+  /**
+   * Optional rich text content for more complex CTAs
+   */
   richText?: {
     root: {
       type: string;
@@ -1492,6 +1511,18 @@ export interface CallToActionBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Optional background or side image
+   */
+  media?: (number | null) | Media;
+  /**
+   * Background color scheme
+   */
+  backgroundColor?: ('default' | 'primary' | 'dark' | 'light') | null;
+  /**
+   * Optional background pattern
+   */
+  pattern?: ('none' | 'dots' | 'grid' | 'waves') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
@@ -1575,8 +1606,63 @@ export interface BannerBlock {
  * via the `definition` "CodeBlock".
  */
 export interface CodeBlock {
-  language?: ('typescript' | 'javascript' | 'css') | null;
+  /**
+   * Select the programming language for syntax highlighting
+   */
+  language:
+    | 'typescript'
+    | 'javascript'
+    | 'python'
+    | 'java'
+    | 'csharp'
+    | 'cpp'
+    | 'c'
+    | 'go'
+    | 'rust'
+    | 'php'
+    | 'ruby'
+    | 'swift'
+    | 'kotlin'
+    | 'html'
+    | 'css'
+    | 'scss'
+    | 'json'
+    | 'yaml'
+    | 'markdown'
+    | 'sql'
+    | 'bash'
+    | 'shell'
+    | 'powershell'
+    | 'graphql'
+    | 'dockerfile';
+  /**
+   * Enter your code snippet
+   */
   code: string;
+  /**
+   * Optional filename to display above the code block
+   */
+  filename?: string | null;
+  /**
+   * Display line numbers in the code block
+   */
+  showLineNumbers?: boolean | null;
+  /**
+   * Comma-separated line numbers to highlight (e.g., 1,3-5,7)
+   */
+  highlightLines?: string | null;
+  /**
+   * Color theme for the code block
+   */
+  theme?: ('auto' | 'dark' | 'light') | null;
+  /**
+   * Show copy-to-clipboard button
+   */
+  enableCopy?: boolean | null;
+  /**
+   * Optional caption to display below the code block
+   */
+  caption?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'code';
@@ -2328,6 +2414,199 @@ export interface TestimonialBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock".
+ */
+export interface FeatureGridBlock {
+  /**
+   * Optional heading for the feature grid section
+   */
+  heading?: string | null;
+  /**
+   * Optional description text below the heading
+   */
+  description?: string | null;
+  /**
+   * Number of columns in the grid layout
+   */
+  columns: 2 | 3 | 4 | 6;
+  /**
+   * Visual style of the feature grid
+   */
+  style: 'cards' | 'minimal' | 'icons';
+  features: {
+    /**
+     * Lucide icon name (e.g., Zap, Shield, Rocket)
+     */
+    icon: string;
+    title: string;
+    description: string;
+    /**
+     * Optional link for this feature
+     */
+    link?: {
+      url?: string | null;
+      label?: string | null;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsCounterBlock".
+ */
+export interface StatsCounterBlock {
+  /**
+   * Optional heading for the stats section
+   */
+  heading?: string | null;
+  /**
+   * Layout style for the stats
+   */
+  layout: 'row' | 'grid';
+  /**
+   * Animate counters when they come into view
+   */
+  animateOnScroll?: boolean | null;
+  /**
+   * Animation duration in milliseconds
+   */
+  duration?: number | null;
+  stats: {
+    /**
+     * The numeric value to display
+     */
+    value: number;
+    /**
+     * Optional prefix (e.g., $, +)
+     */
+    prefix?: string | null;
+    /**
+     * Optional suffix (e.g., +, %, K, M)
+     */
+    suffix?: string | null;
+    /**
+     * Label describing the stat
+     */
+    label: string;
+    /**
+     * Optional additional description
+     */
+    description?: string | null;
+    /**
+     * Optional Lucide icon name
+     */
+    icon?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'statsCounter';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQAccordionBlock".
+ */
+export interface FAQAccordionBlock {
+  /**
+   * Optional heading for the FAQ section
+   */
+  heading?: string | null;
+  /**
+   * Optional description text below the heading
+   */
+  description?: string | null;
+  /**
+   * Allow multiple FAQ items to be open at the same time
+   */
+  allowMultipleOpen?: boolean | null;
+  /**
+   * Comma-separated indices of items to open by default (e.g., 0,2)
+   */
+  defaultOpen?: string | null;
+  /**
+   * Show search box to filter FAQs
+   */
+  showSearch?: boolean | null;
+  faqs: {
+    question: string;
+    /**
+     * Answer with rich text formatting
+     */
+    answer: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    /**
+     * Optional category for grouping
+     */
+    category?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faqAccordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock".
+ */
+export interface TimelineBlock {
+  /**
+   * Optional heading for the timeline section
+   */
+  heading?: string | null;
+  /**
+   * Timeline orientation
+   */
+  orientation: 'vertical' | 'horizontal';
+  /**
+   * Visual style of the timeline
+   */
+  style: 'default' | 'minimal' | 'detailed';
+  items: {
+    /**
+     * Date or time period
+     */
+    date: string;
+    title: string;
+    description: string;
+    /**
+     * Optional Lucide icon name
+     */
+    icon?: string | null;
+    /**
+     * Optional image for this timeline item
+     */
+    image?: (number | null) | Media;
+    /**
+     * Optional link for this timeline item
+     */
+    link?: {
+      url?: string | null;
+      label?: string | null;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'timeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "analyticsData".
  */
 export interface AnalyticsDatum {
@@ -2694,6 +2973,10 @@ export interface PagesSelect<T extends boolean = true> {
         caseStudy?: T | CaseStudyBlockSelect<T>;
         beforeAfter?: T | BeforeAfterBlockSelect<T>;
         testimonial?: T | TestimonialBlockSelect<T>;
+        featureGrid?: T | FeatureGridBlockSelect<T>;
+        statsCounter?: T | StatsCounterBlockSelect<T>;
+        faqAccordion?: T | FAQAccordionBlockSelect<T>;
+        timeline?: T | TimelineBlockSelect<T>;
       };
   meta?:
     | T
@@ -2854,6 +3137,9 @@ export interface ContentBlockSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
+  variant?: T;
+  heading?: T;
+  description?: T;
   richText?: T;
   links?:
     | T
@@ -2870,6 +3156,9 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  media?: T;
+  backgroundColor?: T;
+  pattern?: T;
   id?: T;
   blockName?: T;
 }
@@ -2912,6 +3201,12 @@ export interface BannerBlockSelect<T extends boolean = true> {
 export interface CodeBlockSelect<T extends boolean = true> {
   language?: T;
   code?: T;
+  filename?: T;
+  showLineNumbers?: T;
+  highlightLines?: T;
+  theme?: T;
+  enableCopy?: T;
+  caption?: T;
   id?: T;
   blockName?: T;
 }
@@ -3220,6 +3515,103 @@ export interface TestimonialBlockSelect<T extends boolean = true> {
         id?: T;
       };
   showRatings?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock_select".
+ */
+export interface FeatureGridBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  columns?: T;
+  style?: T;
+  features?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        link?:
+          | T
+          | {
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsCounterBlock_select".
+ */
+export interface StatsCounterBlockSelect<T extends boolean = true> {
+  heading?: T;
+  layout?: T;
+  animateOnScroll?: T;
+  duration?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        prefix?: T;
+        suffix?: T;
+        label?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQAccordionBlock_select".
+ */
+export interface FAQAccordionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  allowMultipleOpen?: T;
+  defaultOpen?: T;
+  showSearch?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        category?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock_select".
+ */
+export interface TimelineBlockSelect<T extends boolean = true> {
+  heading?: T;
+  orientation?: T;
+  style?: T;
+  items?:
+    | T
+    | {
+        date?: T;
+        title?: T;
+        description?: T;
+        icon?: T;
+        image?: T;
+        link?:
+          | T
+          | {
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

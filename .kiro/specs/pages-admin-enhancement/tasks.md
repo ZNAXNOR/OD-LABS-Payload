@@ -218,12 +218,12 @@ This implementation plan converts the Pages Admin Panel Enhancement design into 
     - Test timeline connectors
     - Test item rendering
 
-- [ ] 6. Implement CTA and Conversion blocks suite
+- [x] 6. Implement CTA and Conversion blocks suite
   - Enhance CTA block and create Contact Form, Newsletter, and Social Proof blocks
   - Implement frontend components for all CTA blocks
   - Register all CTA blocks in block registry
 
-  - [ ] 6.1 Enhance Call-to-Action Block
+  - [x] 6.1 Enhance Call-to-Action Block
     - Update src/blocks/cta/CallToAction/config.ts with variant options
     - Create enhanced CallToAction frontend component with variant layouts
     - Add background patterns and media support
@@ -234,7 +234,7 @@ This implementation plan converts the Pages Admin Panel Enhancement design into 
     - Test pattern rendering
     - Test action buttons
 
-  - [ ] 6.3 Create Contact Form Block
+  - [x] 6.3 Create Contact Form Block
     - Create src/blocks/cta/ContactForm/config.ts with configuration
     - Create ContactForm frontend component with form builder integration
     - Implement layout variants and contact info display
@@ -245,7 +245,7 @@ This implementation plan converts the Pages Admin Panel Enhancement design into 
     - Test layout variants
     - Test contact info display
 
-  - [ ] 6.5 Create Newsletter Block
+  - [x] 6.5 Create Newsletter Block
     - Create src/blocks/cta/Newsletter/config.ts with configuration
     - Create Newsletter frontend component with style variants
     - Add email validation and privacy note display
@@ -256,7 +256,7 @@ This implementation plan converts the Pages Admin Panel Enhancement design into 
     - Test email validation
     - Test form submission
 
-  - [ ] 6.7 Create Social Proof Block
+  - [x] 6.7 Create Social Proof Block
     - Create src/blocks/cta/SocialProof/config.ts with configuration
     - Create SocialProof frontend component with type variants
     - Add logo display with grayscale option, stats and badges display

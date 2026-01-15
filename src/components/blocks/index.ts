@@ -30,3 +30,11 @@ export { FAQAccordionBlock } from './FAQAccordion'
 export { default as FAQAccordionBlockDefault } from './FAQAccordion'
 export { TimelineBlock } from './Timeline'
 export { default as TimelineBlockDefault } from './Timeline'
+
+// CTA Blocks
+export { ContactFormBlock } from './ContactForm'
+export { default as ContactFormBlockDefault } from './ContactForm'
+export { NewsletterBlock } from './Newsletter'
+export { default as NewsletterBlockDefault } from './Newsletter'
+export { SocialProofBlock } from './SocialProof'
+export { default as SocialProofBlockDefault } from './SocialProof'

@@ -23,3 +23,8 @@ export { FeatureGridBlock } from './technical/FeatureGrid/config'
 export { StatsCounterBlock } from './technical/StatsCounter/config'
 export { FAQAccordionBlock } from './technical/FAQAccordion/config'
 export { TimelineBlock } from './technical/Timeline/config'
+
+// CTA Blocks
+export { ContactFormBlock } from './cta/ContactForm/config'
+export { NewsletterBlock } from './cta/Newsletter/config'
+export { SocialProofBlock } from './cta/SocialProof/config'

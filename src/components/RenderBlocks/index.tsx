@@ -13,6 +13,10 @@ import { FeatureGridBlock } from '@/components/blocks/FeatureGrid'
 import { StatsCounterBlock } from '@/components/blocks/StatsCounter'
 import { FAQAccordionBlock } from '@/components/blocks/FAQAccordion'
 import { TimelineBlock } from '@/components/blocks/Timeline'
+import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { ContactFormBlock } from '@/components/blocks/ContactForm'
+import { NewsletterBlock } from '@/components/blocks/Newsletter'
+import { SocialProofBlock } from '@/components/blocks/SocialProof'
 
 interface RenderBlocksProps {
   blocks: Page['layout']
@@ -43,16 +47,16 @@ export function RenderBlocks({ blocks }: RenderBlocksProps) {
             )
 
           case 'cta':
-            return (
-              <section key={index} className="py-16 bg-primary text-primary-foreground">
-                <div className="container mx-auto px-4">
-                  <div className="max-w-4xl mx-auto text-center">
-                    {/* CTA content would go here */}
-                    <p className="text-sm opacity-80 mb-4">Call to Action Block</p>
-                  </div>
-                </div>
-              </section>
-            )
+            return <CallToActionBlock key={index} {...block} />
+
+          case 'contactForm':
+            return <ContactFormBlock key={index} {...block} />
+
+          case 'newsletter':
+            return <NewsletterBlock key={index} {...block} />
+
+          case 'socialProof':
+            return <SocialProofBlock key={index} {...block} />
 
           case 'mediaBlock':
             return (
