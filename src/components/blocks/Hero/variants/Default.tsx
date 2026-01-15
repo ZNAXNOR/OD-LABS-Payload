@@ -73,11 +73,11 @@ export const DefaultHero: React.FC<HeroVariantProps> = ({ block, className }) =>
     <section
       className={cn('relative overflow-hidden flex', getHeightClasses(settings?.height), className)}
       role="banner"
-      aria-label="Hero section"
+      aria-label={`Hero section: ${heading}`}
     >
       {/* Background Media */}
       {hasBackground && (
-        <div className="absolute inset-0 z-0" data-parallax={hasParallax}>
+        <div className="absolute inset-0 z-0" data-parallax={hasParallax} aria-hidden="true">
           {videoUrl ? (
             <div className="relative w-full h-full">
               <video
@@ -91,6 +91,7 @@ export const DefaultHero: React.FC<HeroVariantProps> = ({ block, className }) =>
                   isVideoLoaded ? 'opacity-100' : 'opacity-0',
                 )}
                 aria-hidden="true"
+                aria-label="Background video"
               >
                 <source src={videoUrl} type="video/mp4" />
                 Your browser does not support the video tag.
@@ -131,7 +132,10 @@ export const DefaultHero: React.FC<HeroVariantProps> = ({ block, className }) =>
         <div className="max-w-4xl">
           {/* Eyebrow */}
           {eyebrow && (
-            <p className="text-sm font-medium mb-4 uppercase tracking-wider opacity-90">
+            <p
+              className="text-sm font-medium mb-4 uppercase tracking-wider opacity-90"
+              role="doc-subtitle"
+            >
               {eyebrow}
             </p>
           )}
@@ -150,7 +154,11 @@ export const DefaultHero: React.FC<HeroVariantProps> = ({ block, className }) =>
 
           {/* Actions */}
           {sortedActions && sortedActions.length > 0 && (
-            <div className="flex gap-4 justify-start flex-col sm:flex-row">
+            <div
+              className="flex gap-4 justify-start flex-col sm:flex-row"
+              role="group"
+              aria-label="Hero actions"
+            >
               {sortedActions.map((action, index) => {
                 if (!action.link) return null
 
@@ -158,10 +166,11 @@ export const DefaultHero: React.FC<HeroVariantProps> = ({ block, className }) =>
                   <CMSLink
                     key={index}
                     {...action.link}
+                    aria-label={action.link.label || `Action ${index + 1}`}
                     className={cn(
                       'px-8 py-4 text-lg rounded-full font-medium transition-all duration-200',
                       'hover:scale-105 focus:scale-105',
-                      'focus:outline-none focus:ring-2 focus:ring-offset-2',
+                      'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary',
                       action.priority === 'primary'
                         ? 'bg-brand-primary text-white hover:bg-brand-primary/90 dark:bg-brand-primary dark:hover:bg-brand-primary/90'
                         : 'bg-zinc-800 text-white hover:bg-zinc-900 dark:bg-zinc-700 dark:hover:bg-zinc-600',
@@ -176,9 +185,17 @@ export const DefaultHero: React.FC<HeroVariantProps> = ({ block, className }) =>
 
       {/* Loading indicator for video */}
       {videoUrl && !isVideoLoaded && (
-        <div className="absolute inset-0 z-30 flex items-center justify-center bg-zinc-900">
+        <div
+          className="absolute inset-0 z-30 flex items-center justify-center bg-zinc-900"
+          role="status"
+          aria-live="polite"
+          aria-label="Loading video content"
+        >
           <div className="flex items-center space-x-2 text-white">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+            <div
+              className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"
+              aria-hidden="true"
+            ></div>
             <span className="text-sm">Loading video...</span>
           </div>
         </div>

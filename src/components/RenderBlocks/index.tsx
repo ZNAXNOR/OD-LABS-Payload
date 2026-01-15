@@ -1,26 +1,164 @@
 import React from 'react'
+import dynamic from 'next/dynamic'
 import type { Page } from '@/payload-types'
-import { HeroBlock } from '@/components/blocks/Hero'
-import { ServicesGridBlock } from '@/components/blocks/ServicesGrid'
-import { TechStackBlock } from '@/components/blocks/TechStack'
-import { ProcessStepsBlock } from '@/components/blocks/ProcessSteps'
-import { PricingTableBlock } from '@/components/blocks/PricingTable'
-import { ProjectShowcaseBlock } from '@/components/blocks/ProjectShowcase'
-import { CaseStudyBlock } from '@/components/blocks/CaseStudy'
-import { BeforeAfterBlock } from '@/components/blocks/BeforeAfter'
-import { TestimonialBlock } from '@/components/blocks/Testimonial'
-import { FeatureGridBlock } from '@/components/blocks/FeatureGrid'
-import { StatsCounterBlock } from '@/components/blocks/StatsCounter'
-import { FAQAccordionBlock } from '@/components/blocks/FAQAccordion'
-import { TimelineBlock } from '@/components/blocks/Timeline'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import { ContactFormBlock } from '@/components/blocks/ContactForm'
-import { NewsletterBlock } from '@/components/blocks/Newsletter'
-import { SocialProofBlock } from '@/components/blocks/SocialProof'
-import { ContentBlock } from '@/components/blocks/Content'
-import { ContainerBlock } from '@/components/blocks/Container'
-import { DividerBlock } from '@/components/blocks/Divider'
-import { SpacerBlock } from '@/components/blocks/Spacer'
+
+// Lazy load all block components with loading states
+const HeroBlock = dynamic(
+  () => import('@/components/blocks/Hero').then((mod) => ({ default: mod.HeroBlock })),
+  {
+    loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-100 dark:bg-zinc-900" />,
+  },
+)
+
+const ServicesGridBlock = dynamic(
+  () =>
+    import('@/components/blocks/ServicesGrid').then((mod) => ({ default: mod.ServicesGridBlock })),
+  {
+    loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const TechStackBlock = dynamic(
+  () => import('@/components/blocks/TechStack').then((mod) => ({ default: mod.TechStackBlock })),
+  {
+    loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const ProcessStepsBlock = dynamic(
+  () =>
+    import('@/components/blocks/ProcessSteps').then((mod) => ({ default: mod.ProcessStepsBlock })),
+  {
+    loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const PricingTableBlock = dynamic(
+  () =>
+    import('@/components/blocks/PricingTable').then((mod) => ({ default: mod.PricingTableBlock })),
+  {
+    loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const ProjectShowcaseBlock = dynamic(
+  () =>
+    import('@/components/blocks/ProjectShowcase').then((mod) => ({
+      default: mod.ProjectShowcaseBlock,
+    })),
+  {
+    loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const CaseStudyBlock = dynamic(
+  () => import('@/components/blocks/CaseStudy').then((mod) => ({ default: mod.CaseStudyBlock })),
+  {
+    loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const BeforeAfterBlock = dynamic(
+  () =>
+    import('@/components/blocks/BeforeAfter').then((mod) => ({ default: mod.BeforeAfterBlock })),
+  {
+    loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const TestimonialBlock = dynamic(
+  () =>
+    import('@/components/blocks/Testimonial').then((mod) => ({ default: mod.TestimonialBlock })),
+  {
+    loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const FeatureGridBlock = dynamic(
+  () =>
+    import('@/components/blocks/FeatureGrid').then((mod) => ({ default: mod.FeatureGridBlock })),
+  {
+    loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const StatsCounterBlock = dynamic(
+  () =>
+    import('@/components/blocks/StatsCounter').then((mod) => ({ default: mod.StatsCounterBlock })),
+  {
+    loading: () => <div className="min-h-[200px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const FAQAccordionBlock = dynamic(
+  () =>
+    import('@/components/blocks/FAQAccordion').then((mod) => ({ default: mod.FAQAccordionBlock })),
+  {
+    loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const TimelineBlock = dynamic(
+  () => import('@/components/blocks/Timeline').then((mod) => ({ default: mod.TimelineBlock })),
+  {
+    loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const CallToActionBlock = dynamic(() => import('@/blocks/CallToAction/Component'), {
+  loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+})
+
+const ContactFormBlock = dynamic(
+  () =>
+    import('@/components/blocks/ContactForm').then((mod) => ({ default: mod.ContactFormBlock })),
+  {
+    loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const NewsletterBlock = dynamic(
+  () => import('@/components/blocks/Newsletter').then((mod) => ({ default: mod.NewsletterBlock })),
+  {
+    loading: () => <div className="min-h-[200px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const SocialProofBlock = dynamic(
+  () =>
+    import('@/components/blocks/SocialProof').then((mod) => ({ default: mod.SocialProofBlock })),
+  {
+    loading: () => <div className="min-h-[200px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const ContentBlock = dynamic(
+  () => import('@/components/blocks/Content').then((mod) => ({ default: mod.ContentBlock })),
+  {
+    loading: () => <div className="min-h-[200px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const ContainerBlock = dynamic(
+  () => import('@/components/blocks/Container').then((mod) => ({ default: mod.ContainerBlock })),
+  {
+    loading: () => <div className="min-h-[200px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
+
+const DividerBlock = dynamic(
+  () => import('@/components/blocks/Divider').then((mod) => ({ default: mod.DividerBlock })),
+  {
+    loading: () => <div className="h-px animate-pulse bg-zinc-200 dark:bg-zinc-800" />,
+  },
+)
+
+const SpacerBlock = dynamic(
+  () => import('@/components/blocks/Spacer').then((mod) => ({ default: mod.SpacerBlock })),
+  {
+    loading: () => <div className="h-16" />,
+  },
+)
 
 interface RenderBlocksProps {
   blocks: Page['layout']
