@@ -1383,10 +1383,19 @@ export interface Form {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
+  /**
+   * Add columns to create flexible layouts
+   */
   columns?:
     | {
-        size: 'oneThird' | 'half' | 'twoThirds' | 'full';
-        richText?: {
+        /**
+         * Column width
+         */
+        width: 'oneThird' | 'half' | 'twoThirds' | 'full' | 'auto';
+        /**
+         * Column content
+         */
+        content: {
           root: {
             type: string;
             children: {
@@ -1400,7 +1409,10 @@ export interface ContentBlock {
             version: number;
           };
           [k: string]: unknown;
-        } | null;
+        };
+        /**
+         * Make this column clickable
+         */
         enableLink?: boolean | null;
         link?: {
           type?: ('reference' | 'custom') | null;
@@ -1433,9 +1445,25 @@ export interface ContentBlock {
            */
           appearance?: ('default' | 'secondary' | 'outline') | null;
         };
+        /**
+         * Background color for this column
+         */
+        backgroundColor?: ('none' | 'white' | 'zinc-50' | 'zinc-100' | 'brand-primary') | null;
+        /**
+         * Padding inside the column
+         */
+        padding?: ('none' | 'small' | 'medium' | 'large') | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Space between columns
+   */
+  gap: 'none' | 'small' | 'medium' | 'large';
+  /**
+   * Vertical alignment of columns
+   */
+  alignment: 'top' | 'center' | 'bottom';
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
@@ -3114,8 +3142,8 @@ export interface ContentBlockSelect<T extends boolean = true> {
   columns?:
     | T
     | {
-        size?: T;
-        richText?: T;
+        width?: T;
+        content?: T;
         enableLink?: T;
         link?:
           | T
@@ -3127,8 +3155,12 @@ export interface ContentBlockSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
+        backgroundColor?: T;
+        padding?: T;
         id?: T;
       };
+  gap?: T;
+  alignment?: T;
   id?: T;
   blockName?: T;
 }

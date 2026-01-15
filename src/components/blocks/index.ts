@@ -38,3 +38,13 @@ export { NewsletterBlock } from './Newsletter'
 export { default as NewsletterBlockDefault } from './Newsletter'
 export { SocialProofBlock } from './SocialProof'
 export { default as SocialProofBlockDefault } from './SocialProof'
+
+// Layout Blocks
+export { ContentBlock } from './Content'
+export { default as ContentBlockDefault } from './Content'
+export { ContainerBlock } from './Container'
+export { default as ContainerBlockDefault } from './Container'
+export { DividerBlock } from './Divider'
+export { default as DividerBlockDefault } from './Divider'
+export { SpacerBlock } from './Spacer'
+export { default as SpacerBlockDefault } from './Spacer'

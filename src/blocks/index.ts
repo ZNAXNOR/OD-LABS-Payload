@@ -28,3 +28,8 @@ export { TimelineBlock } from './technical/Timeline/config'
 export { ContactFormBlock } from './cta/ContactForm/config'
 export { NewsletterBlock } from './cta/Newsletter/config'
 export { SocialProofBlock } from './cta/SocialProof/config'
+
+// Layout Blocks
+export { ContainerBlock } from './layout/Container/config'
+export { DividerBlock } from './layout/Divider/config'
+export { SpacerBlock } from './layout/Spacer/config'

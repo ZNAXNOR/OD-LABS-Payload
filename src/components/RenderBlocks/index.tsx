@@ -17,6 +17,10 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContactFormBlock } from '@/components/blocks/ContactForm'
 import { NewsletterBlock } from '@/components/blocks/Newsletter'
 import { SocialProofBlock } from '@/components/blocks/SocialProof'
+import { ContentBlock } from '@/components/blocks/Content'
+import { ContainerBlock } from '@/components/blocks/Container'
+import { DividerBlock } from '@/components/blocks/Divider'
+import { SpacerBlock } from '@/components/blocks/Spacer'
 
 interface RenderBlocksProps {
   blocks: Page['layout']
@@ -35,16 +39,16 @@ export function RenderBlocks({ blocks }: RenderBlocksProps) {
             return <HeroBlock key={index} block={block} />
 
           case 'content':
-            return (
-              <section key={index} className="py-16">
-                <div className="container mx-auto px-4">
-                  <div className="max-w-4xl mx-auto">
-                    {/* Content block would go here */}
-                    <p className="text-sm text-muted-foreground mb-4">Content Block</p>
-                  </div>
-                </div>
-              </section>
-            )
+            return <ContentBlock key={index} block={block} />
+
+          case 'container':
+            return <ContainerBlock key={index} block={block} />
+
+          case 'divider':
+            return <DividerBlock key={index} block={block} />
+
+          case 'spacer':
+            return <SpacerBlock key={index} block={block} />
 
           case 'cta':
             return <CallToActionBlock key={index} {...block} />
