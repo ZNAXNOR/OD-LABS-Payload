@@ -1,2 +1,2 @@
-export { HeroBlock } from './HeroBlock'
-export { default as HeroBlockDefault } from './HeroBlock'
+export { HeroBlock } from './Hero'
+export { default as HeroBlockDefault } from './Hero'

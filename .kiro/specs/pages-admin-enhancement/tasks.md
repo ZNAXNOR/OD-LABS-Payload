@@ -34,12 +34,12 @@ This implementation plan converts the Pages Admin Panel Enhancement design into 
     - Test readonly behavior
     - Test admin override capability
 
-- [ ] 2. Create enhanced Hero block with multiple variants
+- [x] 2. Create enhanced Hero block with multiple variants
   - Implement Hero block configuration with 6 variants
   - Create frontend components for all Hero variants
   - Register Hero block in block registry
 
-  - [ ] 2.1 Create Enhanced Hero Block Configuration
+  - [x] 2.1 Create Enhanced Hero Block Configuration
     - Create src/blocks/hero/config.ts with 6 variants: default, centered, minimal, split, gradient, codeTerminal
     - Add variant field with select options
     - Implement conditional fields for each variant (codeSnippet, splitLayout, gradientConfig)
@@ -49,7 +49,7 @@ This implementation plan converts the Pages Admin Panel Enhancement design into 
     - **Property 6: Hero Variant Options**
     - Verify variant field has all 6 required options
 
-  - [ ] 2.3 Create Hero Block Frontend Components
+  - [x] 2.3 Create Hero Block Frontend Components
     - Create src/components/blocks/Hero/index.tsx with variant switching
     - Implement all 6 hero variant components (Default, Centered, Minimal, Split, Gradient, CodeTerminal)
     - Use brand-primary and zinc-800-950 colors throughout

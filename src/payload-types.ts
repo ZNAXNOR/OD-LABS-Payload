@@ -430,15 +430,15 @@ export interface Page {
  */
 export interface HeroBlock {
   /**
-   * Choose the hero layout style
+   * Choose the hero style variant
    */
-  type: 'default' | 'centered' | 'minimal' | 'video';
+  variant: 'default' | 'centered' | 'minimal' | 'split' | 'gradient' | 'codeTerminal';
   /**
-   * Small text above the main heading
+   * Small text above the heading
    */
   eyebrow?: string | null;
   /**
-   * Main hero heading - keep it impactful and concise
+   * Main heading text
    */
   heading: string;
   /**
@@ -446,84 +446,122 @@ export interface HeroBlock {
    */
   subheading?: string | null;
   /**
-   * Background image or featured media
+   * Background image or media
    */
   media?: (number | null) | Media;
   /**
-   * URL for background video (MP4 format recommended for best compatibility)
+   * Video URL for background (MP4 format recommended)
    */
   videoUrl?: string | null;
   /**
-   * Call-to-action buttons (maximum 3 for optimal UX)
+   * Code snippet configuration for terminal variant
+   */
+  codeSnippet?: {
+    language: 'javascript' | 'typescript' | 'python' | 'bash' | 'json';
+    code: string;
+    theme?: ('dark' | 'light') | null;
+  };
+  /**
+   * Split layout configuration
+   */
+  splitLayout?: {
+    /**
+     * Which side should the text content appear on
+     */
+    contentSide: 'left' | 'right';
+    /**
+     * Type of media to display on the other side
+     */
+    mediaType: 'image' | 'video' | 'code';
+  };
+  /**
+   * Gradient background configuration
+   */
+  gradientConfig?: {
+    /**
+     * Gradient colors (2-4 colors)
+     */
+    colors?:
+      | {
+          color: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Gradient animation style
+     */
+    animation?: ('wave' | 'pulse' | 'rotate') | null;
+  };
+  /**
+   * Call-to-action buttons (max 3)
    */
   actions?:
     | {
-        /**
-         * Configure the action button
-         */
         link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'blogs';
-                value: number | BlogPage;
-              } | null)
-            | ({
-                relationTo: 'services';
-                value: number | ServicePage;
-              } | null)
-            | ({
-                relationTo: 'legal';
-                value: number | LegalPage;
-              } | null)
-            | ({
-                relationTo: 'contacts';
-                value: number | ContactPage;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'secondary' | 'outline') | null;
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'blogs';
+                  value: number | BlogPage;
+                } | null)
+              | ({
+                  relationTo: 'services';
+                  value: number | ServicePage;
+                } | null)
+              | ({
+                  relationTo: 'legal';
+                  value: number | LegalPage;
+                } | null)
+              | ({
+                  relationTo: 'contacts';
+                  value: number | ContactPage;
+                } | null);
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'secondary' | 'outline') | null;
+          };
         };
         /**
-         * Button priority affects styling and placement
+         * Button style priority
          */
         priority?: ('primary' | 'secondary') | null;
         id?: string | null;
       }[]
     | null;
-  /**
-   * Customize the appearance and behavior of the hero section
-   */
   settings?: {
     /**
-     * Text color theme - auto will adapt based on background
+     * Text color theme (auto adapts to background)
      */
     theme?: ('light' | 'dark' | 'auto') | null;
     /**
-     * Hero section height - auto adjusts to content
+     * Hero section height
      */
     height?: ('small' | 'medium' | 'large' | 'auto') | null;
     /**
-     * Enable parallax scrolling effect for background media
+     * Enable parallax scrolling effect for background
      */
     enableParallax?: boolean | null;
-    /**
-     * Add overlay to improve text readability over background media
-     */
     overlay?: {
+      /**
+       * Add overlay to background media
+       */
       enabled?: boolean | null;
       /**
-       * Overlay opacity (0-100%)
+       * Overlay opacity (0-100)
        */
       opacity?: number | null;
+      /**
+       * Overlay color
+       */
       color?: ('black' | 'white' | 'primary') | null;
     };
   };
@@ -538,7 +576,6 @@ export interface HeroBlock {
 export interface BlogPage {
   id: number;
   title: string;
-  slug?: string | null;
   /**
    * Brief description of the blog post for previews and SEO
    */
@@ -558,16 +595,6 @@ export interface BlogPage {
     };
     [k: string]: unknown;
   };
-  publishedDate?: string | null;
-  author?: (number | null) | User;
-  tags?:
-    | {
-        tag?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  createdBy?: (number | null) | User;
-  updatedBy?: (number | null) | User;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -656,6 +683,20 @@ export interface BlogPage {
       };
     };
   };
+  /**
+   * URL-friendly identifier (auto-generated from title)
+   */
+  slug?: string | null;
+  publishedDate?: string | null;
+  author?: (number | null) | User;
+  tags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  createdBy?: (number | null) | User;
+  updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -667,6 +708,112 @@ export interface BlogPage {
 export interface ServicePage {
   id: number;
   title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated keywords relevant to this content
+     */
+    keywords?: string | null;
+    robots?: {
+      /**
+       * Check this to prevent search engines from indexing this page
+       */
+      noIndex?: boolean | null;
+      /**
+       * Check this to tell search engines not to follow links on this page
+       */
+      noFollow?: boolean | null;
+      /**
+       * Prevent search engines from showing cached versions of this page
+       */
+      noArchive?: boolean | null;
+      /**
+       * Prevent search engines from showing text snippets in search results
+       */
+      noSnippet?: boolean | null;
+    };
+    /**
+     * The canonical URL for this page (leave empty to use the page URL)
+     */
+    canonical?: string | null;
+    structured?: {
+      /**
+       * Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).
+       */
+      type?:
+        | (
+            | 'Article'
+            | 'BlogPosting'
+            | 'WebPage'
+            | 'Organization'
+            | 'Service'
+            | 'LocalBusiness'
+            | 'FAQPage'
+            | 'ContactPage'
+            | 'AboutPage'
+            | 'custom'
+          )
+        | null;
+      /**
+       * Enter custom JSON-LD structured data
+       */
+      customSchema?: string | null;
+      /**
+       * Author of this content (for articles and blog posts)
+       */
+      author?: (number | null) | User;
+      /**
+       * Publication date (for articles and blog posts)
+       */
+      datePublished?: string | null;
+      /**
+       * Last modification date (for articles and blog posts)
+       */
+      dateModified?: string | null;
+    };
+    social?: {
+      twitter?: {
+        card?: ('summary' | 'summary_large_image' | 'app' | 'player') | null;
+        /**
+         * Twitter username for the website
+         */
+        site?: string | null;
+        /**
+         * Twitter username for the content creator
+         */
+        creator?: string | null;
+      };
+      facebook?: {
+        /**
+         * Facebook App ID for analytics
+         */
+        appId?: string | null;
+      };
+    };
+  };
+  /**
+   * URL-friendly identifier (auto-generated from title)
+   */
   slug?: string | null;
   serviceType?: ('web-dev' | 'mobile-dev' | 'design' | 'consulting' | 'support' | 'marketing' | 'other') | null;
   /**
@@ -681,111 +828,8 @@ export interface ServicePage {
     currency?: ('USD' | 'EUR' | 'GBP' | 'INR') | null;
     pricingModel?: ('fixed' | 'hourly' | 'monthly' | 'custom') | null;
   };
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
   createdBy?: (number | null) | User;
   updatedBy?: (number | null) | User;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Comma-separated keywords relevant to this content
-     */
-    keywords?: string | null;
-    robots?: {
-      /**
-       * Check this to prevent search engines from indexing this page
-       */
-      noIndex?: boolean | null;
-      /**
-       * Check this to tell search engines not to follow links on this page
-       */
-      noFollow?: boolean | null;
-      /**
-       * Prevent search engines from showing cached versions of this page
-       */
-      noArchive?: boolean | null;
-      /**
-       * Prevent search engines from showing text snippets in search results
-       */
-      noSnippet?: boolean | null;
-    };
-    /**
-     * The canonical URL for this page (leave empty to use the page URL)
-     */
-    canonical?: string | null;
-    structured?: {
-      /**
-       * Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).
-       */
-      type?:
-        | (
-            | 'Article'
-            | 'BlogPosting'
-            | 'WebPage'
-            | 'Organization'
-            | 'Service'
-            | 'LocalBusiness'
-            | 'FAQPage'
-            | 'ContactPage'
-            | 'AboutPage'
-            | 'custom'
-          )
-        | null;
-      /**
-       * Enter custom JSON-LD structured data
-       */
-      customSchema?: string | null;
-      /**
-       * Author of this content (for articles and blog posts)
-       */
-      author?: (number | null) | User;
-      /**
-       * Publication date (for articles and blog posts)
-       */
-      datePublished?: string | null;
-      /**
-       * Last modification date (for articles and blog posts)
-       */
-      dateModified?: string | null;
-    };
-    social?: {
-      twitter?: {
-        card?: ('summary' | 'summary_large_image' | 'app' | 'player') | null;
-        /**
-         * Twitter username for the website
-         */
-        site?: string | null;
-        /**
-         * Twitter username for the content creator
-         */
-        creator?: string | null;
-      };
-      facebook?: {
-        /**
-         * Facebook App ID for analytics
-         */
-        appId?: string | null;
-      };
-    };
-  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -797,16 +841,6 @@ export interface ServicePage {
 export interface LegalPage {
   id: number;
   title: string;
-  slug?: string | null;
-  documentType?: ('privacy' | 'terms' | 'cookies' | 'gdpr' | 'disclaimer' | 'license' | 'other') | null;
-  /**
-   * When this legal document becomes effective
-   */
-  effectiveDate?: string | null;
-  /**
-   * Last modification date of this document
-   */
-  lastUpdated?: string | null;
   content: {
     root: {
       type: string;
@@ -822,8 +856,6 @@ export interface LegalPage {
     };
     [k: string]: unknown;
   };
-  createdBy?: (number | null) | User;
-  updatedBy?: (number | null) | User;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -912,6 +944,21 @@ export interface LegalPage {
       };
     };
   };
+  /**
+   * URL-friendly identifier (auto-generated from title)
+   */
+  slug?: string | null;
+  documentType?: ('privacy' | 'terms' | 'cookies' | 'gdpr' | 'disclaimer' | 'license' | 'other') | null;
+  /**
+   * When this legal document becomes effective
+   */
+  effectiveDate?: string | null;
+  /**
+   * Last modification date of this document
+   */
+  lastUpdated?: string | null;
+  createdBy?: (number | null) | User;
+  updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -923,7 +970,6 @@ export interface LegalPage {
 export interface ContactPage {
   id: number;
   title: string;
-  slug?: string | null;
   content?: {
     root: {
       type: string;
@@ -972,8 +1018,6 @@ export interface ContactPage {
       [k: string]: unknown;
     } | null;
   };
-  createdBy?: (number | null) | User;
-  updatedBy?: (number | null) | User;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1062,6 +1106,12 @@ export interface ContactPage {
       };
     };
   };
+  /**
+   * URL-friendly identifier (auto-generated from title)
+   */
+  slug?: string | null;
+  createdBy?: (number | null) | User;
+  updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1936,24 +1986,52 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "HeroBlock_select".
  */
 export interface HeroBlockSelect<T extends boolean = true> {
-  type?: T;
+  variant?: T;
   eyebrow?: T;
   heading?: T;
   subheading?: T;
   media?: T;
   videoUrl?: T;
+  codeSnippet?:
+    | T
+    | {
+        language?: T;
+        code?: T;
+        theme?: T;
+      };
+  splitLayout?:
+    | T
+    | {
+        contentSide?: T;
+        mediaType?: T;
+      };
+  gradientConfig?:
+    | T
+    | {
+        colors?:
+          | T
+          | {
+              color?: T;
+              id?: T;
+            };
+        animation?: T;
+      };
   actions?:
     | T
     | {
         link?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              appearance?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
+                  };
             };
         priority?: T;
         id?: T;
@@ -2073,9 +2151,51 @@ export interface CodeBlockSelect<T extends boolean = true> {
  */
 export interface BlogsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
   excerpt?: T;
   content?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        keywords?: T;
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+              noArchive?: T;
+              noSnippet?: T;
+            };
+        canonical?: T;
+        structured?:
+          | T
+          | {
+              type?: T;
+              customSchema?: T;
+              author?: T;
+              datePublished?: T;
+              dateModified?: T;
+            };
+        social?:
+          | T
+          | {
+              twitter?:
+                | T
+                | {
+                    card?: T;
+                    site?: T;
+                    creator?: T;
+                  };
+              facebook?:
+                | T
+                | {
+                    appId?: T;
+                  };
+            };
+      };
+  slug?: T;
   publishedDate?: T;
   author?: T;
   tags?:
@@ -2086,48 +2206,6 @@ export interface BlogsSelect<T extends boolean = true> {
       };
   createdBy?: T;
   updatedBy?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        keywords?: T;
-        robots?:
-          | T
-          | {
-              noIndex?: T;
-              noFollow?: T;
-              noArchive?: T;
-              noSnippet?: T;
-            };
-        canonical?: T;
-        structured?:
-          | T
-          | {
-              type?: T;
-              customSchema?: T;
-              author?: T;
-              datePublished?: T;
-              dateModified?: T;
-            };
-        social?:
-          | T
-          | {
-              twitter?:
-                | T
-                | {
-                    card?: T;
-                    site?: T;
-                    creator?: T;
-                  };
-              facebook?:
-                | T
-                | {
-                    appId?: T;
-                  };
-            };
-      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2138,6 +2216,49 @@ export interface BlogsSelect<T extends boolean = true> {
  */
 export interface ServicesSelect<T extends boolean = true> {
   title?: T;
+  content?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        keywords?: T;
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+              noArchive?: T;
+              noSnippet?: T;
+            };
+        canonical?: T;
+        structured?:
+          | T
+          | {
+              type?: T;
+              customSchema?: T;
+              author?: T;
+              datePublished?: T;
+              dateModified?: T;
+            };
+        social?:
+          | T
+          | {
+              twitter?:
+                | T
+                | {
+                    card?: T;
+                    site?: T;
+                    creator?: T;
+                  };
+              facebook?:
+                | T
+                | {
+                    appId?: T;
+                  };
+            };
+      };
   slug?: T;
   serviceType?: T;
   featured?: T;
@@ -2148,51 +2269,8 @@ export interface ServicesSelect<T extends boolean = true> {
         currency?: T;
         pricingModel?: T;
       };
-  content?: T;
   createdBy?: T;
   updatedBy?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        keywords?: T;
-        robots?:
-          | T
-          | {
-              noIndex?: T;
-              noFollow?: T;
-              noArchive?: T;
-              noSnippet?: T;
-            };
-        canonical?: T;
-        structured?:
-          | T
-          | {
-              type?: T;
-              customSchema?: T;
-              author?: T;
-              datePublished?: T;
-              dateModified?: T;
-            };
-        social?:
-          | T
-          | {
-              twitter?:
-                | T
-                | {
-                    card?: T;
-                    site?: T;
-                    creator?: T;
-                  };
-              facebook?:
-                | T
-                | {
-                    appId?: T;
-                  };
-            };
-      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2203,13 +2281,7 @@ export interface ServicesSelect<T extends boolean = true> {
  */
 export interface LegalSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
-  documentType?: T;
-  effectiveDate?: T;
-  lastUpdated?: T;
   content?: T;
-  createdBy?: T;
-  updatedBy?: T;
   meta?:
     | T
     | {
@@ -2252,6 +2324,12 @@ export interface LegalSelect<T extends boolean = true> {
                   };
             };
       };
+  slug?: T;
+  documentType?: T;
+  effectiveDate?: T;
+  lastUpdated?: T;
+  createdBy?: T;
+  updatedBy?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2262,7 +2340,6 @@ export interface LegalSelect<T extends boolean = true> {
  */
 export interface ContactsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
   content?: T;
   purpose?: T;
   form?: T;
@@ -2275,8 +2352,6 @@ export interface ContactsSelect<T extends boolean = true> {
         enableSidebar?: T;
         content?: T;
       };
-  createdBy?: T;
-  updatedBy?: T;
   meta?:
     | T
     | {
@@ -2319,6 +2394,9 @@ export interface ContactsSelect<T extends boolean = true> {
                   };
             };
       };
+  slug?: T;
+  createdBy?: T;
+  updatedBy?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

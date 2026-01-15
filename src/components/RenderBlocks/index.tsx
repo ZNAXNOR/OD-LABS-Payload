@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Page } from '@/payload-types'
+import { HeroBlock } from '@/components/blocks/Hero'
 
 interface RenderBlocksProps {
   blocks: Page['layout']
@@ -14,6 +15,9 @@ export function RenderBlocks({ blocks }: RenderBlocksProps) {
     <>
       {blocks.map((block, index) => {
         switch (block.blockType) {
+          case 'hero':
+            return <HeroBlock key={index} block={block} />
+
           case 'content':
             return (
               <section key={index} className="py-16">
