@@ -2,7 +2,7 @@ import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { RichText } from '@/components/RichText'
+import { BlockRenderer } from '@/components/blocks/BlockRenderer'
 import type { Metadata } from 'next'
 
 interface PageProps {
@@ -70,17 +70,33 @@ export default async function BlogPage({ params }: PageProps) {
   const page = result.docs[0]
 
   return (
-    <article className="container mx-auto px-4 py-16 max-w-4xl">
-      <header className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">{page.title}</h1>
-        {page.createdAt && (
-          <p className="text-sm text-muted-foreground">
-            Published: {new Date(page.createdAt).toLocaleDateString()}
-          </p>
-        )}
-      </header>
+    <>
+      {/* Render Hero Block if present */}
+      {page.hero && page.hero.length > 0 && <BlockRenderer blocks={page.hero} />}
 
-      {page.content && <RichText data={page.content} />}
-    </article>
+      {/* Main content */}
+      <main id="main-content">
+        {page.layout && page.layout.length > 0 ? (
+          <BlockRenderer blocks={page.layout} />
+        ) : (
+          <article className="container mx-auto px-4 py-16 max-w-4xl">
+            <header className="mb-12">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">{page.title}</h1>
+              {page.createdAt && (
+                <p className="text-sm text-muted-foreground">
+                  Published: {new Date(page.createdAt).toLocaleDateString()}
+                </p>
+              )}
+            </header>
+            <div className="prose max-w-none">
+              <p className="text-muted-foreground">
+                This blog post has no content blocks. Add blocks in the admin panel to display
+                content.
+              </p>
+            </div>
+          </article>
+        )}
+      </main>
+    </>
   )
 }

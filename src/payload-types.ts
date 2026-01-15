@@ -332,6 +332,12 @@ export interface Page {
         | StatsCounterBlock
         | FAQAccordionBlock
         | TimelineBlock
+        | ContactFormBlock
+        | NewsletterBlock
+        | SocialProofBlock
+        | ContainerBlock
+        | DividerBlock
+        | SpacerBlock
       )[]
     | null;
   meta?: {
@@ -616,6 +622,32 @@ export interface BlogPage {
     };
     [k: string]: unknown;
   };
+  /**
+   * Optional hero section for the blog post (maximum 1)
+   */
+  hero?: HeroBlock[] | null;
+  /**
+   * Build your blog post layout with content blocks
+   */
+  layout?:
+    | (
+        | ContentBlock
+        | MediaBlock
+        | ArchiveBlock
+        | BannerBlock
+        | CodeBlock
+        | FeatureGridBlock
+        | StatsCounterBlock
+        | FAQAccordionBlock
+        | TimelineBlock
+        | CallToActionBlock
+        | NewsletterBlock
+        | SocialProofBlock
+        | ContainerBlock
+        | DividerBlock
+        | SpacerBlock
+      )[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -724,6 +756,96 @@ export interface BlogPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentBlock".
+ */
+export interface ContentBlock {
+  /**
+   * Add columns to create flexible layouts
+   */
+  columns?:
+    | {
+        /**
+         * Column width
+         */
+        width: 'oneThird' | 'half' | 'twoThirds' | 'full' | 'auto';
+        /**
+         * Column content
+         */
+        content: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        /**
+         * Make this column clickable
+         */
+        enableLink?: boolean | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'blogs';
+                value: number | BlogPage;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | ServicePage;
+              } | null)
+            | ({
+                relationTo: 'legal';
+                value: number | LegalPage;
+              } | null)
+            | ({
+                relationTo: 'contacts';
+                value: number | ContactPage;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'secondary' | 'outline') | null;
+        };
+        /**
+         * Background color for this column
+         */
+        backgroundColor?: ('none' | 'white' | 'zinc-50' | 'zinc-100' | 'brand-primary') | null;
+        /**
+         * Padding inside the column
+         */
+        padding?: ('none' | 'small' | 'medium' | 'large') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Space between columns
+   */
+  gap: 'none' | 'small' | 'medium' | 'large';
+  /**
+   * Vertical alignment of columns
+   */
+  alignment: 'top' | 'center' | 'bottom';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "services".
  */
 export interface ServicePage {
@@ -744,6 +866,34 @@ export interface ServicePage {
     };
     [k: string]: unknown;
   };
+  /**
+   * Optional hero section for the top of the page
+   */
+  hero?: HeroBlock[] | null;
+  /**
+   * Build your service page with blocks. Includes Services, Technical, CTA, and Layout blocks.
+   */
+  layout?:
+    | (
+        | ContentBlock
+        | MediaBlock
+        | CallToActionBlock
+        | ServicesGridBlock
+        | TechStackBlock
+        | ProcessStepsBlock
+        | PricingTableBlock
+        | TestimonialBlock
+        | FeatureGridBlock
+        | StatsCounterBlock
+        | FAQAccordionBlock
+        | ContactFormBlock
+        | NewsletterBlock
+        | SocialProofBlock
+        | ContainerBlock
+        | DividerBlock
+        | SpacerBlock
+      )[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -857,6 +1007,103 @@ export interface ServicePage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock".
+ */
+export interface CallToActionBlock {
+  /**
+   * Choose the layout style for the call-to-action
+   */
+  variant?: ('centered' | 'split' | 'banner' | 'card') | null;
+  /**
+   * Main heading for the CTA
+   */
+  heading: string;
+  /**
+   * Optional description text
+   */
+  description?: string | null;
+  /**
+   * Optional rich text content for more complex CTAs
+   */
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'blogs';
+                value: number | BlogPage;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | ServicePage;
+              } | null)
+            | ({
+                relationTo: 'legal';
+                value: number | LegalPage;
+              } | null)
+            | ({
+                relationTo: 'contacts';
+                value: number | ContactPage;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional background or side image
+   */
+  media?: (number | null) | Media;
+  /**
+   * Background color scheme
+   */
+  backgroundColor?: ('default' | 'primary' | 'dark' | 'light') | null;
+  /**
+   * Optional background pattern
+   */
+  pattern?: ('none' | 'dots' | 'grid' | 'waves') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "legal".
  */
 export interface LegalPage {
@@ -877,6 +1124,10 @@ export interface LegalPage {
     };
     [k: string]: unknown;
   };
+  /**
+   * Build your legal page layout using document-focused blocks. Legal pages do not include hero sections.
+   */
+  layout?: (ContentBlock | BannerBlock | FAQAccordionBlock | ContainerBlock | DividerBlock | SpacerBlock)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -986,6 +1237,185 @@ export interface LegalPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlock".
+ */
+export interface BannerBlock {
+  style: 'info' | 'warning' | 'error' | 'success';
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'banner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQAccordionBlock".
+ */
+export interface FAQAccordionBlock {
+  /**
+   * Optional heading for the FAQ section
+   */
+  heading?: string | null;
+  /**
+   * Optional description text below the heading
+   */
+  description?: string | null;
+  /**
+   * Allow multiple FAQ items to be open at the same time
+   */
+  allowMultipleOpen?: boolean | null;
+  /**
+   * Comma-separated indices of items to open by default (e.g., 0,2)
+   */
+  defaultOpen?: string | null;
+  /**
+   * Show search box to filter FAQs
+   */
+  showSearch?: boolean | null;
+  faqs: {
+    question: string;
+    /**
+     * Answer with rich text formatting
+     */
+    answer: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    /**
+     * Optional category for grouping
+     */
+    category?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faqAccordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContainerBlock".
+ */
+export interface ContainerBlock {
+  /**
+   * Add blocks to nest inside this container
+   */
+  blocks: unknown[];
+  /**
+   * Maximum width of the container
+   */
+  maxWidth: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+  /**
+   * Background color for the container
+   */
+  backgroundColor?: ('none' | 'white' | 'zinc-50' | 'zinc-100' | 'zinc-900' | 'brand-primary') | null;
+  /**
+   * Optional background image
+   */
+  backgroundImage?: (number | null) | Media;
+  /**
+   * Top padding
+   */
+  paddingTop: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  /**
+   * Bottom padding
+   */
+  paddingBottom: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  /**
+   * Top margin
+   */
+  marginTop: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  /**
+   * Bottom margin
+   */
+  marginBottom: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'container';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DividerBlock".
+ */
+export interface DividerBlock {
+  /**
+   * Style of the divider line
+   */
+  style: 'solid' | 'dashed' | 'dotted' | 'gradient';
+  /**
+   * Thickness of the divider
+   */
+  thickness: '1' | '2' | '3' | '4';
+  /**
+   * Color of the divider
+   */
+  color?: ('zinc-200' | 'zinc-300' | 'zinc-400' | 'zinc-800' | 'brand-primary') | null;
+  /**
+   * Width of the divider
+   */
+  width: 'full' | 'half' | 'quarter';
+  /**
+   * Horizontal alignment
+   */
+  alignment?: ('left' | 'center' | 'right') | null;
+  /**
+   * Space above the divider
+   */
+  spacingTop: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  /**
+   * Space below the divider
+   */
+  spacingBottom: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'divider';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpacerBlock".
+ */
+export interface SpacerBlock {
+  /**
+   * Height in rem units for mobile devices (1rem = 16px)
+   */
+  heightMobile: number;
+  /**
+   * Height in rem units for tablet devices (768px+)
+   */
+  heightTablet: number;
+  /**
+   * Height in rem units for desktop devices (1024px+)
+   */
+  heightDesktop: number;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'spacer';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contacts".
  */
 export interface ContactPage {
@@ -1006,6 +1436,25 @@ export interface ContactPage {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Optional hero section for the contact page
+   */
+  hero?: HeroBlock[] | null;
+  /**
+   * Add contact-focused blocks to build your page layout
+   */
+  layout?:
+    | (
+        | ContentBlock
+        | MediaBlock
+        | ContactFormBlock
+        | SocialProofBlock
+        | FAQAccordionBlock
+        | ContainerBlock
+        | DividerBlock
+        | SpacerBlock
+      )[]
+    | null;
   purpose:
     | 'general'
     | 'technical'
@@ -1136,6 +1585,53 @@ export interface ContactPage {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactFormBlock".
+ */
+export interface ContactFormBlock {
+  /**
+   * Main heading for the contact form section
+   */
+  heading?: string | null;
+  /**
+   * Optional description text above the form
+   */
+  description?: string | null;
+  /**
+   * Choose the layout style
+   */
+  layout?: ('single' | 'split') | null;
+  /**
+   * Select the form to display (requires Form Builder plugin)
+   */
+  form?: (number | null) | Form;
+  /**
+   * Display contact information alongside the form
+   */
+  showContactInfo?: boolean | null;
+  contactInfo?: {
+    /**
+     * Contact email address
+     */
+    email?: string | null;
+    /**
+     * Contact phone number
+     */
+    phone?: string | null;
+    /**
+     * Physical address
+     */
+    address?: string | null;
+    /**
+     * Business hours
+     */
+    hours?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactForm';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1380,320 +1876,71 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContentBlock".
+ * via the `definition` "SocialProofBlock".
  */
-export interface ContentBlock {
+export interface SocialProofBlock {
   /**
-   * Add columns to create flexible layouts
+   * Optional heading for the social proof section
    */
-  columns?:
+  heading?: string | null;
+  /**
+   * Type of social proof to display
+   */
+  type: 'logos' | 'stats' | 'badges' | 'combined';
+  logos?:
     | {
         /**
-         * Column width
+         * Company or client logo
          */
-        width: 'oneThird' | 'half' | 'twoThirds' | 'full' | 'auto';
+        image: number | Media;
         /**
-         * Column content
+         * Company or client name (for alt text)
          */
-        content: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
+        name: string;
         /**
-         * Make this column clickable
+         * Optional link to company website
          */
-        enableLink?: boolean | null;
-        link?: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'blogs';
-                value: number | BlogPage;
-              } | null)
-            | ({
-                relationTo: 'services';
-                value: number | ServicePage;
-              } | null)
-            | ({
-                relationTo: 'legal';
-                value: number | LegalPage;
-              } | null)
-            | ({
-                relationTo: 'contacts';
-                value: number | ContactPage;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'secondary' | 'outline') | null;
-        };
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  stats?:
+    | {
         /**
-         * Background color for this column
+         * Statistic value (e.g., "10,000+", "99%")
          */
-        backgroundColor?: ('none' | 'white' | 'zinc-50' | 'zinc-100' | 'brand-primary') | null;
+        value: string;
         /**
-         * Padding inside the column
+         * Label for the statistic
          */
-        padding?: ('none' | 'small' | 'medium' | 'large') | null;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  badges?:
+    | {
+        /**
+         * Badge or certification image
+         */
+        image: number | Media;
+        /**
+         * Badge title or certification name
+         */
+        title: string;
         id?: string | null;
       }[]
     | null;
   /**
-   * Space between columns
+   * Layout style for the items
    */
-  gap: 'none' | 'small' | 'medium' | 'large';
+  layout?: ('row' | 'grid') | null;
   /**
-   * Vertical alignment of columns
+   * Apply grayscale filter to logos (hover to show color)
    */
-  alignment: 'top' | 'center' | 'bottom';
+  grayscale?: boolean | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'content';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock".
- */
-export interface CallToActionBlock {
-  /**
-   * Choose the layout style for the call-to-action
-   */
-  variant?: ('centered' | 'split' | 'banner' | 'card') | null;
-  /**
-   * Main heading for the CTA
-   */
-  heading: string;
-  /**
-   * Optional description text
-   */
-  description?: string | null;
-  /**
-   * Optional rich text content for more complex CTAs
-   */
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  links?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'blogs';
-                value: number | BlogPage;
-              } | null)
-            | ({
-                relationTo: 'services';
-                value: number | ServicePage;
-              } | null)
-            | ({
-                relationTo: 'legal';
-                value: number | LegalPage;
-              } | null)
-            | ({
-                relationTo: 'contacts';
-                value: number | ContactPage;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'outline') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Optional background or side image
-   */
-  media?: (number | null) | Media;
-  /**
-   * Background color scheme
-   */
-  backgroundColor?: ('default' | 'primary' | 'dark' | 'light') | null;
-  /**
-   * Optional background pattern
-   */
-  pattern?: ('none' | 'dots' | 'grid' | 'waves') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'cta';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
- */
-export interface MediaBlock {
-  media: number | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlock".
- */
-export interface ArchiveBlock {
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  populateBy: 'collection' | 'selection';
-  relationTo?: ('blogs' | 'services') | null;
-  selectedDocs?:
-    | (
-        | {
-            relationTo: 'blogs';
-            value: number | BlogPage;
-          }
-        | {
-            relationTo: 'services';
-            value: number | ServicePage;
-          }
-      )[]
-    | null;
-  limit?: number | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'archive';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlock".
- */
-export interface BannerBlock {
-  style: 'info' | 'warning' | 'error' | 'success';
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'banner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CodeBlock".
- */
-export interface CodeBlock {
-  /**
-   * Select the programming language for syntax highlighting
-   */
-  language:
-    | 'typescript'
-    | 'javascript'
-    | 'python'
-    | 'java'
-    | 'csharp'
-    | 'cpp'
-    | 'c'
-    | 'go'
-    | 'rust'
-    | 'php'
-    | 'ruby'
-    | 'swift'
-    | 'kotlin'
-    | 'html'
-    | 'css'
-    | 'scss'
-    | 'json'
-    | 'yaml'
-    | 'markdown'
-    | 'sql'
-    | 'bash'
-    | 'shell'
-    | 'powershell'
-    | 'graphql'
-    | 'dockerfile';
-  /**
-   * Enter your code snippet
-   */
-  code: string;
-  /**
-   * Optional filename to display above the code block
-   */
-  filename?: string | null;
-  /**
-   * Display line numbers in the code block
-   */
-  showLineNumbers?: boolean | null;
-  /**
-   * Comma-separated line numbers to highlight (e.g., 1,3-5,7)
-   */
-  highlightLines?: string | null;
-  /**
-   * Color theme for the code block
-   */
-  theme?: ('auto' | 'dark' | 'light') | null;
-  /**
-   * Show copy-to-clipboard button
-   */
-  enableCopy?: boolean | null;
-  /**
-   * Optional caption to display below the code block
-   */
-  caption?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'code';
+  blockType: 'socialProof';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2073,6 +2320,355 @@ export interface PricingTableBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialBlock".
+ */
+export interface TestimonialBlock {
+  /**
+   * Optional heading for the testimonials section
+   */
+  heading?: string | null;
+  /**
+   * Layout style for displaying testimonials
+   */
+  layout: 'single' | 'grid' | 'carousel';
+  /**
+   * Add testimonials to display
+   */
+  testimonials?:
+    | {
+        /**
+         * Testimonial quote
+         */
+        quote: string;
+        /**
+         * Author name
+         */
+        author: string;
+        /**
+         * Author role or title
+         */
+        role: string;
+        /**
+         * Company name
+         */
+        company?: string | null;
+        /**
+         * Author avatar image
+         */
+        avatar?: (number | null) | Media;
+        /**
+         * Rating (1-5 stars)
+         */
+        rating?: number | null;
+        /**
+         * Testimonial date
+         */
+        date?: string | null;
+        /**
+         * Type of project
+         */
+        projectType?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Display star ratings
+   */
+  showRatings?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonial';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock".
+ */
+export interface FeatureGridBlock {
+  /**
+   * Optional heading for the feature grid section
+   */
+  heading?: string | null;
+  /**
+   * Optional description text below the heading
+   */
+  description?: string | null;
+  /**
+   * Number of columns in the grid layout
+   */
+  columns: '2' | '3' | '4' | '6';
+  /**
+   * Visual style of the feature grid
+   */
+  style: 'cards' | 'minimal' | 'icons';
+  features: {
+    /**
+     * Lucide icon name (e.g., Zap, Shield, Rocket)
+     */
+    icon: string;
+    title: string;
+    description: string;
+    /**
+     * Optional link for this feature
+     */
+    link?: {
+      url?: string | null;
+      label?: string | null;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsCounterBlock".
+ */
+export interface StatsCounterBlock {
+  /**
+   * Optional heading for the stats section
+   */
+  heading?: string | null;
+  /**
+   * Layout style for the stats
+   */
+  layout: 'row' | 'grid';
+  /**
+   * Animate counters when they come into view
+   */
+  animateOnScroll?: boolean | null;
+  /**
+   * Animation duration in milliseconds
+   */
+  duration?: number | null;
+  stats: {
+    /**
+     * The numeric value to display
+     */
+    value: number;
+    /**
+     * Optional prefix (e.g., $, +)
+     */
+    prefix?: string | null;
+    /**
+     * Optional suffix (e.g., +, %, K, M)
+     */
+    suffix?: string | null;
+    /**
+     * Label describing the stat
+     */
+    label: string;
+    /**
+     * Optional additional description
+     */
+    description?: string | null;
+    /**
+     * Optional Lucide icon name
+     */
+    icon?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'statsCounter';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsletterBlock".
+ */
+export interface NewsletterBlock {
+  /**
+   * Main heading for the newsletter signup
+   */
+  heading: string;
+  /**
+   * Optional description text
+   */
+  description?: string | null;
+  /**
+   * Placeholder text for the email input
+   */
+  placeholder?: string | null;
+  /**
+   * Text for the submit button
+   */
+  buttonText: string;
+  /**
+   * Visual style of the newsletter signup
+   */
+  style?: ('inline' | 'card' | 'minimal') | null;
+  /**
+   * Display privacy note below the form
+   */
+  showPrivacyNote?: boolean | null;
+  /**
+   * Privacy note text
+   */
+  privacyText?: string | null;
+  /**
+   * Message shown after successful subscription
+   */
+  successMessage: string;
+  /**
+   * Email service provider integration
+   */
+  provider?: ('custom' | 'mailchimp' | 'convertkit') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsletter';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlock".
+ */
+export interface ArchiveBlock {
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  populateBy: 'collection' | 'selection';
+  relationTo?: ('blogs' | 'services') | null;
+  selectedDocs?:
+    | (
+        | {
+            relationTo: 'blogs';
+            value: number | BlogPage;
+          }
+        | {
+            relationTo: 'services';
+            value: number | ServicePage;
+          }
+      )[]
+    | null;
+  limit?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'archive';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CodeBlock".
+ */
+export interface CodeBlock {
+  /**
+   * Select the programming language for syntax highlighting
+   */
+  language:
+    | 'typescript'
+    | 'javascript'
+    | 'python'
+    | 'java'
+    | 'csharp'
+    | 'cpp'
+    | 'c'
+    | 'go'
+    | 'rust'
+    | 'php'
+    | 'ruby'
+    | 'swift'
+    | 'kotlin'
+    | 'html'
+    | 'css'
+    | 'scss'
+    | 'json'
+    | 'yaml'
+    | 'markdown'
+    | 'sql'
+    | 'bash'
+    | 'shell'
+    | 'powershell'
+    | 'graphql'
+    | 'dockerfile';
+  /**
+   * Enter your code snippet
+   */
+  code: string;
+  /**
+   * Optional filename to display above the code block
+   */
+  filename?: string | null;
+  /**
+   * Display line numbers in the code block
+   */
+  showLineNumbers?: boolean | null;
+  /**
+   * Comma-separated line numbers to highlight (e.g., 1,3-5,7)
+   */
+  highlightLines?: string | null;
+  /**
+   * Color theme for the code block
+   */
+  theme?: ('auto' | 'dark' | 'light') | null;
+  /**
+   * Show copy-to-clipboard button
+   */
+  enableCopy?: boolean | null;
+  /**
+   * Optional caption to display below the code block
+   */
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock".
+ */
+export interface TimelineBlock {
+  /**
+   * Optional heading for the timeline section
+   */
+  heading?: string | null;
+  /**
+   * Timeline orientation
+   */
+  orientation: 'vertical' | 'horizontal';
+  /**
+   * Visual style of the timeline
+   */
+  style: 'default' | 'minimal' | 'detailed';
+  items: {
+    /**
+     * Date or time period
+     */
+    date: string;
+    title: string;
+    description: string;
+    /**
+     * Optional Lucide icon name
+     */
+    icon?: string | null;
+    /**
+     * Optional image for this timeline item
+     */
+    image?: (number | null) | Media;
+    /**
+     * Optional link for this timeline item
+     */
+    link?: {
+      url?: string | null;
+      label?: string | null;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'timeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProjectShowcaseBlock".
  */
 export interface ProjectShowcaseBlock {
@@ -2378,260 +2974,6 @@ export interface BeforeAfterBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'beforeAfter';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TestimonialBlock".
- */
-export interface TestimonialBlock {
-  /**
-   * Optional heading for the testimonials section
-   */
-  heading?: string | null;
-  /**
-   * Layout style for displaying testimonials
-   */
-  layout: 'single' | 'grid' | 'carousel';
-  /**
-   * Add testimonials to display
-   */
-  testimonials?:
-    | {
-        /**
-         * Testimonial quote
-         */
-        quote: string;
-        /**
-         * Author name
-         */
-        author: string;
-        /**
-         * Author role or title
-         */
-        role: string;
-        /**
-         * Company name
-         */
-        company?: string | null;
-        /**
-         * Author avatar image
-         */
-        avatar?: (number | null) | Media;
-        /**
-         * Rating (1-5 stars)
-         */
-        rating?: number | null;
-        /**
-         * Testimonial date
-         */
-        date?: string | null;
-        /**
-         * Type of project
-         */
-        projectType?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Display star ratings
-   */
-  showRatings?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'testimonial';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FeatureGridBlock".
- */
-export interface FeatureGridBlock {
-  /**
-   * Optional heading for the feature grid section
-   */
-  heading?: string | null;
-  /**
-   * Optional description text below the heading
-   */
-  description?: string | null;
-  /**
-   * Number of columns in the grid layout
-   */
-  columns: '2' | '3' | '4' | '6';
-  /**
-   * Visual style of the feature grid
-   */
-  style: 'cards' | 'minimal' | 'icons';
-  features: {
-    /**
-     * Lucide icon name (e.g., Zap, Shield, Rocket)
-     */
-    icon: string;
-    title: string;
-    description: string;
-    /**
-     * Optional link for this feature
-     */
-    link?: {
-      url?: string | null;
-      label?: string | null;
-    };
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'featureGrid';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "StatsCounterBlock".
- */
-export interface StatsCounterBlock {
-  /**
-   * Optional heading for the stats section
-   */
-  heading?: string | null;
-  /**
-   * Layout style for the stats
-   */
-  layout: 'row' | 'grid';
-  /**
-   * Animate counters when they come into view
-   */
-  animateOnScroll?: boolean | null;
-  /**
-   * Animation duration in milliseconds
-   */
-  duration?: number | null;
-  stats: {
-    /**
-     * The numeric value to display
-     */
-    value: number;
-    /**
-     * Optional prefix (e.g., $, +)
-     */
-    prefix?: string | null;
-    /**
-     * Optional suffix (e.g., +, %, K, M)
-     */
-    suffix?: string | null;
-    /**
-     * Label describing the stat
-     */
-    label: string;
-    /**
-     * Optional additional description
-     */
-    description?: string | null;
-    /**
-     * Optional Lucide icon name
-     */
-    icon?: string | null;
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'statsCounter';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FAQAccordionBlock".
- */
-export interface FAQAccordionBlock {
-  /**
-   * Optional heading for the FAQ section
-   */
-  heading?: string | null;
-  /**
-   * Optional description text below the heading
-   */
-  description?: string | null;
-  /**
-   * Allow multiple FAQ items to be open at the same time
-   */
-  allowMultipleOpen?: boolean | null;
-  /**
-   * Comma-separated indices of items to open by default (e.g., 0,2)
-   */
-  defaultOpen?: string | null;
-  /**
-   * Show search box to filter FAQs
-   */
-  showSearch?: boolean | null;
-  faqs: {
-    question: string;
-    /**
-     * Answer with rich text formatting
-     */
-    answer: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    /**
-     * Optional category for grouping
-     */
-    category?: string | null;
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'faqAccordion';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TimelineBlock".
- */
-export interface TimelineBlock {
-  /**
-   * Optional heading for the timeline section
-   */
-  heading?: string | null;
-  /**
-   * Timeline orientation
-   */
-  orientation: 'vertical' | 'horizontal';
-  /**
-   * Visual style of the timeline
-   */
-  style: 'default' | 'minimal' | 'detailed';
-  items: {
-    /**
-     * Date or time period
-     */
-    date: string;
-    title: string;
-    description: string;
-    /**
-     * Optional Lucide icon name
-     */
-    icon?: string | null;
-    /**
-     * Optional image for this timeline item
-     */
-    image?: (number | null) | Media;
-    /**
-     * Optional link for this timeline item
-     */
-    link?: {
-      url?: string | null;
-      label?: string | null;
-    };
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'timeline';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3005,6 +3347,12 @@ export interface PagesSelect<T extends boolean = true> {
         statsCounter?: T | StatsCounterBlockSelect<T>;
         faqAccordion?: T | FAQAccordionBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
+        contactForm?: T | ContactFormBlockSelect<T>;
+        newsletter?: T | NewsletterBlockSelect<T>;
+        socialProof?: T | SocialProofBlockSelect<T>;
+        container?: T | ContainerBlockSelect<T>;
+        divider?: T | DividerBlockSelect<T>;
+        spacer?: T | SpacerBlockSelect<T>;
       };
   meta?:
     | T
@@ -3649,12 +3997,150 @@ export interface TimelineBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactFormBlock_select".
+ */
+export interface ContactFormBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  layout?: T;
+  form?: T;
+  showContactInfo?: T;
+  contactInfo?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        address?: T;
+        hours?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsletterBlock_select".
+ */
+export interface NewsletterBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  placeholder?: T;
+  buttonText?: T;
+  style?: T;
+  showPrivacyNote?: T;
+  privacyText?: T;
+  successMessage?: T;
+  provider?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SocialProofBlock_select".
+ */
+export interface SocialProofBlockSelect<T extends boolean = true> {
+  heading?: T;
+  type?: T;
+  logos?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        link?: T;
+        id?: T;
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  badges?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        id?: T;
+      };
+  layout?: T;
+  grayscale?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContainerBlock_select".
+ */
+export interface ContainerBlockSelect<T extends boolean = true> {
+  blocks?: T | {};
+  maxWidth?: T;
+  backgroundColor?: T;
+  backgroundImage?: T;
+  paddingTop?: T;
+  paddingBottom?: T;
+  marginTop?: T;
+  marginBottom?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DividerBlock_select".
+ */
+export interface DividerBlockSelect<T extends boolean = true> {
+  style?: T;
+  thickness?: T;
+  color?: T;
+  width?: T;
+  alignment?: T;
+  spacingTop?: T;
+  spacingBottom?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpacerBlock_select".
+ */
+export interface SpacerBlockSelect<T extends boolean = true> {
+  heightMobile?: T;
+  heightTablet?: T;
+  heightDesktop?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blogs_select".
  */
 export interface BlogsSelect<T extends boolean = true> {
   title?: T;
   excerpt?: T;
   content?: T;
+  hero?:
+    | T
+    | {
+        hero?: T | HeroBlockSelect<T>;
+      };
+  layout?:
+    | T
+    | {
+        content?: T | ContentBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+        archive?: T | ArchiveBlockSelect<T>;
+        banner?: T | BannerBlockSelect<T>;
+        code?: T | CodeBlockSelect<T>;
+        featureGrid?: T | FeatureGridBlockSelect<T>;
+        statsCounter?: T | StatsCounterBlockSelect<T>;
+        faqAccordion?: T | FAQAccordionBlockSelect<T>;
+        timeline?: T | TimelineBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+        newsletter?: T | NewsletterBlockSelect<T>;
+        socialProof?: T | SocialProofBlockSelect<T>;
+        container?: T | ContainerBlockSelect<T>;
+        divider?: T | DividerBlockSelect<T>;
+        spacer?: T | SpacerBlockSelect<T>;
+      };
   meta?:
     | T
     | {
@@ -3719,6 +4205,32 @@ export interface BlogsSelect<T extends boolean = true> {
 export interface ServicesSelect<T extends boolean = true> {
   title?: T;
   content?: T;
+  hero?:
+    | T
+    | {
+        hero?: T | HeroBlockSelect<T>;
+      };
+  layout?:
+    | T
+    | {
+        content?: T | ContentBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+        servicesGrid?: T | ServicesGridBlockSelect<T>;
+        techStack?: T | TechStackBlockSelect<T>;
+        processSteps?: T | ProcessStepsBlockSelect<T>;
+        pricingTable?: T | PricingTableBlockSelect<T>;
+        testimonial?: T | TestimonialBlockSelect<T>;
+        featureGrid?: T | FeatureGridBlockSelect<T>;
+        statsCounter?: T | StatsCounterBlockSelect<T>;
+        faqAccordion?: T | FAQAccordionBlockSelect<T>;
+        contactForm?: T | ContactFormBlockSelect<T>;
+        newsletter?: T | NewsletterBlockSelect<T>;
+        socialProof?: T | SocialProofBlockSelect<T>;
+        container?: T | ContainerBlockSelect<T>;
+        divider?: T | DividerBlockSelect<T>;
+        spacer?: T | SpacerBlockSelect<T>;
+      };
   meta?:
     | T
     | {
@@ -3784,6 +4296,16 @@ export interface ServicesSelect<T extends boolean = true> {
 export interface LegalSelect<T extends boolean = true> {
   title?: T;
   content?: T;
+  layout?:
+    | T
+    | {
+        content?: T | ContentBlockSelect<T>;
+        banner?: T | BannerBlockSelect<T>;
+        faqAccordion?: T | FAQAccordionBlockSelect<T>;
+        container?: T | ContainerBlockSelect<T>;
+        divider?: T | DividerBlockSelect<T>;
+        spacer?: T | SpacerBlockSelect<T>;
+      };
   meta?:
     | T
     | {
@@ -3843,6 +4365,23 @@ export interface LegalSelect<T extends boolean = true> {
 export interface ContactsSelect<T extends boolean = true> {
   title?: T;
   content?: T;
+  hero?:
+    | T
+    | {
+        hero?: T | HeroBlockSelect<T>;
+      };
+  layout?:
+    | T
+    | {
+        content?: T | ContentBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+        contactForm?: T | ContactFormBlockSelect<T>;
+        socialProof?: T | SocialProofBlockSelect<T>;
+        faqAccordion?: T | FAQAccordionBlockSelect<T>;
+        container?: T | ContainerBlockSelect<T>;
+        divider?: T | DividerBlockSelect<T>;
+        spacer?: T | SpacerBlockSelect<T>;
+      };
   purpose?: T;
   form?: T;
   displayContactInfo?: T;

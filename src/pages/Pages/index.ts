@@ -27,6 +27,16 @@ import { StatsCounterBlock } from '@/blocks/technical/StatsCounter/config'
 import { FAQAccordionBlock } from '@/blocks/technical/FAQAccordion/config'
 import { TimelineBlock } from '@/blocks/technical/Timeline/config'
 
+// Import CTA blocks
+import { ContactFormBlock } from '@/blocks/cta/ContactForm/config'
+import { NewsletterBlock } from '@/blocks/cta/Newsletter/config'
+import { SocialProofBlock } from '@/blocks/cta/SocialProof/config'
+
+// Import layout blocks
+import { ContainerBlock } from '@/blocks/layout/Container/config'
+import { DividerBlock } from '@/blocks/layout/Divider/config'
+import { SpacerBlock } from '@/blocks/layout/Spacer/config'
+
 // Import hooks
 import { revalidatePage } from './hooks/revalidatePage'
 import { populateBreadcrumbs } from './hooks/populateBreadcrumbs'
@@ -115,24 +125,36 @@ export const Pages: CollectionConfig = {
               type: 'blocks',
               label: 'Page Layout',
               blocks: [
+                // Content blocks
                 ContentBlock,
                 CallToActionBlock,
                 MediaBlock,
                 ArchiveBlock,
                 Banner,
                 Code,
+                // Services blocks
                 ServicesGridBlock,
                 TechStackBlock,
                 ProcessStepsBlock,
                 PricingTableBlock,
+                // Portfolio blocks
                 ProjectShowcaseBlock,
                 CaseStudyBlock,
                 BeforeAfterBlock,
                 TestimonialBlock,
+                // Technical blocks
                 FeatureGridBlock,
                 StatsCounterBlock,
                 FAQAccordionBlock,
                 TimelineBlock,
+                // CTA blocks
+                ContactFormBlock,
+                NewsletterBlock,
+                SocialProofBlock,
+                // Layout blocks
+                ContainerBlock,
+                DividerBlock,
+                SpacerBlock,
               ],
               admin: {
                 description: 'Build your page layout using content blocks',

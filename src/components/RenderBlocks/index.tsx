@@ -4,7 +4,7 @@ import type { Page } from '@/payload-types'
 
 // Lazy load all block components with loading states
 const HeroBlock = dynamic(
-  () => import('@/components/blocks/Hero').then((mod) => ({ default: mod.HeroBlock })),
+  () => import('@/components/blocks/hero/Hero').then((mod) => ({ default: mod.HeroBlock })),
   {
     loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-100 dark:bg-zinc-900" />,
   },
@@ -12,14 +12,19 @@ const HeroBlock = dynamic(
 
 const ServicesGridBlock = dynamic(
   () =>
-    import('@/components/blocks/ServicesGrid').then((mod) => ({ default: mod.ServicesGridBlock })),
+    import('@/components/blocks/services/ServicesGrid').then((mod) => ({
+      default: mod.ServicesGridBlock,
+    })),
   {
     loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
 )
 
 const TechStackBlock = dynamic(
-  () => import('@/components/blocks/TechStack').then((mod) => ({ default: mod.TechStackBlock })),
+  () =>
+    import('@/components/blocks/services/TechStack').then((mod) => ({
+      default: mod.TechStackBlock,
+    })),
   {
     loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
@@ -27,7 +32,9 @@ const TechStackBlock = dynamic(
 
 const ProcessStepsBlock = dynamic(
   () =>
-    import('@/components/blocks/ProcessSteps').then((mod) => ({ default: mod.ProcessStepsBlock })),
+    import('@/components/blocks/services/ProcessSteps').then((mod) => ({
+      default: mod.ProcessStepsBlock,
+    })),
   {
     loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
@@ -35,7 +42,9 @@ const ProcessStepsBlock = dynamic(
 
 const PricingTableBlock = dynamic(
   () =>
-    import('@/components/blocks/PricingTable').then((mod) => ({ default: mod.PricingTableBlock })),
+    import('@/components/blocks/services/PricingTable').then((mod) => ({
+      default: mod.PricingTableBlock,
+    })),
   {
     loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
@@ -43,7 +52,7 @@ const PricingTableBlock = dynamic(
 
 const ProjectShowcaseBlock = dynamic(
   () =>
-    import('@/components/blocks/ProjectShowcase').then((mod) => ({
+    import('@/components/blocks/portfolio/ProjectShowcase').then((mod) => ({
       default: mod.ProjectShowcaseBlock,
     })),
   {
@@ -52,7 +61,10 @@ const ProjectShowcaseBlock = dynamic(
 )
 
 const CaseStudyBlock = dynamic(
-  () => import('@/components/blocks/CaseStudy').then((mod) => ({ default: mod.CaseStudyBlock })),
+  () =>
+    import('@/components/blocks/portfolio/CaseStudy').then((mod) => ({
+      default: mod.CaseStudyBlock,
+    })),
   {
     loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
@@ -60,7 +72,9 @@ const CaseStudyBlock = dynamic(
 
 const BeforeAfterBlock = dynamic(
   () =>
-    import('@/components/blocks/BeforeAfter').then((mod) => ({ default: mod.BeforeAfterBlock })),
+    import('@/components/blocks/portfolio/BeforeAfter').then((mod) => ({
+      default: mod.BeforeAfterBlock,
+    })),
   {
     loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
@@ -68,7 +82,9 @@ const BeforeAfterBlock = dynamic(
 
 const TestimonialBlock = dynamic(
   () =>
-    import('@/components/blocks/Testimonial').then((mod) => ({ default: mod.TestimonialBlock })),
+    import('@/components/blocks/portfolio/Testimonial').then((mod) => ({
+      default: mod.TestimonialBlock,
+    })),
   {
     loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
@@ -76,7 +92,9 @@ const TestimonialBlock = dynamic(
 
 const FeatureGridBlock = dynamic(
   () =>
-    import('@/components/blocks/FeatureGrid').then((mod) => ({ default: mod.FeatureGridBlock })),
+    import('@/components/blocks/technical/FeatureGrid').then((mod) => ({
+      default: mod.FeatureGridBlock,
+    })),
   {
     loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
@@ -84,7 +102,9 @@ const FeatureGridBlock = dynamic(
 
 const StatsCounterBlock = dynamic(
   () =>
-    import('@/components/blocks/StatsCounter').then((mod) => ({ default: mod.StatsCounterBlock })),
+    import('@/components/blocks/technical/StatsCounter').then((mod) => ({
+      default: mod.StatsCounterBlock,
+    })),
   {
     loading: () => <div className="min-h-[200px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
@@ -92,14 +112,19 @@ const StatsCounterBlock = dynamic(
 
 const FAQAccordionBlock = dynamic(
   () =>
-    import('@/components/blocks/FAQAccordion').then((mod) => ({ default: mod.FAQAccordionBlock })),
+    import('@/components/blocks/technical/FAQAccordion').then((mod) => ({
+      default: mod.FAQAccordionBlock,
+    })),
   {
     loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
 )
 
 const TimelineBlock = dynamic(
-  () => import('@/components/blocks/Timeline').then((mod) => ({ default: mod.TimelineBlock })),
+  () =>
+    import('@/components/blocks/technical/Timeline').then((mod) => ({
+      default: mod.TimelineBlock,
+    })),
   {
     loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
@@ -115,14 +140,17 @@ const CallToActionBlock = dynamic(
 
 const ContactFormBlock = dynamic(
   () =>
-    import('@/components/blocks/ContactForm').then((mod) => ({ default: mod.ContactFormBlock })),
+    import('@/components/blocks/cta/ContactForm').then((mod) => ({
+      default: mod.ContactFormBlock,
+    })),
   {
     loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
 )
 
 const NewsletterBlock = dynamic(
-  () => import('@/components/blocks/Newsletter').then((mod) => ({ default: mod.NewsletterBlock })),
+  () =>
+    import('@/components/blocks/cta/Newsletter').then((mod) => ({ default: mod.NewsletterBlock })),
   {
     loading: () => <div className="min-h-[200px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
@@ -130,35 +158,39 @@ const NewsletterBlock = dynamic(
 
 const SocialProofBlock = dynamic(
   () =>
-    import('@/components/blocks/SocialProof').then((mod) => ({ default: mod.SocialProofBlock })),
+    import('@/components/blocks/cta/SocialProof').then((mod) => ({
+      default: mod.SocialProofBlock,
+    })),
   {
     loading: () => <div className="min-h-[200px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
 )
 
 const ContentBlock = dynamic(
-  () => import('@/components/blocks/Content').then((mod) => ({ default: mod.ContentBlock })),
+  () =>
+    import('@/components/blocks/content/Content').then((mod) => ({ default: mod.ContentBlock })),
   {
     loading: () => <div className="min-h-[200px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
 )
 
 const ContainerBlock = dynamic(
-  () => import('@/components/blocks/Container').then((mod) => ({ default: mod.ContainerBlock })),
+  () =>
+    import('@/components/blocks/layout/Container').then((mod) => ({ default: mod.ContainerBlock })),
   {
     loading: () => <div className="min-h-[200px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
   },
 )
 
 const DividerBlock = dynamic(
-  () => import('@/components/blocks/Divider').then((mod) => ({ default: mod.DividerBlock })),
+  () => import('@/components/blocks/layout/Divider').then((mod) => ({ default: mod.DividerBlock })),
   {
     loading: () => <div className="h-px animate-pulse bg-zinc-200 dark:bg-zinc-800" />,
   },
 )
 
 const SpacerBlock = dynamic(
-  () => import('@/components/blocks/Spacer').then((mod) => ({ default: mod.SpacerBlock })),
+  () => import('@/components/blocks/layout/Spacer').then((mod) => ({ default: mod.SpacerBlock })),
   {
     loading: () => <div className="h-16" />,
   },

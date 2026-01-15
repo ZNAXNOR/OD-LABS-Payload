@@ -9,6 +9,12 @@ import { auditTrail } from './hooks/auditTrail'
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
+// Import block configuration
+import { getBlocksForCollection } from '@/blocks/config/blockAssignments'
+
+// Get service-specific blocks
+const serviceBlocks = getBlocksForCollection('services')
+
 export const ServicesPages: CollectionConfig = {
   slug: 'services',
   typescript: {
@@ -60,6 +66,46 @@ export const ServicesPages: CollectionConfig = {
               name: 'content',
               type: 'richText',
               required: true,
+            },
+          ],
+        },
+        {
+          label: 'Layout',
+          description: 'Build your service page layout with blocks',
+          fields: [
+            {
+              name: 'legacyBlockWarning',
+              type: 'ui',
+              admin: {
+                components: {
+                  Field: {
+                    path: '/components/LegacyBlockWarning',
+                    clientProps: {
+                      collectionType: 'services',
+                    },
+                  },
+                },
+              },
+            },
+            {
+              name: 'hero',
+              type: 'blocks',
+              label: 'Hero Section',
+              blocks: serviceBlocks.hero || [],
+              maxRows: 1,
+              admin: {
+                description: 'Optional hero section for the top of the page',
+              },
+            },
+            {
+              name: 'layout',
+              type: 'blocks',
+              label: 'Page Content',
+              blocks: serviceBlocks.layout,
+              admin: {
+                description:
+                  'Build your service page with blocks. Includes Services, Technical, CTA, and Layout blocks.',
+              },
             },
           ],
         },

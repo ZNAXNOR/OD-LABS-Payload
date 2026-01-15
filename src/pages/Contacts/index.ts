@@ -9,6 +9,12 @@ import { auditTrail } from './hooks/auditTrail'
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
+// Import block configuration
+import { getBlocksForCollection } from '@/blocks/config/blockAssignments'
+
+// Get contact-specific blocks
+const contactBlocks = getBlocksForCollection('contacts')
+
 export const ContactPages: CollectionConfig = {
   slug: 'contacts',
   typescript: {
@@ -58,6 +64,45 @@ export const ContactPages: CollectionConfig = {
             {
               name: 'content',
               type: 'richText',
+            },
+          ],
+        },
+        {
+          label: 'Layout',
+          description: 'Build your contact page layout using content blocks',
+          fields: [
+            {
+              name: 'legacyBlockWarning',
+              type: 'ui',
+              admin: {
+                components: {
+                  Field: {
+                    path: '/components/LegacyBlockWarning',
+                    clientProps: {
+                      collectionType: 'contacts',
+                    },
+                  },
+                },
+              },
+            },
+            {
+              name: 'hero',
+              type: 'blocks',
+              label: 'Hero Section',
+              blocks: contactBlocks.hero || [],
+              maxRows: 1,
+              admin: {
+                description: 'Optional hero section for the contact page',
+              },
+            },
+            {
+              name: 'layout',
+              type: 'blocks',
+              label: 'Content Blocks',
+              blocks: contactBlocks.layout,
+              admin: {
+                description: 'Add contact-focused blocks to build your page layout',
+              },
             },
           ],
         },

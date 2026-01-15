@@ -2,8 +2,7 @@ import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { RenderBlocks } from '@/components/RenderBlocks'
-import { HeroBlock } from '@/components/blocks/HeroBlock'
+import { BlockRenderer } from '@/components/blocks/BlockRenderer'
 import type { Metadata } from 'next'
 
 interface PageProps {
@@ -73,12 +72,12 @@ export default async function Page({ params }: PageProps) {
   return (
     <>
       {/* Render Hero Block if present */}
-      {page.hero && page.hero.length > 0 && page.hero[0] && <HeroBlock block={page.hero[0]} />}
+      {page.hero && page.hero.length > 0 && <BlockRenderer blocks={page.hero} />}
 
       {/* Main content */}
       <main id="main-content">
         {page.layout && page.layout.length > 0 ? (
-          <RenderBlocks blocks={page.layout} />
+          <BlockRenderer blocks={page.layout} />
         ) : (
           <article className="container mx-auto px-4 py-16 max-w-4xl">
             <header className="mb-12">

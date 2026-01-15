@@ -9,6 +9,12 @@ import { auditTrail } from './hooks/auditTrail'
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
+// Import block configuration
+import { getBlocksForCollection } from '@/blocks/config/blockAssignments'
+
+// Get legal-specific blocks
+const legalBlocks = getBlocksForCollection('legal')
+
 export const LegalPages: CollectionConfig = {
   slug: 'legal',
   typescript: {
@@ -60,6 +66,36 @@ export const LegalPages: CollectionConfig = {
               name: 'content',
               type: 'richText',
               required: true,
+            },
+          ],
+        },
+        {
+          label: 'Layout',
+          description: 'Add content blocks to build your legal page layout',
+          fields: [
+            {
+              name: 'legacyBlockWarning',
+              type: 'ui',
+              admin: {
+                components: {
+                  Field: {
+                    path: '/components/LegacyBlockWarning',
+                    clientProps: {
+                      collectionType: 'legal',
+                    },
+                  },
+                },
+              },
+            },
+            {
+              name: 'layout',
+              type: 'blocks',
+              label: 'Content Blocks',
+              blocks: legalBlocks.layout,
+              admin: {
+                description:
+                  'Build your legal page layout using document-focused blocks. Legal pages do not include hero sections.',
+              },
             },
           ],
         },
