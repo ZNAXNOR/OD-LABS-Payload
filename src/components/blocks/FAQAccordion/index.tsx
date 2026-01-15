@@ -136,7 +136,7 @@ export function FAQAccordionBlock({ block }: FAQAccordionBlockProps) {
                 role="region"
                 aria-label={category || 'Frequently asked questions'}
               >
-                {categoryFaqs.map((faq, index) => {
+                {categoryFaqs.map((faq) => {
                   const globalIndex = faqs.indexOf(faq)
                   const isOpen = openItems.includes(globalIndex)
                   const panelId = `faq-panel-${globalIndex}`

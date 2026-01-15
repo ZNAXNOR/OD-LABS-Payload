@@ -110,8 +110,4 @@ export const Code: Block = {
       },
     },
   ],
-  labels: {
-    singular: 'Code Block',
-    plural: 'Code Blocks',
-  },
 }

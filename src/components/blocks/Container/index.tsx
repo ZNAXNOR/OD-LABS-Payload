@@ -1,7 +1,19 @@
 import React from 'react'
-import type { ContainerBlock as ContainerBlockType } from '@/payload-types'
 import { cn } from '@/utilities/ui'
-import RenderBlocks from '@/components/RenderBlocks'
+import { RenderBlocks } from '@/components/RenderBlocks'
+
+interface ContainerBlockType {
+  blockType: 'container'
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | null
+  padding?: 'none' | 'sm' | 'md' | 'lg' | null
+  backgroundColor?: 'none' | 'white' | 'zinc-50' | 'zinc-100' | 'zinc-900' | 'brand-primary' | null
+  backgroundImage?: any
+  paddingTop?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | null
+  paddingBottom?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | null
+  marginTop?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | null
+  marginBottom?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | null
+  blocks?: any[]
+}
 
 interface ContainerBlockProps {
   block: ContainerBlockType

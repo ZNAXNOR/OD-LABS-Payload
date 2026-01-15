@@ -46,10 +46,10 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
 
   // Apply pagination
   const displayedProjects = showLoadMore
-    ? filteredProjects.slice(0, visibleCount)
+    ? filteredProjects.slice(0, visibleCount || undefined)
     : filteredProjects
 
-  const hasMore = showLoadMore && visibleCount < filteredProjects.length
+  const hasMore = showLoadMore && visibleCount !== null && visibleCount < filteredProjects.length
 
   const columnClasses = {
     '2': 'md:grid-cols-2',
@@ -136,7 +136,8 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
         >
           {displayedProjects?.map((project, index) => {
             const imageUrl = getImageUrl(project.image)
-            const hasLink = project.link && (project.link.url || project.link.reference)
+            const linkData = project.link?.link
+            const hasLink = linkData && (linkData.url || linkData.reference)
 
             return (
               <div
@@ -196,14 +197,14 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
 
                   {/* Links */}
                   <div className="flex items-center gap-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-                    {hasLink && project.link?.label && (
+                    {hasLink && linkData?.label && (
                       <Link
                         href={getLinkHref(project.link)}
-                        target={project.link?.newTab ? '_blank' : undefined}
-                        rel={project.link?.newTab ? 'noopener noreferrer' : undefined}
+                        target={linkData?.newTab ? '_blank' : undefined}
+                        rel={linkData?.newTab ? 'noopener noreferrer' : undefined}
                         className="text-brand-primary hover:text-brand-primary/80 font-medium inline-flex items-center text-sm"
                       >
-                        {project.link.label}
+                        {linkData.label}
                         <svg
                           className="w-4 h-4 ml-1"
                           fill="none"
@@ -252,7 +253,7 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
         {hasMore && (
           <div className="text-center mt-12">
             <button
-              onClick={() => setVisibleCount((prev) => prev + itemsPerPage)}
+              onClick={() => setVisibleCount((prev) => (prev || 0) + (itemsPerPage || 0))}
               className="inline-flex items-center px-6 py-3 bg-brand-primary text-white font-medium rounded-lg hover:bg-brand-primary/90 transition-colors"
             >
               Load More Projects

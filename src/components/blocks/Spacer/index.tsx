@@ -1,6 +1,13 @@
 import React from 'react'
-import type { SpacerBlock as SpacerBlockType } from '@/payload-types'
 import { cn } from '@/utilities/ui'
+
+interface SpacerBlockType {
+  blockType: 'spacer'
+  height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | null
+  heightMobile?: number | null
+  heightTablet?: number | null
+  heightDesktop?: number | null
+}
 
 interface SpacerBlockProps {
   block: SpacerBlockType

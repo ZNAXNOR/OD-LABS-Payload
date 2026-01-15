@@ -163,8 +163,4 @@ export const SocialProofBlock: Block = {
       },
     },
   ],
-  labels: {
-    plural: 'Social Proof Blocks',
-    singular: 'Social Proof Block',
-  },
 }

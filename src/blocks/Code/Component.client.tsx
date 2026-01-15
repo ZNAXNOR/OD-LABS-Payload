@@ -40,14 +40,18 @@ export const CodeBlockClient: React.FC<Props> = ({
 
       // Load line numbers plugin
       if (showLineNumbers) {
-        await import('prismjs/plugins/line-numbers/prism-line-numbers')
+        // @ts-ignore - CSS import
         await import('prismjs/plugins/line-numbers/prism-line-numbers.css')
+        // @ts-ignore - Plugin without types
+        await import('prismjs/plugins/line-numbers/prism-line-numbers')
       }
 
       // Load line highlight plugin
       if (highlightLines) {
-        await import('prismjs/plugins/line-highlight/prism-line-highlight')
+        // @ts-ignore - CSS import
         await import('prismjs/plugins/line-highlight/prism-line-highlight.css')
+        // @ts-ignore - Plugin without types
+        await import('prismjs/plugins/line-highlight/prism-line-highlight')
       }
 
       // Load the language if it's not already loaded

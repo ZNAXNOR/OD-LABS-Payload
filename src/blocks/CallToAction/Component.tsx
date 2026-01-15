@@ -6,10 +6,10 @@ import RichText from '@/components/RichText'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 
-const BackgroundPattern: React.FC<{ pattern: string }> = ({ pattern }) => {
-  if (pattern === 'none') return null
+const BackgroundPattern: React.FC<{ pattern: string | null }> = ({ pattern }) => {
+  if (!pattern || pattern === 'none') return null
 
-  const patternClasses = {
+  const patternClasses: Record<string, string> = {
     dots: 'bg-[radial-gradient(circle,_rgba(0,0,0,0.1)_1px,_transparent_1px)] bg-[length:20px_20px] dark:bg-[radial-gradient(circle,_rgba(255,255,255,0.1)_1px,_transparent_1px)]',
     grid: 'bg-[linear-gradient(rgba(0,0,0,0.05)_1px,_transparent_1px),_linear-gradient(90deg,_rgba(0,0,0,0.05)_1px,_transparent_1px)] bg-[length:20px_20px] dark:bg-[linear-gradient(rgba(255,255,255,0.05)_1px,_transparent_1px),_linear-gradient(90deg,_rgba(255,255,255,0.05)_1px,_transparent_1px)]',
     waves:
@@ -29,12 +29,16 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({
   backgroundColor = 'default',
   pattern = 'none',
 }) => {
-  const bgColorClasses = {
+  const bgColorClasses: Record<string, string> = {
     default: 'bg-card border-border border',
     primary: 'bg-brand-primary text-white',
     dark: 'bg-zinc-900 text-white dark:bg-zinc-950',
     light: 'bg-zinc-50 dark:bg-zinc-800',
   }
+
+  const bgClass = backgroundColor
+    ? bgColorClasses[backgroundColor] || bgColorClasses.default
+    : bgColorClasses.default
 
   const renderLinks = () => (
     <div className="flex flex-wrap gap-4">
@@ -58,9 +62,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({
   if (variant === 'centered') {
     return (
       <div className="container">
-        <div
-          className={`relative overflow-hidden rounded-lg p-8 md:p-12 ${bgColorClasses[backgroundColor]}`}
-        >
+        <div className={`relative overflow-hidden rounded-lg p-8 md:p-12 ${bgClass}`}>
           <BackgroundPattern pattern={pattern} />
           <div className="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto">
             {renderContent()}
@@ -73,7 +75,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({
   if (variant === 'split') {
     return (
       <div className="container">
-        <div className={`relative overflow-hidden rounded-lg ${bgColorClasses[backgroundColor]}`}>
+        <div className={`relative overflow-hidden rounded-lg ${bgClass}`}>
           <BackgroundPattern pattern={pattern} />
           <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
             <div className="p-8 md:p-12">{renderContent()}</div>
@@ -109,7 +111,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({
     return (
       <div className="container">
         <div
-          className={`relative overflow-hidden rounded-lg p-8 md:p-12 max-w-2xl mx-auto ${bgColorClasses[backgroundColor]}`}
+          className={`relative overflow-hidden rounded-lg p-8 md:p-12 max-w-2xl mx-auto ${bgClass}`}
         >
           <BackgroundPattern pattern={pattern} />
           <div className="relative z-10">{renderContent()}</div>
@@ -121,7 +123,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({
   // Default fallback
   return (
     <div className="container">
-      <div className={`rounded-lg p-8 ${bgColorClasses[backgroundColor]}`}>
+      <div className={`rounded-lg p-8 ${bgClass}`}>
         <div className="flex flex-col gap-8 md:flex-row md:justify-between md:items-center">
           <div className="max-w-[48rem] flex items-center">
             {richText && <RichText className="mb-0" data={richText} enableGutter={false} />}

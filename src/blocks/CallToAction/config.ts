@@ -148,8 +148,4 @@ export const CallToActionBlock: Block = {
       },
     },
   ],
-  labels: {
-    plural: 'Calls to Action',
-    singular: 'Call to Action',
-  },
 }

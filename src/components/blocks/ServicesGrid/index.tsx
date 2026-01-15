@@ -79,8 +79,9 @@ export const ServicesGridBlock: React.FC<ServicesGridBlockProps> = ({ block, cla
           )}
         >
           {services?.map((service, index) => {
-            const icon = getIcon(service.icon)
-            const hasLink = service.link && (service.link.url || service.link.reference)
+            const icon = getIcon(service.icon || undefined)
+            const linkData = service.link?.link
+            const hasLink = linkData && (linkData.url || linkData.reference)
 
             const cardContent = (
               <>
@@ -123,10 +124,10 @@ export const ServicesGridBlock: React.FC<ServicesGridBlockProps> = ({ block, cla
                 )}
 
                 {/* Link */}
-                {hasLink && service.link?.label && (
+                {hasLink && linkData?.label && (
                   <div className="mt-auto pt-4">
                     <span className="text-brand-primary hover:text-brand-primary/80 font-medium inline-flex items-center">
-                      {service.link.label}
+                      {linkData.label}
                       <svg
                         className="w-4 h-4 ml-2"
                         fill="none"
@@ -156,8 +157,8 @@ export const ServicesGridBlock: React.FC<ServicesGridBlockProps> = ({ block, cla
               <Link
                 key={index}
                 href={getLinkHref(service.link)}
-                target={service.link?.newTab ? '_blank' : undefined}
-                rel={service.link?.newTab ? 'noopener noreferrer' : undefined}
+                target={linkData?.newTab ? '_blank' : undefined}
+                rel={linkData?.newTab ? 'noopener noreferrer' : undefined}
                 className={cardClasses}
               >
                 {cardContent}
@@ -175,8 +176,8 @@ export const ServicesGridBlock: React.FC<ServicesGridBlockProps> = ({ block, cla
           <div className="text-center mt-12">
             <Link
               href={getLinkHref(ctaLink)}
-              target={ctaLink.newTab ? '_blank' : undefined}
-              rel={ctaLink.newTab ? 'noopener noreferrer' : undefined}
+              target={ctaLink.link?.newTab ? '_blank' : undefined}
+              rel={ctaLink.link?.newTab ? 'noopener noreferrer' : undefined}
               className="inline-flex items-center px-6 py-3 bg-brand-primary text-white font-medium rounded-lg hover:bg-brand-primary/90 transition-colors"
             >
               {ctaText}

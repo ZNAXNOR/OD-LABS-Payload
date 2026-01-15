@@ -71,9 +71,9 @@ export const ProcessStepsBlock: Block = {
           admin: {
             description: 'Lucide icon name (used when style is "icons")',
             placeholder: 'CheckCircle',
-            condition: (data, siblingData, { user }) => {
-              // Access parent data through the form context
-              return true // Always show, but note in description when it's used
+            condition: () => {
+              // Always show, but note in description when it's used
+              return true
             },
           },
         },

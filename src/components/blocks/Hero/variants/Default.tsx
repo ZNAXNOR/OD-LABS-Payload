@@ -166,7 +166,7 @@ export const DefaultHero: React.FC<HeroVariantProps> = ({ block, className }) =>
                   <CMSLink
                     key={index}
                     {...action.link}
-                    aria-label={action.link.label || `Action ${index + 1}`}
+                    aria-label={action.link?.link?.label || `Action ${index + 1}`}
                     className={cn(
                       'px-8 py-4 text-lg rounded-full font-medium transition-all duration-200',
                       'hover:scale-105 focus:scale-105',

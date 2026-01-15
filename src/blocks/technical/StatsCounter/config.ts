@@ -114,8 +114,4 @@ export const StatsCounterBlock: Block = {
       },
     },
   ],
-  labels: {
-    singular: 'Stats Counter',
-    plural: 'Stats Counters',
-  },
 }

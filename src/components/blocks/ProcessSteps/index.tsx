@@ -41,7 +41,7 @@ export const ProcessStepsBlock: React.FC<ProcessStepsBlockProps> = ({ block, cla
               style === 'timeline' && 'relative',
             )}
           >
-            {getIcon(step.icon, index)}
+            {getIcon(step.icon || undefined, index)}
             {/* Timeline Connector */}
             {style === 'timeline' && showConnectors && index < (steps?.length || 0) - 1 && (
               <div className="absolute top-full left-1/2 -translate-x-1/2 w-0.5 h-8 bg-brand-primary/30" />
@@ -85,7 +85,7 @@ export const ProcessStepsBlock: React.FC<ProcessStepsBlockProps> = ({ block, cla
                 'bg-brand-primary text-white',
               )}
             >
-              {getIcon(step.icon, index)}
+              {getIcon(step.icon || undefined, index)}
             </div>
 
             {/* Content */}
@@ -129,7 +129,7 @@ export const ProcessStepsBlock: React.FC<ProcessStepsBlockProps> = ({ block, cla
               'bg-brand-primary text-white',
             )}
           >
-            {getIcon(step.icon, index)}
+            {getIcon(step.icon || undefined, index)}
           </div>
 
           {/* Content */}

@@ -114,8 +114,4 @@ export const NewsletterBlock: Block = {
       },
     },
   ],
-  labels: {
-    plural: 'Newsletter Signups',
-    singular: 'Newsletter Signup',
-  },
 }

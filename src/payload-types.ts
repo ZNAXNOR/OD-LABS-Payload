@@ -2456,7 +2456,7 @@ export interface FeatureGridBlock {
   /**
    * Number of columns in the grid layout
    */
-  columns: 2 | 3 | 4 | 6;
+  columns: '2' | '3' | '4' | '6';
   /**
    * Visual style of the feature grid
    */

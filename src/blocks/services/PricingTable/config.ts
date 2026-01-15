@@ -156,7 +156,7 @@ export const PricingTableBlock: Block = {
           admin: {
             description: 'Optional badge text',
             placeholder: 'Most Popular',
-            condition: (data, siblingData) => siblingData?.highlighted === true,
+            condition: (_data, siblingData) => siblingData?.highlighted === true,
           },
         },
         {

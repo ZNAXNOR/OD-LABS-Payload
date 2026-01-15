@@ -13,7 +13,7 @@ interface HeroBlockProps {
 
 export const HeroBlock: React.FC<HeroBlockProps> = ({ block, className }) => {
   const {
-    type = 'default',
+    variant = 'default',
     eyebrow,
     heading,
     subheading,
@@ -103,7 +103,7 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ block, className }) => {
 
   // Determine layout classes
   const getLayoutClasses = () => {
-    switch (type) {
+    switch (variant) {
       case 'centered':
         return 'text-center items-center justify-center'
       case 'minimal':
@@ -149,7 +149,7 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ block, className }) => {
       {/* Background Media */}
       {(media || videoUrl) && (
         <div className="absolute inset-0 z-0" data-parallax={hasParallax}>
-          {type === 'video' && videoUrl ? (
+          {videoUrl ? (
             <div className="relative w-full h-full">
               <video
                 ref={videoRef}
@@ -194,8 +194,8 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ block, className }) => {
         <div
           className={cn(
             'max-w-4xl',
-            type === 'centered' ? 'mx-auto text-center' : '',
-            type === 'minimal' ? 'max-w-2xl' : '',
+            variant === 'centered' ? 'mx-auto text-center' : '',
+            variant === 'minimal' ? 'max-w-2xl' : '',
           )}
         >
           {/* Eyebrow */}
@@ -204,7 +204,7 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ block, className }) => {
               className={cn(
                 'text-sm font-medium mb-4 uppercase tracking-wider',
                 'opacity-90',
-                type === 'minimal' ? 'text-xs' : '',
+                variant === 'minimal' ? 'text-xs' : '',
               )}
             >
               {eyebrow}
@@ -215,7 +215,7 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ block, className }) => {
           <h1
             className={cn(
               'font-bold mb-6 leading-tight',
-              type === 'minimal'
+              variant === 'minimal'
                 ? 'text-3xl md:text-4xl lg:text-5xl'
                 : 'text-4xl md:text-6xl lg:text-7xl xl:text-8xl',
             )}
@@ -228,10 +228,10 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ block, className }) => {
             <p
               className={cn(
                 'mb-8 opacity-90 leading-relaxed',
-                type === 'minimal'
+                variant === 'minimal'
                   ? 'text-lg md:text-xl max-w-xl'
                   : 'text-xl md:text-2xl max-w-3xl',
-                type === 'centered' ? 'mx-auto' : '',
+                variant === 'centered' ? 'mx-auto' : '',
               )}
             >
               {subheading}
@@ -243,7 +243,7 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ block, className }) => {
             <div
               className={cn(
                 'flex gap-4',
-                type === 'centered' ? 'justify-center' : 'justify-start',
+                variant === 'centered' ? 'justify-center' : 'justify-start',
                 'flex-col sm:flex-row',
               )}
             >
@@ -270,7 +270,7 @@ export const HeroBlock: React.FC<HeroBlockProps> = ({ block, className }) => {
       </div>
 
       {/* Loading indicator for video */}
-      {type === 'video' && videoUrl && !isVideoLoaded && (
+      {videoUrl && !isVideoLoaded && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-gray-900">
           <div className="flex items-center space-x-2 text-white">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>

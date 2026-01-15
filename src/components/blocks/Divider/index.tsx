@@ -1,6 +1,16 @@
 import React from 'react'
-import type { DividerBlock as DividerBlockType } from '@/payload-types'
 import { cn } from '@/utilities/ui'
+
+interface DividerBlockType {
+  blockType: 'divider'
+  style?: 'solid' | 'dashed' | 'dotted' | 'gradient' | null
+  thickness?: '1' | '2' | '3' | '4' | null
+  color?: 'zinc-200' | 'zinc-300' | 'zinc-400' | 'zinc-800' | 'brand-primary' | null
+  width?: 'full' | 'half' | 'quarter' | null
+  alignment?: 'left' | 'center' | 'right' | null
+  spacingTop?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | null
+  spacingBottom?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | null
+}
 
 interface DividerBlockProps {
   block: DividerBlockType

@@ -67,7 +67,9 @@ export const BeforeAfterBlock: React.FC<BeforeAfterBlockProps> = ({ block, class
   const handleTouchMove = (e: TouchEvent) => {
     if (!isDragging) return
     const touch = e.touches[0]
-    handleMove(touch.clientX, touch.clientY)
+    if (touch) {
+      handleMove(touch.clientX, touch.clientY)
+    }
   }
 
   useEffect(() => {
@@ -115,7 +117,13 @@ export const BeforeAfterBlock: React.FC<BeforeAfterBlockProps> = ({ block, class
           {/* After Image (Background) */}
           {afterImageUrl && (
             <div className="absolute inset-0">
-              <Image src={afterImageUrl} alt={afterLabel} fill className="object-cover" priority />
+              <Image
+                src={afterImageUrl}
+                alt={afterLabel || 'After image'}
+                fill
+                className="object-cover"
+                priority
+              />
               {/* After Label */}
               <div className="absolute top-4 right-4 bg-brand-primary text-white px-4 py-2 rounded-lg font-medium shadow-lg">
                 {afterLabel}
@@ -136,7 +144,7 @@ export const BeforeAfterBlock: React.FC<BeforeAfterBlockProps> = ({ block, class
             >
               <Image
                 src={beforeImageUrl}
-                alt={beforeLabel}
+                alt={beforeLabel || 'Before image'}
                 fill
                 className="object-cover"
                 priority

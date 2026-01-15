@@ -88,8 +88,4 @@ export const FAQAccordionBlock: Block = {
       },
     },
   ],
-  labels: {
-    singular: 'FAQ Accordion',
-    plural: 'FAQ Accordions',
-  },
 }

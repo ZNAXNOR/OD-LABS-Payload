@@ -23,21 +23,21 @@ export { default as TestimonialBlockDefault } from './Testimonial'
 
 // Technical Blocks
 export { FeatureGridBlock } from './FeatureGrid'
-export { default as FeatureGridBlockDefault } from './FeatureGrid'
+export { FeatureGridBlock as FeatureGridBlockDefault } from './FeatureGrid'
 export { StatsCounterBlock } from './StatsCounter'
-export { default as StatsCounterBlockDefault } from './StatsCounter'
+export { StatsCounterBlock as StatsCounterBlockDefault } from './StatsCounter'
 export { FAQAccordionBlock } from './FAQAccordion'
-export { default as FAQAccordionBlockDefault } from './FAQAccordion'
+export { FAQAccordionBlock as FAQAccordionBlockDefault } from './FAQAccordion'
 export { TimelineBlock } from './Timeline'
-export { default as TimelineBlockDefault } from './Timeline'
+export { TimelineBlock as TimelineBlockDefault } from './Timeline'
 
 // CTA Blocks
 export { ContactFormBlock } from './ContactForm'
-export { default as ContactFormBlockDefault } from './ContactForm'
+export { ContactFormBlock as ContactFormBlockDefault } from './ContactForm'
 export { NewsletterBlock } from './Newsletter'
-export { default as NewsletterBlockDefault } from './Newsletter'
+export { NewsletterBlock as NewsletterBlockDefault } from './Newsletter'
 export { SocialProofBlock } from './SocialProof'
-export { default as SocialProofBlockDefault } from './SocialProof'
+export { SocialProofBlock as SocialProofBlockDefault } from './SocialProof'
 
 // Layout Blocks
 export { ContentBlock } from './Content'

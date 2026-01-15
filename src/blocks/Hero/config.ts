@@ -300,7 +300,7 @@ export const HeroBlock: Block = {
               defaultValue: 40,
               admin: {
                 description: 'Overlay opacity (0-100)',
-                condition: (data, siblingData) => siblingData?.enabled === true,
+                condition: (_data, siblingData) => siblingData?.enabled === true,
               },
             },
             {
@@ -314,7 +314,7 @@ export const HeroBlock: Block = {
               defaultValue: 'black',
               admin: {
                 description: 'Overlay color',
-                condition: (data, siblingData) => siblingData?.enabled === true,
+                condition: (_data, siblingData) => siblingData?.enabled === true,
               },
             },
           ],

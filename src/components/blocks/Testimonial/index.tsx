@@ -112,11 +112,13 @@ export const TestimonialBlock: React.FC<TestimonialBlockProps> = ({ block, class
         )}
 
         {/* Single Layout */}
-        {layout === 'single' && testimonials.length > 0 && (
+        {layout === 'single' && testimonials.length > 0 && testimonials[0] && (
           <div className="max-w-3xl mx-auto">
             <div className="bg-white dark:bg-zinc-900 rounded-lg p-12 shadow-2xl">
               {/* Rating */}
-              <div className="flex justify-center mb-6">{renderStars(testimonials[0].rating)}</div>
+              <div className="flex justify-center mb-6">
+                {renderStars(testimonials[0].rating || undefined)}
+              </div>
 
               {/* Quote */}
               <blockquote className="text-2xl text-zinc-700 dark:text-zinc-300 mb-8 italic text-center">
@@ -128,8 +130,8 @@ export const TestimonialBlock: React.FC<TestimonialBlockProps> = ({ block, class
                 {getImageUrl(testimonials[0].avatar) && (
                   <div className="relative w-16 h-16 rounded-full overflow-hidden">
                     <Image
-                      src={getImageUrl(testimonials[0].avatar)}
-                      alt={testimonials[0].author}
+                      src={getImageUrl(testimonials[0].avatar) || ''}
+                      alt={testimonials[0].author || 'Testimonial author'}
                       fill
                       className="object-cover"
                     />
@@ -162,14 +164,14 @@ export const TestimonialBlock: React.FC<TestimonialBlockProps> = ({ block, class
         )}
 
         {/* Carousel Layout */}
-        {layout === 'carousel' && (
+        {layout === 'carousel' && testimonials[currentIndex] && (
           <div className="max-w-4xl mx-auto">
             <div className="relative">
               {/* Testimonial */}
               <div className="bg-white dark:bg-zinc-900 rounded-lg p-12 shadow-2xl">
                 {/* Rating */}
                 <div className="flex justify-center mb-6">
-                  {renderStars(testimonials[currentIndex].rating)}
+                  {renderStars(testimonials[currentIndex].rating || undefined)}
                 </div>
 
                 {/* Quote */}
@@ -182,8 +184,8 @@ export const TestimonialBlock: React.FC<TestimonialBlockProps> = ({ block, class
                   {getImageUrl(testimonials[currentIndex].avatar) && (
                     <div className="relative w-16 h-16 rounded-full overflow-hidden">
                       <Image
-                        src={getImageUrl(testimonials[currentIndex].avatar)}
-                        alt={testimonials[currentIndex].author}
+                        src={getImageUrl(testimonials[currentIndex].avatar) || ''}
+                        alt={testimonials[currentIndex].author || 'Testimonial author'}
                         fill
                         className="object-cover"
                       />

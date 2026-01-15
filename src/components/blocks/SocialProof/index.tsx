@@ -1,6 +1,33 @@
 import React from 'react'
-import type { SocialProofBlock as SocialProofBlockProps } from '@/payload-types'
 import { Media } from '@/components/Media'
+import type { Media as MediaType } from '@/payload-types'
+
+interface SocialProofBlockProps {
+  blockType: 'socialProof'
+  heading?: string | null
+  type?: 'logos' | 'stats' | 'badges' | 'combined' | null
+  layout?: 'row' | 'grid' | null
+  logos?: Array<{
+    logo: number | MediaType
+    image?: number | MediaType
+    name?: string | null
+    link?: string | null
+    id?: string | null
+  }> | null
+  stats?: Array<{
+    value: string
+    label: string
+    id?: string | null
+  }> | null
+  badges?: Array<{
+    badge: number | MediaType
+    image?: number | MediaType
+    name?: string | null
+    title?: string | null
+    id?: string | null
+  }> | null
+  grayscale?: boolean | null
+}
 
 export const SocialProofBlock: React.FC<SocialProofBlockProps> = ({
   heading,
@@ -48,7 +75,7 @@ export const SocialProofBlock: React.FC<SocialProofBlockProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block"
-                aria-label={logo.name}
+                aria-label={logo.name || undefined}
               >
                 {logoContent}
               </a>
@@ -56,7 +83,7 @@ export const SocialProofBlock: React.FC<SocialProofBlockProps> = ({
           }
 
           return (
-            <div key={index} aria-label={logo.name}>
+            <div key={index} aria-label={logo.name || undefined}>
               {logoContent}
             </div>
           )

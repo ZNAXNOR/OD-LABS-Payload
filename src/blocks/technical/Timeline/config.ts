@@ -123,8 +123,4 @@ export const TimelineBlock: Block = {
       },
     },
   ],
-  labels: {
-    singular: 'Timeline',
-    plural: 'Timelines',
-  },
 }

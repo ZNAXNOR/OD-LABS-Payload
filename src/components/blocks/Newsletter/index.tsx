@@ -1,7 +1,19 @@
 'use client'
 
 import React, { useState } from 'react'
-import type { NewsletterBlock as NewsletterBlockProps } from '@/payload-types'
+
+interface NewsletterBlockProps {
+  blockType: 'newsletter'
+  heading: string
+  description?: string | null
+  placeholder?: string | null
+  buttonText: string
+  style?: 'inline' | 'card' | 'minimal' | null
+  showPrivacyNote?: boolean | null
+  privacyText?: string | null
+  successMessage: string
+  provider?: 'custom' | 'mailchimp' | 'convertkit' | null
+}
 
 export const NewsletterBlock: React.FC<NewsletterBlockProps> = ({
   heading,
@@ -94,7 +106,7 @@ export const NewsletterBlock: React.FC<NewsletterBlockProps> = ({
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder={placeholder}
+                    placeholder={placeholder || undefined}
                     className="flex-1 px-4 py-3 rounded-lg bg-white text-zinc-900 focus:outline-none focus:ring-2 focus:ring-white/50"
                     required
                     disabled={isSubmitting}
@@ -137,7 +149,7 @@ export const NewsletterBlock: React.FC<NewsletterBlockProps> = ({
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={placeholder}
+                  placeholder={placeholder || undefined}
                   className="flex-1 px-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-brand-primary"
                   required
                   disabled={isSubmitting}
@@ -178,7 +190,7 @@ export const NewsletterBlock: React.FC<NewsletterBlockProps> = ({
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder={placeholder}
+              placeholder={placeholder || undefined}
               className="flex-1 px-4 py-2 border-b-2 border-zinc-300 dark:border-zinc-700 bg-transparent focus:outline-none focus:border-brand-primary"
               required
               disabled={isSubmitting}

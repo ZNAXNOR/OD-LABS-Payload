@@ -30,13 +30,13 @@ export const FeatureGridBlock: Block = {
     {
       name: 'columns',
       type: 'select',
-      defaultValue: 3,
+      defaultValue: '3',
       required: true,
       options: [
-        { label: '2 Columns', value: 2 },
-        { label: '3 Columns', value: 3 },
-        { label: '4 Columns', value: 4 },
-        { label: '6 Columns', value: 6 },
+        { label: '2 Columns', value: '2' },
+        { label: '3 Columns', value: '3' },
+        { label: '4 Columns', value: '4' },
+        { label: '6 Columns', value: '6' },
       ],
       admin: {
         description: 'Number of columns in the grid layout',
@@ -118,8 +118,4 @@ export const FeatureGridBlock: Block = {
       },
     },
   ],
-  labels: {
-    singular: 'Feature Grid',
-    plural: 'Feature Grids',
-  },
 }

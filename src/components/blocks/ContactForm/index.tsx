@@ -1,5 +1,19 @@
 import React from 'react'
-import type { ContactFormBlock as ContactFormBlockProps } from '@/payload-types'
+
+interface ContactFormBlockProps {
+  blockType: 'contactForm'
+  heading?: string | null
+  description?: string | null
+  layout?: 'single' | 'split' | null
+  form?: any
+  showContactInfo?: boolean | null
+  contactInfo?: {
+    email?: string | null
+    phone?: string | null
+    address?: string | null
+    hours?: string | null
+  } | null
+}
 
 export const ContactFormBlock: React.FC<ContactFormBlockProps> = ({
   heading,

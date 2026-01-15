@@ -105,9 +105,13 @@ const TimelineBlock = dynamic(
   },
 )
 
-const CallToActionBlock = dynamic(() => import('@/blocks/CallToAction/Component'), {
-  loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
-})
+const CallToActionBlock = dynamic(
+  () =>
+    import('@/blocks/CallToAction/Component').then((mod) => ({ default: mod.CallToActionBlock })),
+  {
+    loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+  },
+)
 
 const ContactFormBlock = dynamic(
   () =>
@@ -172,33 +176,35 @@ export function RenderBlocks({ blocks }: RenderBlocksProps) {
   return (
     <>
       {blocks.map((block, index) => {
-        switch (block.blockType) {
+        const blockType = (block as any).blockType
+
+        switch (blockType) {
           case 'hero':
-            return <HeroBlock key={index} block={block} />
+            return <HeroBlock key={index} block={block as any} />
 
           case 'content':
-            return <ContentBlock key={index} block={block} />
+            return <ContentBlock key={index} block={block as any} />
 
           case 'container':
-            return <ContainerBlock key={index} block={block} />
+            return <ContainerBlock key={index} block={block as any} />
 
           case 'divider':
-            return <DividerBlock key={index} block={block} />
+            return <DividerBlock key={index} block={block as any} />
 
           case 'spacer':
-            return <SpacerBlock key={index} block={block} />
+            return <SpacerBlock key={index} block={block as any} />
 
           case 'cta':
-            return <CallToActionBlock key={index} {...block} />
+            return <CallToActionBlock key={index} {...(block as any)} />
 
           case 'contactForm':
-            return <ContactFormBlock key={index} {...block} />
+            return <ContactFormBlock key={index} {...(block as any)} />
 
           case 'newsletter':
-            return <NewsletterBlock key={index} {...block} />
+            return <NewsletterBlock key={index} {...(block as any)} />
 
           case 'socialProof':
-            return <SocialProofBlock key={index} {...block} />
+            return <SocialProofBlock key={index} {...(block as any)} />
 
           case 'mediaBlock':
             return (
@@ -249,40 +255,40 @@ export function RenderBlocks({ blocks }: RenderBlocksProps) {
             )
 
           case 'servicesGrid':
-            return <ServicesGridBlock key={index} block={block} />
+            return <ServicesGridBlock key={index} block={block as any} />
 
           case 'techStack':
-            return <TechStackBlock key={index} block={block} />
+            return <TechStackBlock key={index} block={block as any} />
 
           case 'processSteps':
-            return <ProcessStepsBlock key={index} block={block} />
+            return <ProcessStepsBlock key={index} block={block as any} />
 
           case 'pricingTable':
-            return <PricingTableBlock key={index} block={block} />
+            return <PricingTableBlock key={index} block={block as any} />
 
           case 'projectShowcase':
-            return <ProjectShowcaseBlock key={index} block={block} />
+            return <ProjectShowcaseBlock key={index} block={block as any} />
 
           case 'caseStudy':
-            return <CaseStudyBlock key={index} block={block} />
+            return <CaseStudyBlock key={index} block={block as any} />
 
           case 'beforeAfter':
-            return <BeforeAfterBlock key={index} block={block} />
+            return <BeforeAfterBlock key={index} block={block as any} />
 
           case 'testimonial':
-            return <TestimonialBlock key={index} block={block} />
+            return <TestimonialBlock key={index} block={block as any} />
 
           case 'featureGrid':
-            return <FeatureGridBlock key={index} block={block} />
+            return <FeatureGridBlock key={index} block={block as any} />
 
           case 'statsCounter':
-            return <StatsCounterBlock key={index} block={block} />
+            return <StatsCounterBlock key={index} block={block as any} />
 
           case 'faqAccordion':
-            return <FAQAccordionBlock key={index} block={block} />
+            return <FAQAccordionBlock key={index} block={block as any} />
 
           case 'timeline':
-            return <TimelineBlock key={index} block={block} />
+            return <TimelineBlock key={index} block={block as any} />
 
           default:
             return null

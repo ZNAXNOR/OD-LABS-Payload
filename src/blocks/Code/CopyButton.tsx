@@ -30,8 +30,8 @@ export function CopyButton({ code }: { code: string }) {
           </>
         ) : (
           <>
-            <CopyIcon className="h-4 w-4 mr-1" />
-            <span className="text-xs">Copy</span>
+            <CopyIcon />
+            <span className="text-xs ml-1">Copy</span>
           </>
         )}
       </Button>

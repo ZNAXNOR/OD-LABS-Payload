@@ -98,8 +98,4 @@ export const ContactFormBlock: Block = {
       ],
     },
   ],
-  labels: {
-    plural: 'Contact Forms',
-    singular: 'Contact Form',
-  },
 }

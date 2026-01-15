@@ -83,7 +83,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({ block, className }) 
 
             const columnContent = (
               <div className="prose prose-zinc dark:prose-invert max-w-none">
-                <RichText content={column.content} />
+                <RichText data={column.content as any} enableGutter={false} enableProse={false} />
               </div>
             )
 

@@ -173,7 +173,7 @@ export const CaseStudyBlock: React.FC<CaseStudyBlockProps> = ({ block, className
             {results.metrics && results.metrics.length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                 {results.metrics.map((metric, index) => {
-                  const icon = getIcon(metric.icon)
+                  const icon = getIcon(metric.icon || undefined)
                   return (
                     <div
                       key={index}

@@ -155,7 +155,7 @@ export type BlockSlug = (typeof blockRegistry)[keyof typeof blockRegistry]
 export * from './types'
 
 // Helper function to get block by slug
-export function getBlockBySlug(slug: BlockSlug): Block | undefined {
+export function getBlockBySlug(_slug: BlockSlug): Block | undefined {
   // This would need to be implemented based on your block imports
   // For now, it's a placeholder for type safety
   return undefined
