@@ -1,6 +1,10 @@
 import React from 'react'
 import type { Page } from '@/payload-types'
 import { HeroBlock } from '@/components/blocks/Hero'
+import { ServicesGridBlock } from '@/components/blocks/ServicesGrid'
+import { TechStackBlock } from '@/components/blocks/TechStack'
+import { ProcessStepsBlock } from '@/components/blocks/ProcessSteps'
+import { PricingTableBlock } from '@/components/blocks/PricingTable'
 
 interface RenderBlocksProps {
   blocks: Page['layout']
@@ -89,6 +93,18 @@ export function RenderBlocks({ blocks }: RenderBlocksProps) {
                 </div>
               </section>
             )
+
+          case 'servicesGrid':
+            return <ServicesGridBlock key={index} block={block} />
+
+          case 'techStack':
+            return <TechStackBlock key={index} block={block} />
+
+          case 'processSteps':
+            return <ProcessStepsBlock key={index} block={block} />
+
+          case 'pricingTable':
+            return <PricingTableBlock key={index} block={block} />
 
           default:
             return null
