@@ -43,26 +43,18 @@ export const ContactPages: CollectionConfig = {
     afterChange: [revalidateContact],
   },
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'slug',
-      type: 'text',
-      unique: true,
-      index: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
+    // Tab structure - must come BEFORE sidebar fields
     {
       type: 'tabs',
       tabs: [
         {
           label: 'Content',
           fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
             {
               name: 'content',
               type: 'richText',
@@ -135,7 +127,8 @@ export const ContactPages: CollectionConfig = {
           ],
         },
         {
-          label: 'Sidebar',
+          label: 'Page Sidebar',
+          description: 'Optional sidebar content for the contact page',
           fields: [
             {
               name: 'sidebar',
@@ -157,7 +150,19 @@ export const ContactPages: CollectionConfig = {
             },
           ],
         },
+        // SEO tab is automatically added by the SEO plugin with tabbedUI: true
       ],
+    },
+    // Sidebar fields - must come AFTER tabs
+    {
+      name: 'slug',
+      type: 'text',
+      unique: true,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        description: 'URL-friendly identifier (auto-generated from title)',
+      },
     },
     // Audit trail fields (hidden from admin)
     {

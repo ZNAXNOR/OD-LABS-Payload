@@ -301,26 +301,18 @@ export interface FolderInterface {
  */
 export interface Page {
   id: number;
+  /**
+   * Add an optional hero section at the top of your page. Leave empty for no hero.
+   */
+  hero?: HeroBlock[] | null;
+  /**
+   * The main title of the page
+   */
   title: string;
-  slug?: string | null;
   /**
-   * Select a parent page to create a hierarchical structure
+   * Build your page layout using content blocks
    */
-  parent?: (number | null) | Page;
-  /**
-   * Automatically generated breadcrumb trail based on page hierarchy
-   */
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Page;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  layout?:
-    | (HeroBlock | ContentBlock | CallToActionBlock | MediaBlock | ArchiveBlock | BannerBlock | CodeBlock)[]
-    | null;
+  layout?: (ContentBlock | CallToActionBlock | MediaBlock | ArchiveBlock | BannerBlock | CodeBlock)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -356,7 +348,7 @@ export interface Page {
     canonical?: string | null;
     structured?: {
       /**
-       * Select the most appropriate schema type for this content
+       * Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).
        */
       type?:
         | (
@@ -409,6 +401,25 @@ export interface Page {
       };
     };
   };
+  /**
+   * URL-friendly identifier (auto-generated from title)
+   */
+  slug?: string | null;
+  /**
+   * Select a parent page to create a hierarchical structure
+   */
+  parent?: (number | null) | Page;
+  /**
+   * Automatically generated breadcrumb trail based on page hierarchy
+   */
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Page;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -592,7 +603,7 @@ export interface BlogPage {
     canonical?: string | null;
     structured?: {
       /**
-       * Select the most appropriate schema type for this content
+       * Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).
        */
       type?:
         | (
@@ -722,7 +733,7 @@ export interface ServicePage {
     canonical?: string | null;
     structured?: {
       /**
-       * Select the most appropriate schema type for this content
+       * Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).
        */
       type?:
         | (
@@ -848,7 +859,7 @@ export interface LegalPage {
     canonical?: string | null;
     structured?: {
       /**
-       * Select the most appropriate schema type for this content
+       * Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).
        */
       type?:
         | (
@@ -998,7 +1009,7 @@ export interface ContactPage {
     canonical?: string | null;
     structured?: {
       /**
-       * Select the most appropriate schema type for this content
+       * Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).
        */
       type?:
         | (
@@ -1848,21 +1859,15 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  parent?: T;
-  breadcrumbs?:
-    | T
-    | {
-        doc?: T;
-        url?: T;
-        label?: T;
-        id?: T;
-      };
-  layout?:
+  hero?:
     | T
     | {
         hero?: T | HeroBlockSelect<T>;
+      };
+  title?: T;
+  layout?:
+    | T
+    | {
         content?: T | ContentBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1911,6 +1916,16 @@ export interface PagesSelect<T extends boolean = true> {
                     appId?: T;
                   };
             };
+      };
+  slug?: T;
+  parent?: T;
+  breadcrumbs?:
+    | T
+    | {
+        doc?: T;
+        url?: T;
+        label?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -2828,7 +2843,7 @@ export interface Header {
     canonical?: string | null;
     structured?: {
       /**
-       * Select the most appropriate schema type for this content
+       * Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).
        */
       type?:
         | (
@@ -2963,7 +2978,7 @@ export interface Footer {
     canonical?: string | null;
     structured?: {
       /**
-       * Select the most appropriate schema type for this content
+       * Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).
        */
       type?:
         | (

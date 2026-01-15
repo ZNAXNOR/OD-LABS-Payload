@@ -1,6 +1,5 @@
 import React from 'react'
 import type { Page } from '@/payload-types'
-import { HeroBlock } from '@/components/blocks'
 
 interface RenderBlocksProps {
   blocks: Page['layout']
@@ -15,9 +14,6 @@ export function RenderBlocks({ blocks }: RenderBlocksProps) {
     <>
       {blocks.map((block, index) => {
         switch (block.blockType) {
-          case 'hero':
-            return <HeroBlock key={index} block={block} />
-
           case 'content':
             return (
               <section key={index} className="py-16">
@@ -61,6 +57,30 @@ export function RenderBlocks({ blocks }: RenderBlocksProps) {
                   <div className="max-w-6xl mx-auto">
                     {/* Archive block would go here */}
                     <p className="text-sm text-muted-foreground mb-4">Archive Block</p>
+                  </div>
+                </div>
+              </section>
+            )
+
+          case 'banner':
+            return (
+              <section key={index} className="py-8 bg-accent">
+                <div className="container mx-auto px-4">
+                  <div className="max-w-6xl mx-auto">
+                    {/* Banner block would go here */}
+                    <p className="text-sm text-muted-foreground mb-4">Banner Block</p>
+                  </div>
+                </div>
+              </section>
+            )
+
+          case 'code':
+            return (
+              <section key={index} className="py-16">
+                <div className="container mx-auto px-4">
+                  <div className="max-w-4xl mx-auto">
+                    {/* Code block would go here */}
+                    <p className="text-sm text-muted-foreground mb-4">Code Block</p>
                   </div>
                 </div>
               </section>

@@ -43,11 +43,37 @@ export const BlogPages: CollectionConfig = {
     afterChange: [revalidateBlog],
   },
   fields: [
+    // Tab structure - must come BEFORE sidebar fields
     {
-      name: 'title',
-      type: 'text',
-      required: true,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          description: 'Main blog content',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'excerpt',
+              type: 'textarea',
+              admin: {
+                description: 'Brief description of the blog post for previews and SEO',
+              },
+            },
+            {
+              name: 'content',
+              type: 'richText',
+              required: true,
+            },
+          ],
+        },
+        // SEO tab is automatically added by the SEO plugin with tabbedUI: true
+      ],
     },
+    // Sidebar fields - must come AFTER tabs
     {
       name: 'slug',
       type: 'text',
@@ -55,19 +81,8 @@ export const BlogPages: CollectionConfig = {
       index: true,
       admin: {
         position: 'sidebar',
+        description: 'URL-friendly identifier (auto-generated from title)',
       },
-    },
-    {
-      name: 'excerpt',
-      type: 'textarea',
-      admin: {
-        description: 'Brief description of the blog post for previews and SEO',
-      },
-    },
-    {
-      name: 'content',
-      type: 'richText',
-      required: true,
     },
     {
       name: 'publishedDate',

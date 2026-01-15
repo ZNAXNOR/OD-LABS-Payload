@@ -169,7 +169,36 @@ export const plugins: Plugin[] = [
               { label: 'Custom', value: 'custom' },
             ],
             admin: {
-              description: 'Select the most appropriate schema type for this content',
+              description:
+                'Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).',
+            },
+            hooks: {
+              beforeChange: [
+                ({ value, operation, req }) => {
+                  // Only set default on create if no value is provided
+                  if (operation === 'create' && !value) {
+                    // Extract collection from the request URL path
+                    // The URL pattern is typically /api/{collection-slug}/...
+                    const urlPath = req?.url || ''
+                    const pathMatch = urlPath.match(/\/api\/([^/?]+)/)
+                    const collection = pathMatch ? pathMatch[1] : ''
+
+                    // Map collections to their appropriate schema types
+                    const schemaMap: Record<string, string> = {
+                      blogs: 'BlogPosting',
+                      legal: 'WebPage',
+                      services: 'Service',
+                      contacts: 'ContactPage',
+                    }
+
+                    // Return mapped value if collection exists in map, otherwise return original value
+                    if (collection && schemaMap[collection]) {
+                      return schemaMap[collection]
+                    }
+                  }
+                  return value
+                },
+              ],
             },
           },
           {

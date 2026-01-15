@@ -12,11 +12,13 @@ import { plugins } from './plugins'
 // Collections
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Pages } from './collections/Pages'
-import { BlogPages } from './collections/Blogs'
-import { ServicesPages } from './collections/Services'
-import { LegalPages } from './collections/Legal'
-import { ContactPages } from './collections/Contacts'
+
+// Pages
+import { Pages } from './pages/Pages'
+import { BlogPages } from './pages/Blogs'
+import { ServicesPages } from './pages/Services'
+import { LegalPages } from './pages/Legal'
+import { ContactPages } from './pages/Contacts'
 
 // Globals
 import { Header } from './globals/Header/config'

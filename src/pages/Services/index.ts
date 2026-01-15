@@ -43,11 +43,30 @@ export const ServicesPages: CollectionConfig = {
     afterChange: [revalidateService],
   },
   fields: [
+    // Tab structure - must come BEFORE sidebar fields
     {
-      name: 'title',
-      type: 'text',
-      required: true,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          description: 'Service description and details',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'content',
+              type: 'richText',
+              required: true,
+            },
+          ],
+        },
+        // SEO tab is automatically added by the SEO plugin with tabbedUI: true
+      ],
     },
+    // Sidebar fields - must come AFTER tabs
     {
       name: 'slug',
       type: 'text',
@@ -55,6 +74,7 @@ export const ServicesPages: CollectionConfig = {
       index: true,
       admin: {
         position: 'sidebar',
+        description: 'URL-friendly identifier (auto-generated from title)',
       },
     },
     {
@@ -119,11 +139,6 @@ export const ServicesPages: CollectionConfig = {
           defaultValue: 'custom',
         },
       ],
-    },
-    {
-      name: 'content',
-      type: 'richText',
-      required: true,
     },
     // Audit trail fields (hidden from admin)
     {

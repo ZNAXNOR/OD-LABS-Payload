@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 // Import blocks
-import { HeroBlock } from '@/blocks/enhanced/Hero'
+import { HeroBlock } from '@/blocks/Hero/config'
 import { ContentBlock } from '@/blocks/Content/config'
 import { CallToActionBlock } from '@/blocks/CallToAction/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
@@ -59,11 +59,54 @@ export const Pages: CollectionConfig = {
     afterChange: [revalidatePage],
   },
   fields: [
+    // Tab structure - must come BEFORE sidebar fields
     {
-      name: 'title',
-      type: 'text',
-      required: true,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Hero',
+          description: 'Optional hero section for the page',
+          fields: [
+            {
+              name: 'hero',
+              type: 'blocks',
+              label: 'Hero Block',
+              blocks: [HeroBlock],
+              maxRows: 1,
+              admin: {
+                description:
+                  'Add an optional hero section at the top of your page. Leave empty for no hero.',
+              },
+            },
+          ],
+        },
+        {
+          label: 'Content',
+          description: 'Main page content and layout blocks',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+              admin: {
+                description: 'The main title of the page',
+              },
+            },
+            {
+              name: 'layout',
+              type: 'blocks',
+              label: 'Page Layout',
+              blocks: [ContentBlock, CallToActionBlock, MediaBlock, ArchiveBlock, Banner, Code],
+              admin: {
+                description: 'Build your page layout using content blocks',
+              },
+            },
+          ],
+        },
+        // SEO tab is automatically added by the SEO plugin with tabbedUI: true
+      ],
     },
+    // Sidebar fields - must come AFTER tabs
     {
       name: 'slug',
       type: 'text',
@@ -71,6 +114,7 @@ export const Pages: CollectionConfig = {
       index: true,
       admin: {
         position: 'sidebar',
+        description: 'URL-friendly identifier (auto-generated from title)',
       },
     },
     {
@@ -107,6 +151,7 @@ export const Pages: CollectionConfig = {
       type: 'array',
       label: 'Breadcrumbs',
       admin: {
+        position: 'sidebar',
         readOnly: true,
         description: 'Automatically generated breadcrumb trail based on page hierarchy',
         components: {
@@ -137,11 +182,6 @@ export const Pages: CollectionConfig = {
           },
         },
       ],
-    },
-    {
-      name: 'layout',
-      type: 'blocks',
-      blocks: [HeroBlock, ContentBlock, CallToActionBlock, MediaBlock, ArchiveBlock, Banner, Code],
     },
   ],
 }
