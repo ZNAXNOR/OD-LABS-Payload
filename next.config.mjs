@@ -38,8 +38,6 @@ const nextConfig = {
   redirects,
   // Enable compression
   compress: true,
-  // Optimize production builds
-  swcMinify: true,
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', '@/components/ui'],

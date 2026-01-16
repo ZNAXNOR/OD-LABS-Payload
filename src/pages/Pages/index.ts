@@ -214,7 +214,7 @@ export const Pages: CollectionConfig = {
         readOnly: true,
         description: 'Automatically generated breadcrumb trail based on page hierarchy',
         components: {
-          Cell: '/src/components/BreadcrumbCell',
+          Cell: '@/components/BreadcrumbCell',
         },
       },
       fields: [

@@ -411,7 +411,7 @@ export interface SocialProofBlock {
 
 export interface ContainerBlock {
   blockType: 'container'
-  blocks: Block[]
+  content?: any // RichText content
   maxWidth: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
   backgroundColor?: 'none' | 'white' | 'zinc-50' | 'zinc-100' | 'zinc-900' | 'brand-primary'
   backgroundImage?: string | Media

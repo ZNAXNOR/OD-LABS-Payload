@@ -136,7 +136,7 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
         >
           {displayedProjects?.map((project, index) => {
             const imageUrl = getImageUrl(project.image)
-            const linkData = project.link?.link
+            const linkData = project.projectLink?.link
             const hasLink = linkData && (linkData.url || linkData.reference)
 
             return (
@@ -199,7 +199,7 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
                   <div className="flex items-center gap-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
                     {hasLink && linkData?.label && (
                       <Link
-                        href={getLinkHref(project.link)}
+                        href={getLinkHref(project.projectLink)}
                         target={linkData?.newTab ? '_blank' : undefined}
                         rel={linkData?.newTab ? 'noopener noreferrer' : undefined}
                         className="text-brand-primary hover:text-brand-primary/80 font-medium inline-flex items-center text-sm"

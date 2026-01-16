@@ -1,9 +1,10 @@
 import React from 'react'
 import { cn } from '@/utilities/ui'
-import { RenderBlocks } from '@/components/RenderBlocks'
+import RichText from '@/components/RichText'
 
 interface ContainerBlockType {
   blockType: 'container'
+  content?: any // RichText content
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | null
   padding?: 'none' | 'sm' | 'md' | 'lg' | null
   backgroundColor?: 'none' | 'white' | 'zinc-50' | 'zinc-100' | 'zinc-900' | 'brand-primary' | null
@@ -12,7 +13,6 @@ interface ContainerBlockType {
   paddingBottom?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | null
   marginTop?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | null
   marginBottom?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | null
-  blocks?: any[]
 }
 
 interface ContainerBlockProps {
@@ -22,7 +22,7 @@ interface ContainerBlockProps {
 
 export const ContainerBlock: React.FC<ContainerBlockProps> = ({ block, className }) => {
   const {
-    blocks,
+    content,
     maxWidth = 'xl',
     backgroundColor = 'none',
     backgroundImage,
@@ -130,7 +130,7 @@ export const ContainerBlock: React.FC<ContainerBlockProps> = ({ block, className
           maxWidthClasses[maxWidth as keyof typeof maxWidthClasses],
         )}
       >
-        {blocks && blocks.length > 0 && <RenderBlocks blocks={blocks} />}
+        {content && <RichText content={content} />}
       </div>
     </section>
   )

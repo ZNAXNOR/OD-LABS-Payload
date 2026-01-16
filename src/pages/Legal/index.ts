@@ -79,7 +79,7 @@ export const LegalPages: CollectionConfig = {
               admin: {
                 components: {
                   Field: {
-                    path: '/components/LegacyBlockWarning',
+                    path: '@/components/LegacyBlockWarning',
                     clientProps: {
                       collectionType: 'legal',
                     },

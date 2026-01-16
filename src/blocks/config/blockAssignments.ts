@@ -220,8 +220,12 @@ export type PageCollectionType = keyof typeof BLOCK_ASSIGNMENTS
 /**
  * Helper function to get blocks for a specific collection
  *
+ * This function includes runtime validation to ensure all returned blocks are properly defined.
+ * If any undefined or null blocks are found, it throws a descriptive error with context.
+ *
  * @param collection - The page collection type
  * @returns Object containing hero and layout blocks for the collection
+ * @throws {Error} If any block in the configuration is undefined or null
  *
  * @example
  * ```typescript
@@ -231,6 +235,41 @@ export type PageCollectionType = keyof typeof BLOCK_ASSIGNMENTS
  */
 export function getBlocksForCollection(collection: PageCollectionType): PageCollectionBlocks {
   const blocks = BLOCK_ASSIGNMENTS[collection]
+
+  // Validate hero blocks if they exist
+  if (blocks.hero && blocks.hero.length > 0) {
+    blocks.hero.forEach((block, index) => {
+      if (!block) {
+        throw new Error(
+          `Invalid hero block at index ${index} for collection "${collection}": Block is undefined or null. ` +
+            `Please check the block imports in blockAssignments.ts.`,
+        )
+      }
+      if (!block.slug) {
+        throw new Error(
+          `Invalid hero block at index ${index} for collection "${collection}": Block is missing required 'slug' property. ` +
+            `Block type: ${typeof block}`,
+        )
+      }
+    })
+  }
+
+  // Validate layout blocks
+  blocks.layout.forEach((block, index) => {
+    if (!block) {
+      throw new Error(
+        `Invalid layout block at index ${index} for collection "${collection}": Block is undefined or null. ` +
+          `Please check the block imports in blockAssignments.ts.`,
+      )
+    }
+    if (!block.slug) {
+      throw new Error(
+        `Invalid layout block at index ${index} for collection "${collection}": Block is missing required 'slug' property. ` +
+          `Block type: ${typeof block}`,
+      )
+    }
+  })
+
   return {
     hero: blocks.hero ? [...blocks.hero] : undefined,
     layout: [...blocks.layout],

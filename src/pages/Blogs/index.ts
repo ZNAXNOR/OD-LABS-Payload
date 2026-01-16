@@ -86,7 +86,7 @@ export const BlogPages: CollectionConfig = {
               admin: {
                 components: {
                   Field: {
-                    path: '/components/LegacyBlockWarning',
+                    path: '@/components/LegacyBlockWarning',
                     clientProps: {
                       collectionType: 'blogs',
                     },

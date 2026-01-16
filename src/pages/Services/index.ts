@@ -79,7 +79,7 @@ export const ServicesPages: CollectionConfig = {
               admin: {
                 components: {
                   Field: {
-                    path: '/components/LegacyBlockWarning',
+                    path: '@/components/LegacyBlockWarning',
                     clientProps: {
                       collectionType: 'services',
                     },
@@ -91,7 +91,7 @@ export const ServicesPages: CollectionConfig = {
               name: 'hero',
               type: 'blocks',
               label: 'Hero Section',
-              blocks: serviceBlocks.hero || [],
+              blocks: serviceBlocks.hero ?? [],
               maxRows: 1,
               admin: {
                 description: 'Optional hero section for the top of the page',

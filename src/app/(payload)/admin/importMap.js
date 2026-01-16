@@ -29,7 +29,8 @@ import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c08
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
-import { default as default_80344c3bbe36fd717cc750cc97993cfe } from '../../../../src/components/BreadcrumbCell'
+import { default as default_de9f465c1f1dfc14a89b859414d49646 } from '@/components/BreadcrumbCell'
+import { default as default_881dd5ac32f0bb8b063b7352c68b3ee6 } from '@/components/LegacyBlockWarning'
 import { FolderTypeField as FolderTypeField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { NavItemRowLabel as NavItemRowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
 import { RowLabel as RowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
@@ -70,7 +71,8 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
-  "/src/components/BreadcrumbCell#default": default_80344c3bbe36fd717cc750cc97993cfe,
+  "@/components/BreadcrumbCell#default": default_de9f465c1f1dfc14a89b859414d49646,
+  "@/components/LegacyBlockWarning#default": default_881dd5ac32f0bb8b063b7352c68b3ee6,
   "@payloadcms/ui#FolderTypeField": FolderTypeField_3817bf644402e67bfe6577f60ef982de,
   "@/globals/Header/RowLabel#NavItemRowLabel": NavItemRowLabel_17c6ef4bfe47bfa29d923fb5718170b7,
   "@/globals/Header/RowLabel#RowLabel": RowLabel_17c6ef4bfe47bfa29d923fb5718170b7,

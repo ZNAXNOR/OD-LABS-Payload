@@ -77,7 +77,7 @@ export const ContactPages: CollectionConfig = {
               admin: {
                 components: {
                   Field: {
-                    path: '/components/LegacyBlockWarning',
+                    path: '@/components/LegacyBlockWarning',
                     clientProps: {
                       collectionType: 'contacts',
                     },

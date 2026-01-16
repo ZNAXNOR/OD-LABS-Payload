@@ -1,5 +1,27 @@
 import type { Block } from 'payload'
 
+/**
+ * ContainerBlock - A styling wrapper block for layout control
+ *
+ * This block provides a container with configurable styling options including:
+ * - Maximum width constraints
+ * - Background colors and images
+ * - Padding and margin controls
+ *
+ * Note: This block previously had a nested blocks field which caused circular
+ * reference issues and "Cannot read properties of undefined (reading 'map')" errors.
+ * The empty blocks array (blocks: []) caused Payload's block processing system to fail
+ * when attempting to validate and map over the nested blocks.
+ *
+ * It now uses a simple richText content field instead. For complex layouts with multiple
+ * blocks, use multiple blocks in sequence at the collection level rather than nesting
+ * them inside this container.
+ *
+ * Example usage:
+ * - Add a ContainerBlock for styling (background, padding, etc.)
+ * - Add content blocks after it (ContentBlock, MediaBlock, etc.)
+ * - Add another ContainerBlock to change styling for the next section
+ */
 export const ContainerBlock: Block = {
   slug: 'container',
   interfaceName: 'ContainerBlock',
@@ -12,12 +34,10 @@ export const ContainerBlock: Block = {
   },
   fields: [
     {
-      name: 'blocks',
-      type: 'blocks',
-      blocks: [], // Will be populated with available blocks
-      required: true,
+      name: 'content',
+      type: 'richText',
       admin: {
-        description: 'Add blocks to nest inside this container',
+        description: 'Content to display inside the container',
       },
     },
     {

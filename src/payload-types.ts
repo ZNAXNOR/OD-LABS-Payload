@@ -1321,9 +1321,23 @@ export interface FAQAccordionBlock {
  */
 export interface ContainerBlock {
   /**
-   * Add blocks to nest inside this container
+   * Content to display inside the container
    */
-  blocks: unknown[];
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   /**
    * Maximum width of the container
    */
@@ -2721,7 +2735,7 @@ export interface ProjectShowcaseBlock {
         /**
          * Optional link to project details page
          */
-        link: {
+        projectLink: {
           link: {
             type?: ('reference' | 'custom') | null;
             newTab?: boolean | null;
@@ -3762,7 +3776,7 @@ export interface ProjectShowcaseBlockSelect<T extends boolean = true> {
               id?: T;
             };
         category?: T;
-        link?:
+        projectLink?:
           | T
           | {
               link?:
@@ -4072,7 +4086,7 @@ export interface SocialProofBlockSelect<T extends boolean = true> {
  * via the `definition` "ContainerBlock_select".
  */
 export interface ContainerBlockSelect<T extends boolean = true> {
-  blocks?: T | {};
+  content?: T;
   maxWidth?: T;
   backgroundColor?: T;
   backgroundImage?: T;
