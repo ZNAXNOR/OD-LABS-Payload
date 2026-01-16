@@ -1,9 +1,13 @@
 import type { CollectionConfig } from 'payload'
 
 // Import hooks
-import { revalidateContact } from './hooks/revalidateContact'
 import { generateSlug } from './hooks/generateSlug'
-import { auditTrail } from './hooks/auditTrail'
+import { createAuditTrailHook } from '@/pages/shared/hooks/createAuditTrailHook'
+import { createRevalidateHook } from '@/pages/shared/hooks/createRevalidateHook'
+import { validateSlugFormat } from '@/utilities/slugGeneration'
+
+// Import shared fields
+import { auditFields } from '@/pages/shared/fields/auditFields'
 
 // Import access control functions
 import { authenticated } from '@/access/authenticated'
@@ -35,6 +39,7 @@ export const ContactPages: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
+  timestamps: true, // Enable Payload's built-in timestamp management
   versions: {
     drafts: {
       autosave: true,
@@ -45,8 +50,8 @@ export const ContactPages: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [generateSlug],
-    beforeChange: [auditTrail],
-    afterChange: [revalidateContact],
+    beforeChange: [createAuditTrailHook()],
+    afterChange: [createRevalidateHook('contacts')],
   },
   fields: [
     // Tab structure - must come BEFORE sidebar fields
@@ -60,6 +65,23 @@ export const ContactPages: CollectionConfig = {
               name: 'title',
               type: 'text',
               required: true,
+              minLength: 1,
+              maxLength: 200,
+              admin: {
+                description: 'The main title of the contact page (1-200 characters)',
+              },
+              validate: (value: unknown) => {
+                if (!value || typeof value !== 'string') {
+                  return 'Title is required'
+                }
+                if (value.trim().length === 0) {
+                  return 'Title cannot be empty or only whitespace'
+                }
+                if (value.length > 200) {
+                  return 'Title must be 200 characters or less'
+                }
+                return true
+              },
             },
             {
               name: 'content',
@@ -128,7 +150,16 @@ export const ContactPages: CollectionConfig = {
                     { label: 'Custom', value: 'custom' },
                   ],
                   required: true,
-                  admin: { width: '50%' },
+                  admin: {
+                    width: '50%',
+                    description: 'Select the purpose of this contact page',
+                  },
+                  validate: (value: unknown) => {
+                    if (!value) {
+                      return 'Purpose is required - please select the type of contact page'
+                    }
+                    return true
+                  },
                 },
                 {
                   name: 'form',
@@ -204,27 +235,52 @@ export const ContactPages: CollectionConfig = {
       type: 'text',
       unique: true,
       index: true,
+      maxLength: 100,
       admin: {
         position: 'sidebar',
-        description: 'URL-friendly identifier (auto-generated from title)',
+        description: 'URL-friendly identifier (auto-generated from title, max 100 characters)',
+      },
+      validate: (value: unknown) => {
+        if (!value) return true // Let required handle empty values
+
+        if (typeof value !== 'string') {
+          return 'Slug must be a string'
+        }
+
+        if (value.length > 100) {
+          return 'Slug must be 100 characters or less'
+        }
+
+        const validation = validateSlugFormat(value)
+        if (!validation.isValid) {
+          return validation.errors.join(', ')
+        }
+
+        return true
       },
     },
-    // Audit trail fields (hidden from admin)
     {
-      name: 'createdBy',
+      name: 'author',
       type: 'relationship',
       relationTo: 'users',
       admin: {
-        hidden: true,
+        position: 'sidebar',
+        description: 'Author of this contact page (defaults to current user)',
+      },
+      hooks: {
+        beforeChange: [
+          ({ value, req, operation }) => {
+            // Auto-populate on create if not provided
+            if (operation === 'create' && !value && req.user) {
+              req.payload.logger.info(`Auto-populated author: ${req.user.id}`)
+              return req.user.id
+            }
+            return value
+          },
+        ],
       },
     },
-    {
-      name: 'updatedBy',
-      type: 'relationship',
-      relationTo: 'users',
-      admin: {
-        hidden: true,
-      },
-    },
+    // Audit trail fields with proper access control
+    ...auditFields,
   ],
 }

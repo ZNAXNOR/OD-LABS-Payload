@@ -142,14 +142,29 @@ export async function isSlugUnique(
 
 /**
  * Generate a unique slug by appending numbers if necessary
+ *
+ * This function handles race conditions by:
+ * 1. Checking if the base slug is unique
+ * 2. Trying numbered suffixes (slug-1, slug-2, etc.) up to maxRetries
+ * 3. Falling back to a timestamp suffix if all retries fail
+ *
+ * The database unique constraint serves as the final safeguard against duplicates.
+ *
+ * @param baseSlug - The base slug to make unique
+ * @param collection - The collection to check uniqueness against
+ * @param req - The Payload request object (maintains transaction context)
+ * @param excludeId - Optional document ID to exclude from uniqueness check (for updates)
+ * @param maxRetries - Maximum number of numbered suffixes to try (default: 10)
+ * @returns A unique slug
  */
 export async function generateUniqueSlug(
   baseSlug: string,
   collection: string,
   req: PayloadRequest,
   excludeId?: string | number,
+  maxRetries = 10,
 ): Promise<string> {
-  const slug = baseSlug
+  let slug = baseSlug
   let counter = 1
 
   // Check if base slug is unique
@@ -158,19 +173,27 @@ export async function generateUniqueSlug(
   }
 
   // Try appending numbers until we find a unique slug
-  while (counter <= 100) {
-    // Prevent infinite loops
+  while (counter <= maxRetries) {
     const candidateSlug = `${baseSlug}-${counter}`
 
     if (await isSlugUnique(candidateSlug, collection, req, excludeId)) {
+      req.payload.logger.info(`Generated unique slug "${candidateSlug}" after ${counter} attempts`)
       return candidateSlug
     }
 
     counter++
   }
 
-  // If we can't find a unique slug after 100 attempts, throw an error
-  throw new Error(`Unable to generate unique slug for "${baseSlug}" after 100 attempts`)
+  // If we can't find a unique slug after maxRetries attempts,
+  // append a timestamp to ensure uniqueness
+  const timestamp = Date.now().toString(36) // Base36 for shorter string
+  const timestampSlug = `${baseSlug}-${timestamp}`
+
+  req.payload.logger.warn(
+    `Could not find unique slug after ${maxRetries} attempts, using timestamp: ${timestampSlug}`,
+  )
+
+  return timestampSlug
 }
 
 /**

@@ -40,7 +40,14 @@ import { SpacerBlock } from '@/blocks/layout/Spacer/config'
 // Import hooks
 import { revalidatePage } from './hooks/revalidatePage'
 import { populateBreadcrumbs } from './hooks/populateBreadcrumbs'
-import { createSlugGenerationHook } from '@/utilities/slugGeneration'
+import { createSlugGenerationHook, validateSlugFormat } from '@/utilities/slugGeneration'
+import { createAuditTrailHook } from '@/pages/shared/hooks/createAuditTrailHook'
+
+// Import shared fields
+import { auditFields } from '@/pages/shared/fields/auditFields'
+
+// Import validation
+import { createCircularReferenceValidator } from '@/pages/shared/validation/circularReference'
 
 // Import access control functions
 import { authenticated } from '@/access/authenticated'
@@ -66,6 +73,7 @@ export const Pages: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
+  timestamps: true, // Enable Payload's built-in timestamp management
   versions: {
     drafts: {
       autosave: true,
@@ -83,7 +91,7 @@ export const Pages: CollectionConfig = {
         reservedSlugs: ['home', 'index'],
       }),
     ],
-    beforeChange: [populateBreadcrumbs],
+    beforeChange: [createAuditTrailHook(), populateBreadcrumbs],
     afterChange: [revalidatePage],
   },
   fields: [
@@ -116,8 +124,22 @@ export const Pages: CollectionConfig = {
               name: 'title',
               type: 'text',
               required: true,
+              minLength: 1,
+              maxLength: 200,
               admin: {
-                description: 'The main title of the page',
+                description: 'The main title of the page (1-200 characters)',
+              },
+              validate: (value: unknown) => {
+                if (!value || typeof value !== 'string') {
+                  return 'Title is required'
+                }
+                if (value.trim().length === 0) {
+                  return 'Title cannot be empty or only whitespace'
+                }
+                if (value.length > 200) {
+                  return 'Title must be 200 characters or less'
+                }
+                return true
               },
             },
             {
@@ -171,9 +193,28 @@ export const Pages: CollectionConfig = {
       type: 'text',
       unique: true,
       index: true,
+      maxLength: 100,
       admin: {
         position: 'sidebar',
-        description: 'URL-friendly identifier (auto-generated from title)',
+        description: 'URL-friendly identifier (auto-generated from title, max 100 characters)',
+      },
+      validate: (value: unknown) => {
+        if (!value) return true // Let required handle empty values
+
+        if (typeof value !== 'string') {
+          return 'Slug must be a string'
+        }
+
+        if (value.length > 100) {
+          return 'Slug must be 100 characters or less'
+        }
+
+        const validation = validateSlugFormat(value)
+        if (!validation.isValid) {
+          return validation.errors.join(', ')
+        }
+
+        return true
       },
     },
     {
@@ -184,13 +225,7 @@ export const Pages: CollectionConfig = {
         position: 'sidebar',
         description: 'Select a parent page to create a hierarchical structure',
       },
-      validate: (value: any, { data, siblingData }: any) => {
-        // Prevent self-reference
-        if (value && (value === data?.id || value === siblingData?.id)) {
-          return 'A page cannot be its own parent'
-        }
-        return true
-      },
+      validate: createCircularReferenceValidator('pages'),
       filterOptions: ({ id }) => {
         const filters: any = {}
 
@@ -242,5 +277,7 @@ export const Pages: CollectionConfig = {
         },
       ],
     },
+    // Audit trail fields (auto-populated by createAuditTrailHook)
+    ...auditFields,
   ],
 }

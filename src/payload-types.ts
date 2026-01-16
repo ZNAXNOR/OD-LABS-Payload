@@ -306,7 +306,7 @@ export interface Page {
    */
   hero?: HeroBlock[] | null;
   /**
-   * The main title of the page
+   * The main title of the page (1-200 characters)
    */
   title: string;
   /**
@@ -429,7 +429,7 @@ export interface Page {
     };
   };
   /**
-   * URL-friendly identifier (auto-generated from title)
+   * URL-friendly identifier (auto-generated from title, max 100 characters)
    */
   slug?: string | null;
   /**
@@ -447,6 +447,14 @@ export interface Page {
         id?: string | null;
       }[]
     | null;
+  /**
+   * User who created this document (auto-populated)
+   */
+  createdBy?: (number | null) | User;
+  /**
+   * User who last updated this document (auto-populated)
+   */
+  updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -602,9 +610,12 @@ export interface HeroBlock {
  */
 export interface BlogPage {
   id: number;
+  /**
+   * The main title of the blog post (1-200 characters)
+   */
   title: string;
   /**
-   * Brief description of the blog post for previews and SEO
+   * Brief description of the blog post for previews and SEO (max 300 characters)
    */
   excerpt?: string | null;
   content: {
@@ -737,10 +748,16 @@ export interface BlogPage {
     };
   };
   /**
-   * URL-friendly identifier (auto-generated from title)
+   * URL-friendly identifier (auto-generated from title, max 100 characters)
    */
   slug?: string | null;
+  /**
+   * Date this blog post was first published (auto-set on publish)
+   */
   publishedDate?: string | null;
+  /**
+   * Author of this blog post (defaults to current user)
+   */
   author?: (number | null) | User;
   tags?:
     | {
@@ -748,7 +765,13 @@ export interface BlogPage {
         id?: string | null;
       }[]
     | null;
+  /**
+   * User who created this document (auto-populated)
+   */
   createdBy?: (number | null) | User;
+  /**
+   * User who last updated this document (auto-populated)
+   */
   updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
@@ -850,6 +873,9 @@ export interface ContentBlock {
  */
 export interface ServicePage {
   id: number;
+  /**
+   * The main title of the service page (1-200 characters)
+   */
   title: string;
   content: {
     root: {
@@ -983,9 +1009,13 @@ export interface ServicePage {
     };
   };
   /**
-   * URL-friendly identifier (auto-generated from title)
+   * URL-friendly identifier (auto-generated from title, max 100 characters)
    */
   slug?: string | null;
+  /**
+   * Author of this service page (defaults to current user)
+   */
+  author?: (number | null) | User;
   serviceType?: ('web-dev' | 'mobile-dev' | 'design' | 'consulting' | 'support' | 'marketing' | 'other') | null;
   /**
    * Feature this service on the homepage
@@ -999,7 +1029,13 @@ export interface ServicePage {
     currency?: ('USD' | 'EUR' | 'GBP' | 'INR') | null;
     pricingModel?: ('fixed' | 'hourly' | 'monthly' | 'custom') | null;
   };
+  /**
+   * User who created this document (auto-populated)
+   */
   createdBy?: (number | null) | User;
+  /**
+   * User who last updated this document (auto-populated)
+   */
   updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
@@ -1108,6 +1144,9 @@ export interface CallToActionBlock {
  */
 export interface LegalPage {
   id: number;
+  /**
+   * The main title of the legal document (1-200 characters)
+   */
   title: string;
   content: {
     root: {
@@ -1217,7 +1256,7 @@ export interface LegalPage {
     };
   };
   /**
-   * URL-friendly identifier (auto-generated from title)
+   * URL-friendly identifier (auto-generated from title, max 100 characters)
    */
   slug?: string | null;
   documentType?: ('privacy' | 'terms' | 'cookies' | 'gdpr' | 'disclaimer' | 'license' | 'other') | null;
@@ -1229,7 +1268,13 @@ export interface LegalPage {
    * Last modification date of this document
    */
   lastUpdated?: string | null;
+  /**
+   * User who created this document (auto-populated)
+   */
   createdBy?: (number | null) | User;
+  /**
+   * User who last updated this document (auto-populated)
+   */
   updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
@@ -1434,6 +1479,9 @@ export interface SpacerBlock {
  */
 export interface ContactPage {
   id: number;
+  /**
+   * The main title of the contact page (1-200 characters)
+   */
   title: string;
   content?: {
     root: {
@@ -1469,6 +1517,9 @@ export interface ContactPage {
         | SpacerBlock
       )[]
     | null;
+  /**
+   * Select the purpose of this contact page
+   */
   purpose:
     | 'general'
     | 'technical'
@@ -1591,10 +1642,20 @@ export interface ContactPage {
     };
   };
   /**
-   * URL-friendly identifier (auto-generated from title)
+   * URL-friendly identifier (auto-generated from title, max 100 characters)
    */
   slug?: string | null;
+  /**
+   * Author of this contact page (defaults to current user)
+   */
+  author?: (number | null) | User;
+  /**
+   * User who created this document (auto-populated)
+   */
   createdBy?: (number | null) | User;
+  /**
+   * User who last updated this document (auto-populated)
+   */
   updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
@@ -3420,6 +3481,8 @@ export interface PagesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  createdBy?: T;
+  updatedBy?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -4288,6 +4351,7 @@ export interface ServicesSelect<T extends boolean = true> {
             };
       };
   slug?: T;
+  author?: T;
   serviceType?: T;
   featured?: T;
   pricing?:
@@ -4450,6 +4514,7 @@ export interface ContactsSelect<T extends boolean = true> {
             };
       };
   slug?: T;
+  author?: T;
   createdBy?: T;
   updatedBy?: T;
   updatedAt?: T;

@@ -130,7 +130,7 @@ export const ContainerBlock: React.FC<ContainerBlockProps> = ({ block, className
           maxWidthClasses[maxWidth as keyof typeof maxWidthClasses],
         )}
       >
-        {content && <RichText content={content} />}
+        {content && <RichText data={content} />}
       </div>
     </section>
   )

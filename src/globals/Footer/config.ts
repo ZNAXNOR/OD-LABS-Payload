@@ -14,7 +14,6 @@ export const Footer: GlobalConfig = {
   fields: [
     {
       name: 'columns',
-      dbName: 'footer_columns',
       type: 'array',
       fields: [
         {

@@ -128,7 +128,6 @@ export const ProjectShowcaseBlock: Block = {
         {
           name: 'projectLink',
           type: 'group',
-          dbName: 'proj_link', // Shorten database name
           fields: [link({ disableLabel: false })].flat(),
           admin: {
             description: 'Optional link to project details page',

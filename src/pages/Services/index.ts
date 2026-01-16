@@ -1,9 +1,16 @@
 import type { CollectionConfig } from 'payload'
 
+// Import utilities
+import { createSlugGenerationHook, validateSlugFormat } from '@/utilities/slugGeneration'
+
+// Import shared hooks
+import { createAuditTrailHook } from '@/pages/shared/hooks/createAuditTrailHook'
+
+// Import shared fields
+import { auditFields } from '@/pages/shared/fields/auditFields'
+
 // Import hooks
 import { revalidateService } from './hooks/revalidateService'
-import { generateSlug } from './hooks/generateSlug'
-import { auditTrail } from './hooks/auditTrail'
 
 // Import access control functions
 import { authenticated } from '@/access/authenticated'
@@ -35,6 +42,7 @@ export const ServicesPages: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
+  timestamps: true, // Enable Payload's built-in timestamp management
   versions: {
     drafts: {
       autosave: true,
@@ -44,8 +52,14 @@ export const ServicesPages: CollectionConfig = {
     maxPerDoc: 50,
   },
   hooks: {
-    beforeValidate: [generateSlug],
-    beforeChange: [auditTrail],
+    beforeValidate: [
+      createSlugGenerationHook('services', {
+        sourceField: 'title',
+        enforceUniqueness: true,
+        maxLength: 100,
+      }),
+    ],
+    beforeChange: [createAuditTrailHook()],
     afterChange: [revalidateService],
   },
   fields: [
@@ -61,11 +75,34 @@ export const ServicesPages: CollectionConfig = {
               name: 'title',
               type: 'text',
               required: true,
+              minLength: 1,
+              maxLength: 200,
+              admin: {
+                description: 'The main title of the service page (1-200 characters)',
+              },
+              validate: (value: unknown) => {
+                if (!value || typeof value !== 'string') {
+                  return 'Title is required'
+                }
+                if (value.trim().length === 0) {
+                  return 'Title cannot be empty or only whitespace'
+                }
+                if (value.length > 200) {
+                  return 'Title must be 200 characters or less'
+                }
+                return true
+              },
             },
             {
               name: 'content',
               type: 'richText',
               required: true,
+              validate: (value: unknown) => {
+                if (!value) {
+                  return 'Content is required'
+                }
+                return true
+              },
             },
           ],
         },
@@ -118,9 +155,49 @@ export const ServicesPages: CollectionConfig = {
       type: 'text',
       unique: true,
       index: true,
+      maxLength: 100,
       admin: {
         position: 'sidebar',
-        description: 'URL-friendly identifier (auto-generated from title)',
+        description: 'URL-friendly identifier (auto-generated from title, max 100 characters)',
+      },
+      validate: (value: unknown) => {
+        if (!value) return true // Let required handle empty values
+
+        if (typeof value !== 'string') {
+          return 'Slug must be a string'
+        }
+
+        if (value.length > 100) {
+          return 'Slug must be 100 characters or less'
+        }
+
+        const validation = validateSlugFormat(value)
+        if (!validation.isValid) {
+          return validation.errors.join(', ')
+        }
+
+        return true
+      },
+    },
+    {
+      name: 'author',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: {
+        position: 'sidebar',
+        description: 'Author of this service page (defaults to current user)',
+      },
+      hooks: {
+        beforeChange: [
+          ({ value, req, operation }) => {
+            // Auto-populate on create if not provided
+            if (operation === 'create' && !value && req.user) {
+              req.payload.logger.info(`Auto-populated author: ${req.user.id}`)
+              return req.user.id
+            }
+            return value
+          },
+        ],
       },
     },
     {
@@ -135,6 +212,7 @@ export const ServicesPages: CollectionConfig = {
         { label: 'Digital Marketing', value: 'marketing' },
         { label: 'Other', value: 'other' },
       ],
+      index: true, // Index for filtering by service type
       admin: {
         position: 'sidebar',
       },
@@ -143,6 +221,7 @@ export const ServicesPages: CollectionConfig = {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,
+      index: true, // Index for filtering featured services
       admin: {
         position: 'sidebar',
         description: 'Feature this service on the homepage',
@@ -186,22 +265,7 @@ export const ServicesPages: CollectionConfig = {
         },
       ],
     },
-    // Audit trail fields (hidden from admin)
-    {
-      name: 'createdBy',
-      type: 'relationship',
-      relationTo: 'users',
-      admin: {
-        hidden: true,
-      },
-    },
-    {
-      name: 'updatedBy',
-      type: 'relationship',
-      relationTo: 'users',
-      admin: {
-        hidden: true,
-      },
-    },
+    // Audit trail fields (auto-populated, read-only)
+    ...auditFields,
   ],
 }

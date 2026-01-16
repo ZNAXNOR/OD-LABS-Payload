@@ -14,7 +14,6 @@ export const Header: GlobalConfig = {
   fields: [
     {
       name: 'tabs',
-      dbName: 'header_tabs',
       type: 'array',
       admin: {
         components: {
@@ -72,7 +71,6 @@ export const Header: GlobalConfig = {
             },
             {
               name: 'descriptionLinks',
-              dbName: 'header_description',
               type: 'array',
               fields: [
                 link({
@@ -82,7 +80,6 @@ export const Header: GlobalConfig = {
             },
             {
               name: 'navItems',
-              dbName: 'header_nav_items',
               type: 'array',
               admin: {
                 components: {
@@ -119,7 +116,6 @@ export const Header: GlobalConfig = {
                     { name: 'label', type: 'text' },
                     {
                       name: 'links',
-                      dbName: 'header_featured',
                       type: 'array',
                       fields: [link({ appearances: false })],
                     },
@@ -135,7 +131,6 @@ export const Header: GlobalConfig = {
                     { name: 'tag', type: 'text' },
                     {
                       name: 'links',
-                      dbName: 'header_list',
                       type: 'array',
                       fields: [link({ appearances: false })],
                     },

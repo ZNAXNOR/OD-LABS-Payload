@@ -5,8 +5,6 @@
  * These types are generated from the block configurations and provide type safety throughout the application.
  */
 
-import type { Block } from 'payload'
-
 // ============================================================================
 // HERO BLOCK TYPES
 // ============================================================================

@@ -1,9 +1,10 @@
 import type { CollectionConfig } from 'payload'
 
-// Import hooks
-import { revalidateLegal } from './hooks/revalidateLegal'
-import { generateSlug } from './hooks/generateSlug'
-import { auditTrail } from './hooks/auditTrail'
+// Import shared utilities and hooks
+import { createSlugGenerationHook, validateSlugFormat } from '@/utilities/slugGeneration'
+import { createAuditTrailHook } from '@/pages/shared/hooks/createAuditTrailHook'
+import { createRevalidateHook } from '@/pages/shared/hooks/createRevalidateHook'
+import { auditFields } from '@/pages/shared/fields/auditFields'
 
 // Import access control functions
 import { authenticated } from '@/access/authenticated'
@@ -17,6 +18,7 @@ const legalBlocks = getBlocksForCollection('legal')
 
 export const LegalPages: CollectionConfig = {
   slug: 'legal',
+  timestamps: true, // Enable Payload's built-in timestamp management
   typescript: {
     interface: 'LegalPage',
   },
@@ -44,9 +46,15 @@ export const LegalPages: CollectionConfig = {
     maxPerDoc: 50,
   },
   hooks: {
-    beforeValidate: [generateSlug],
-    beforeChange: [auditTrail],
-    afterChange: [revalidateLegal],
+    beforeValidate: [
+      createSlugGenerationHook('legal', {
+        sourceField: 'title',
+        enforceUniqueness: true,
+        maxLength: 100,
+      }),
+    ],
+    beforeChange: [createAuditTrailHook()],
+    afterChange: [createRevalidateHook('legal')],
   },
   fields: [
     // Tab structure - must come BEFORE sidebar fields
@@ -61,11 +69,34 @@ export const LegalPages: CollectionConfig = {
               name: 'title',
               type: 'text',
               required: true,
+              minLength: 1,
+              maxLength: 200,
+              admin: {
+                description: 'The main title of the legal document (1-200 characters)',
+              },
+              validate: (value: unknown) => {
+                if (!value || typeof value !== 'string') {
+                  return 'Title is required'
+                }
+                if (value.trim().length === 0) {
+                  return 'Title cannot be empty or only whitespace'
+                }
+                if (value.length > 200) {
+                  return 'Title must be 200 characters or less'
+                }
+                return true
+              },
             },
             {
               name: 'content',
               type: 'richText',
               required: true,
+              validate: (value: unknown) => {
+                if (!value) {
+                  return 'Content is required for legal documents'
+                }
+                return true
+              },
             },
           ],
         },
@@ -108,9 +139,28 @@ export const LegalPages: CollectionConfig = {
       type: 'text',
       unique: true,
       index: true,
+      maxLength: 100,
       admin: {
         position: 'sidebar',
-        description: 'URL-friendly identifier (auto-generated from title)',
+        description: 'URL-friendly identifier (auto-generated from title, max 100 characters)',
+      },
+      validate: (value: unknown) => {
+        if (!value) return true // Let required handle empty values
+
+        if (typeof value !== 'string') {
+          return 'Slug must be a string'
+        }
+
+        if (value.length > 100) {
+          return 'Slug must be 100 characters or less'
+        }
+
+        const validation = validateSlugFormat(value)
+        if (!validation.isValid) {
+          return validation.errors.join(', ')
+        }
+
+        return true
       },
     },
     {
@@ -125,6 +175,7 @@ export const LegalPages: CollectionConfig = {
         { label: 'License Agreement', value: 'license' },
         { label: 'Other', value: 'other' },
       ],
+      index: true, // Add index for performance on filtered queries
       admin: {
         position: 'sidebar',
       },
@@ -156,22 +207,7 @@ export const LegalPages: CollectionConfig = {
         ],
       },
     },
-    // Audit trail fields (hidden from admin)
-    {
-      name: 'createdBy',
-      type: 'relationship',
-      relationTo: 'users',
-      admin: {
-        hidden: true,
-      },
-    },
-    {
-      name: 'updatedBy',
-      type: 'relationship',
-      relationTo: 'users',
-      admin: {
-        hidden: true,
-      },
-    },
+    // Spread shared audit trail fields with proper access control
+    ...auditFields,
   ],
 }

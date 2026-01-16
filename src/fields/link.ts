@@ -41,7 +41,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
   const linkResult: GroupField = {
     name: 'link',
     type: 'group',
-    dbName: 'lnk', // Shorten database name
     admin: {
       hideGutter: true,
     },
@@ -52,7 +51,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
           {
             name: 'type',
             type: 'radio',
-            dbName: 'typ', // Shorten database name
             admin: {
               layout: 'horizontal',
               width: '50%',
@@ -72,7 +70,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
           {
             name: 'newTab',
             type: 'checkbox',
-            dbName: 'new_tab', // Shorten database name
             admin: {
               style: {
                 alignSelf: 'flex-end',
@@ -90,7 +87,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
     {
       name: 'reference',
       type: 'relationship',
-      dbName: 'ref', // Shorten database name
       admin: {
         condition: (_, siblingData) => siblingData?.type === 'reference',
       },
@@ -125,7 +121,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
         {
           name: 'label',
           type: 'text',
-          dbName: 'lbl', // Shorten database name
           admin: {
             width: '50%',
           },
@@ -152,7 +147,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
     linkResult.fields.push({
       name: 'appearance',
       type: 'select',
-      dbName: 'app', // Shorten database name
       admin: {
         description: 'Choose how the link should be rendered.',
       },
