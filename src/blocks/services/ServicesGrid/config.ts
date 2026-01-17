@@ -4,6 +4,7 @@ import { link } from '@/fields/link'
 export const ServicesGridBlock: Block = {
   slug: 'servicesGrid',
   interfaceName: 'ServicesGridBlock',
+  dbName:'service_grid',
   labels: {
     singular: 'Services Grid Block',
     plural: 'Services Grid Blocks',

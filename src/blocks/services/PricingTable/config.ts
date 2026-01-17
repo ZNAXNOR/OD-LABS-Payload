@@ -4,6 +4,7 @@ import { link } from '@/fields/link'
 export const PricingTableBlock: Block = {
   slug: 'pricingTable',
   interfaceName: 'PricingTableBlock',
+  dbName:'pricing_table',
   labels: {
     singular: 'Pricing Table Block',
     plural: 'Pricing Table Blocks',

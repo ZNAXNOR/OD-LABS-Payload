@@ -1,0 +1,282 @@
+name: Blocks & Components Analysis
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'src/blocks/**'
+      - 'src/components/**'
+      - 'src/analysis-tools/**'
+  push:
+    branches: [main]
+    paths:
+      - 'src/blocks/**'
+      - 'src/components/**'
+      - 'src/analysis-tools/**'
+  workflow_dispatch:
+    inputs:
+      analysis_scope:
+        description: 'Analysis scope'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - blocks
+          - components
+      severity_level:
+        description: 'Minimum severity level'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - critical
+          - high
+
+jobs:
+  analysis:
+    name: Run Blocks & Components Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd src/analysis-tools
+          npm ci
+
+      - name: Build analysis tools
+        run: |
+          cd src/analysis-tools
+          npm run build
+
+      - name: Run type checking
+        run: |
+          cd src/analysis-tools
+          npm run type-check
+
+      - name: Run unit tests
+        run: |
+          cd src/analysis-tools
+          npm run test:unit
+
+      - name: Run property-based tests
+        run: |
+          cd src/analysis-tools
+          npm run test:property
+
+      - name: Run analysis with coverage
+        id: analysis
+        run: |
+          cd src/analysis-tools
+
+          # Set analysis parameters
+          SCOPE="${{ github.event.inputs.analysis_scope || 'full' }}"
+          SEVERITY="${{ github.event.inputs.severity_level || 'all' }}"
+
+          # Run analysis and capture output
+          npm run analyze -- \
+            --blocks-dir ../blocks \
+            --components-dir ../components \
+            --scope $SCOPE \
+            --severity $SEVERITY \
+            --format json \
+            --output analysis-report.json
+
+          # Generate HTML report for artifacts
+          npm run analyze -- \
+            --blocks-dir ../blocks \
+            --components-dir ../components \
+            --scope $SCOPE \
+            --severity $SEVERITY \
+            --format html \
+            --output analysis-report.html
+
+          # Extract key metrics for PR comment
+          echo "ANALYSIS_COMPLETED=true" >> $GITHUB_OUTPUT
+
+          if [ -f analysis-report.json ]; then
+            TOTAL_ISSUES=$(jq '.summary.totalIssues' analysis-report.json)
+            CRITICAL_ISSUES=$(jq '.summary.issuesBySeverity.critical // 0' analysis-report.json)
+            HIGH_ISSUES=$(jq '.summary.issuesBySeverity.high // 0' analysis-report.json)
+            OVERALL_SCORE=$(jq '.summary.overallScore' analysis-report.json)
+            
+            echo "TOTAL_ISSUES=$TOTAL_ISSUES" >> $GITHUB_OUTPUT
+            echo "CRITICAL_ISSUES=$CRITICAL_ISSUES" >> $GITHUB_OUTPUT
+            echo "HIGH_ISSUES=$HIGH_ISSUES" >> $GITHUB_OUTPUT
+            echo "OVERALL_SCORE=$OVERALL_SCORE" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run performance profiling
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          cd src/analysis-tools
+          npm run profile ../blocks ../components > performance-report.txt
+
+      - name: Upload analysis reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: analysis-reports
+          path: |
+            src/analysis-tools/analysis-report.json
+            src/analysis-tools/analysis-report.html
+            src/analysis-tools/performance-report.txt
+          retention-days: 30
+
+      - name: Comment PR with analysis results
+        if: github.event_name == 'pull_request' && steps.analysis.outputs.ANALYSIS_COMPLETED == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const totalIssues = '${{ steps.analysis.outputs.TOTAL_ISSUES }}';
+            const criticalIssues = '${{ steps.analysis.outputs.CRITICAL_ISSUES }}';
+            const highIssues = '${{ steps.analysis.outputs.HIGH_ISSUES }}';
+            const overallScore = '${{ steps.analysis.outputs.OVERALL_SCORE }}';
+
+            const scoreEmoji = overallScore >= 90 ? '🟢' : overallScore >= 70 ? '🟡' : '🔴';
+            const criticalEmoji = criticalIssues > 0 ? '🚨' : '✅';
+            const highEmoji = highIssues > 0 ? '⚠️' : '✅';
+
+            const comment = `## 🔍 Blocks & Components Analysis Results
+
+            ${scoreEmoji} **Overall Score:** ${overallScore}/100
+
+            ### Issue Summary
+            - **Total Issues:** ${totalIssues}
+            - ${criticalEmoji} **Critical Issues:** ${criticalIssues}
+            - ${highEmoji} **High Priority Issues:** ${highIssues}
+
+            ### Analysis Details
+            - **Scope:** ${{ github.event.inputs.analysis_scope || 'full' }}
+            - **Severity Filter:** ${{ github.event.inputs.severity_level || 'all' }}
+            - **Commit:** ${context.sha.substring(0, 7)}
+
+            ${criticalIssues > 0 ? '⚠️ **Action Required:** Critical issues found that should be addressed before merging.' : ''}
+
+            📊 [View detailed HTML report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ---
+            *Analysis powered by Payload CMS Blocks & Components Analyzer*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Fail on critical issues
+        if: steps.analysis.outputs.CRITICAL_ISSUES > 0
+        run: |
+          echo "❌ Analysis failed: ${{ steps.analysis.outputs.CRITICAL_ISSUES }} critical issues found"
+          echo "Critical issues must be resolved before merging."
+          exit 1
+
+      - name: Generate analysis summary
+        if: always()
+        run: |
+          echo "## Analysis Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total Issues:** ${{ steps.analysis.outputs.TOTAL_ISSUES || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Critical Issues:** ${{ steps.analysis.outputs.CRITICAL_ISSUES || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **High Priority Issues:** ${{ steps.analysis.outputs.HIGH_ISSUES || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Overall Score:** ${{ steps.analysis.outputs.OVERALL_SCORE || 'N/A' }}/100" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 Check the artifacts for detailed reports." >> $GITHUB_STEP_SUMMARY
+
+  security-scan:
+    name: Security Analysis
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd src/analysis-tools
+          npm ci
+
+      - name: Run security-focused analysis
+        run: |
+          cd src/analysis-tools
+          npm run analyze -- \
+            --blocks-dir ../blocks \
+            --components-dir ../components \
+            --scope full \
+            --severity critical \
+            --format json \
+            --output security-report.json
+
+      - name: Check for security issues
+        run: |
+          cd src/analysis-tools
+          if [ -f security-report.json ]; then
+            SECURITY_ISSUES=$(jq '[.blockAnalysis[], .componentAnalysis[]] | map(select(.issues[].category == "security")) | length' security-report.json)
+            echo "Found $SECURITY_ISSUES security-related issues"
+            
+            if [ "$SECURITY_ISSUES" -gt 0 ]; then
+              echo "⚠️ Security issues detected. Review required."
+              jq -r '.blockAnalysis[], .componentAnalysis[] | select(.issues[].category == "security") | .issues[] | "- \(.title): \(.description)"' security-report.json
+            fi
+          fi
+
+  performance-check:
+    name: Performance Analysis
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd src/analysis-tools
+          npm ci
+
+      - name: Run performance profiling
+        run: |
+          cd src/analysis-tools
+          npm run profile ../blocks ../components > performance-report.txt
+
+          # Extract key metrics
+          echo "## Performance Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          cat performance-report.txt >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload performance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-report
+          path: src/analysis-tools/performance-report.txt
+          retention-days: 7

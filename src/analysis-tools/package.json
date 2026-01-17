@@ -1,0 +1,50 @@
+{
+  "name": "@analysis-tools/blocks-components",
+  "version": "1.0.0",
+  "description": "Analysis and improvement system for Payload CMS blocks and components",
+  "type": "module",
+  "main": "./src/index.ts",
+  "bin": {
+    "blocks-analyzer": "./cli/index.js"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:unit": "vitest run --config ./vitest.config.mts tests/unit",
+    "test:property": "vitest run --config ./vitest.config.mts tests/property",
+    "test:integration": "vitest run --config ./vitest.config.mts tests/integration",
+    "test:accessibility": "vitest run --config ./vitest.config.mts tests/accessibility",
+    "test:performance": "vitest run --config ./vitest.config.mts tests/performance",
+    "test:coverage": "vitest run --coverage",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src tests --ext .ts,.tsx",
+    "build": "tsc --project tsconfig.json",
+    "cli": "node --loader ts-node/esm ./cli/index.ts",
+    "analyze": "npm run cli -- analyze",
+    "profile": "node --expose-gc --loader ts-node/esm ./scripts/performance-profile.ts",
+    "optimize": "npm run profile && npm run test:coverage"
+  },
+  "keywords": [
+    "payload-cms",
+    "analysis",
+    "blocks",
+    "components",
+    "testing",
+    "accessibility",
+    "security"
+  ],
+  "author": "OD Labs",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^11.1.0",
+    "fs-extra": "^11.2.0",
+    "ora": "^7.0.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.11.0",
+    "@vitest/coverage-v8": "^3.2.3",
+    "ts-node": "^10.9.2"
+  }
+}

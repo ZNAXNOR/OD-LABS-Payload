@@ -1,0 +1,1269 @@
+{
+  "timestamp": "2026-01-17T06:05:08.909Z",
+  "summary": {
+    "blocksAnalyzed": 25,
+    "componentsAnalyzed": 51,
+    "totalIssues": 37,
+    "criticalIssues": 24,
+    "highIssues": 0,
+    "mediumIssues": 10,
+    "lowIssues": 3
+  },
+  "blocks": [
+    {
+      "name": "Archive",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Archive\\config.ts",
+      "relativePath": "Archive\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'Archive' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Archive\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Archive' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Archive\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Banner",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Banner\\config.ts",
+      "relativePath": "Banner\\config.ts",
+      "hasConfig": true,
+      "hasComponent": true,
+      "issues": []
+    },
+    {
+      "name": "CallToAction",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\CallToAction\\config.ts",
+      "relativePath": "CallToAction\\config.ts",
+      "hasConfig": true,
+      "hasComponent": true,
+      "issues": [
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'CallToAction' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\CallToAction\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Code",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Code\\config.ts",
+      "relativePath": "Code\\config.ts",
+      "hasConfig": true,
+      "hasComponent": true,
+      "issues": [
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Code' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Code\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Content",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\config.ts",
+      "relativePath": "Content\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'Content' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Content' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "ContactForm",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\ContactForm\\config.ts",
+      "relativePath": "cta\\ContactForm\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'ContactForm' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\ContactForm\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'ContactForm' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\ContactForm\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        },
+        {
+          "type": "missing-validation",
+          "severity": "medium",
+          "message": "Block 'ContactForm' fields may lack validation rules",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\ContactForm\\config.ts",
+          "recommendation": "Add validation rules to ensure data integrity"
+        }
+      ]
+    },
+    {
+      "name": "Newsletter",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\Newsletter\\config.ts",
+      "relativePath": "cta\\Newsletter\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'Newsletter' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\Newsletter\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Newsletter' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\Newsletter\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "SocialProof",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\SocialProof\\config.ts",
+      "relativePath": "cta\\SocialProof\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'SocialProof' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\SocialProof\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'SocialProof' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\SocialProof\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Hero",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Hero\\config.ts",
+      "relativePath": "Hero\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'Hero' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Hero\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Hero' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Hero\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Container",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Container\\config.ts",
+      "relativePath": "layout\\Container\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'Container' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Container\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Container' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Container\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Divider",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Divider\\config.ts",
+      "relativePath": "layout\\Divider\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'Divider' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Divider\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Divider' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Divider\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Spacer",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Spacer\\config.ts",
+      "relativePath": "layout\\Spacer\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'Spacer' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Spacer\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Spacer' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Spacer\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "MediaBlock",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\MediaBlock\\config.ts",
+      "relativePath": "MediaBlock\\config.ts",
+      "hasConfig": true,
+      "hasComponent": true,
+      "issues": [
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'MediaBlock' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\MediaBlock\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "BeforeAfter",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\BeforeAfter\\config.ts",
+      "relativePath": "portfolio\\BeforeAfter\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'BeforeAfter' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\BeforeAfter\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'BeforeAfter' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\BeforeAfter\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "CaseStudy",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\CaseStudy\\config.ts",
+      "relativePath": "portfolio\\CaseStudy\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'CaseStudy' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\CaseStudy\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'CaseStudy' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\CaseStudy\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "ProjectShowcase",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\ProjectShowcase\\config.ts",
+      "relativePath": "portfolio\\ProjectShowcase\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'ProjectShowcase' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\ProjectShowcase\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'ProjectShowcase' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\ProjectShowcase\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Testimonial",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\Testimonial\\config.ts",
+      "relativePath": "portfolio\\Testimonial\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'Testimonial' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\Testimonial\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Testimonial' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\Testimonial\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "PricingTable",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\PricingTable\\config.ts",
+      "relativePath": "services\\PricingTable\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'PricingTable' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\PricingTable\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'PricingTable' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\PricingTable\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "ProcessSteps",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\ProcessSteps\\config.ts",
+      "relativePath": "services\\ProcessSteps\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'ProcessSteps' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\ProcessSteps\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'ProcessSteps' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\ProcessSteps\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "ServicesGrid",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\ServicesGrid\\config.ts",
+      "relativePath": "services\\ServicesGrid\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'ServicesGrid' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\ServicesGrid\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'ServicesGrid' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\ServicesGrid\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "TechStack",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\TechStack\\config.ts",
+      "relativePath": "services\\TechStack\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'TechStack' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\TechStack\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'TechStack' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\TechStack\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "FAQAccordion",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\FAQAccordion\\config.ts",
+      "relativePath": "technical\\FAQAccordion\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'FAQAccordion' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\FAQAccordion\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'FAQAccordion' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\FAQAccordion\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "FeatureGrid",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\FeatureGrid\\config.ts",
+      "relativePath": "technical\\FeatureGrid\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'FeatureGrid' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\FeatureGrid\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'FeatureGrid' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\FeatureGrid\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "StatsCounter",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\StatsCounter\\config.ts",
+      "relativePath": "technical\\StatsCounter\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'StatsCounter' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\StatsCounter\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'StatsCounter' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\StatsCounter\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Timeline",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\Timeline\\config.ts",
+      "relativePath": "technical\\Timeline\\config.ts",
+      "hasConfig": true,
+      "hasComponent": false,
+      "issues": [
+        {
+          "type": "missing-component",
+          "severity": "high",
+          "message": "Block 'Timeline' has config but no Component.tsx file",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\Timeline\\config.ts"
+        },
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Timeline' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\Timeline\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\AdminBar\\index.tsx",
+      "relativePath": "AdminBar\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockRenderer",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\BlockRenderer.tsx",
+      "relativePath": "blocks\\BlockRenderer.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "missing-react-keys",
+          "severity": "low",
+          "message": "Component 'BlockRenderer' may be missing React keys in lists",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\BlockRenderer.tsx",
+          "recommendation": "Add unique keys to list items for better performance"
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\content\\Content\\index.tsx",
+      "relativePath": "blocks\\content\\Content\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\cta\\ContactForm\\index.tsx",
+      "relativePath": "blocks\\cta\\ContactForm\\index.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'index' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\cta\\ContactForm\\index.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\cta\\Newsletter\\index.tsx",
+      "relativePath": "blocks\\cta\\Newsletter\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\cta\\SocialProof\\index.tsx",
+      "relativePath": "blocks\\cta\\SocialProof\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\hero\\Hero\\index.tsx",
+      "relativePath": "blocks\\hero\\Hero\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "Centered",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\hero\\Hero\\variants\\Centered.tsx",
+      "relativePath": "blocks\\hero\\Hero\\variants\\Centered.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "CodeTerminal",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\hero\\Hero\\variants\\CodeTerminal.tsx",
+      "relativePath": "blocks\\hero\\Hero\\variants\\CodeTerminal.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "Default",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\hero\\Hero\\variants\\Default.tsx",
+      "relativePath": "blocks\\hero\\Hero\\variants\\Default.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "Gradient",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\hero\\Hero\\variants\\Gradient.tsx",
+      "relativePath": "blocks\\hero\\Hero\\variants\\Gradient.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "Minimal",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\hero\\Hero\\variants\\Minimal.tsx",
+      "relativePath": "blocks\\hero\\Hero\\variants\\Minimal.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "Split",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\hero\\Hero\\variants\\Split.tsx",
+      "relativePath": "blocks\\hero\\Hero\\variants\\Split.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "HeroBlock",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\HeroBlock.tsx",
+      "relativePath": "blocks\\HeroBlock.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\layout\\Container\\index.tsx",
+      "relativePath": "blocks\\layout\\Container\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\layout\\Divider\\index.tsx",
+      "relativePath": "blocks\\layout\\Divider\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\layout\\Spacer\\index.tsx",
+      "relativePath": "blocks\\layout\\Spacer\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\portfolio\\BeforeAfter\\index.tsx",
+      "relativePath": "blocks\\portfolio\\BeforeAfter\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\portfolio\\CaseStudy\\index.tsx",
+      "relativePath": "blocks\\portfolio\\CaseStudy\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\portfolio\\ProjectShowcase\\index.tsx",
+      "relativePath": "blocks\\portfolio\\ProjectShowcase\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\portfolio\\Testimonial\\index.tsx",
+      "relativePath": "blocks\\portfolio\\Testimonial\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\services\\PricingTable\\index.tsx",
+      "relativePath": "blocks\\services\\PricingTable\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\services\\ProcessSteps\\index.tsx",
+      "relativePath": "blocks\\services\\ProcessSteps\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\services\\ServicesGrid\\index.tsx",
+      "relativePath": "blocks\\services\\ServicesGrid\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\services\\TechStack\\index.tsx",
+      "relativePath": "blocks\\services\\TechStack\\index.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'index' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\services\\TechStack\\index.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\technical\\FAQAccordion\\index.tsx",
+      "relativePath": "blocks\\technical\\FAQAccordion\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\technical\\FeatureGrid\\index.tsx",
+      "relativePath": "blocks\\technical\\FeatureGrid\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\technical\\StatsCounter\\index.tsx",
+      "relativePath": "blocks\\technical\\StatsCounter\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\technical\\Timeline\\index.tsx",
+      "relativePath": "blocks\\technical\\Timeline\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\BreadcrumbCell\\index.tsx",
+      "relativePath": "BreadcrumbCell\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\DashboardCollections\\index.tsx",
+      "relativePath": "DashboardCollections\\index.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "missing-error-handling",
+          "severity": "medium",
+          "message": "Component 'index' has async operations without error handling",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\DashboardCollections\\index.tsx",
+          "recommendation": "Add proper error handling for async operations"
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\GoogleAnalytics\\index.tsx",
+      "relativePath": "GoogleAnalytics\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\LegacyBlockWarning\\index.tsx",
+      "relativePath": "LegacyBlockWarning\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Link\\index.tsx",
+      "relativePath": "Link\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\LivePreviewListener\\index.tsx",
+      "relativePath": "LivePreviewListener\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "Logo",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Logo\\Logo.tsx",
+      "relativePath": "Logo\\Logo.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Media\\ImageMedia\\index.tsx",
+      "relativePath": "Media\\ImageMedia\\index.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-react-keys",
+          "severity": "low",
+          "message": "Component 'index' may be missing React keys in lists",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Media\\ImageMedia\\index.tsx",
+          "recommendation": "Add unique keys to list items for better performance"
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Media\\index.tsx",
+      "relativePath": "Media\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Media\\VideoMedia\\index.tsx",
+      "relativePath": "Media\\VideoMedia\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\RenderBlocks\\index.tsx",
+      "relativePath": "RenderBlocks\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\RichText\\index.tsx",
+      "relativePath": "RichText\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\RowLabel\\index.tsx",
+      "relativePath": "RowLabel\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "button",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\button.tsx",
+      "relativePath": "ui\\button.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "card",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\card.tsx",
+      "relativePath": "ui\\card.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "weak-typing",
+          "severity": "medium",
+          "message": "Component 'card' may have weak TypeScript typing",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\card.tsx",
+          "recommendation": "Define proper TypeScript interfaces for props"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\checkbox.tsx",
+      "relativePath": "ui\\checkbox.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "weak-typing",
+          "severity": "medium",
+          "message": "Component 'checkbox' may have weak TypeScript typing",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\checkbox.tsx",
+          "recommendation": "Define proper TypeScript interfaces for props"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\input.tsx",
+      "relativePath": "ui\\input.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "weak-typing",
+          "severity": "medium",
+          "message": "Component 'input' may have weak TypeScript typing",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\input.tsx",
+          "recommendation": "Define proper TypeScript interfaces for props"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\label.tsx",
+      "relativePath": "ui\\label.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "pagination",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\pagination.tsx",
+      "relativePath": "ui\\pagination.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "select",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\select.tsx",
+      "relativePath": "ui\\select.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "weak-typing",
+          "severity": "medium",
+          "message": "Component 'select' may have weak TypeScript typing",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\select.tsx",
+          "recommendation": "Define proper TypeScript interfaces for props"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\textarea.tsx",
+      "relativePath": "ui\\textarea.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "weak-typing",
+          "severity": "medium",
+          "message": "Component 'textarea' may have weak TypeScript typing",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\textarea.tsx",
+          "recommendation": "Define proper TypeScript interfaces for props"
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\UniqueSelect\\index.tsx",
+      "relativePath": "UniqueSelect\\index.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "weak-typing",
+          "severity": "medium",
+          "message": "Component 'index' may have weak TypeScript typing",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\UniqueSelect\\index.tsx",
+          "recommendation": "Define proper TypeScript interfaces for props"
+        },
+        {
+          "type": "missing-react-keys",
+          "severity": "low",
+          "message": "Component 'index' may be missing React keys in lists",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\UniqueSelect\\index.tsx",
+          "recommendation": "Add unique keys to list items for better performance"
+        }
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Archive' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Archive\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'CallToAction' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\CallToAction\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Code' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Code\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Content' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'ContactForm' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\ContactForm\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-validation",
+      "severity": "medium",
+      "message": "Block 'ContactForm' fields may lack validation rules",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\ContactForm\\config.ts",
+      "recommendation": "Add validation rules to ensure data integrity"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Newsletter' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\Newsletter\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'SocialProof' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\SocialProof\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Hero' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Hero\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Container' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Container\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Divider' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Divider\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Spacer' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\layout\\Spacer\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'MediaBlock' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\MediaBlock\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'BeforeAfter' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\BeforeAfter\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'CaseStudy' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\CaseStudy\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'ProjectShowcase' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\ProjectShowcase\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Testimonial' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\portfolio\\Testimonial\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'PricingTable' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\PricingTable\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'ProcessSteps' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\ProcessSteps\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'ServicesGrid' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\ServicesGrid\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'TechStack' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\services\\TechStack\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'FAQAccordion' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\FAQAccordion\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'FeatureGrid' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\FeatureGrid\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'StatsCounter' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\StatsCounter\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Timeline' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\Timeline\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-react-keys",
+      "severity": "low",
+      "message": "Component 'BlockRenderer' may be missing React keys in lists",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\BlockRenderer.tsx",
+      "recommendation": "Add unique keys to list items for better performance"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'index' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\cta\\ContactForm\\index.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'index' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\blocks\\services\\TechStack\\index.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-error-handling",
+      "severity": "medium",
+      "message": "Component 'index' has async operations without error handling",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\DashboardCollections\\index.tsx",
+      "recommendation": "Add proper error handling for async operations"
+    },
+    {
+      "type": "missing-react-keys",
+      "severity": "low",
+      "message": "Component 'index' may be missing React keys in lists",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Media\\ImageMedia\\index.tsx",
+      "recommendation": "Add unique keys to list items for better performance"
+    },
+    {
+      "type": "weak-typing",
+      "severity": "medium",
+      "message": "Component 'card' may have weak TypeScript typing",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\card.tsx",
+      "recommendation": "Define proper TypeScript interfaces for props"
+    },
+    {
+      "type": "weak-typing",
+      "severity": "medium",
+      "message": "Component 'checkbox' may have weak TypeScript typing",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\checkbox.tsx",
+      "recommendation": "Define proper TypeScript interfaces for props"
+    },
+    {
+      "type": "weak-typing",
+      "severity": "medium",
+      "message": "Component 'input' may have weak TypeScript typing",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\input.tsx",
+      "recommendation": "Define proper TypeScript interfaces for props"
+    },
+    {
+      "type": "weak-typing",
+      "severity": "medium",
+      "message": "Component 'select' may have weak TypeScript typing",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\select.tsx",
+      "recommendation": "Define proper TypeScript interfaces for props"
+    },
+    {
+      "type": "weak-typing",
+      "severity": "medium",
+      "message": "Component 'textarea' may have weak TypeScript typing",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\textarea.tsx",
+      "recommendation": "Define proper TypeScript interfaces for props"
+    },
+    {
+      "type": "weak-typing",
+      "severity": "medium",
+      "message": "Component 'index' may have weak TypeScript typing",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\UniqueSelect\\index.tsx",
+      "recommendation": "Define proper TypeScript interfaces for props"
+    },
+    {
+      "type": "missing-react-keys",
+      "severity": "low",
+      "message": "Component 'index' may be missing React keys in lists",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\UniqueSelect\\index.tsx",
+      "recommendation": "Add unique keys to list items for better performance"
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": 1,
+      "title": "Implement Access Control",
+      "description": "24 block(s) are missing access control. This is a critical security issue.",
+      "impact": "Critical security vulnerability - unauthorized access to data",
+      "effort": "Medium",
+      "steps": [
+        "Review each block configuration",
+        "Add appropriate access control rules",
+        "Test access control with different user roles",
+        "Document access control decisions"
+      ]
+    }
+  ]
+}

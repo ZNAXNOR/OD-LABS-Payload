@@ -1,0 +1,97 @@
+name: Pre-commit Analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'src/blocks/**'
+      - 'src/components/**'
+
+jobs:
+  quick-analysis:
+    name: Quick Analysis Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            src/blocks/**
+            src/components/**
+
+      - name: Setup Node.js
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install analysis tools
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          cd src/analysis-tools
+          npm ci
+
+      - name: Analyze changed files only
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          cd src/analysis-tools
+
+          # Create temporary directories for changed files
+          mkdir -p temp/blocks temp/components
+
+          # Copy changed block files
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [[ $file == src/blocks/* ]]; then
+              cp "$file" "temp/blocks/" 2>/dev/null || true
+            elif [[ $file == src/components/* ]]; then
+              cp "$file" "temp/components/" 2>/dev/null || true
+            fi
+          done
+
+          # Run quick analysis on changed files only
+          if [ "$(ls -A temp/blocks)" ] || [ "$(ls -A temp/components)" ]; then
+            npm run analyze -- \
+              --blocks-dir temp/blocks \
+              --components-dir temp/components \
+              --scope full \
+              --severity critical \
+              --format console \
+              --no-patterns
+          else
+            echo "No relevant files changed"
+          fi
+
+      - name: Check for critical issues
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          cd src/analysis-tools
+
+          # Run analysis with JSON output to check for critical issues
+          npm run analyze -- \
+            --blocks-dir temp/blocks \
+            --components-dir temp/components \
+            --scope full \
+            --severity critical \
+            --format json \
+            --output quick-analysis.json \
+            --no-patterns || true
+
+          if [ -f quick-analysis.json ]; then
+            CRITICAL_COUNT=$(jq '.summary.issuesBySeverity.critical // 0' quick-analysis.json)
+            if [ "$CRITICAL_COUNT" -gt 0 ]; then
+              echo "❌ Critical issues found in changed files:"
+              jq -r '.blockAnalysis[], .componentAnalysis[] | select(.issues[].severity == "critical") | .issues[] | "- \(.title): \(.description)"' quick-analysis.json
+              exit 1
+            else
+              echo "✅ No critical issues found in changed files"
+            fi
+          fi

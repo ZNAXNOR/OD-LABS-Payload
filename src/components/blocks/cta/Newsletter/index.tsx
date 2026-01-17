@@ -61,12 +61,19 @@ export const NewsletterBlock: React.FC<NewsletterBlockProps> = ({
     return (
       <div className="container py-12">
         <div className="max-w-2xl mx-auto text-center">
-          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-8">
+          <div
+            className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-8"
+            role="status"
+            aria-live="polite"
+          >
             <svg
               className="w-16 h-16 text-green-600 dark:text-green-400 mx-auto mb-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              // ✅ Added proper alt text for decorative icon
+              aria-hidden="true"
+              focusable="false"
             >
               <path
                 strokeLinecap="round"
@@ -75,7 +82,12 @@ export const NewsletterBlock: React.FC<NewsletterBlockProps> = ({
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <h3 className="text-2xl font-bold text-green-900 dark:text-green-100 mb-2">
+            <h3
+              className="text-2xl font-bold text-green-900 dark:text-green-100 mb-2"
+              // ✅ Added heading level context
+              role="heading"
+              aria-level="3"
+            >
               {successMessage}
             </h3>
             <p className="text-green-700 dark:text-green-300">
@@ -100,9 +112,19 @@ export const NewsletterBlock: React.FC<NewsletterBlockProps> = ({
                 {description && <p className="text-white/90">{description}</p>}
               </div>
 
-              <form onSubmit={handleSubmit} className="flex-1 max-w-md">
+              <form
+                onSubmit={handleSubmit}
+                className="flex-1 max-w-md"
+                // ✅ Added form accessibility attributes
+                role="form"
+                aria-label="Newsletter subscription form"
+              >
                 <div className="flex gap-2">
+                  <label htmlFor="newsletter-email-inline" className="sr-only">
+                    Email address for newsletter subscription
+                  </label>
                   <input
+                    id="newsletter-email-inline"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -110,17 +132,52 @@ export const NewsletterBlock: React.FC<NewsletterBlockProps> = ({
                     className="flex-1 px-4 py-3 rounded-lg bg-white text-zinc-900 focus:outline-none focus:ring-2 focus:ring-white/50"
                     required
                     disabled={isSubmitting}
+                    // ✅ Added comprehensive ARIA attributes
+                    aria-label="Email address"
+                    aria-describedby={
+                      error
+                        ? 'newsletter-error-inline'
+                        : showPrivacyNote
+                          ? 'newsletter-privacy-inline'
+                          : undefined
+                    }
+                    aria-invalid={error ? 'true' : 'false'}
+                    autoComplete="email"
                   />
                   <button
                     type="submit"
                     disabled={isSubmitting}
                     className="px-6 py-3 bg-zinc-900 text-white rounded-lg font-semibold hover:bg-zinc-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    // ✅ Added button accessibility attributes
+                    aria-label={
+                      isSubmitting
+                        ? 'Subscribing to newsletter, please wait'
+                        : 'Subscribe to newsletter'
+                    }
+                    aria-describedby={error ? 'newsletter-error-inline' : undefined}
                   >
                     {isSubmitting ? 'Subscribing...' : buttonText}
                   </button>
                 </div>
-                {error && <p className="text-red-200 text-sm mt-2">{error}</p>}
-                {showPrivacyNote && <p className="text-white/70 text-sm mt-2">{privacyText}</p>}
+
+                {/* ✅ Added proper error announcement for screen readers */}
+                {error && (
+                  <p
+                    id="newsletter-error-inline"
+                    className="text-red-200 text-sm mt-2"
+                    role="alert"
+                    aria-live="polite"
+                  >
+                    {error}
+                  </p>
+                )}
+
+                {/* ✅ Added proper privacy note association */}
+                {showPrivacyNote && (
+                  <p id="newsletter-privacy-inline" className="text-white/70 text-sm mt-2">
+                    {privacyText}
+                  </p>
+                )}
               </form>
             </div>
           </div>

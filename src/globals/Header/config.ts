@@ -11,10 +11,12 @@ export const Header: GlobalConfig = {
     update: authenticated,
   },
   label: 'Header',
+  dbName:'header',
   fields: [
     {
       name: 'tabs',
       type: 'array',
+      dbName:'head_tabs',
       admin: {
         components: {
           RowLabel: '@/globals/Header/RowLabel#RowLabel',

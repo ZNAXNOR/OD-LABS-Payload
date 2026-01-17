@@ -4,6 +4,7 @@ import { link } from '@/fields/link'
 export const ProjectShowcaseBlock: Block = {
   slug: 'projectShowcase',
   interfaceName: 'ProjectShowcaseBlock',
+  dbName:'proj_showcase',
   labels: {
     singular: 'Project Showcase Block',
     plural: 'Project Showcase Blocks',
