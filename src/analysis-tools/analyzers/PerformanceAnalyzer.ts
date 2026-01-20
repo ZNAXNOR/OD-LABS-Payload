@@ -205,7 +205,7 @@ export class PerformanceAnalyzer {
   /**
    * Check if variable is from useState
    */
-  private isStateVariable(component: Component, variableName: string): boolean {
+  private isStateVariable(component: Component, _variableName: string): boolean {
     // This is a simplified check - would need more sophisticated analysis
     return component.hooks.some((hook) => hook.name === 'useState')
   }
@@ -379,10 +379,13 @@ export class PerformanceAnalyzer {
   suggestImprovements(component: Component): string[] {
     const suggestions: string[] = []
 
+    // Calculate line count from the component (simplified)
+    const lineCount = component.ast ? component.ast.getFullText().split('\n').length : 0
+
     // Suggest code splitting for large components
-    if (component.metrics && component.metrics.lineCount > 300) {
+    if (lineCount > 300) {
       suggestions.push(
-        `Component has ${component.metrics.lineCount} lines. Consider code splitting into smaller components ` +
+        `Component has ${lineCount} lines. Consider code splitting into smaller components ` +
           `or using React.lazy() for dynamic imports.`,
       )
     }

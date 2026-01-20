@@ -481,21 +481,21 @@ ${validationChecks.join('\n')}
   /**
    * Generate data that should show conditional field
    */
-  private generateShowData(field: Field): string {
+  private generateShowData(_field: Field): string {
     return `{ showField: true }`
   }
 
   /**
    * Generate data that should hide conditional field
    */
-  private generateHideData(field: Field): string {
+  private generateHideData(_field: Field): string {
     return `{ showField: false }`
   }
 
   /**
    * Generate test setup
    */
-  private generateSetup(block: Block): string {
+  private generateSetup(_block: Block): string {
     return `
   beforeEach(() => {
     // Setup test environment

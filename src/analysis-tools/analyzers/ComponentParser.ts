@@ -142,7 +142,7 @@ export class ComponentParser {
             if (ts.isIdentifier(decl.name)) {
               // Prefer component-like names (PascalCase)
               const name = decl.name.text
-              if (name[0] === name[0].toUpperCase()) {
+              if (name[0] === name[0]?.toUpperCase()) {
                 componentName = name
               }
             }
@@ -190,7 +190,7 @@ export class ComponentParser {
       if (ts.isFunctionDeclaration(node) || ts.isArrowFunction(node)) {
         if (node.parameters.length > 0) {
           const firstParam = node.parameters[0]
-          if (firstParam.type && ts.isTypeLiteralNode(firstParam.type)) {
+          if (firstParam?.type && ts.isTypeLiteralNode(firstParam.type)) {
             this.extractPropsFromTypeLiteral(firstParam.type, props)
           }
         }
@@ -248,7 +248,7 @@ export class ComponentParser {
   /**
    * Extract default value from property signature
    */
-  private extractDefaultValue(member: ts.PropertySignature): any {
+  private extractDefaultValue(_member: ts.PropertySignature): any {
     // TypeScript interfaces don't have default values
     // This would need to be extracted from destructuring in function parameters
     return undefined
@@ -410,7 +410,7 @@ export class ComponentParser {
 
     attributes.properties.forEach((prop) => {
       if (ts.isJsxAttribute(prop) && prop.name) {
-        const name = prop.name.text
+        const name = ts.isIdentifier(prop.name) ? prop.name.text : prop.name.getText()
         let value: any = true // Boolean attribute
 
         if (prop.initializer) {

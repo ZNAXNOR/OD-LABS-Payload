@@ -15,9 +15,7 @@ import type {
   PreviewIssue,
   IntegrationIssue,
 } from '../types'
-import { generateId } from '../utils'
 import * as fs from 'fs'
-import * as path from 'path'
 
 export class IntegrationValidator {
   /**
@@ -190,9 +188,10 @@ export class IntegrationValidator {
   validatePreview(block: Block): PreviewIssue[] {
     const issues: PreviewIssue[] = []
 
-    // Check if block has preview configured
-    if (block.admin?.preview) {
-      const previewPath = block.admin.preview as string
+    // Check if block has preview configured (if preview property exists)
+    const adminConfig = block.admin as any
+    if (adminConfig?.preview) {
+      const previewPath = adminConfig.preview as string
 
       // Check if preview file exists
       if (!this.fileExists(previewPath)) {

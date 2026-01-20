@@ -33,19 +33,35 @@ describe('Database Query Performance Benchmarks', () => {
         data: {
           title: `Performance Test Blog ${i}`,
           slug: `perf-test-blog-${i}`,
-          content: [
-            {
+          content: {
+            root: {
+              type: 'root',
               children: [
                 {
-                  text: `This is test content for performance benchmark ${i}`,
+                  type: 'paragraph',
+                  children: [
+                    {
+                      text: `This is test content for performance benchmark ${i}`,
+                      type: 'text',
+                      version: 1,
+                    },
+                  ],
+                  direction: 'ltr' as const,
+                  format: '',
+                  indent: 0,
+                  version: 1,
                 },
               ],
+              direction: 'ltr' as const,
+              format: '',
+              indent: 0,
+              version: 1,
             },
-          ],
+          },
           _status: i % 2 === 0 ? 'published' : 'draft',
         },
       })
-      testDocIds.push(blog.id)
+      testDocIds.push(String(blog.id))
     }
 
     console.log(`Created ${testDocIds.length} test documents`)
@@ -82,7 +98,7 @@ describe('Database Query Performance Benchmarks', () => {
       const executionTime = endTime - startTime
 
       expect(result.docs.length).toBe(1)
-      expect(result.docs[0].slug).toBe('perf-test-blog-0')
+      expect(result.docs[0]?.slug).toBe('perf-test-blog-0')
       expect(executionTime).toBeLessThan(10)
       console.log(`Find by slug execution time: ${executionTime.toFixed(3)}ms`)
     })
@@ -160,15 +176,31 @@ describe('Database Query Performance Benchmarks', () => {
         data: {
           title: 'Performance Test Create',
           slug: `perf-test-create-${Date.now()}`,
-          content: [
-            {
+          content: {
+            root: {
+              type: 'root',
               children: [
                 {
-                  text: 'Test content for create performance',
+                  type: 'paragraph',
+                  children: [
+                    {
+                      text: 'Test content for create performance',
+                      type: 'text',
+                      version: 1,
+                    },
+                  ],
+                  direction: 'ltr' as const,
+                  format: '',
+                  indent: 0,
+                  version: 1,
                 },
               ],
+              direction: 'ltr' as const,
+              format: '',
+              indent: 0,
+              version: 1,
             },
-          ],
+          },
           _status: 'draft',
         },
       })
@@ -195,15 +227,31 @@ describe('Database Query Performance Benchmarks', () => {
           data: {
             title: `Bulk Create Test ${i}`,
             slug: `bulk-create-${Date.now()}-${i}`,
-            content: [
-              {
+            content: {
+              root: {
+                type: 'root',
                 children: [
                   {
-                    text: `Test content ${i}`,
+                    type: 'paragraph',
+                    children: [
+                      {
+                        text: `Test content ${i}`,
+                        type: 'text',
+                        version: 1,
+                      },
+                    ],
+                    direction: 'ltr' as const,
+                    format: '',
+                    indent: 0,
+                    version: 1,
                   },
                 ],
+                direction: 'ltr' as const,
+                format: '',
+                indent: 0,
+                version: 1,
               },
-            ],
+            },
             _status: 'draft',
           },
         })
@@ -231,6 +279,9 @@ describe('Database Query Performance Benchmarks', () => {
     it('should update document in < 80ms', async () => {
       // Use first test document
       const docId = testDocIds[0]
+      if (!docId) {
+        throw new Error('No test document available for update test')
+      }
 
       const startTime = performance.now()
 
@@ -257,9 +308,13 @@ describe('Database Query Performance Benchmarks', () => {
 
       const startTime = performance.now()
       for (let i = 0; i < iterations; i++) {
+        const docId = docsToUpdate[i]
+        if (!docId) {
+          throw new Error(`No test document available at index ${i} for bulk update test`)
+        }
         await payload.update({
           collection: 'blogs',
-          id: docsToUpdate[i],
+          id: docId,
           data: {
             title: `Bulk Update Test ${i}`,
           },
@@ -342,6 +397,9 @@ describe('Database Query Performance Benchmarks', () => {
   describe('15.2 FindByID Performance', () => {
     it('should find document by ID in < 10ms', async () => {
       const docId = testDocIds[0]
+      if (!docId) {
+        throw new Error('No test document available for findByID test')
+      }
 
       const startTime = performance.now()
 
@@ -363,9 +421,15 @@ describe('Database Query Performance Benchmarks', () => {
 
       const startTime = performance.now()
       for (let i = 0; i < iterations; i++) {
+        const docId = testDocIds[i % testDocIds.length]
+        if (!docId) {
+          throw new Error(
+            `No test document available at index ${i % testDocIds.length} for bulk findByID test`,
+          )
+        }
         await payload.findByID({
           collection: 'blogs',
-          id: testDocIds[i % testDocIds.length],
+          id: docId,
         })
       }
       const endTime = performance.now()

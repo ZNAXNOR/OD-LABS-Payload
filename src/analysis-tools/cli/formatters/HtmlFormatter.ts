@@ -608,7 +608,7 @@ export class HtmlFormatter implements OutputFormatter {
     `
   }
 
-  private formatPatternComparison(patterns: any): string {
+  private formatPatternComparison(_patterns: any): string {
     // This would format the pattern comparison results
     // For now, return a placeholder
     return `

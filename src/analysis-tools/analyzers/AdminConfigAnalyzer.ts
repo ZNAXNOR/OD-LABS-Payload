@@ -106,7 +106,7 @@ export class AdminConfigAnalyzer {
   private checkFieldAdminConfig(
     field: Field,
     fieldPath: string,
-    blockSlug: string,
+    _blockSlug: string,
   ): AdminConfigIssue[] {
     const issues: AdminConfigIssue[] = []
 
@@ -157,8 +157,8 @@ export class AdminConfigAnalyzer {
       })
     }
 
-    // Check for missing group on related fields
-    if (this.shouldBeGrouped(field) && !field.admin?.group) {
+    // Check for missing group on related fields (if admin config supports it)
+    if (this.shouldBeGrouped(field) && field.admin && !('group' in field.admin)) {
       issues.push({
         type: 'missing-group',
         fieldPath,
@@ -307,10 +307,10 @@ export class AdminConfigAnalyzer {
       completenessScore = 0
     } else {
       // Deduct points for missing configurations
-      if (!block.admin.useAsTitle) completenessScore -= 20
-      if (!block.admin.defaultColumns) completenessScore -= 15
-      if (!block.admin.description) completenessScore -= 15
-      if (!block.admin.group) completenessScore -= 10
+      if (!block.admin?.useAsTitle) completenessScore -= 20
+      if (!block.admin?.defaultColumns) completenessScore -= 15
+      if (!block.admin?.description) completenessScore -= 15
+      if (block.admin && !('group' in block.admin)) completenessScore -= 10
 
       // Deduct points for field-level issues
       const fieldIssues = issues.filter((issue) => issue.fieldPath.includes('.'))

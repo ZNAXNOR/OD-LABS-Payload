@@ -74,7 +74,7 @@ export class PropertyTestGenerator {
     // For any string outside constraints, validation should fail
     fc.assert(
       fc.property(
-        ${this.generateArbitraryCode(generators[0])},
+        ${generators[0] ? this.generateArbitraryCode(generators[0]) : 'fc.string()'},
         async (value) => {
           const field = ${blockSlug}Block.fields.find(f => f.name === '${field.name}')
           const isValid = await validateField(field, value)
@@ -142,7 +142,7 @@ export class PropertyTestGenerator {
     // For any number outside range, validation should fail
     fc.assert(
       fc.property(
-        ${this.generateArbitraryCode(generators[0])},
+        ${generators[0] ? this.generateArbitraryCode(generators[0]) : 'fc.integer()'},
         async (value) => {
           const field = ${blockSlug}Block.fields.find(f => f.name === '${field.name}')
           const isValid = await validateField(field, value)
@@ -310,7 +310,7 @@ export class PropertyTestGenerator {
     // For any value, validation result should be consistent
     fc.assert(
       fc.property(
-        ${this.generateArbitraryCode(generators[0])},
+        ${generators[0] ? this.generateArbitraryCode(generators[0]) : 'fc.anything()'},
         async (value) => {
           const field = ${blockSlug}Block.fields.find(f => f.name === '${field.name}')
           

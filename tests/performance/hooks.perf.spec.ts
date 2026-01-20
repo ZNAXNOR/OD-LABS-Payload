@@ -104,7 +104,7 @@ describe('Hook Performance Benchmarks', () => {
       const data = { title: 'Simple Blog Post Title' }
 
       const startTime = performance.now()
-      await hook({
+      const result = await hook({
         data,
         req: mockReq as any,
         operation: 'create',
@@ -112,8 +112,9 @@ describe('Hook Performance Benchmarks', () => {
       const endTime = performance.now()
 
       const executionTime = endTime - startTime
+      const finalData = result || data
 
-      expect(data.slug).toBe('simple-blog-post-title')
+      expect(finalData.slug).toBe('simple-blog-post-title')
       expect(executionTime).toBeLessThan(20)
       console.log(`Slug generation (simple) execution time: ${executionTime.toFixed(3)}ms`)
     })
@@ -128,7 +129,7 @@ describe('Hook Performance Benchmarks', () => {
       }
 
       const startTime = performance.now()
-      await hook({
+      const result = await hook({
         data,
         req: mockReq as any,
         operation: 'create',
@@ -136,8 +137,9 @@ describe('Hook Performance Benchmarks', () => {
       const endTime = performance.now()
 
       const executionTime = endTime - startTime
+      const finalData = result || data
 
-      expect(data.slug).toBe('complex-title-with-special-characters-symbols-123')
+      expect(finalData.slug).toBe('complex-title-with-special-characters-symbols-123')
       expect(executionTime).toBeLessThan(20)
       console.log(`Slug generation (complex) execution time: ${executionTime.toFixed(3)}ms`)
     })
@@ -154,7 +156,7 @@ describe('Hook Performance Benchmarks', () => {
       }
 
       const startTime = performance.now()
-      await hook({
+      const result = await hook({
         data,
         req: mockReq as any,
         operation: 'create',
@@ -162,8 +164,9 @@ describe('Hook Performance Benchmarks', () => {
       const endTime = performance.now()
 
       const executionTime = endTime - startTime
+      const finalData = result || data
 
-      expect(data.slug.length).toBeLessThanOrEqual(100)
+      expect(finalData.slug.length).toBeLessThanOrEqual(100)
       expect(executionTime).toBeLessThan(20)
       console.log(`Slug generation (long) execution time: ${executionTime.toFixed(3)}ms`)
     })

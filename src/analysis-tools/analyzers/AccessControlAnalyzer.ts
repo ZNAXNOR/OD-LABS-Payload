@@ -236,7 +236,7 @@ export class AccessControlAnalyzer {
   /**
    * Check for insecure default access patterns
    */
-  private checkInsecureDefaults(block: Block): boolean {
+  private checkInsecureDefaults(_block: Block): boolean {
     // This is a heuristic check - in real implementation,
     // we would need to analyze the actual function code
     // For now, we just check if access exists

@@ -7,11 +7,24 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
+    globals: true,
     include: [
       'tests/int/**/*.int.spec.ts',
+      'tests/int/**/*.int.spec.tsx',
       'tests/unit/**/*.unit.spec.ts',
+      'tests/unit/**/*.unit.spec.tsx',
       'tests/pbt/**/*.pbt.spec.ts',
       'tests/performance/**/*.perf.spec.ts',
     ],
+    // Mock CSS/SCSS imports
+    css: {
+      modules: {
+        classNameStrategy: 'non-scoped',
+      },
+    },
+  },
+  // Handle CSS/SCSS imports in tests
+  define: {
+    'process.env.NODE_ENV': '"test"',
   },
 })

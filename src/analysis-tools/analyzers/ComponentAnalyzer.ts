@@ -9,6 +9,7 @@ import type {
   ComponentAnalysisResult,
   ComponentMetrics,
   Issue,
+  IssueType,
   Suggestion,
   AccessibilityIssue,
   PerformanceIssue,
@@ -185,7 +186,7 @@ export class ComponentAnalyzer {
   /**
    * Check security (placeholder for future implementation)
    */
-  checkSecurity(component: Component): SecurityIssue[] {
+  checkSecurity(_component: Component): SecurityIssue[] {
     // TODO: Implement security checks (XSS, injection, etc.)
     return []
   }
@@ -197,7 +198,7 @@ export class ComponentAnalyzer {
     component: Component,
     accessibilityIssues: AccessibilityIssue[],
     performanceIssues: PerformanceIssue[],
-    errorHandlingIssues: ErrorHandlingIssue[],
+    _errorHandlingIssues: ErrorHandlingIssue[],
   ): ComponentMetrics {
     const lineCount = this.calculateLineCount(component)
     const complexity = this.calculateComplexity(component)
@@ -250,11 +251,11 @@ export class ComponentAnalyzer {
   private convertTypingIssuesToIssues(
     typingIssues: TypingIssue[],
     componentPath: string,
-    componentName: string,
+    _componentName: string,
   ): Issue[] {
     return typingIssues.map((issue) => ({
       id: generateId('typing'),
-      type: issue.type,
+      type: issue.type as IssueType,
       severity: issue.type === 'any-type' ? 'high' : 'medium',
       category: 'typing' as const,
       title: 'Type Safety Issue',
@@ -273,11 +274,11 @@ export class ComponentAnalyzer {
   private convertAccessibilityIssuesToIssues(
     accessibilityIssues: AccessibilityIssue[],
     componentPath: string,
-    componentName: string,
+    _componentName: string,
   ): Issue[] {
     return accessibilityIssues.map((issue) => ({
       id: generateId('accessibility'),
-      type: issue.type,
+      type: issue.type as IssueType,
       severity: issue.wcagLevel === 'A' ? 'high' : issue.wcagLevel === 'AA' ? 'medium' : 'low',
       category: 'accessibility' as const,
       title: `Accessibility Issue (WCAG ${issue.wcagLevel})`,
@@ -297,11 +298,11 @@ export class ComponentAnalyzer {
   private convertPerformanceIssuesToIssues(
     performanceIssues: PerformanceIssue[],
     componentPath: string,
-    componentName: string,
+    _componentName: string,
   ): Issue[] {
     return performanceIssues.map((issue) => ({
       id: generateId('performance'),
-      type: issue.type,
+      type: issue.type as IssueType,
       severity: issue.impact === 'high' ? 'high' : issue.impact === 'medium' ? 'medium' : 'low',
       category: 'performance' as const,
       title: 'Performance Issue',
@@ -319,7 +320,7 @@ export class ComponentAnalyzer {
   private convertErrorHandlingIssuesToIssues(
     errorHandlingIssues: ErrorHandlingIssue[],
     componentPath: string,
-    componentName: string,
+    _componentName: string,
   ): Issue[] {
     return errorHandlingIssues.map((issue) => ({
       id: generateId('error-handling'),

@@ -4,7 +4,6 @@
  * Checks for missing alt text, ARIA labels, semantic HTML, keyboard navigation, etc.
  */
 
-import * as ts from 'typescript'
 import type { Component, JSXElement, AccessibilityIssue } from '../types'
 
 export class AccessibilityAnalyzer {

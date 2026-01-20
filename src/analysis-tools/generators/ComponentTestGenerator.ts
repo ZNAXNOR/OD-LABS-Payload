@@ -295,7 +295,11 @@ ${interactionCode}
     requiredProps: PropDefinition[],
   ): Test {
     const testName = `should require necessary props`
-    const propsWithoutRequired = this.generatePropsWithout(component.props, requiredProps[0].name)
+    const firstRequiredProp = requiredProps[0]
+    if (!firstRequiredProp) {
+      throw new Error('No required props provided for test generation')
+    }
+    const propsWithoutRequired = this.generatePropsWithout(component.props, firstRequiredProp.name)
 
     const code = `
   it('${this.escapeString(testName)}', () => {

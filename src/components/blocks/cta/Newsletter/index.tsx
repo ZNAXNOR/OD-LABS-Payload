@@ -86,7 +86,7 @@ export const NewsletterBlock: React.FC<NewsletterBlockProps> = ({
               className="text-2xl font-bold text-green-900 dark:text-green-100 mb-2"
               // ✅ Added heading level context
               role="heading"
-              aria-level="3"
+              aria-level={3}
             >
               {successMessage}
             </h3>

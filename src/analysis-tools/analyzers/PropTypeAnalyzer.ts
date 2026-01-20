@@ -115,11 +115,11 @@ export class PropTypeAnalyzer {
         const firstParam = node.parameters[0]
 
         // Check if parameter is named 'props' or uses destructuring
-        if (ts.isIdentifier(firstParam.name)) {
+        if (firstParam && ts.isIdentifier(firstParam.name)) {
           if (firstParam.name.text === 'props') {
             usesProps = true
           }
-        } else if (ts.isObjectBindingPattern(firstParam.name)) {
+        } else if (firstParam && ts.isObjectBindingPattern(firstParam.name)) {
           // Component uses destructured props
           usesProps = true
         }

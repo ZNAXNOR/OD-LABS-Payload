@@ -517,8 +517,10 @@ export class SecurityAnalyzer {
   private hasUploadSanitization(block: Block): boolean {
     if (!block.hooks) return false
 
-    const hasBeforeChange = block.hooks.beforeChange && block.hooks.beforeChange.length > 0
-    const hasBeforeValidate = block.hooks.beforeValidate && block.hooks.beforeValidate.length > 0
+    const hasBeforeChange = Boolean(block.hooks.beforeChange && block.hooks.beforeChange.length > 0)
+    const hasBeforeValidate = Boolean(
+      block.hooks.beforeValidate && block.hooks.beforeValidate.length > 0,
+    )
 
     return hasBeforeChange || hasBeforeValidate
   }

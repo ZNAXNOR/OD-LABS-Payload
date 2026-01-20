@@ -213,7 +213,7 @@ export class BlockAnalyzer {
   private convertFieldValidationToIssues(
     results: any[],
     blockPath: string,
-    blockSlug: string,
+    _blockSlug: string,
   ): Issue[] {
     const issues: Issue[] = []
 
@@ -244,7 +244,7 @@ export class BlockAnalyzer {
   private convertTypingIssuesToIssues(
     typingIssues: any[],
     blockPath: string,
-    blockSlug: string,
+    _blockSlug: string,
   ): Issue[] {
     return typingIssues.map((issue) => ({
       id: generateId('typing'),
@@ -267,7 +267,7 @@ export class BlockAnalyzer {
   private convertSecurityIssuesToIssues(
     securityIssues: any[],
     blockPath: string,
-    blockSlug: string,
+    _blockSlug: string,
   ): Issue[] {
     return securityIssues.map((issue) => ({
       id: generateId('security'),
@@ -289,7 +289,7 @@ export class BlockAnalyzer {
   private convertAdminConfigIssuesToIssues(
     adminConfigIssues: any[],
     blockPath: string,
-    blockSlug: string,
+    _blockSlug: string,
   ): Issue[] {
     return adminConfigIssues.map((issue) => ({
       id: generateId('admin-config'),

@@ -5,7 +5,7 @@
 
 import * as ts from 'typescript'
 import * as fs from 'fs/promises'
-import * as path from 'path'
+// import * as path from 'path'
 import type { Block } from '../types'
 
 export interface ParsedBlockConfig {
@@ -24,19 +24,19 @@ export interface ParseError {
 }
 
 export class BlockConfigParser {
-  private compilerOptions: ts.CompilerOptions
+  // private compilerOptions: ts.CompilerOptions
 
   constructor() {
-    this.compilerOptions = {
-      target: ts.ScriptTarget.ESNext,
-      module: ts.ModuleKind.ESNext,
-      moduleResolution: ts.ModuleResolutionKind.NodeNext,
-      esModuleInterop: true,
-      skipLibCheck: true,
-      allowSyntheticDefaultImports: true,
-      strict: true,
-      jsx: ts.JsxEmit.React,
-    }
+    // this.compilerOptions = {
+    //   target: ts.ScriptTarget.ESNext,
+    //   module: ts.ModuleKind.ESNext,
+    //   moduleResolution: ts.ModuleResolutionKind.NodeNext,
+    //   esModuleInterop: true,
+    //   skipLibCheck: true,
+    //   allowSyntheticDefaultImports: true,
+    //   strict: true,
+    //   jsx: ts.JsxEmit.React,
+    // }
   }
 
   /**

@@ -98,12 +98,13 @@ export class FeatureDetector {
    * Detect features in fields recursively
    */
   private detectFieldFeatures(fields: Field[], prefix: string = 'fields'): DetectedFeature[] {
-    const features: DetectedFeature[] = []
     const featureMap = new Map<FeatureType, DetectedFeature>()
 
     const processFields = (fields: Field[], path: string) => {
       for (let i = 0; i < fields.length; i++) {
         const field = fields[i]
+        if (!field) continue
+
         const fieldPath = `${path}[${i}]${field.name ? `.${field.name}` : ''}`
 
         // Custom validation
@@ -416,7 +417,8 @@ export class FeatureDetector {
     }
 
     // Create missing feature reports
-    for (const [featureType, usedInBlocks] of featureUsage.entries()) {
+    for (const entry of Array.from(featureUsage.entries())) {
+      const [featureType, usedInBlocks] = entry
       if (!localFeatureTypes.has(featureType)) {
         const exampleFeature = this.getFeatureExample(featureType)
         missingFeatures.push({

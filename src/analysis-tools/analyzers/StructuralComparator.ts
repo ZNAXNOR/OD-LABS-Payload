@@ -172,11 +172,23 @@ export class StructuralComparator {
     let orderDifferent = false
     for (let i = 0; i < localOrder.length - 1; i++) {
       for (let j = i + 1; j < localOrder.length; j++) {
-        const localRelativeOrder = localOrder[i] < localOrder[j]
-        const officialRelativeOrder = officialOrder[i] < officialOrder[j]
-        if (localRelativeOrder !== officialRelativeOrder) {
-          orderDifferent = true
-          break
+        const localI = localOrder[i]
+        const localJ = localOrder[j]
+        const officialI = officialOrder[i]
+        const officialJ = officialOrder[j]
+
+        if (
+          localI !== undefined &&
+          localJ !== undefined &&
+          officialI !== undefined &&
+          officialJ !== undefined
+        ) {
+          const localRelativeOrder = localI < localJ
+          const officialRelativeOrder = officialI < officialJ
+          if (localRelativeOrder !== officialRelativeOrder) {
+            orderDifferent = true
+            break
+          }
         }
       }
       if (orderDifferent) break

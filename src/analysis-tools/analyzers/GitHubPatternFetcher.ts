@@ -263,7 +263,7 @@ export class GitHubPatternFetcher {
 
       // Extract slug
       const slugMatch = source.match(/slug:\s*['"]([^'"]+)['"]/m)
-      const slug = slugMatch ? slugMatch[1] : blockName
+      const slug = slugMatch?.[1] || blockName
 
       // Extract features (simplified detection)
       const features: string[] = []

@@ -275,7 +275,7 @@ export class TypingAnalyzer {
     issues.forEach((issue) => {
       // Extract field path from location string
       const match = issue.location.match(/Field: ([^,]+)/)
-      if (match) {
+      if (match && match[1]) {
         fieldPaths.add(match[1])
       }
     })

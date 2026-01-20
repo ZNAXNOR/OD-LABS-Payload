@@ -263,7 +263,7 @@ export class AnalysisOrchestrator {
                 hasInterfaceName: false,
                 complexityScore: 0,
               },
-            }
+            } as BlockAnalysisResult
           }
         }),
       )
@@ -358,7 +358,7 @@ export class AnalysisOrchestrator {
                 accessibilityScore: 0,
                 performanceScore: 0,
               },
-            }
+            } as ComponentAnalysisResult
           }
         }),
       )
@@ -382,7 +382,10 @@ export class AnalysisOrchestrator {
     const pairs = this.matchBlocksWithComponents(blocks, components)
 
     for (let i = 0; i < pairs.length; i++) {
-      const { block, component } = pairs[i]
+      const pair = pairs[i]
+      if (!pair) continue
+
+      const { block, component } = pair
 
       try {
         // Parse block and component for validation
@@ -444,24 +447,27 @@ export class AnalysisOrchestrator {
       // Compare each block
       for (let i = 0; i < blocks.length; i++) {
         const block = blocks[i]
+        if (!block) continue
 
         try {
           // Parse block config
           const blockConfig = await this.blockParser.parseBlockConfig(block.blockPath)
 
           // Find matching official pattern
-          const matchingPattern = this.patternComparator.findMatchingPattern(
-            blockConfig.block,
-            officialPatterns,
-          )
-
-          if (matchingPattern) {
-            // Compare with official pattern
-            const comparison = this.patternComparator.compareBlock(
+          if (blockConfig.block) {
+            const matchingPattern = this.patternComparator.findMatchingPattern(
               blockConfig.block,
-              matchingPattern.config,
+              officialPatterns,
             )
-            results.push(comparison)
+
+            if (matchingPattern) {
+              // Compare with official pattern
+              const comparison = this.patternComparator.compareBlock(
+                blockConfig.block,
+                matchingPattern.config,
+              )
+              results.push(comparison)
+            }
           }
 
           this.reportProgress('patterns', i + 1, blocks.length)
@@ -470,7 +476,7 @@ export class AnalysisOrchestrator {
             'patterns',
             i + 1,
             blocks.length,
-            `Error comparing ${block.blockSlug}: ${(error as Error).message}`,
+            `Error comparing ${block?.blockSlug || 'unknown'}: ${(error as Error).message}`,
           )
         }
       }
@@ -492,7 +498,7 @@ export class AnalysisOrchestrator {
   async generateTests(
     blocks: BlockAnalysisResult[],
     components: ComponentAnalysisResult[],
-    integration: IntegrationResult[],
+    _integration: IntegrationResult[],
   ): Promise<TestGenerationResult> {
     try {
       // Parse blocks and components for test generation
@@ -633,7 +639,7 @@ export class AnalysisOrchestrator {
    */
   private async identifyMissingFeatures(
     blocks: BlockAnalysisResult[],
-    patterns: PatternComparisonResult[],
+    _patterns: PatternComparisonResult[],
   ): Promise<any[]> {
     try {
       // Parse blocks
