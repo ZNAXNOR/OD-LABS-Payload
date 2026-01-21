@@ -26,12 +26,19 @@ export class ProgressManager {
     if (this.steps.length === 0) return
 
     const firstStep = this.steps[0]
+    if (!firstStep) {
+      throw new Error('No steps provided to ProgressManager')
+    }
     this.spinner.start(this.formatStepMessage(firstStep, 0))
   }
 
   nextStep(message?: string): void {
     if (this.currentStepIndex < this.steps.length) {
       const currentStep = this.steps[this.currentStepIndex]
+      if (!currentStep) {
+        throw new Error('Invalid step index')
+      }
+
       this.completedWeight += currentStep.weight
 
       if (this.verbose) {
@@ -43,18 +50,42 @@ export class ProgressManager {
 
     if (this.currentStepIndex < this.steps.length) {
       const nextStep = this.steps[this.currentStepIndex]
+      if (!nextStep) {
+        throw new Error('Invalid next step index')
+      }
+
       const progress = Math.round((this.completedWeight / this.totalWeight) * 100)
 
       const stepMessage = message || nextStep.title
-      this.spinner.start(this.formatStepMessage({ ...nextStep, title: stepMessage }, progress))
+      this.spinner.start(
+        this.formatStepMessage(
+          {
+            id: nextStep.id,
+            title: stepMessage,
+            weight: nextStep.weight,
+          },
+          progress,
+        ),
+      )
     }
   }
 
   updateCurrentStep(message: string): void {
     if (this.currentStepIndex < this.steps.length) {
       const currentStep = this.steps[this.currentStepIndex]
+      if (!currentStep) {
+        throw new Error('Invalid current step index')
+      }
+
       const progress = Math.round((this.completedWeight / this.totalWeight) * 100)
-      this.spinner.text = this.formatStepMessage({ ...currentStep, title: message }, progress)
+      this.spinner.text = this.formatStepMessage(
+        {
+          id: currentStep.id,
+          title: message,
+          weight: currentStep.weight,
+        },
+        progress,
+      )
     }
   }
 

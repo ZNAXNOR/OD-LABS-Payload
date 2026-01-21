@@ -1,0 +1,160 @@
+// Content Block Styles
+.contentBlock {
+  padding: 2rem 0;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .grid {
+    display: grid;
+    width: 100%;
+
+    // Responsive grid adjustments
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      &[style*='1fr 1fr 1fr'] {
+        grid-template-columns: 1fr 1fr !important;
+      }
+
+      &[style*='1fr 1fr 1fr 1fr'] {
+        grid-template-columns: 1fr 1fr !important;
+      }
+    }
+  }
+
+  .contentColumn {
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+
+    &.clickable {
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+        transform: translateY(-2px);
+      }
+    }
+
+    // Background colors
+    &.bgWhite {
+      background-color: #ffffff;
+    }
+
+    &.bgZinc50 {
+      background-color: #fafafa;
+    }
+
+    &.bgZinc100 {
+      background-color: #f4f4f5;
+    }
+
+    &.bgPrimary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    // Padding variations
+    &.paddingNone {
+      padding: 0;
+    }
+
+    &.paddingSmall {
+      padding: 1rem;
+    }
+
+    &.paddingMedium {
+      padding: 1.5rem;
+    }
+
+    &.paddingLarge {
+      padding: 2rem;
+    }
+
+    // Rich text content styling
+    :global(.rich-text) {
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+      }
+
+      p {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      ul,
+      ol {
+        margin-bottom: 1rem;
+        padding-left: 1.5rem;
+
+        li {
+          margin-bottom: 0.5rem;
+          line-height: 1.5;
+        }
+      }
+
+      a {
+        color: var(--primary);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        margin: 1rem 0;
+      }
+
+      blockquote {
+        border-left: 4px solid var(--primary);
+        padding-left: 1rem;
+        margin: 1rem 0;
+        font-style: italic;
+        color: var(--muted-foreground);
+      }
+
+      code {
+        background-color: var(--muted);
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        font-size: 0.875em;
+        font-family: 'Fira Code', monospace;
+      }
+
+      pre {
+        background-color: var(--muted);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+
+        code {
+          background: none;
+          padding: 0;
+        }
+      }
+    }
+  }
+}

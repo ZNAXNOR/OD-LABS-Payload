@@ -42,10 +42,10 @@ export const helpCommand = new Command('help')
     console.log('')
     console.log(chalk.bold('OPTIONS:'))
     console.log(
-      '  -b, --blocks-dir <path>     Directory containing block configurations (default: src/blocks)',
+      '  -b, --blocks-dir <path>     Directory containing block configurations (auto-detected)',
     )
     console.log(
-      '  -c, --components-dir <path> Directory containing React components (default: src/components)',
+      '  -c, --components-dir <path> Directory containing React components (auto-detected)',
     )
     console.log(
       '  -s, --scope <scope>         Analysis scope: blocks, components, or full (default: full)',

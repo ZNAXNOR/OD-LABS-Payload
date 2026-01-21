@@ -319,10 +319,24 @@ taskkill /PID <PID> /F
 
 ## Resources
 
+### External Documentation
+
 - [Payload CMS Documentation](https://payloadcms.com/docs)
 - [Next.js Documentation](https://nextjs.org/docs)
-- [Project Specifications](.kiro/specs/)
-- [Security Guidelines](.agent/rules/security-critical.md)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+
+### Project Documentation
+
+- [Project Specifications](.kiro/specs/) - Feature specifications and design documents
+- [Implementation Summaries](docs/IMPLEMENTATION_SUMMARIES.md) - Consolidated implementation details
+- [Migration Guide](docs/MIGRATION.md) - Detailed migration and restructuring information
+
+### Development Guidelines
+
+- [Security Guidelines](.kiro/steering/security-critical.md) - Critical security patterns
+- [Payload CMS Best Practices](.kiro/steering/payload-overview.md) - Development rules and patterns
+- [Component Guidelines](src/components/blocks/ACCESSIBILITY.md) - Accessibility implementation guide
+- [Analysis Tools](src/analysis-tools/README.md) - Code analysis and quality tools
 
 ## Getting Help
 

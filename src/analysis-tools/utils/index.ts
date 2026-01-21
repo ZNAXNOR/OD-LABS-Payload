@@ -90,7 +90,7 @@ export function deepMerge<T extends Record<string, any>>(target: T, source: Part
     const targetValue = result[key]
 
     if (isPlainObject(sourceValue) && isPlainObject(targetValue)) {
-      result[key] = deepMerge(targetValue, sourceValue)
+      result[key] = deepMerge(targetValue, sourceValue as Partial<typeof targetValue>)
     } else if (sourceValue !== undefined) {
       result[key] = sourceValue as any
     }

@@ -2,7 +2,7 @@
  * Vitest setup file for analysis tools tests
  */
 
-import { expect, beforeAll, afterAll } from 'vitest'
+import { beforeAll, afterAll } from 'vitest'
 import fc from 'fast-check'
 
 // Configure fast-check globally for all property-based tests

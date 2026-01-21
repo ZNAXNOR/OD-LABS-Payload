@@ -1,5 +1,5 @@
 'use client'
-import { GenericRowLabel } from '@/components/RowLabel'
+import { GenericRowLabel } from '@/components/admin/RowLabel'
 
 export const RowLabel = () => {
   return <GenericRowLabel fields={['label']} prefix="Tab" />

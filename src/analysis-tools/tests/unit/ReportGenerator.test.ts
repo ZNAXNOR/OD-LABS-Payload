@@ -200,8 +200,8 @@ describe('ReportGenerator', () => {
 
       const summary = generator.generateSummary(issues, [], [])
 
-      expect(summary.topIssues[0].severity).toBe('critical')
-      expect(summary.topIssues[1].severity).toBe('low')
+      expect(summary.topIssues[0]?.severity).toBe('critical')
+      expect(summary.topIssues[1]?.severity).toBe('low')
     })
 
     it('should calculate quality score correctly', () => {
@@ -267,9 +267,9 @@ describe('ReportGenerator', () => {
 
       const prioritized = generator.prioritizeIssues(issues)
 
-      expect(prioritized[0].severity).toBe('critical')
-      expect(prioritized[1].severity).toBe('high')
-      expect(prioritized[2].severity).toBe('low')
+      expect(prioritized[0]?.severity).toBe('critical')
+      expect(prioritized[1]?.severity).toBe('high')
+      expect(prioritized[2]?.severity).toBe('low')
     })
 
     it('should group related issues by file', () => {
@@ -299,9 +299,9 @@ describe('ReportGenerator', () => {
       const prioritized = generator.prioritizeIssues(issues)
 
       // Both issues should have relatedIssues linking to each other
-      expect(prioritized[0].relatedIssues).toBeDefined()
-      expect(prioritized[0].relatedIssues).toContain(prioritized[1].id)
-      expect(prioritized[1].relatedIssues).toContain(prioritized[0].id)
+      expect(prioritized[0]?.relatedIssues).toBeDefined()
+      expect(prioritized[0]?.relatedIssues).toContain(prioritized[1]?.id)
+      expect(prioritized[1]?.relatedIssues).toContain(prioritized[0]?.id)
     })
 
     it('should handle empty issues array', () => {
@@ -401,10 +401,10 @@ describe('ReportGenerator', () => {
       expect(report.implementationGuide.estimatedEffort).toBeDefined()
 
       const improvement = report.implementationGuide.improvements[0]
-      expect(improvement.priority).toBe(1)
-      expect(improvement.affectedFiles).toContain('src/blocks/Hero/config.ts')
-      expect(improvement.steps.length).toBeGreaterThan(0)
-      expect(improvement.codeExamples.length).toBeGreaterThan(0)
+      expect(improvement?.priority).toBe(1)
+      expect(improvement?.affectedFiles).toContain('src/blocks/Hero/config.ts')
+      expect(improvement?.steps.length).toBeGreaterThan(0)
+      expect(improvement?.codeExamples.length).toBeGreaterThan(0)
     })
 
     it('should calculate total effort correctly', () => {
@@ -486,7 +486,7 @@ describe('ReportGenerator', () => {
 
       const report = generator.generateReport(blocks, [], [], [], [])
 
-      expect(report.implementationGuide.improvements[0].codeExamples).toHaveLength(0)
+      expect(report.implementationGuide.improvements[0]?.codeExamples).toHaveLength(0)
     })
 
     it('should handle components with perfect metrics', () => {

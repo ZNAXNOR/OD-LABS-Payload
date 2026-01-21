@@ -1,5 +1,5 @@
 import type { Header as HeaderType } from '@/payload-types'
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/ui/Link'
 import { cn } from '@/utilities/ui'
 
 type Tab = NonNullable<HeaderType['tabs']>[number]

@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
-import { Logo } from '@/components/Logo/Logo'
+import { Logo } from '@/components/layout/Logo/Logo'
 import { cn } from '@/utilities/ui'
 
 interface HeaderBarProps {

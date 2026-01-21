@@ -1,8 +1,8 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import type { Header as HeaderType } from '@/payload-types'
-import { CMSLink } from '@/components/Link'
-import { Logo } from '@/components/Logo/Logo'
+import { CMSLink } from '@/components/ui/Link'
+import { Logo } from '@/components/layout/Logo/Logo'
 import { ChevronRight, ChevronLeft, X } from 'lucide-react'
 import { cn } from '@/utilities/ui'
 

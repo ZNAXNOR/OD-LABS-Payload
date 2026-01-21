@@ -2,9 +2,10 @@
  * Parallel processing utilities for performance optimization
  */
 
-import { Worker, isMainThread, parentPort, workerData } from 'worker_threads'
+import { Worker } from 'worker_threads'
+// import { isMainThread, parentPort, workerData } from 'worker_threads' // Unused - commented out
 import { cpus } from 'os'
-import { join } from 'path'
+// import { join } from 'path' // Unused - commented out
 
 export interface ParallelOptions {
   maxWorkers?: number
@@ -157,7 +158,7 @@ export class ParallelProcessor<T, R> {
     return this.workers.find((worker) => !this.isWorkerBusy(worker)) || null
   }
 
-  private isWorkerBusy(worker: Worker): boolean {
+  private isWorkerBusy(_worker: Worker): boolean {
     // Check if worker has active tasks
     // This is a simplified implementation
     return false // For now, assume workers are always available
@@ -191,7 +192,7 @@ export class ParallelProcessor<T, R> {
     }
   }
 
-  private handleWorkerError(worker: Worker, error: Error): void {
+  private handleWorkerError(_worker: Worker, error: Error): void {
     console.error('Worker error:', error)
 
     // Find and reject all tasks assigned to this worker

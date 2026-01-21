@@ -1,5 +1,5 @@
 import React from 'react'
-import { Media } from '@/components/Media'
+import { Media } from '@/components/ui/Media'
 import type { Media as MediaType } from '@/payload-types'
 
 interface SocialProofBlockProps {

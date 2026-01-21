@@ -48,3 +48,40 @@ export { DividerBlock } from './layout/Divider'
 export { default as DividerBlockDefault } from './layout/Divider'
 export { SpacerBlock } from './layout/Spacer'
 export { default as SpacerBlockDefault } from './layout/Spacer'
+
+// Category-based exports for tree-shaking
+export const blockCategories = {
+  hero: () => import('./hero/Hero'),
+  services: {
+    ServicesGrid: () => import('./services/ServicesGrid'),
+    TechStack: () => import('./services/TechStack'),
+    ProcessSteps: () => import('./services/ProcessSteps'),
+    PricingTable: () => import('./services/PricingTable'),
+  },
+  portfolio: {
+    ProjectShowcase: () => import('./portfolio/ProjectShowcase'),
+    CaseStudy: () => import('./portfolio/CaseStudy'),
+    BeforeAfter: () => import('./portfolio/BeforeAfter'),
+    Testimonial: () => import('./portfolio/Testimonial'),
+  },
+  technical: {
+    FeatureGrid: () => import('./technical/FeatureGrid'),
+    StatsCounter: () => import('./technical/StatsCounter'),
+    FAQAccordion: () => import('./technical/FAQAccordion'),
+    Timeline: () => import('./technical/Timeline'),
+  },
+  cta: {
+    ContactForm: () => import('./cta/ContactForm'),
+    Newsletter: () => import('./cta/Newsletter'),
+    SocialProof: () => import('./cta/SocialProof'),
+  },
+  content: () => import('./content/Content'),
+  layout: {
+    Container: () => import('./layout/Container'),
+    Divider: () => import('./layout/Divider'),
+    Spacer: () => import('./layout/Spacer'),
+  },
+} as const
+
+// Type definitions
+export type BlockCategory = keyof typeof blockCategories

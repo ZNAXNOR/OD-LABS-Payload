@@ -1,6 +1,6 @@
 import React from 'react'
 import { cn } from '@/utilities/ui'
-import RichText from '@/components/RichText'
+import RichText from '@/components/ui/RichText'
 
 interface ContainerBlockType {
   blockType: 'container'

@@ -1,0 +1,1 @@
+export { SocialProofBlock } from './config'

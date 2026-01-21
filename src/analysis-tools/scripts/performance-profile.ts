@@ -7,8 +7,8 @@
 
 import { performance } from 'perf_hooks'
 import { AnalysisOrchestrator } from '../analyzers/AnalysisOrchestrator.js'
-import { BlockAnalyzer } from '../analyzers/BlockAnalyzer.js'
-import { ComponentAnalyzer } from '../analyzers/ComponentAnalyzer.js'
+// import { BlockAnalyzer } from '../analyzers/BlockAnalyzer.js' // Unused - commented out
+// import { ComponentAnalyzer } from '../analyzers/ComponentAnalyzer.js' // Unused - commented out
 import { IntegrationValidator } from '../analyzers/IntegrationValidator.js'
 import { PatternComparator } from '../analyzers/PatternComparator.js'
 import { SecurityAnalyzer } from '../analyzers/SecurityAnalyzer.js'
@@ -106,51 +106,18 @@ class PerformanceProfiler {
 
     await this.profileAnalyzer('Security Analysis', async () => {
       const analyzer = new SecurityAnalyzer()
-      return analyzer.analyzeBlock({ slug: 'test', fields: [] })
+      return analyzer.analyzeBlockSecurity({ slug: 'test', fields: [] })
     })
 
     await this.profileAnalyzer('Report Generation', async () => {
       const generator = new ReportGenerator()
-      return generator.generateReport({
-        blocks: [],
-        components: [],
-        integration: {
-          blockSlug: 'test',
-          componentName: 'Test',
-          isValid: true,
-          issues: [],
-          suggestions: [],
-        },
-        patterns: [],
-        tests: { testSuites: [], generatedFiles: [] },
-        report: {
-          summary: {
-            totalBlocks: 0,
-            totalComponents: 0,
-            totalIssues: 0,
-            issuesBySeverity: {},
-            overallScore: 100,
-            topIssues: [],
-          },
-          blockAnalysis: [],
-          componentAnalysis: [],
-          integrationAnalysis: {
-            blockSlug: 'test',
-            componentName: 'Test',
-            isValid: true,
-            issues: [],
-            suggestions: [],
-          },
-          patternComparison: {
-            blockSlug: 'test',
-            structuralDifferences: [],
-            featureDifferences: [],
-            organizationDifferences: [],
-          },
-          implementationGuide: { improvements: [], estimatedEffort: '0 hours' },
-          generatedAt: new Date(),
-        },
-      })
+      return generator.generateReport(
+        [], // blocks
+        [], // components
+        [], // integration
+        [], // patterns
+        [], // missingFeatures
+      )
     })
 
     // Profile full orchestrated analysis
@@ -242,7 +209,7 @@ class PerformanceProfiler {
     suggestions.forEach((suggestion) => console.log(suggestion))
   }
 
-  private suggestMemoryOptimizations(metric: PerformanceMetrics): void {
+  private suggestMemoryOptimizations(_metric: PerformanceMetrics): void {
     const suggestions: string[] = []
 
     suggestions.push('  • Implement object pooling for frequently created objects')

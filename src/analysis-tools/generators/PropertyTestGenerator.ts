@@ -340,7 +340,7 @@ export class PropertyTestGenerator {
   /**
    * Wrap property test with necessary boilerplate
    */
-  private wrapPropertyTest(fieldName: string, property: string, blockSlug: string): string {
+  private wrapPropertyTest(fieldName: string, property: string, _blockSlug: string): string {
     return `
   it('Property test: ${this.escapeString(fieldName)} validation', async () => {
     const validateField = async (field: any, value: any) => {

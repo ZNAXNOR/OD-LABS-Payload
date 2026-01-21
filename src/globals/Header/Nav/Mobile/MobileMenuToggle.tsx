@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { Menu } from 'lucide-react'
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/ui/Link'
 import type { Header as HeaderType } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 

@@ -42,8 +42,8 @@ describe('IntegrationValidator', () => {
 
       const issues = validator.validateFieldMapping(fields, props)
       expect(issues).toHaveLength(1)
-      expect(issues[0].type).toBe('missing-prop')
-      expect(issues[0].fieldName).toBe('description')
+      expect(issues[0]?.type).toBe('missing-prop')
+      expect(issues[0]?.fieldName).toBe('description')
     })
 
     it('should detect extra props', () => {
@@ -56,8 +56,8 @@ describe('IntegrationValidator', () => {
 
       const issues = validator.validateFieldMapping(fields, props)
       expect(issues).toHaveLength(1)
-      expect(issues[0].type).toBe('extra-prop')
-      expect(issues[0].fieldName).toBe('extraProp')
+      expect(issues[0]?.type).toBe('extra-prop')
+      expect(issues[0]?.fieldName).toBe('extraProp')
     })
 
     it('should ignore common React props', () => {
@@ -80,8 +80,8 @@ describe('IntegrationValidator', () => {
 
       const issues = validator.validateFieldMapping(fields, props)
       expect(issues).toHaveLength(1)
-      expect(issues[0].type).toBe('type-mismatch')
-      expect(issues[0].fieldName).toBe('count')
+      expect(issues[0]?.type).toBe('type-mismatch')
+      expect(issues[0]?.fieldName).toBe('count')
     })
 
     it('should handle nested fields in groups', () => {
@@ -147,7 +147,7 @@ describe('IntegrationValidator', () => {
 
       const issues = validator.validateFieldMapping(fields, props)
       expect(issues).toHaveLength(1)
-      expect(issues[0].severity).toBe('critical')
+      expect(issues[0]?.severity).toBe('critical')
     })
 
     it('should assign high severity to missing optional field props', () => {
@@ -157,7 +157,7 @@ describe('IntegrationValidator', () => {
 
       const issues = validator.validateFieldMapping(fields, props)
       expect(issues).toHaveLength(1)
-      expect(issues[0].severity).toBe('high')
+      expect(issues[0]?.severity).toBe('high')
     })
   })
 
@@ -299,7 +299,7 @@ describe('IntegrationValidator', () => {
 
       const issues = validator.validatePreview(block)
       expect(issues).toHaveLength(1)
-      expect(issues[0].type).toBe('missing-preview-file')
+      expect(issues[0]?.type).toBe('missing-preview-file')
     })
   })
 

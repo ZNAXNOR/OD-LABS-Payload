@@ -403,7 +403,7 @@ export class ReportGenerator {
     // Link related issues
     const processedIssues: Issue[] = []
 
-    issuesByFile.forEach((fileIssues, file) => {
+    issuesByFile.forEach((fileIssues, _file) => {
       fileIssues.forEach((issue, index) => {
         const relatedIssues = fileIssues
           .filter((_, i) => i !== index)
@@ -504,7 +504,7 @@ export class ReportGenerator {
    * Generate recommendations from pattern comparison
    */
   private generatePatternRecommendations(
-    patterns: PatternComparisonResult[],
+    _patterns: PatternComparisonResult[],
     missingFeatures: MissingFeature[],
   ): Recommendation[] {
     const recommendations: Recommendation[] = []
@@ -528,10 +528,10 @@ export class ReportGenerator {
    */
   private generateImprovements(
     prioritizedIssues: Issue[],
-    blocks: BlockAnalysisResult[],
-    components: ComponentAnalysisResult[],
-    patterns: PatternComparisonResult[],
-    missingFeatures: MissingFeature[],
+    _blocks: BlockAnalysisResult[],
+    _components: ComponentAnalysisResult[],
+    _patterns: PatternComparisonResult[],
+    _missingFeatures: MissingFeature[],
   ): PrioritizedImprovement[] {
     const improvements: PrioritizedImprovement[] = []
 

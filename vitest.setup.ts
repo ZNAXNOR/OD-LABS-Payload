@@ -16,6 +16,8 @@ expect.extend(toHaveNoViolations)
 // Mock all CSS/SCSS imports
 vi.mock('*.css', () => ({}))
 vi.mock('*.scss', () => ({}))
+vi.mock('**/*.scss', () => ({}))
+vi.mock('**/*.css', () => ({}))
 
 // Mock PayloadCMS UI components that might cause issues
 vi.mock('@payloadcms/ui', () => ({

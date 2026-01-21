@@ -1,0 +1,1 @@
+export { BeforeAfterBlock } from './config'

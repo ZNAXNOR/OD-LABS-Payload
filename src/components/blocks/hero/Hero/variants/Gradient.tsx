@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { cn } from '@/utilities/ui'
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/ui/Link'
 import type { HeroVariantProps } from '../types'
 import { getThemeClasses, getHeightClasses } from '../utils'
 

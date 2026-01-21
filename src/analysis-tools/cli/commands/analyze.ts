@@ -16,12 +16,17 @@ import {
   validateOutputPath,
   printValidationResults,
 } from '../utils/validation.js'
+import { PathResolver, getPaths } from '../../config/paths.js'
 import type { AnalysisOptions, OutputFormat } from '../../types/index.js'
 
 export const analyzeCommand = new Command('analyze')
   .description('Analyze Payload CMS blocks and components')
-  .option('-b, --blocks-dir <path>', 'Directory containing block configurations', 'src/blocks')
-  .option('-c, --components-dir <path>', 'Directory containing React components', 'src/components')
+  .option('-b, --blocks-dir <path>', 'Directory containing block configurations', getPaths.blocks())
+  .option(
+    '-c, --components-dir <path>',
+    'Directory containing React components',
+    getPaths.components(),
+  )
   .option('-s, --scope <scope>', 'Analysis scope: blocks, components, or full', 'full')
   .option('-f, --format <format>', 'Output format: console, json, or html', 'console')
   .option('-o, --output <path>', 'Output file path (for json/html formats)')
@@ -30,6 +35,18 @@ export const analyzeCommand = new Command('analyze')
   .option('--severity <level>', 'Minimum severity level: all, critical, high', 'all')
   .option('--verbose', 'Enable verbose logging')
   .action(async (options) => {
+    // Auto-detect project structure and update paths
+    const pathResolver = new PathResolver()
+    const detectedConfig = await PathResolver.detectProjectStructure()
+    pathResolver.updateConfig(detectedConfig)
+
+    // Use detected paths as defaults if not specified
+    if (!options.blocksDir || options.blocksDir === getPaths.blocks()) {
+      options.blocksDir = pathResolver.getPath('blocksDir')
+    }
+    if (!options.componentsDir || options.componentsDir === getPaths.components()) {
+      options.componentsDir = pathResolver.getPath('componentsDir')
+    }
     // Determine progress steps based on scope
     let progressSteps = ANALYSIS_STEPS
     if (options.scope === 'blocks') {

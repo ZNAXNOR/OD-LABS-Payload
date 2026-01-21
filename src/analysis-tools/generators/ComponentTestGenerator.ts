@@ -472,7 +472,7 @@ ${interactionCode}
   /**
    * Generate test setup
    */
-  private generateSetup(component: Component): string {
+  private generateSetup(_component: Component): string {
     return `
   beforeEach(() => {
     // Setup test environment

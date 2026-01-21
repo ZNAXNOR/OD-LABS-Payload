@@ -2,7 +2,7 @@ import React from 'react'
 import type { ContentBlock as ContentBlockType } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import Link from 'next/link'
-import RichText from '@/components/RichText'
+import RichText from '@/components/ui/RichText'
 
 interface ContentBlockProps {
   block: ContentBlockType

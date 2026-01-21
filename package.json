@@ -4,6 +4,15 @@
   "description": "OD Labs Payload CMS Website",
   "license": "MIT",
   "type": "module",
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "*.sass",
+    "*.less",
+    "./src/app/globals.css",
+    "./src/utilities/accessibility.css",
+    "./src/utilities/animations.css"
+  ],
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
@@ -27,7 +36,9 @@
     "test:watch": "cross-env NODE_OPTIONS=--no-deprecation vitest --config ./vitest.config.mts",
     "clean": "rm -rf .next node_modules/.cache",
     "clean:all": "rm -rf .next node_modules dist",
-    "prepare": "node -e \"try { require('husky').install() } catch (e) {}\""
+    "prepare": "node -e \"try { require('husky').install() } catch (e) {}\"",
+    "analyze": "cross-env ANALYZE=true next build",
+    "bundle-analyzer": "npx @next/bundle-analyzer"
   },
   "dependencies": {
     "@jest/globals": "^30.2.0",
@@ -69,7 +80,9 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@next/bundle-analyzer": "^15.4.10",
     "@playwright/test": "1.56.1",
+    "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/typography": "^0.5.13",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "16.3.0",
@@ -94,7 +107,8 @@
     "tailwindcss": "^3.4.3",
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "3.2.3"
+    "vitest": "3.2.3",
+    "webpack-bundle-analyzer": "^4.10.2"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0",

@@ -20,9 +20,9 @@ describe('SecurityAnalyzer', () => {
       const issues = analyzer.validateAccessControl(block)
 
       expect(issues.length).toBeGreaterThan(0)
-      expect(issues[0].type).toBe('missing-access-control')
-      expect(issues[0].severity).toBe('critical')
-      expect(issues[0].description).toContain('no access control')
+      expect(issues[0]?.type).toBe('missing-access-control')
+      expect(issues[0]?.severity).toBe('critical')
+      expect(issues[0]?.description).toContain('no access control')
     })
 
     it('should flag blocks with partial access control', () => {
@@ -37,8 +37,8 @@ describe('SecurityAnalyzer', () => {
       const issues = analyzer.validateAccessControl(block)
 
       expect(issues.length).toBeGreaterThan(0)
-      expect(issues[0].description).toContain('missing access control for')
-      expect(issues[0].description).toContain('create')
+      expect(issues[0]?.description).toContain('missing access control for')
+      expect(issues[0]?.description).toContain('create')
     })
 
     it('should flag sensitive fields without access control', () => {
@@ -106,9 +106,9 @@ describe('SecurityAnalyzer', () => {
       const issues = analyzer.validateXSSProtection(component)
 
       expect(issues.length).toBeGreaterThan(0)
-      expect(issues[0].severity).toBe('critical')
-      expect(issues[0].description).toContain('dangerouslySetInnerHTML')
-      expect(issues[0].description).toContain('XSS')
+      expect(issues[0]?.severity).toBe('critical')
+      expect(issues[0]?.description).toContain('dangerouslySetInnerHTML')
+      expect(issues[0]?.description).toContain('XSS')
     })
 
     it('should flag user content with dangerouslySetInnerHTML', () => {

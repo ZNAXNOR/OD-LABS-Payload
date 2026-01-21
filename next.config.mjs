@@ -25,11 +25,74 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60,
   },
-  webpack: (webpackConfig) => {
+  webpack: (webpackConfig, { dev, isServer }) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
       '.mjs': ['.mts', '.mjs'],
+    }
+
+    // Tree-shaking optimizations
+    if (!dev) {
+      // Enable tree-shaking for production builds
+      webpackConfig.optimization = {
+        ...webpackConfig.optimization,
+        usedExports: true,
+        sideEffects: false,
+        // Enable module concatenation for better tree-shaking
+        concatenateModules: true,
+      }
+
+      // Optimize chunk splitting for better caching
+      webpackConfig.optimization.splitChunks = {
+        ...webpackConfig.optimization.splitChunks,
+        chunks: 'all',
+        cacheGroups: {
+          ...webpackConfig.optimization.splitChunks.cacheGroups,
+          // Separate vendor chunks for better caching
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          // Separate Payload chunks
+          payload: {
+            test: /[\\/]node_modules[\\/]@?payload/,
+            name: 'payload',
+            chunks: 'all',
+            priority: 20,
+          },
+          // Separate UI library chunks
+          ui: {
+            test: /[\\/]node_modules[\\/](@radix-ui|lucide-react)/,
+            name: 'ui-libs',
+            chunks: 'all',
+            priority: 15,
+          },
+          // Group our components
+          components: {
+            test: /[\\/]src[\\/]components[\\/]/,
+            name: 'components',
+            chunks: 'all',
+            priority: 5,
+          },
+          // Group our blocks
+          blocks: {
+            test: /[\\/]src[\\/]blocks[\\/]/,
+            name: 'blocks',
+            chunks: 'all',
+            priority: 5,
+          },
+          // Group utilities
+          utilities: {
+            test: /[\\/]src[\\/]utilities[\\/]/,
+            name: 'utilities',
+            chunks: 'all',
+            priority: 5,
+          },
+        },
+      }
     }
 
     return webpackConfig
@@ -40,8 +103,31 @@ const nextConfig = {
   compress: true,
   // Enable experimental features for better performance
   experimental: {
-    optimizePackageImports: ['lucide-react', '@/components/ui'],
+    // Optimize package imports for tree-shaking
+    optimizePackageImports: [
+      'lucide-react',
+      '@/components/ui',
+      '@/blocks',
+      '@/utilities',
+      '@radix-ui/react-checkbox',
+      '@radix-ui/react-label',
+      '@radix-ui/react-select',
+      '@radix-ui/react-slot',
+    ],
+    // Enable turbo mode for faster builds
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
+  // Enable static optimization
+  output: 'standalone',
+  // Optimize bundle analyzer
+  bundlePagesRouterDependencies: true,
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

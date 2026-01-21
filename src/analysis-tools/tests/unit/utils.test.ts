@@ -152,7 +152,7 @@ describe('Utility Functions', () => {
 
     it('should merge nested objects', () => {
       const target = { a: { x: 1, y: 2 }, b: 3 }
-      const source = { a: { y: 3, z: 4 } }
+      const source: Partial<typeof target> = { a: { x: 1, y: 3, z: 4 } as any }
       const result = deepMerge(target, source)
 
       expect(result).toEqual({ a: { x: 1, y: 3, z: 4 }, b: 3 })
@@ -160,7 +160,7 @@ describe('Utility Functions', () => {
 
     it('should not mutate original objects', () => {
       const target = { a: 1 }
-      const source = { b: 2 }
+      const source: Partial<typeof target> = { b: 2 } as any
       const result = deepMerge(target, source)
 
       expect(target).toEqual({ a: 1 })

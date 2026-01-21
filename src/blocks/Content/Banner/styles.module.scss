@@ -1,0 +1,66 @@
+// Banner Block Styles
+.bannerBlock {
+  margin: 2rem auto;
+  width: 100%;
+
+  .banner {
+    border: 1px solid var(--border);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+
+    &.info {
+      border-color: var(--info);
+      background-color: var(--info-bg);
+      color: var(--info-foreground);
+    }
+
+    &.warning {
+      border-color: var(--warning);
+      background-color: var(--warning-bg);
+      color: var(--warning-foreground);
+    }
+
+    &.error {
+      border-color: var(--error);
+      background-color: var(--error-bg);
+      color: var(--error-foreground);
+    }
+
+    &.success {
+      border-color: var(--success);
+      background-color: var(--success-bg);
+      color: var(--success-foreground);
+    }
+
+    // Rich text content styling
+    :global(.rich-text) {
+      margin: 0;
+
+      p {
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      strong {
+        font-weight: 600;
+      }
+
+      em {
+        font-style: italic;
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+export { StatsCounterBlock } from './config'

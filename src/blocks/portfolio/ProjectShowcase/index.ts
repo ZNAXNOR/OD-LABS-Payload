@@ -1,0 +1,1 @@
+export { ProjectShowcaseBlock } from './config'

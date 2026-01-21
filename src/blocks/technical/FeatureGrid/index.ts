@@ -1,0 +1,1 @@
+export { FeatureGridBlock } from './config'

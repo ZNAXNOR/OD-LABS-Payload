@@ -8,12 +8,12 @@ import { InitTheme } from '@/providers/Theme/InitTheme'
 
 import { Header } from '@/globals/Header/Component'
 import { Providers } from '@/providers'
-import { AdminBar } from '@/components/AdminBar'
+import { AdminBar } from '@/components/admin/AdminBar'
 
 import { draftMode } from 'next/headers'
 import { Footer } from '@/globals/Footer/Component'
 
-import { GoogleAnalytics } from '@/components/GoogleAnalytics'
+import { GoogleAnalytics } from '@/components/layout/GoogleAnalytics'
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',

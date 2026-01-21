@@ -2,14 +2,46 @@
 
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
-import { readFileSync, writeFileSync } from 'fs'
+import { readFileSync, writeFileSync, existsSync } from 'fs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
+// Auto-detect project structure
+function detectProjectStructure() {
+  const restructuredIndicators = [
+    'src/types/index.ts',
+    'src/blocks/index.ts',
+    'src/components/index.ts',
+    'tests/unit',
+    'tests/integration',
+    'tests/property-based',
+  ]
+
+  const hasRestructuredIndicators = restructuredIndicators.some((indicator) => {
+    try {
+      return existsSync(join(__dirname, indicator))
+    } catch {
+      return false
+    }
+  })
+
+  return {
+    isRestructured: hasRestructuredIndicators,
+    blocksDir: 'src/blocks',
+    componentsDir: 'src/components',
+  }
+}
+
 // Simple analysis runner that bypasses TypeScript compilation issues
 async function runAnalysis() {
   console.log('🔍 Starting Blocks and Components Analysis...')
+
+  // Detect project structure
+  const projectStructure = detectProjectStructure()
+  console.log(
+    `📁 Project structure: ${projectStructure.isRestructured ? 'Restructured' : 'Legacy'}`,
+  )
 
   try {
     // Import the orchestrator dynamically
@@ -19,8 +51,8 @@ async function runAnalysis() {
     const orchestrator = new AnalysisOrchestrator()
 
     const analysisOptions = {
-      blockDir: join(__dirname, 'src/blocks'),
-      componentDir: join(__dirname, 'src/components'),
+      blockDir: join(__dirname, projectStructure.blocksDir),
+      componentDir: join(__dirname, projectStructure.componentsDir),
       includeTests: true,
       compareOfficial: false, // Skip GitHub API calls for now
       severity: 'all',

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'fs'
+import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'fs'
 import { join, extname, basename } from 'path'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
@@ -8,12 +8,46 @@ import { dirname } from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
+// Auto-detect project structure
+function detectProjectStructure() {
+  const restructuredIndicators = [
+    'src/types/index.ts',
+    'src/blocks/index.ts',
+    'src/components/index.ts',
+    'tests/unit',
+    'tests/integration',
+    'tests/property-based',
+  ]
+
+  const hasRestructuredIndicators = restructuredIndicators.some((indicator) => {
+    try {
+      return existsSync(join(__dirname, indicator))
+    } catch {
+      return false
+    }
+  })
+
+  return {
+    isRestructured: hasRestructuredIndicators,
+    blocksDir: 'src/blocks',
+    componentsDir: 'src/components',
+    testsDir: hasRestructuredIndicators ? 'tests' : 'tests',
+  }
+}
+
 // Simple analysis of blocks and components
 async function runSimpleAnalysis() {
   console.log('🔍 Starting Simple Blocks and Components Analysis...')
 
+  // Detect project structure
+  const projectStructure = detectProjectStructure()
+  console.log(
+    `📁 Project structure: ${projectStructure.isRestructured ? 'Restructured' : 'Legacy'}`,
+  )
+
   const results = {
     timestamp: new Date().toISOString(),
+    projectStructure: projectStructure.isRestructured ? 'restructured' : 'legacy',
     summary: {
       blocksAnalyzed: 0,
       componentsAnalyzed: 0,
@@ -32,7 +66,7 @@ async function runSimpleAnalysis() {
   try {
     // Analyze blocks
     console.log('📦 Analyzing blocks...')
-    const blocksDir = join(__dirname, 'src/blocks')
+    const blocksDir = join(__dirname, projectStructure.blocksDir)
     const blockResults = await analyzeBlocks(blocksDir)
     results.blocks = blockResults.blocks
     results.issues.push(...blockResults.issues)
@@ -40,7 +74,7 @@ async function runSimpleAnalysis() {
 
     // Analyze components
     console.log('⚛️ Analyzing components...')
-    const componentsDir = join(__dirname, 'src/components')
+    const componentsDir = join(__dirname, projectStructure.componentsDir)
     const componentResults = await analyzeComponents(componentsDir)
     results.components = componentResults.components
     results.issues.push(...componentResults.issues)

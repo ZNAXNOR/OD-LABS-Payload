@@ -481,6 +481,7 @@ export interface AdminConfig {
   hidden?: boolean
   description?: string
   condition?: (data: any) => boolean
+  preview?: string
 }
 
 export interface FieldAdminConfig {

@@ -145,8 +145,8 @@ describe('Test Generators', () => {
       const propertyTests = testGenerator.generatePropertyTests(block)
 
       expect(propertyTests.length).toBeGreaterThan(0)
-      expect(propertyTests[0].iterations).toBeGreaterThanOrEqual(100)
-      expect(propertyTests[0].generators.length).toBeGreaterThan(0)
+      expect(propertyTests[0]?.iterations).toBeGreaterThanOrEqual(100)
+      expect(propertyTests[0]?.generators.length).toBeGreaterThan(0)
     })
   })
 
@@ -258,7 +258,9 @@ describe('Test Generators', () => {
         },
       ]
 
-      const pairs = [{ block: blocks[0], component: components[0] }]
+      const pairs: { block: Block; component: Component }[] = [
+        { block: blocks[0]!, component: components[0]! },
+      ]
 
       const result = testGenerator.generateAllTests(blocks, components, pairs)
 

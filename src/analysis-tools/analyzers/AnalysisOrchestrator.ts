@@ -25,6 +25,7 @@ import { TestGenerator } from '../generators/TestGenerator'
 import { ReportGenerator } from '../generators/ReportGenerator'
 import { BlockConfigParser } from './BlockConfigParser'
 import { ComponentParser } from './ComponentParser'
+// import { PathResolver } from '../config/paths' // Unused - commented out
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -64,6 +65,7 @@ export class AnalysisOrchestrator {
   private blockParser: BlockConfigParser
   private componentParser: ComponentParser
   private config: OrchestratorConfig
+  // private pathResolver: PathResolver // Unused - commented out
 
   // In-memory cache for analysis results
   private blockCache: Map<string, CacheEntry<BlockAnalysisResult>> = new Map()
@@ -94,6 +96,7 @@ export class AnalysisOrchestrator {
     this.reportGenerator = new ReportGenerator()
     this.blockParser = new BlockConfigParser()
     this.componentParser = new ComponentParser()
+    // this.pathResolver = new PathResolver() // Commented out - property doesn't exist
 
     // Load cache from disk if cache directory is specified
     if (this.config.cacheDir && this.config.enableCache) {
@@ -675,7 +678,8 @@ export class AnalysisOrchestrator {
 
   /**
    * Discover block configuration files
-   * Recursively searches for block config files (config.ts, config.js)
+   * Recursively searches for block config files (config.ts, config.js, index.ts)
+   * Updated to support both legacy and restructured project layouts
    * Requirements: All requirements (discovery)
    */
   private async discoverBlockFiles(blockDir: string): Promise<string[]> {
@@ -690,9 +694,28 @@ export class AnalysisOrchestrator {
 
       // Recursively find all config files
       await this.findFilesRecursive(blockDir, blockFiles, (file) => {
-        // Match config.ts or config.js files
         const fileName = path.basename(file)
-        return fileName === 'config.ts' || fileName === 'config.js'
+        // const dirName = path.basename(path.dirname(file)) // Unused - commented out
+
+        // Match config.ts, config.js, or index.ts files in block directories
+        // Support both legacy (config.ts) and restructured (index.ts) patterns
+        const isConfigFile = fileName === 'config.ts' || fileName === 'config.js'
+        const isIndexFile = fileName === 'index.ts' || fileName === 'index.js'
+
+        // For restructured projects, look for index files in block subdirectories
+        // For legacy projects, look for config files
+        if (isConfigFile) {
+          return true
+        }
+
+        if (isIndexFile) {
+          // Check if this is likely a block index file by examining the directory structure
+          const parentDir = path.dirname(file)
+          const hasBlockIndicators = this.hasBlockIndicators(parentDir)
+          return hasBlockIndicators
+        }
+
+        return false
       })
 
       return blockFiles
@@ -708,8 +731,31 @@ export class AnalysisOrchestrator {
   }
 
   /**
+   * Check if a directory contains block indicators
+   */
+  private hasBlockIndicators(dirPath: string): boolean {
+    try {
+      const files = fs.readdirSync(dirPath)
+
+      // Look for typical block files
+      const blockIndicators = [
+        'Component.tsx',
+        'Component.jsx',
+        'types.ts',
+        'config.ts',
+        'config.js',
+      ]
+
+      return blockIndicators.some((indicator) => files.includes(indicator))
+    } catch {
+      return false
+    }
+  }
+
+  /**
    * Discover component files
    * Recursively searches for React component files (.tsx, .jsx)
+   * Updated to support both legacy and restructured project layouts
    * Requirements: All requirements (discovery)
    */
   private async discoverComponentFiles(componentDir: string): Promise<string[]> {
@@ -724,17 +770,30 @@ export class AnalysisOrchestrator {
 
       // Recursively find all component files
       await this.findFilesRecursive(componentDir, componentFiles, (file) => {
-        // Match .tsx or .jsx files, but exclude test files and node_modules
         const fileName = path.basename(file)
         const isTestFile =
           fileName.includes('.test.') ||
           fileName.includes('.spec.') ||
           fileName.includes('.stories.')
         const isNodeModules = file.includes('node_modules')
+        const isTypeFile = fileName.endsWith('.d.ts')
 
-        return (
-          (fileName.endsWith('.tsx') || fileName.endsWith('.jsx')) && !isTestFile && !isNodeModules
-        )
+        // Match .tsx or .jsx files, but exclude test files, type definitions, and node_modules
+        const isComponentFile =
+          (fileName.endsWith('.tsx') || fileName.endsWith('.jsx')) &&
+          !isTestFile &&
+          !isNodeModules &&
+          !isTypeFile
+
+        // Also include index.tsx files that are likely component exports
+        if (isComponentFile && (fileName === 'index.tsx' || fileName === 'index.jsx')) {
+          // Check if this is a component index file by looking for other component files in the same directory
+          const dirPath = path.dirname(file)
+          const hasComponentFiles = this.hasComponentIndicators(dirPath)
+          return hasComponentFiles
+        }
+
+        return isComponentFile
       })
 
       return componentFiles
@@ -746,6 +805,30 @@ export class AnalysisOrchestrator {
         `Error discovering component files: ${(error as Error).message}`,
       )
       return componentFiles
+    }
+  }
+
+  /**
+   * Check if a directory contains component indicators
+   */
+  private hasComponentIndicators(dirPath: string): boolean {
+    try {
+      const files = fs.readdirSync(dirPath)
+
+      // Look for typical component files (excluding index files)
+      const componentIndicators = files.filter(
+        (file) =>
+          (file.endsWith('.tsx') || file.endsWith('.jsx')) &&
+          file !== 'index.tsx' &&
+          file !== 'index.jsx' &&
+          !file.includes('.test.') &&
+          !file.includes('.spec.') &&
+          !file.includes('.stories.'),
+      )
+
+      return componentIndicators.length > 0
+    } catch {
+      return false
     }
   }
 

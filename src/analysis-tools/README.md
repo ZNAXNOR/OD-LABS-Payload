@@ -1,11 +1,11 @@
 # Payload CMS Blocks and Components Analysis Tool
 
-A comprehensive analysis system for Payload CMS blocks and React components that identifies issues, security vulnerabilities, accessibility problems, and provides actionable recommendations.
+A comprehensive analysis system for Payload CMS blocks and React components that identifies issues, security vulnerabilities, accessibility problems, and provides actionable recommendations. **Now supports both legacy and restructured project layouts with automatic path detection.**
 
 ## Quick Start
 
 ```bash
-# Run simple analysis (recommended)
+# Run simple analysis (recommended) - automatically detects project structure
 node simple-analysis.mjs
 
 # View results
@@ -14,12 +14,14 @@ cat analysis-report.json
 
 ## Features
 
+- **Automatic Path Detection**: Intelligently detects legacy vs restructured project layouts
 - **Security Analysis**: Identifies missing access control and XSS vulnerabilities
 - **Accessibility Compliance**: Checks WCAG 2.1 AA standards
 - **TypeScript Integration**: Validates proper typing and interfaces
 - **Performance Analysis**: Detects optimization opportunities
 - **Block-Component Integration**: Ensures proper data flow
 - **Comprehensive Reporting**: JSON, HTML, and console output formats
+- **Flexible Project Structure Support**: Works with both original and restructured codebases
 
 ## Analysis Results
 
@@ -105,15 +107,25 @@ if [ "$CRITICAL" -gt 0 ]; then
 fi
 ```
 
-## Structure
+## Project Structure Support
 
-- `analyzers/` - Block and component analyzers
-- `validators/` - Integration and security validators
-- `generators/` - Test and report generators
-- `comparators/` - Pattern comparison tools
-- `types/` - Core TypeScript interfaces and types
-- `utils/` - Shared utilities
-- `cli/` - Command-line interface
+The analysis tool automatically detects your project structure and adapts accordingly:
+
+### Restructured Projects
+
+- **Blocks**: `src/blocks/` with category-based organization
+- **Components**: `src/components/` with ui/, blocks/, forms/, layout/, admin/ subdirectories
+- **Tests**: `tests/` with unit/, integration/, e2e/, performance/, property-based/ subdirectories
+- **Types**: `src/types/` centralized type definitions
+
+### Legacy Projects
+
+- **Blocks**: `src/blocks/` with individual config files
+- **Components**: `src/components/` with mixed organization
+- **Tests**: `tests/` with mixed organization
+- **Types**: `src/payload-types.ts` generated types
+
+The tool automatically detects which structure you're using and adjusts its analysis accordingly.
 
 ## Contributing
 

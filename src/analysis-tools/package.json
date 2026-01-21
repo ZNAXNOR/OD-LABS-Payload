@@ -22,7 +22,8 @@
     "cli": "node --loader ts-node/esm ./cli/index.ts",
     "analyze": "npm run cli -- analyze",
     "profile": "node --expose-gc --loader ts-node/esm ./scripts/performance-profile.ts",
-    "optimize": "npm run profile && npm run test:coverage"
+    "optimize": "npm run profile && npm run test:coverage",
+    "update-paths": "node ./scripts/update-paths.mjs"
   },
   "keywords": [
     "payload-cms",

@@ -1,13 +1,14 @@
 {
-  "timestamp": "2026-01-17T06:05:08.909Z",
+  "timestamp": "2026-01-20T06:34:47.986Z",
+  "projectStructure": "restructured",
   "summary": {
-    "blocksAnalyzed": 25,
-    "componentsAnalyzed": 51,
-    "totalIssues": 37,
-    "criticalIssues": 24,
+    "blocksAnalyzed": 32,
+    "componentsAnalyzed": 90,
+    "totalIssues": 67,
+    "criticalIssues": 30,
     "highIssues": 0,
-    "mediumIssues": 10,
-    "lowIssues": 3
+    "mediumIssues": 28,
+    "lowIssues": 9
   },
   "blocks": [
     {
@@ -73,6 +74,30 @@
       ]
     },
     {
+      "name": "Archive",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\Archive\\config.ts",
+      "relativePath": "Content\\Archive\\config.ts",
+      "hasConfig": true,
+      "hasComponent": true,
+      "issues": [
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Archive' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\Archive\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Banner",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\Banner\\config.ts",
+      "relativePath": "Content\\Banner\\config.ts",
+      "hasConfig": true,
+      "hasComponent": true,
+      "issues": []
+    },
+    {
       "name": "Content",
       "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\config.ts",
       "relativePath": "Content\\config.ts",
@@ -90,6 +115,54 @@
           "severity": "critical",
           "message": "Block 'Content' has no access control defined",
           "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Content",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\Content\\config.ts",
+      "relativePath": "Content\\Content\\config.ts",
+      "hasConfig": true,
+      "hasComponent": true,
+      "issues": [
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Content' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\Content\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "MediaBlock",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\MediaBlock\\config.ts",
+      "relativePath": "Content\\MediaBlock\\config.ts",
+      "hasConfig": true,
+      "hasComponent": true,
+      "issues": [
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'MediaBlock' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\MediaBlock\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "CallToAction",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\CallToAction\\config.ts",
+      "relativePath": "cta\\CallToAction\\config.ts",
+      "hasConfig": true,
+      "hasComponent": true,
+      "issues": [
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'CallToAction' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\CallToAction\\config.ts",
           "recommendation": "Add access control to secure the block"
         }
       ]
@@ -185,6 +258,22 @@
           "severity": "critical",
           "message": "Block 'Hero' has no access control defined",
           "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Hero\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
+      "name": "Hero",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Hero\\Hero\\config.ts",
+      "relativePath": "Hero\\Hero\\config.ts",
+      "hasConfig": true,
+      "hasComponent": true,
+      "issues": [
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Hero' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Hero\\Hero\\config.ts",
           "recommendation": "Add access control to secure the block"
         }
       ]
@@ -448,6 +537,22 @@
       ]
     },
     {
+      "name": "Code",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\Code\\config.ts",
+      "relativePath": "technical\\Code\\config.ts",
+      "hasConfig": true,
+      "hasComponent": true,
+      "issues": [
+        {
+          "type": "missing-access-control",
+          "severity": "critical",
+          "message": "Block 'Code' has no access control defined",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\Code\\config.ts",
+          "recommendation": "Add access control to secure the block"
+        }
+      ]
+    },
+    {
       "name": "FAQAccordion",
       "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\FAQAccordion\\config.ts",
       "relativePath": "technical\\FAQAccordion\\config.ts",
@@ -539,10 +644,68 @@
   "components": [
     {
       "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\AdminBar\\index.tsx",
-      "relativePath": "AdminBar\\index.tsx",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\AdminBar\\index.tsx",
+      "relativePath": "admin\\AdminBar\\index.tsx",
       "isClientComponent": true,
       "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\BreadcrumbCell\\index.tsx",
+      "relativePath": "admin\\BreadcrumbCell\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\DashboardCollections\\index.tsx",
+      "relativePath": "admin\\DashboardCollections\\index.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "missing-error-handling",
+          "severity": "medium",
+          "message": "Component 'index' has async operations without error handling",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\DashboardCollections\\index.tsx",
+          "recommendation": "Add proper error handling for async operations"
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\LegacyBlockWarning\\index.tsx",
+      "relativePath": "admin\\LegacyBlockWarning\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\RowLabel\\index.tsx",
+      "relativePath": "admin\\RowLabel\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\UniqueSelect\\index.tsx",
+      "relativePath": "admin\\UniqueSelect\\index.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "weak-typing",
+          "severity": "medium",
+          "message": "Component 'index' may have weak TypeScript typing",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\UniqueSelect\\index.tsx",
+          "recommendation": "Define proper TypeScript interfaces for props"
+        },
+        {
+          "type": "missing-react-keys",
+          "severity": "low",
+          "message": "Component 'index' may be missing React keys in lists",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\UniqueSelect\\index.tsx",
+          "recommendation": "Add unique keys to list items for better performance"
+        }
+      ]
     },
     {
       "name": "BlockRenderer",
@@ -766,226 +929,628 @@
     },
     {
       "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\BreadcrumbCell\\index.tsx",
-      "relativePath": "BreadcrumbCell\\index.tsx",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\layout\\GoogleAnalytics\\index.tsx",
+      "relativePath": "layout\\GoogleAnalytics\\index.tsx",
       "isClientComponent": false,
       "issues": []
     },
     {
       "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\DashboardCollections\\index.tsx",
-      "relativePath": "DashboardCollections\\index.tsx",
-      "isClientComponent": false,
-      "issues": [
-        {
-          "type": "missing-error-handling",
-          "severity": "medium",
-          "message": "Component 'index' has async operations without error handling",
-          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\DashboardCollections\\index.tsx",
-          "recommendation": "Add proper error handling for async operations"
-        }
-      ]
-    },
-    {
-      "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\GoogleAnalytics\\index.tsx",
-      "relativePath": "GoogleAnalytics\\index.tsx",
-      "isClientComponent": false,
-      "issues": []
-    },
-    {
-      "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\LegacyBlockWarning\\index.tsx",
-      "relativePath": "LegacyBlockWarning\\index.tsx",
-      "isClientComponent": false,
-      "issues": []
-    },
-    {
-      "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Link\\index.tsx",
-      "relativePath": "Link\\index.tsx",
-      "isClientComponent": false,
-      "issues": []
-    },
-    {
-      "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\LivePreviewListener\\index.tsx",
-      "relativePath": "LivePreviewListener\\index.tsx",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\layout\\LivePreviewListener\\index.tsx",
+      "relativePath": "layout\\LivePreviewListener\\index.tsx",
       "isClientComponent": true,
       "issues": []
     },
     {
       "name": "Logo",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Logo\\Logo.tsx",
-      "relativePath": "Logo\\Logo.tsx",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\layout\\Logo\\Logo.tsx",
+      "relativePath": "layout\\Logo\\Logo.tsx",
       "isClientComponent": false,
       "issues": []
     },
     {
       "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Media\\ImageMedia\\index.tsx",
-      "relativePath": "Media\\ImageMedia\\index.tsx",
-      "isClientComponent": true,
-      "issues": [
-        {
-          "type": "missing-react-keys",
-          "severity": "low",
-          "message": "Component 'index' may be missing React keys in lists",
-          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Media\\ImageMedia\\index.tsx",
-          "recommendation": "Add unique keys to list items for better performance"
-        }
-      ]
-    },
-    {
-      "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Media\\index.tsx",
-      "relativePath": "Media\\index.tsx",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\layout\\RenderBlocks\\index.tsx",
+      "relativePath": "layout\\RenderBlocks\\index.tsx",
       "isClientComponent": false,
       "issues": []
     },
     {
       "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Media\\VideoMedia\\index.tsx",
-      "relativePath": "Media\\VideoMedia\\index.tsx",
-      "isClientComponent": true,
-      "issues": []
-    },
-    {
-      "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\RenderBlocks\\index.tsx",
-      "relativePath": "RenderBlocks\\index.tsx",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Button\\index.tsx",
+      "relativePath": "ui\\Button\\index.tsx",
       "isClientComponent": false,
       "issues": []
     },
     {
       "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\RichText\\index.tsx",
-      "relativePath": "RichText\\index.tsx",
-      "isClientComponent": false,
-      "issues": []
-    },
-    {
-      "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\RowLabel\\index.tsx",
-      "relativePath": "RowLabel\\index.tsx",
-      "isClientComponent": true,
-      "issues": []
-    },
-    {
-      "name": "button",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\button.tsx",
-      "relativePath": "ui\\button.tsx",
-      "isClientComponent": false,
-      "issues": []
-    },
-    {
-      "name": "card",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\card.tsx",
-      "relativePath": "ui\\card.tsx",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Card\\index.tsx",
+      "relativePath": "ui\\Card\\index.tsx",
       "isClientComponent": false,
       "issues": [
         {
           "type": "weak-typing",
           "severity": "medium",
-          "message": "Component 'card' may have weak TypeScript typing",
-          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\card.tsx",
-          "recommendation": "Define proper TypeScript interfaces for props"
-        }
-      ]
-    },
-    {
-      "name": "checkbox",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\checkbox.tsx",
-      "relativePath": "ui\\checkbox.tsx",
-      "isClientComponent": true,
-      "issues": [
-        {
-          "type": "weak-typing",
-          "severity": "medium",
-          "message": "Component 'checkbox' may have weak TypeScript typing",
-          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\checkbox.tsx",
-          "recommendation": "Define proper TypeScript interfaces for props"
-        }
-      ]
-    },
-    {
-      "name": "input",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\input.tsx",
-      "relativePath": "ui\\input.tsx",
-      "isClientComponent": false,
-      "issues": [
-        {
-          "type": "weak-typing",
-          "severity": "medium",
-          "message": "Component 'input' may have weak TypeScript typing",
-          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\input.tsx",
-          "recommendation": "Define proper TypeScript interfaces for props"
-        }
-      ]
-    },
-    {
-      "name": "label",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\label.tsx",
-      "relativePath": "ui\\label.tsx",
-      "isClientComponent": true,
-      "issues": []
-    },
-    {
-      "name": "pagination",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\pagination.tsx",
-      "relativePath": "ui\\pagination.tsx",
-      "isClientComponent": false,
-      "issues": []
-    },
-    {
-      "name": "select",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\select.tsx",
-      "relativePath": "ui\\select.tsx",
-      "isClientComponent": true,
-      "issues": [
-        {
-          "type": "weak-typing",
-          "severity": "medium",
-          "message": "Component 'select' may have weak TypeScript typing",
-          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\select.tsx",
-          "recommendation": "Define proper TypeScript interfaces for props"
-        }
-      ]
-    },
-    {
-      "name": "textarea",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\textarea.tsx",
-      "relativePath": "ui\\textarea.tsx",
-      "isClientComponent": false,
-      "issues": [
-        {
-          "type": "weak-typing",
-          "severity": "medium",
-          "message": "Component 'textarea' may have weak TypeScript typing",
-          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\textarea.tsx",
+          "message": "Component 'index' may have weak TypeScript typing",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Card\\index.tsx",
           "recommendation": "Define proper TypeScript interfaces for props"
         }
       ]
     },
     {
       "name": "index",
-      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\UniqueSelect\\index.tsx",
-      "relativePath": "UniqueSelect\\index.tsx",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Checkbox\\index.tsx",
+      "relativePath": "ui\\Checkbox\\index.tsx",
       "isClientComponent": true,
       "issues": [
         {
           "type": "weak-typing",
           "severity": "medium",
           "message": "Component 'index' may have weak TypeScript typing",
-          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\UniqueSelect\\index.tsx",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Checkbox\\index.tsx",
           "recommendation": "Define proper TypeScript interfaces for props"
-        },
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Input\\index.tsx",
+      "relativePath": "ui\\Input\\index.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "weak-typing",
+          "severity": "medium",
+          "message": "Component 'index' may have weak TypeScript typing",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Input\\index.tsx",
+          "recommendation": "Define proper TypeScript interfaces for props"
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Label\\index.tsx",
+      "relativePath": "ui\\Label\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Link\\index.tsx",
+      "relativePath": "ui\\Link\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Media\\ImageMedia\\index.tsx",
+      "relativePath": "ui\\Media\\ImageMedia\\index.tsx",
+      "isClientComponent": true,
+      "issues": [
         {
           "type": "missing-react-keys",
           "severity": "low",
           "message": "Component 'index' may be missing React keys in lists",
-          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\UniqueSelect\\index.tsx",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Media\\ImageMedia\\index.tsx",
           "recommendation": "Add unique keys to list items for better performance"
+        }
+      ]
+    },
+    {
+      "name": "OptimizedImageMedia",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Media\\ImageMedia\\OptimizedImageMedia.tsx",
+      "relativePath": "ui\\Media\\ImageMedia\\OptimizedImageMedia.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'OptimizedImageMedia' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Media\\ImageMedia\\OptimizedImageMedia.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        },
+        {
+          "type": "missing-react-keys",
+          "severity": "low",
+          "message": "Component 'OptimizedImageMedia' may be missing React keys in lists",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Media\\ImageMedia\\OptimizedImageMedia.tsx",
+          "recommendation": "Add unique keys to list items for better performance"
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Media\\index.tsx",
+      "relativePath": "ui\\Media\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Media\\VideoMedia\\index.tsx",
+      "relativePath": "ui\\Media\\VideoMedia\\index.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Pagination\\index.tsx",
+      "relativePath": "ui\\Pagination\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "AdaptiveVideo",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\components\\AdaptiveVideo.tsx",
+      "relativePath": "ui\\RichText\\components\\AdaptiveVideo.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "ErrorMonitoringDashboard",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\components\\ErrorMonitoringDashboard.tsx",
+      "relativePath": "ui\\RichText\\components\\ErrorMonitoringDashboard.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'ErrorMonitoringDashboard' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\components\\ErrorMonitoringDashboard.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "LinkPreview",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\components\\LinkPreview.tsx",
+      "relativePath": "ui\\RichText\\components\\LinkPreview.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "PerformanceDashboard",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\components\\PerformanceDashboard.tsx",
+      "relativePath": "ui\\RichText\\components\\PerformanceDashboard.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'PerformanceDashboard' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\components\\PerformanceDashboard.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "PerformanceMonitor",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\components\\PerformanceMonitor.tsx",
+      "relativePath": "ui\\RichText\\components\\PerformanceMonitor.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'PerformanceMonitor' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\components\\PerformanceMonitor.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "dynamicLoader",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\converters\\dynamicLoader.tsx",
+      "relativePath": "ui\\RichText\\converters\\dynamicLoader.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'dynamicLoader' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\converters\\dynamicLoader.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        },
+        {
+          "type": "missing-react-keys",
+          "severity": "low",
+          "message": "Component 'dynamicLoader' may be missing React keys in lists",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\converters\\dynamicLoader.tsx",
+          "recommendation": "Add unique keys to list items for better performance"
+        }
+      ]
+    },
+    {
+      "name": "errorBoundary",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\converters\\errorBoundary.tsx",
+      "relativePath": "ui\\RichText\\converters\\errorBoundary.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "fallbackRenderer",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\converters\\fallbackRenderer.tsx",
+      "relativePath": "ui\\RichText\\converters\\fallbackRenderer.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "mediaConverters",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\converters\\mediaConverters.tsx",
+      "relativePath": "ui\\RichText\\converters\\mediaConverters.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "missing-react-keys",
+          "severity": "low",
+          "message": "Component 'mediaConverters' may be missing React keys in lists",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\converters\\mediaConverters.tsx",
+          "recommendation": "Add unique keys to list items for better performance"
+        }
+      ]
+    },
+    {
+      "name": "ResponsiveRichText",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\examples\\ResponsiveRichText.tsx",
+      "relativePath": "ui\\RichText\\examples\\ResponsiveRichText.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "BatchBlockDeleter",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BatchBlockDeleter.tsx",
+      "relativePath": "ui\\RichText\\features\\BatchBlockDeleter.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'BatchBlockDeleter' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BatchBlockDeleter.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "BatchBlockDuplicator",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BatchBlockDuplicator.tsx",
+      "relativePath": "ui\\RichText\\features\\BatchBlockDuplicator.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'BatchBlockDuplicator' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BatchBlockDuplicator.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "BlockConfigPanel",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockConfigPanel.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockConfigPanel.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockContextMenu",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockContextMenu.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockContextMenu.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'BlockContextMenu' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockContextMenu.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "BlockDeleteButton",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockDeleteButton.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockDeleteButton.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockDeleteConfirmation",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockDeleteConfirmation.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockDeleteConfirmation.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'BlockDeleteConfirmation' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockDeleteConfirmation.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "BlockDropZone",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockDropZone.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockDropZone.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockDuplicateButton",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockDuplicateButton.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockDuplicateButton.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockHoverPreview",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockHoverPreview.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockHoverPreview.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockInsertButton",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockInsertButton.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockInsertButton.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockPalette",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockPalette.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockPalette.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'BlockPalette' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockPalette.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "BlockPreview",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockPreview.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockPreview.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'BlockPreview' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockPreview.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "BlockPreviewButton",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockPreviewButton.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockPreviewButton.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockPreviewGallery",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockPreviewGallery.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockPreviewGallery.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockReorderHandle",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockReorderHandle.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockReorderHandle.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockReorderManager",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockReorderManager.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockReorderManager.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockSearch",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockSearch.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockSearch.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "BlockToolbar",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockToolbar.tsx",
+      "relativePath": "ui\\RichText\\features\\BlockToolbar.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "MediaEditor",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\MediaEditor.tsx",
+      "relativePath": "ui\\RichText\\features\\MediaEditor.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'MediaEditor' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\MediaEditor.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "MediaGallery",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\MediaGallery.tsx",
+      "relativePath": "ui\\RichText\\features\\MediaGallery.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'MediaGallery' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\MediaGallery.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "ReorderableBlock",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\ReorderableBlock.tsx",
+      "relativePath": "ui\\RichText\\features\\ReorderableBlock.tsx",
+      "isClientComponent": true,
+      "issues": []
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\index.tsx",
+      "relativePath": "ui\\RichText\\index.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "imageOptimization",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\optimization\\imageOptimization.tsx",
+      "relativePath": "ui\\RichText\\optimization\\imageOptimization.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'imageOptimization' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\optimization\\imageOptimization.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        },
+        {
+          "type": "missing-react-keys",
+          "severity": "low",
+          "message": "Component 'imageOptimization' may be missing React keys in lists",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\optimization\\imageOptimization.tsx",
+          "recommendation": "Add unique keys to list items for better performance"
+        }
+      ]
+    },
+    {
+      "name": "incrementalRendering",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\optimization\\incrementalRendering.tsx",
+      "relativePath": "ui\\RichText\\optimization\\incrementalRendering.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "missing-error-handling",
+          "severity": "medium",
+          "message": "Component 'incrementalRendering' has async operations without error handling",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\optimization\\incrementalRendering.tsx",
+          "recommendation": "Add proper error handling for async operations"
+        }
+      ]
+    },
+    {
+      "name": "virtualScrolling",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\optimization\\virtualScrolling.tsx",
+      "relativePath": "ui\\RichText\\optimization\\virtualScrolling.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "blockDegradation",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\blockDegradation.tsx",
+      "relativePath": "ui\\RichText\\utils\\blockDegradation.tsx",
+      "isClientComponent": false,
+      "issues": []
+    },
+    {
+      "name": "gracefulDegradation",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\gracefulDegradation.tsx",
+      "relativePath": "ui\\RichText\\utils\\gracefulDegradation.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'gracefulDegradation' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\gracefulDegradation.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        },
+        {
+          "type": "missing-react-keys",
+          "severity": "low",
+          "message": "Component 'gracefulDegradation' may be missing React keys in lists",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\gracefulDegradation.tsx",
+          "recommendation": "Add unique keys to list items for better performance"
+        }
+      ]
+    },
+    {
+      "name": "securityErrorBoundary",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\securityErrorBoundary.tsx",
+      "relativePath": "ui\\RichText\\utils\\securityErrorBoundary.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'securityErrorBoundary' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\securityErrorBoundary.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        },
+        {
+          "type": "missing-react-keys",
+          "severity": "low",
+          "message": "Component 'securityErrorBoundary' may be missing React keys in lists",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\securityErrorBoundary.tsx",
+          "recommendation": "Add unique keys to list items for better performance"
+        }
+      ]
+    },
+    {
+      "name": "userFriendlyErrors",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\userFriendlyErrors.tsx",
+      "relativePath": "ui\\RichText\\utils\\userFriendlyErrors.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "missing-aria-labels",
+          "severity": "medium",
+          "message": "Component 'userFriendlyErrors' may be missing ARIA labels on interactive elements",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\userFriendlyErrors.tsx",
+          "recommendation": "Add appropriate ARIA labels for screen readers"
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Select\\index.tsx",
+      "relativePath": "ui\\Select\\index.tsx",
+      "isClientComponent": true,
+      "issues": [
+        {
+          "type": "weak-typing",
+          "severity": "medium",
+          "message": "Component 'index' may have weak TypeScript typing",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Select\\index.tsx",
+          "recommendation": "Define proper TypeScript interfaces for props"
+        }
+      ]
+    },
+    {
+      "name": "index",
+      "path": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Textarea\\index.tsx",
+      "relativePath": "ui\\Textarea\\index.tsx",
+      "isClientComponent": false,
+      "issues": [
+        {
+          "type": "weak-typing",
+          "severity": "medium",
+          "message": "Component 'index' may have weak TypeScript typing",
+          "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Textarea\\index.tsx",
+          "recommendation": "Define proper TypeScript interfaces for props"
         }
       ]
     }
@@ -1015,8 +1580,36 @@
     {
       "type": "missing-access-control",
       "severity": "critical",
+      "message": "Block 'Archive' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\Archive\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
       "message": "Block 'Content' has no access control defined",
       "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Content' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\Content\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'MediaBlock' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Content\\MediaBlock\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'CallToAction' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\cta\\CallToAction\\config.ts",
       "recommendation": "Add access control to secure the block"
     },
     {
@@ -1052,6 +1645,13 @@
       "severity": "critical",
       "message": "Block 'Hero' has no access control defined",
       "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Hero\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
+      "message": "Block 'Hero' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\Hero\\Hero\\config.ts",
       "recommendation": "Add access control to secure the block"
     },
     {
@@ -1141,6 +1741,13 @@
     {
       "type": "missing-access-control",
       "severity": "critical",
+      "message": "Block 'Code' has no access control defined",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\Code\\config.ts",
+      "recommendation": "Add access control to secure the block"
+    },
+    {
+      "type": "missing-access-control",
+      "severity": "critical",
       "message": "Block 'FAQAccordion' has no access control defined",
       "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\blocks\\technical\\FAQAccordion\\config.ts",
       "recommendation": "Add access control to secure the block"
@@ -1167,6 +1774,27 @@
       "recommendation": "Add access control to secure the block"
     },
     {
+      "type": "missing-error-handling",
+      "severity": "medium",
+      "message": "Component 'index' has async operations without error handling",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\DashboardCollections\\index.tsx",
+      "recommendation": "Add proper error handling for async operations"
+    },
+    {
+      "type": "weak-typing",
+      "severity": "medium",
+      "message": "Component 'index' may have weak TypeScript typing",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\UniqueSelect\\index.tsx",
+      "recommendation": "Define proper TypeScript interfaces for props"
+    },
+    {
+      "type": "missing-react-keys",
+      "severity": "low",
+      "message": "Component 'index' may be missing React keys in lists",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\admin\\UniqueSelect\\index.tsx",
+      "recommendation": "Add unique keys to list items for better performance"
+    },
+    {
       "type": "missing-react-keys",
       "severity": "low",
       "message": "Component 'BlockRenderer' may be missing React keys in lists",
@@ -1188,74 +1816,221 @@
       "recommendation": "Add appropriate ARIA labels for screen readers"
     },
     {
-      "type": "missing-error-handling",
-      "severity": "medium",
-      "message": "Component 'index' has async operations without error handling",
-      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\DashboardCollections\\index.tsx",
-      "recommendation": "Add proper error handling for async operations"
-    },
-    {
-      "type": "missing-react-keys",
-      "severity": "low",
-      "message": "Component 'index' may be missing React keys in lists",
-      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\Media\\ImageMedia\\index.tsx",
-      "recommendation": "Add unique keys to list items for better performance"
-    },
-    {
       "type": "weak-typing",
       "severity": "medium",
-      "message": "Component 'card' may have weak TypeScript typing",
-      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\card.tsx",
-      "recommendation": "Define proper TypeScript interfaces for props"
-    },
-    {
-      "type": "weak-typing",
-      "severity": "medium",
-      "message": "Component 'checkbox' may have weak TypeScript typing",
-      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\checkbox.tsx",
-      "recommendation": "Define proper TypeScript interfaces for props"
-    },
-    {
-      "type": "weak-typing",
-      "severity": "medium",
-      "message": "Component 'input' may have weak TypeScript typing",
-      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\input.tsx",
-      "recommendation": "Define proper TypeScript interfaces for props"
-    },
-    {
-      "type": "weak-typing",
-      "severity": "medium",
-      "message": "Component 'select' may have weak TypeScript typing",
-      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\select.tsx",
-      "recommendation": "Define proper TypeScript interfaces for props"
-    },
-    {
-      "type": "weak-typing",
-      "severity": "medium",
-      "message": "Component 'textarea' may have weak TypeScript typing",
-      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\textarea.tsx",
+      "message": "Component 'index' may have weak TypeScript typing",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Card\\index.tsx",
       "recommendation": "Define proper TypeScript interfaces for props"
     },
     {
       "type": "weak-typing",
       "severity": "medium",
       "message": "Component 'index' may have weak TypeScript typing",
-      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\UniqueSelect\\index.tsx",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Checkbox\\index.tsx",
+      "recommendation": "Define proper TypeScript interfaces for props"
+    },
+    {
+      "type": "weak-typing",
+      "severity": "medium",
+      "message": "Component 'index' may have weak TypeScript typing",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Input\\index.tsx",
       "recommendation": "Define proper TypeScript interfaces for props"
     },
     {
       "type": "missing-react-keys",
       "severity": "low",
       "message": "Component 'index' may be missing React keys in lists",
-      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\UniqueSelect\\index.tsx",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Media\\ImageMedia\\index.tsx",
       "recommendation": "Add unique keys to list items for better performance"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'OptimizedImageMedia' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Media\\ImageMedia\\OptimizedImageMedia.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-react-keys",
+      "severity": "low",
+      "message": "Component 'OptimizedImageMedia' may be missing React keys in lists",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Media\\ImageMedia\\OptimizedImageMedia.tsx",
+      "recommendation": "Add unique keys to list items for better performance"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'ErrorMonitoringDashboard' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\components\\ErrorMonitoringDashboard.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'PerformanceDashboard' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\components\\PerformanceDashboard.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'PerformanceMonitor' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\components\\PerformanceMonitor.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'dynamicLoader' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\converters\\dynamicLoader.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-react-keys",
+      "severity": "low",
+      "message": "Component 'dynamicLoader' may be missing React keys in lists",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\converters\\dynamicLoader.tsx",
+      "recommendation": "Add unique keys to list items for better performance"
+    },
+    {
+      "type": "missing-react-keys",
+      "severity": "low",
+      "message": "Component 'mediaConverters' may be missing React keys in lists",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\converters\\mediaConverters.tsx",
+      "recommendation": "Add unique keys to list items for better performance"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'BatchBlockDeleter' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BatchBlockDeleter.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'BatchBlockDuplicator' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BatchBlockDuplicator.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'BlockContextMenu' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockContextMenu.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'BlockDeleteConfirmation' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockDeleteConfirmation.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'BlockPalette' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockPalette.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'BlockPreview' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\BlockPreview.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'MediaEditor' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\MediaEditor.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'MediaGallery' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\features\\MediaGallery.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'imageOptimization' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\optimization\\imageOptimization.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-react-keys",
+      "severity": "low",
+      "message": "Component 'imageOptimization' may be missing React keys in lists",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\optimization\\imageOptimization.tsx",
+      "recommendation": "Add unique keys to list items for better performance"
+    },
+    {
+      "type": "missing-error-handling",
+      "severity": "medium",
+      "message": "Component 'incrementalRendering' has async operations without error handling",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\optimization\\incrementalRendering.tsx",
+      "recommendation": "Add proper error handling for async operations"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'gracefulDegradation' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\gracefulDegradation.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-react-keys",
+      "severity": "low",
+      "message": "Component 'gracefulDegradation' may be missing React keys in lists",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\gracefulDegradation.tsx",
+      "recommendation": "Add unique keys to list items for better performance"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'securityErrorBoundary' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\securityErrorBoundary.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "missing-react-keys",
+      "severity": "low",
+      "message": "Component 'securityErrorBoundary' may be missing React keys in lists",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\securityErrorBoundary.tsx",
+      "recommendation": "Add unique keys to list items for better performance"
+    },
+    {
+      "type": "missing-aria-labels",
+      "severity": "medium",
+      "message": "Component 'userFriendlyErrors' may be missing ARIA labels on interactive elements",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\RichText\\utils\\userFriendlyErrors.tsx",
+      "recommendation": "Add appropriate ARIA labels for screen readers"
+    },
+    {
+      "type": "weak-typing",
+      "severity": "medium",
+      "message": "Component 'index' may have weak TypeScript typing",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Select\\index.tsx",
+      "recommendation": "Define proper TypeScript interfaces for props"
+    },
+    {
+      "type": "weak-typing",
+      "severity": "medium",
+      "message": "Component 'index' may have weak TypeScript typing",
+      "file": "C:\\Users\\omkar\\Desktop\\Omkar\\VisualStudioCode\\OD-LABS-Payload\\src\\components\\ui\\Textarea\\index.tsx",
+      "recommendation": "Define proper TypeScript interfaces for props"
     }
   ],
   "recommendations": [
     {
       "priority": 1,
       "title": "Implement Access Control",
-      "description": "24 block(s) are missing access control. This is a critical security issue.",
+      "description": "30 block(s) are missing access control. This is a critical security issue.",
       "impact": "Critical security vulnerability - unauthorized access to data",
       "effort": "Medium",
       "steps": [

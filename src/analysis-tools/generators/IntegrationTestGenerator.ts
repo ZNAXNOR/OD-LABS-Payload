@@ -95,7 +95,7 @@ export class IntegrationTestGenerator {
   /**
    * Generate field data flow test
    */
-  private generateFieldDataFlowTest(field: Field, block: Block, component: Component): Test {
+  private generateFieldDataFlowTest(field: Field, _block: Block, component: Component): Test {
     const testName = `should correctly pass ${field.name} from block to component`
     const fieldValue = this.generateFieldValue(field)
 
@@ -139,7 +139,7 @@ export class IntegrationTestGenerator {
   /**
    * Generate nested data test
    */
-  private generateNestedDataTest(field: Field, block: Block, component: Component): Test {
+  private generateNestedDataTest(field: Field, _block: Block, component: Component): Test {
     const testName = `should handle nested data in ${field.name}`
     const nestedData = this.generateNestedData(field)
 

@@ -1,0 +1,1 @@
+export { SpacerBlock } from './config'

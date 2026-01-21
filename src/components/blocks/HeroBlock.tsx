@@ -2,8 +2,8 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { cn } from '@/utilities/ui'
-import { CMSLink } from '@/components/Link'
-import { Media } from '@/components/Media'
+import { CMSLink } from '@/components/ui/Link'
+import { Media } from '@/components/ui/Media'
 import type { HeroBlock as HeroBlockType } from '@/payload-types'
 
 interface HeroBlockProps {

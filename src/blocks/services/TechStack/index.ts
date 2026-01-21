@@ -1,0 +1,1 @@
+export { TechStackBlock } from './config'

@@ -1,0 +1,138 @@
+/* ============================================================================
+   BASE STYLES - Critical CSS for layout and core functionality
+   ============================================================================ */
+
+/* CSS Reset and Normalization */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  line-height: 1.6;
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Essential Layout */
+main {
+  flex: 1;
+}
+
+/* Critical Interactive Elements */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+button:disabled,
+[type='button']:disabled,
+[type='reset']:disabled,
+[type='submit']:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Essential Links */
+a {
+  background-color: transparent;
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+/* Critical Images */
+img {
+  border-style: none;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Essential Lists */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Critical Tables */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Essential Forms */
+fieldset {
+  border: 1px solid hsl(var(--border));
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+legend {
+  box-sizing: border-box;
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  padding: 0;
+  white-space: normal;
+}
+
+/* Critical Accessibility */
+[hidden] {
+  display: none !important;
+}
+
+/* Focus Management */
+:focus {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Critical Responsive */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 769px) {
+  body {
+    font-size: 16px;
+  }
+}

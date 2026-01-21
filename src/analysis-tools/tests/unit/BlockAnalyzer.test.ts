@@ -49,7 +49,7 @@ describe('BlockAnalyzer', () => {
 
       const results = analyzer.validateFields(block)
       expect(results.length).toBeGreaterThan(0)
-      expect(results[0].missingValidations).toBeDefined()
+      expect(results[0]?.missingValidations).toBeDefined()
     })
 
     it('should handle blocks with nested fields', () => {
@@ -394,7 +394,7 @@ describe('BlockAnalyzer', () => {
             name: 'email',
             type: 'email',
             required: true,
-            validate: (value: any) => true,
+            validate: (_value: any) => true,
           },
           {
             name: 'age',

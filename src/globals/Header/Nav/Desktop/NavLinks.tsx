@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/ui/Link'
 import type { Header as HeaderType } from '@/payload-types'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/utilities/ui'

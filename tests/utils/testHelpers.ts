@@ -2,7 +2,7 @@
  * Test utilities and helpers
  */
 
-import type { DefaultTypedEditorState } from '../../src/components/RichText/types'
+import type { DefaultTypedEditorState } from '@/components/ui/RichText/types'
 
 /**
  * Creates a mock RichText data structure that satisfies TypeScript requirements

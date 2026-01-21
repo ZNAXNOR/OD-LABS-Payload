@@ -2,7 +2,7 @@
  * Unit tests for Pattern Comparator
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { PatternComparator } from '../../analyzers/PatternComparator'
 import { StructuralComparator } from '../../analyzers/StructuralComparator'
 import { FeatureDetector } from '../../analyzers/FeatureDetector'
@@ -439,7 +439,7 @@ describe('FeatureDetector', () => {
               {
                 name: 'title',
                 type: 'text',
-                validate: (value) => Boolean(value),
+                validate: (value: any) => Boolean(value),
               },
             ],
           },

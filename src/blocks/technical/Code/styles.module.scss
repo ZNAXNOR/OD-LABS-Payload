@@ -1,0 +1,197 @@
+// Code Block Styles
+.codeBlock {
+  margin: 2rem 0;
+  position: relative;
+
+  .filename {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+    border-bottom: 1px solid var(--border);
+
+    &.light {
+      background-color: #e4e4e7;
+      color: #18181b;
+      border-color: #d4d4d8;
+    }
+
+    &.dark {
+      background-color: #27272a;
+      color: #f4f4f5;
+      border-color: #3f3f46;
+    }
+  }
+
+  .codeWrapper {
+    position: relative;
+    border-radius: 0.5rem;
+    overflow: hidden;
+
+    &.auto {
+      background-color: #18181b;
+
+      :global(.dark) & {
+        background-color: #09090b;
+      }
+    }
+
+    &.dark {
+      background-color: #18181b;
+    }
+
+    &.light {
+      background-color: #f4f4f5;
+    }
+  }
+
+  .copyButton {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+
+    button {
+      height: 2rem;
+      padding: 0 0.75rem;
+      background-color: #27272a;
+      color: #f4f4f5;
+      border: 1px solid #3f3f46;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #3f3f46;
+      }
+
+      svg {
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+  }
+
+  pre {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    padding: 1.5rem !important;
+    font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace !important;
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+    overflow-x: auto;
+
+    code {
+      font-family: inherit !important;
+      font-size: inherit !important;
+    }
+
+    // Line numbers styling
+    &.line-numbers {
+      padding-left: 3.5rem !important;
+
+      .line-numbers-rows {
+        position: absolute;
+        pointer-events: none;
+        top: 1.5rem;
+        left: 0;
+        width: 3rem;
+        letter-spacing: -1px;
+        border-right: 1px solid #3f3f46;
+        user-select: none;
+
+        > span {
+          display: block;
+          counter-increment: linenumber;
+
+          &:before {
+            content: counter(linenumber);
+            color: #71717a;
+            display: block;
+            padding-right: 0.8rem;
+            text-align: right;
+          }
+        }
+      }
+    }
+
+    // Line highlighting
+    .line-highlight {
+      background: rgba(255, 255, 255, 0.1);
+      margin-top: 0;
+      margin-bottom: 0;
+      left: 0;
+      right: 0;
+      padding: inherit 0;
+      pointer-events: none;
+      line-height: inherit;
+      white-space: pre;
+    }
+  }
+
+  .caption {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    text-align: center;
+    line-height: 1.4;
+  }
+}
+
+// Prism theme overrides
+:global(.token.comment),
+:global(.token.prolog),
+:global(.token.doctype),
+:global(.token.cdata) {
+  color: #6b7280;
+}
+
+:global(.token.punctuation) {
+  color: #d1d5db;
+}
+
+:global(.token.property),
+:global(.token.tag),
+:global(.token.boolean),
+:global(.token.number),
+:global(.token.constant),
+:global(.token.symbol),
+:global(.token.deleted) {
+  color: #f87171;
+}
+
+:global(.token.selector),
+:global(.token.attr-name),
+:global(.token.string),
+:global(.token.char),
+:global(.token.builtin),
+:global(.token.inserted) {
+  color: #34d399;
+}
+
+:global(.token.operator),
+:global(.token.entity),
+:global(.token.url),
+:global(.language-css .token.string),
+:global(.style .token.string) {
+  color: #60a5fa;
+}
+
+:global(.token.atrule),
+:global(.token.attr-value),
+:global(.token.keyword) {
+  color: #a78bfa;
+}
+
+:global(.token.function),
+:global(.token.class-name) {
+  color: #fbbf24;
+}
+
+:global(.token.regex),
+:global(.token.important),
+:global(.token.variable) {
+  color: #fb7185;
+}

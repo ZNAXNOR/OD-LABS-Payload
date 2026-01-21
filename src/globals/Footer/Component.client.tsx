@@ -7,8 +7,8 @@ import { usePathname } from 'next/navigation'
 import type { Footer } from '@/payload-types'
 
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
-import { CMSLink } from '@/components/Link'
-import { Logo } from '@/components/Logo/Logo'
+import { CMSLink } from '@/components/ui/Link'
+import { Logo } from '@/components/layout/Logo/Logo'
 import { cn } from '@/utilities/ui'
 
 interface FooterClientProps {

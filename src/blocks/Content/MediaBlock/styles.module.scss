@@ -1,0 +1,90 @@
+// Media Block Styles
+.mediaBlock {
+  margin: 2rem 0;
+
+  &.withGutter {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem;
+  }
+
+  .media {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 0.8rem;
+    overflow: hidden;
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+
+  .caption {
+    margin-top: 1.5rem;
+
+    &.withContainer {
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 1rem;
+    }
+
+    :global(.rich-text) {
+      color: var(--muted-foreground);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      text-align: center;
+
+      p {
+        margin: 0;
+      }
+
+      a {
+        color: var(--primary);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      em {
+        font-style: italic;
+      }
+
+      strong {
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .mediaBlock {
+    margin: 1.5rem 0;
+
+    .caption {
+      margin-top: 1rem;
+
+      :global(.rich-text) {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
