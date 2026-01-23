@@ -5,58 +5,58 @@ import React, { useEffect, useMemo, useRef } from 'react'
 import { cn } from '@/utilities/ui'
 
 // Import enhanced types and utilities
+import { defaultBlockConverters, mergeBlockConverters } from './converters/blockConverters'
+import { createEnhancedLinkConverter } from './converters/linkConverters'
+import { mediaConverters } from './converters/mediaConverters'
 import type { EnhancedRichTextProps } from './types'
-import {
-  generateSectionAriaAttrs,
-  generateLiveRegionAttrs,
-  generateSkipLinkAttrs,
-} from './utils/accessibilityUtils'
-import { createSkipLinkNavigation } from './utils/keyboardNavigation'
-import { generateContentSummary } from './utils/screenReaderUtils'
 import {
   getResponsiveClassName,
   getResponsiveContainerClass,
   getResponsiveProseClass,
 } from './utils'
 import {
-  getProseTypographyClasses,
+  generateLiveRegionAttrs,
+  generateSectionAriaAttrs,
+  generateSkipLinkAttrs,
+} from './utils/accessibilityUtils'
+import { createSkipLinkNavigation } from './utils/keyboardNavigation'
+import { generateContentSummary } from './utils/screenReaderUtils'
+import {
   getA11yTypographyClasses,
   getOptimizedTypographyClasses,
+  getProseTypographyClasses,
 } from './utils/typographyUtils'
-import { defaultBlockConverters, mergeBlockConverters } from './converters/blockConverters'
-import { createEnhancedLinkConverter } from './converters/linkConverters'
-import { mediaConverters } from './converters/mediaConverters'
 
 // Import container query utilities
 import {
   createContainerQueryWrapper,
-  supportsContainerQueries,
   createProgressiveContainerClasses,
+  supportsContainerQueries,
 } from './utils/containerQueryUtils'
 
-// Import container query styles
-import './styles/containerQueries.css'
+// Import container query styles - commented out for Node.js compatibility
+// import './styles/containerQueries.css'
 
-// Import graceful degradation styles
-import './styles/gracefulDegradation.css'
+// Import graceful degradation styles - commented out for Node.js compatibility
+// import './styles/gracefulDegradation.css'
 
 // Import performance monitoring
-import { usePerformanceMonitoring, useContentMetrics } from './hooks/usePerformanceMonitoring'
-import { PerformanceMonitor, PerformanceIndicator } from './components/PerformanceMonitor'
+import { PerformanceIndicator, PerformanceMonitor } from './components/PerformanceMonitor'
+import { useContentMetrics, usePerformanceMonitoring } from './hooks/usePerformanceMonitoring'
 
 // Import graceful degradation utilities
 import {
-  withGracefulDegradation,
   GracefulDegradationManager,
   ProgressiveEnhancement,
   SimpleFallbacks,
   createDegradationAwareBlockRenderer,
+  withGracefulDegradation,
   type DegradationContext,
 } from './utils/gracefulDegradation'
 
 // Import error logging and monitoring
-import { logRichTextError } from './utils/errorLogging'
 import ErrorMonitoringDashboard from './components/ErrorMonitoringDashboard'
+import { logRichTextError } from './utils/errorLogging'
 
 // Enhanced JSX converters with error boundaries and custom converter support
 const createDefaultConverters = (props: EnhancedRichTextProps) => {
@@ -225,7 +225,7 @@ function RichTextComponent(props: EnhancedRichTextProps) {
 
   // Generate unique ID for accessibility
   const componentId = useMemo(
-    () => id || `richtext-${Math.random().toString(36).substr(2, 9)}`,
+    () => id || `richtext-${Math.random().toString(36).substring(2, 11)}`,
     [id],
   )
 

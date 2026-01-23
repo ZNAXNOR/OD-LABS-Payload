@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const NewsletterBlock: Block = {
   slug: 'newsletter',
+  dbName: 'newsletter', // Root level optimization
   interfaceName: 'NewsletterBlock',
   labels: {
     singular: 'Newsletter Block',

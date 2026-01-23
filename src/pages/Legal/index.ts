@@ -18,6 +18,7 @@ const legalBlocks = getBlocksForCollection('legal')
 
 export const LegalPages: CollectionConfig = {
   slug: 'legal',
+  dbName: 'legal', // Explicit database naming
   timestamps: true, // Enable Payload's built-in timestamp management
   typescript: {
     interface: 'LegalPage',
@@ -166,6 +167,7 @@ export const LegalPages: CollectionConfig = {
     {
       name: 'documentType',
       type: 'select',
+      dbName: 'doc_type', // Abbreviation for document type
       options: [
         { label: 'Privacy Policy', value: 'privacy' },
         { label: 'Terms of Service', value: 'terms' },

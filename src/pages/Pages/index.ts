@@ -1,30 +1,30 @@
 import type { CollectionConfig } from 'payload'
 
 // Import blocks
-import { HeroBlock } from '@/blocks/Hero/config'
-import { ContentBlock } from '@/blocks/Content/config'
-import { CallToActionBlock } from '@/blocks/CallToAction/config'
-import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { ArchiveBlock } from '@/blocks/Archive/config'
 import { Banner } from '@/blocks/Banner/config'
+import { CallToActionBlock } from '@/blocks/CallToAction/config'
 import { Code } from '@/blocks/Code/config'
+import { ContentBlock } from '@/blocks/Content/config'
+import { HeroBlock } from '@/blocks/Hero/config'
+import { MediaBlock } from '@/blocks/MediaBlock/config'
 
-// Import services blocks
-import { ServicesGridBlock } from '@/blocks/services/ServicesGrid/config'
-import { TechStackBlock } from '@/blocks/services/TechStack/config'
-import { ProcessStepsBlock } from '@/blocks/services/ProcessSteps/config'
-import { PricingTableBlock } from '@/blocks/services/PricingTable/config'
+// Services blocks
+// import { ServicesGridBlock } from '@/blocks/services/ServicesGrid/config' // Temporarily disabled due to database relation issue
+// import { TechStackBlock } from '@/blocks/services/TechStack/config' // Temporarily disabled due to database relation issue
+// import { ProcessStepsBlock } from '@/blocks/services/ProcessSteps/config' // Temporarily disabled due to database relation issue
+// import { PricingTableBlock } from '@/blocks/services/PricingTable/config' // Temporarily disabled due to database relation issue
 
 // Import portfolio blocks
-import { ProjectShowcaseBlock } from '@/blocks/portfolio/ProjectShowcase/config'
-import { CaseStudyBlock } from '@/blocks/portfolio/CaseStudy/config'
 import { BeforeAfterBlock } from '@/blocks/portfolio/BeforeAfter/config'
+import { CaseStudyBlock } from '@/blocks/portfolio/CaseStudy/config'
+import { ProjectShowcaseBlock } from '@/blocks/portfolio/ProjectShowcase/config'
 import { TestimonialBlock } from '@/blocks/portfolio/Testimonial/config'
 
 // Import technical blocks
+import { FAQAccordionBlock } from '@/blocks/technical/FAQAccordion/config'
 import { FeatureGridBlock } from '@/blocks/technical/FeatureGrid/config'
 import { StatsCounterBlock } from '@/blocks/technical/StatsCounter/config'
-import { FAQAccordionBlock } from '@/blocks/technical/FAQAccordion/config'
 import { TimelineBlock } from '@/blocks/technical/Timeline/config'
 
 // Import CTA blocks
@@ -38,10 +38,10 @@ import { DividerBlock } from '@/blocks/layout/Divider/config'
 import { SpacerBlock } from '@/blocks/layout/Spacer/config'
 
 // Import hooks
-import { revalidatePage } from './hooks/revalidatePage'
-import { populateBreadcrumbs } from './hooks/populateBreadcrumbs'
-import { createSlugGenerationHook, validateSlugFormat } from '@/utilities/slugGeneration'
 import { createAuditTrailHook } from '@/pages/shared/hooks/createAuditTrailHook'
+import { createSlugGenerationHook, validateSlugFormat } from '@/utilities/slugGeneration'
+import { populateBreadcrumbs } from './hooks/populateBreadcrumbs'
+import { revalidatePage } from './hooks/revalidatePage'
 
 // Import shared fields
 import { auditFields } from '@/pages/shared/fields/auditFields'
@@ -155,10 +155,10 @@ export const Pages: CollectionConfig = {
                 Banner,
                 Code,
                 // Services blocks
-                ServicesGridBlock,
-                TechStackBlock,
-                ProcessStepsBlock,
-                PricingTableBlock,
+                // ServicesGridBlock, // Temporarily disabled due to database relation issue
+                // TechStackBlock, // Temporarily disabled due to database relation issue
+                // ProcessStepsBlock, // Temporarily disabled due to database relation issue
+                // PricingTableBlock, // Temporarily disabled due to database relation issue
                 // Portfolio blocks
                 ProjectShowcaseBlock,
                 CaseStudyBlock,

@@ -1,6 +1,6 @@
-import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { defineConfig } from 'vitest/config'
 
 // Custom plugin to handle SCSS imports from PayloadCMS UI
 const mockScssPlugin = () => ({
@@ -35,6 +35,10 @@ export default defineConfig({
       'tests/pbt/**/*.pbt.spec.ts',
       'tests/performance/**/*.perf.spec.ts',
     ],
+    // Add timeouts to prevent hanging tests
+    testTimeout: 30000,
+    hookTimeout: 30000,
+    teardownTimeout: 10000,
     // Mock CSS/SCSS imports
     css: {
       modules: {

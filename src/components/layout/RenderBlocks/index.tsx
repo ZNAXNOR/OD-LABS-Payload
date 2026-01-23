@@ -1,6 +1,5 @@
-import React from 'react'
-import dynamic from 'next/dynamic'
 import type { Page } from '@/payload-types'
+import dynamic from 'next/dynamic'
 
 // Lazy load all block components with loading states
 const HeroBlock = dynamic(
@@ -10,45 +9,46 @@ const HeroBlock = dynamic(
   },
 )
 
-const ServicesGridBlock = dynamic(
-  () =>
-    import('@/components/blocks/services/ServicesGrid').then((mod) => ({
-      default: mod.ServicesGridBlock,
-    })),
-  {
-    loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
-  },
-)
+// Services blocks - temporarily disabled due to database relation issues
+// const ServicesGridBlock = dynamic(
+//   () =>
+//     import('@/components/blocks/services/ServicesGrid').then((mod) => ({
+//       default: mod.ServicesGridBlock,
+//     })),
+//   {
+//     loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+//   },
+// )
 
-const TechStackBlock = dynamic(
-  () =>
-    import('@/components/blocks/services/TechStack').then((mod) => ({
-      default: mod.TechStackBlock,
-    })),
-  {
-    loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
-  },
-)
+// const TechStackBlock = dynamic(
+//   () =>
+//     import('@/components/blocks/services/TechStack').then((mod) => ({
+//       default: mod.TechStackBlock,
+//     })),
+//   {
+//     loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+//   },
+// )
 
-const ProcessStepsBlock = dynamic(
-  () =>
-    import('@/components/blocks/services/ProcessSteps').then((mod) => ({
-      default: mod.ProcessStepsBlock,
-    })),
-  {
-    loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
-  },
-)
+// const ProcessStepsBlock = dynamic(
+//   () =>
+//     import('@/components/blocks/services/ProcessSteps').then((mod) => ({
+//       default: mod.ProcessStepsBlock,
+//     })),
+//   {
+//     loading: () => <div className="min-h-[300px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+//   },
+// )
 
-const PricingTableBlock = dynamic(
-  () =>
-    import('@/components/blocks/services/PricingTable').then((mod) => ({
-      default: mod.PricingTableBlock,
-    })),
-  {
-    loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
-  },
-)
+// const PricingTableBlock = dynamic(
+//   () =>
+//     import('@/components/blocks/services/PricingTable').then((mod) => ({
+//       default: mod.PricingTableBlock,
+//     })),
+//   {
+//     loading: () => <div className="min-h-[400px] animate-pulse bg-zinc-50 dark:bg-zinc-900" />,
+//   },
+// )
 
 const ProjectShowcaseBlock = dynamic(
   () =>
@@ -286,17 +286,58 @@ export function RenderBlocks({ blocks }: RenderBlocksProps) {
               </section>
             )
 
+          // Services blocks - temporarily disabled due to database relation issues
           case 'servicesGrid':
-            return <ServicesGridBlock key={index} block={block as any} />
+            return (
+              <section key={index} className="py-16">
+                <div className="container mx-auto px-4">
+                  <div className="max-w-6xl mx-auto">
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Services Grid Block (Temporarily Disabled)
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )
 
           case 'techStack':
-            return <TechStackBlock key={index} block={block as any} />
+            return (
+              <section key={index} className="py-16">
+                <div className="container mx-auto px-4">
+                  <div className="max-w-6xl mx-auto">
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Tech Stack Block (Temporarily Disabled)
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )
 
           case 'processSteps':
-            return <ProcessStepsBlock key={index} block={block as any} />
+            return (
+              <section key={index} className="py-16">
+                <div className="container mx-auto px-4">
+                  <div className="max-w-6xl mx-auto">
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Process Steps Block (Temporarily Disabled)
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )
 
           case 'pricingTable':
-            return <PricingTableBlock key={index} block={block as any} />
+            return (
+              <section key={index} className="py-16">
+                <div className="container mx-auto px-4">
+                  <div className="max-w-6xl mx-auto">
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Pricing Table Block (Temporarily Disabled)
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )
 
           case 'projectShowcase':
             return <ProjectShowcaseBlock key={index} block={block as any} />

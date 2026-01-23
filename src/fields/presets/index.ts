@@ -199,6 +199,7 @@ export const serviceFieldPreset: Field[] = [
               {
                 name: 'currency',
                 type: 'select',
+                dbName: 'price_currency', // Prefixed to avoid conflicts
                 options: [
                   { label: 'USD ($)', value: 'USD' },
                   { label: 'EUR (€)', value: 'EUR' },
@@ -209,6 +210,7 @@ export const serviceFieldPreset: Field[] = [
               {
                 name: 'pricingModel',
                 type: 'select',
+                dbName: 'pricing_model', // Snake case conversion
                 options: [
                   { label: 'Fixed Price', value: 'fixed' },
                   { label: 'Hourly Rate', value: 'hourly' },
@@ -228,6 +230,7 @@ export const serviceFieldPreset: Field[] = [
           {
             name: 'features',
             type: 'array',
+            dbName: 'service_features', // Explicit database naming
             admin: {
               description: 'Service features and benefits',
             },

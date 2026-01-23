@@ -8,35 +8,35 @@ import { HeroBlock } from './hero/Hero'
 // ============================================================================
 // CONTENT CATEGORY
 // ============================================================================
-import { ContentBlock } from './content/Content'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CodeBlock } from '@/blocks/Code/Component'
+import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { ContentBlock } from './content/Content'
 
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 
 // ============================================================================
 // SERVICES CATEGORY
-// ============================================================================
-import { ServicesGridBlock } from './services/ServicesGrid'
-import { TechStackBlock } from './services/TechStack'
-import { ProcessStepsBlock } from './services/ProcessSteps'
-import { PricingTableBlock } from './services/PricingTable'
+// Services blocks - temporarily disabled due to database relation issues
+// import { ServicesGridBlock } from './services/ServicesGrid'
+// import { TechStackBlock } from './services/TechStack'
+// import { ProcessStepsBlock } from './services/ProcessSteps'
+// import { PricingTableBlock } from './services/PricingTable'
 
 // ============================================================================
 // PORTFOLIO CATEGORY
 // ============================================================================
-import { ProjectShowcaseBlock } from './portfolio/ProjectShowcase'
-import { CaseStudyBlock } from './portfolio/CaseStudy'
 import { BeforeAfterBlock } from './portfolio/BeforeAfter'
+import { CaseStudyBlock } from './portfolio/CaseStudy'
+import { ProjectShowcaseBlock } from './portfolio/ProjectShowcase'
 import { TestimonialBlock } from './portfolio/Testimonial'
 
 // ============================================================================
 // TECHNICAL CATEGORY
 // ============================================================================
+import { FAQAccordionBlock } from './technical/FAQAccordion'
 import { FeatureGridBlock } from './technical/FeatureGrid'
 import { StatsCounterBlock } from './technical/StatsCounter'
-import { FAQAccordionBlock } from './technical/FAQAccordion'
 import { TimelineBlock } from './technical/Timeline'
 
 // ============================================================================
@@ -78,11 +78,11 @@ const BLOCK_COMPONENTS = {
   banner: BannerBlock,
   code: CodeBlock,
   cta: CallToActionBlock,
-  // Services
-  servicesGrid: ServicesGridBlock,
-  techStack: TechStackBlock,
-  processSteps: ProcessStepsBlock,
-  pricingTable: PricingTableBlock,
+  // Services - temporarily disabled due to database relation issues
+  // servicesGrid: ServicesGridBlock,
+  // techStack: TechStackBlock,
+  // processSteps: ProcessStepsBlock,
+  // pricingTable: PricingTableBlock,
   // Portfolio
   projectShowcase: ProjectShowcaseBlock,
   caseStudy: CaseStudyBlock,

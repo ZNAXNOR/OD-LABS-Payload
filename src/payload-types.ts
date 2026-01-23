@@ -79,16 +79,11 @@ export interface Config {
     'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
-    'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {
-    'payload-folders': {
-      documentsAndFolders: 'payload-folders' | 'media';
-    };
-  };
+  collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -102,7 +97,6 @@ export interface Config {
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
-    'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -114,7 +108,7 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
-    contact: Contact;
+    contact: ContactInformation;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
@@ -155,6 +149,8 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Manage user accounts and permissions
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -183,6 +179,8 @@ export interface User {
   password?: string | null;
 }
 /**
+ * Manage images, videos, and other media files
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
@@ -192,6 +190,9 @@ export interface Media {
    * Alt text is required for accessibility compliance
    */
   alt: string;
+  /**
+   * Optional caption for the media
+   */
   caption?: {
     root: {
       type: string;
@@ -214,7 +215,6 @@ export interface Media {
    * @maxItems 2
    */
   focalPoint?: [number, number] | null;
-  folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -271,32 +271,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-folders".
- */
-export interface FolderInterface {
-  id: number;
-  name: string;
-  folder?: (number | null) | FolderInterface;
-  documentsAndFolders?: {
-    docs?: (
-      | {
-          relationTo?: 'payload-folders';
-          value: number | FolderInterface;
-        }
-      | {
-          relationTo?: 'media';
-          value: number | Media;
-        }
-    )[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  folderType?: 'media'[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
 export interface Page {
@@ -320,10 +294,6 @@ export interface Page {
         | ArchiveBlock
         | BannerBlock
         | CodeBlock
-        | ServicesGridBlock
-        | TechStackBlock
-        | ProcessStepsBlock
-        | PricingTableBlock
         | ProjectShowcaseBlock
         | CaseStudyBlock
         | BeforeAfterBlock
@@ -904,10 +874,6 @@ export interface ServicePage {
         | ContentBlock
         | MediaBlock
         | CallToActionBlock
-        | ServicesGridBlock
-        | TechStackBlock
-        | ProcessStepsBlock
-        | PricingTableBlock
         | TestimonialBlock
         | FeatureGridBlock
         | StatsCounterBlock
@@ -2019,382 +1985,6 @@ export interface SocialProofBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ServicesGridBlock".
- */
-export interface ServicesGridBlock {
-  /**
-   * Optional heading for the services section
-   */
-  heading?: string | null;
-  /**
-   * Optional description text
-   */
-  description?: string | null;
-  /**
-   * Number of columns in the grid
-   */
-  columns: '2' | '3' | '4';
-  /**
-   * Add service cards to display
-   */
-  services?:
-    | {
-        /**
-         * Lucide icon name (e.g., Code, Palette, Rocket)
-         */
-        icon?: string | null;
-        /**
-         * Service title
-         */
-        title: string;
-        /**
-         * Service description
-         */
-        description: string;
-        /**
-         * List of key features for this service
-         */
-        features?:
-          | {
-              feature: string;
-              id?: string | null;
-            }[]
-          | null;
-        /**
-         * Optional link to service details page
-         */
-        link: {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null)
-              | ({
-                  relationTo: 'blogs';
-                  value: number | BlogPage;
-                } | null)
-              | ({
-                  relationTo: 'services';
-                  value: number | ServicePage;
-                } | null)
-              | ({
-                  relationTo: 'legal';
-                  value: number | LegalPage;
-                } | null)
-              | ({
-                  relationTo: 'contacts';
-                  value: number | ContactPage;
-                } | null);
-            url?: string | null;
-            label: string;
-            /**
-             * Choose how the link should be rendered.
-             */
-            appearance?: ('default' | 'secondary' | 'outline') | null;
-          };
-        };
-        /**
-         * Highlight this service card
-         */
-        highlighted?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Visual style of the service cards
-   */
-  style: 'cards' | 'minimal' | 'bordered';
-  /**
-   * Display icons on service cards
-   */
-  showIcons?: boolean | null;
-  /**
-   * Optional call-to-action button text
-   */
-  ctaText?: string | null;
-  /**
-   * Link for the call-to-action button
-   */
-  ctaLink?: {
-    link?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'blogs';
-            value: number | BlogPage;
-          } | null)
-        | ({
-            relationTo: 'services';
-            value: number | ServicePage;
-          } | null)
-        | ({
-            relationTo: 'legal';
-            value: number | LegalPage;
-          } | null)
-        | ({
-            relationTo: 'contacts';
-            value: number | ContactPage;
-          } | null);
-      url?: string | null;
-      /**
-       * Choose how the link should be rendered.
-       */
-      appearance?: ('default' | 'secondary' | 'outline') | null;
-    };
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'servicesGrid';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TechStackBlock".
- */
-export interface TechStackBlock {
-  /**
-   * Optional heading for the tech stack section
-   */
-  heading?: string | null;
-  /**
-   * Optional description text
-   */
-  description?: string | null;
-  /**
-   * How to display the technologies
-   */
-  layout: 'grid' | 'carousel' | 'list';
-  /**
-   * Add technologies to display
-   */
-  technologies?:
-    | {
-        /**
-         * Technology name
-         */
-        name: string;
-        /**
-         * Technology logo/icon (upload or use icon name)
-         */
-        icon?: (number | null) | Media;
-        /**
-         * Lucide icon name if not using uploaded icon
-         */
-        iconName?: string | null;
-        /**
-         * Technology category for filtering
-         */
-        category: 'frontend' | 'backend' | 'database' | 'devops' | 'tools' | 'other';
-        /**
-         * Optional description of the technology
-         */
-        description?: string | null;
-        /**
-         * Your proficiency level with this technology
-         */
-        proficiency?: ('beginner' | 'intermediate' | 'advanced' | 'expert') | null;
-        /**
-         * Years of experience with this technology
-         */
-        yearsExperience?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Show technology descriptions
-   */
-  showDescriptions?: boolean | null;
-  /**
-   * Enable category filtering
-   */
-  enableFiltering?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'techStack';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProcessStepsBlock".
- */
-export interface ProcessStepsBlock {
-  /**
-   * Optional heading for the process section
-   */
-  heading?: string | null;
-  /**
-   * Optional description text
-   */
-  description?: string | null;
-  /**
-   * How to display the process steps
-   */
-  layout: 'vertical' | 'horizontal' | 'grid';
-  /**
-   * Visual style of the steps
-   */
-  style: 'numbered' | 'icons' | 'timeline';
-  /**
-   * Add process steps
-   */
-  steps?:
-    | {
-        /**
-         * Lucide icon name (used when style is "icons")
-         */
-        icon?: string | null;
-        /**
-         * Step title
-         */
-        title: string;
-        /**
-         * Step description
-         */
-        description: string;
-        /**
-         * Optional duration for this step
-         */
-        duration?: string | null;
-        /**
-         * Optional additional details
-         */
-        details?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Show connecting lines between steps (for timeline style)
-   */
-  showConnectors?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'processSteps';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PricingTableBlock".
- */
-export interface PricingTableBlock {
-  /**
-   * Optional heading for the pricing section
-   */
-  heading?: string | null;
-  /**
-   * Optional description text
-   */
-  description?: string | null;
-  /**
-   * Billing period options to display
-   */
-  billingPeriod: 'monthly' | 'yearly' | 'both';
-  /**
-   * Add pricing tiers (max 4 recommended)
-   */
-  tiers?:
-    | {
-        /**
-         * Tier name
-         */
-        name: string;
-        /**
-         * Optional tier description
-         */
-        description?: string | null;
-        /**
-         * Price amount
-         */
-        price: number;
-        /**
-         * Currency code
-         */
-        currency: string;
-        /**
-         * Billing period
-         */
-        period: 'month' | 'year' | 'project' | 'hour';
-        /**
-         * List of features for this tier
-         */
-        features?:
-          | {
-              text: string;
-              /**
-               * Is this feature included?
-               */
-              included?: boolean | null;
-              /**
-               * Optional tooltip text for more info
-               */
-              tooltip?: string | null;
-              id?: string | null;
-            }[]
-          | null;
-        /**
-         * Highlight this tier (e.g., "Most Popular")
-         */
-        highlighted?: boolean | null;
-        /**
-         * Optional badge text
-         */
-        badge?: string | null;
-        /**
-         * Call-to-action button text
-         */
-        ctaText: string;
-        /**
-         * Link for the call-to-action button
-         */
-        ctaLink?: {
-          link?: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null)
-              | ({
-                  relationTo: 'blogs';
-                  value: number | BlogPage;
-                } | null)
-              | ({
-                  relationTo: 'services';
-                  value: number | ServicePage;
-                } | null)
-              | ({
-                  relationTo: 'legal';
-                  value: number | LegalPage;
-                } | null)
-              | ({
-                  relationTo: 'contacts';
-                  value: number | ContactPage;
-                } | null);
-            url?: string | null;
-            /**
-             * Choose how the link should be rendered.
-             */
-            appearance?: ('default' | 'secondary' | 'outline') | null;
-          };
-        };
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Show detailed feature comparison table
-   */
-  showComparison?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'pricingTable';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TestimonialBlock".
  */
 export interface TestimonialBlock {
@@ -3242,10 +2832,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'form-submissions';
         value: number | FormSubmission;
-      } | null)
-    | ({
-        relationTo: 'payload-folders';
-        value: number | FolderInterface;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -3323,7 +2909,6 @@ export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
   focalPoint?: T;
-  folder?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -3410,10 +2995,6 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         banner?: T | BannerBlockSelect<T>;
         code?: T | CodeBlockSelect<T>;
-        servicesGrid?: T | ServicesGridBlockSelect<T>;
-        techStack?: T | TechStackBlockSelect<T>;
-        processSteps?: T | ProcessStepsBlockSelect<T>;
-        pricingTable?: T | PricingTableBlockSelect<T>;
         projectShowcase?: T | ProjectShowcaseBlockSelect<T>;
         caseStudy?: T | CaseStudyBlockSelect<T>;
         beforeAfter?: T | BeforeAfterBlockSelect<T>;
@@ -3664,156 +3245,6 @@ export interface CodeBlockSelect<T extends boolean = true> {
   theme?: T;
   enableCopy?: T;
   caption?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ServicesGridBlock_select".
- */
-export interface ServicesGridBlockSelect<T extends boolean = true> {
-  heading?: T;
-  description?: T;
-  columns?: T;
-  services?:
-    | T
-    | {
-        icon?: T;
-        title?: T;
-        description?: T;
-        features?:
-          | T
-          | {
-              feature?: T;
-              id?: T;
-            };
-        link?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                    appearance?: T;
-                  };
-            };
-        highlighted?: T;
-        id?: T;
-      };
-  style?: T;
-  showIcons?: T;
-  ctaText?: T;
-  ctaLink?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              appearance?: T;
-            };
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TechStackBlock_select".
- */
-export interface TechStackBlockSelect<T extends boolean = true> {
-  heading?: T;
-  description?: T;
-  layout?: T;
-  technologies?:
-    | T
-    | {
-        name?: T;
-        icon?: T;
-        iconName?: T;
-        category?: T;
-        description?: T;
-        proficiency?: T;
-        yearsExperience?: T;
-        id?: T;
-      };
-  showDescriptions?: T;
-  enableFiltering?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProcessStepsBlock_select".
- */
-export interface ProcessStepsBlockSelect<T extends boolean = true> {
-  heading?: T;
-  description?: T;
-  layout?: T;
-  style?: T;
-  steps?:
-    | T
-    | {
-        icon?: T;
-        title?: T;
-        description?: T;
-        duration?: T;
-        details?: T;
-        id?: T;
-      };
-  showConnectors?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PricingTableBlock_select".
- */
-export interface PricingTableBlockSelect<T extends boolean = true> {
-  heading?: T;
-  description?: T;
-  billingPeriod?: T;
-  tiers?:
-    | T
-    | {
-        name?: T;
-        description?: T;
-        price?: T;
-        currency?: T;
-        period?: T;
-        features?:
-          | T
-          | {
-              text?: T;
-              included?: T;
-              tooltip?: T;
-              id?: T;
-            };
-        highlighted?: T;
-        badge?: T;
-        ctaText?: T;
-        ctaLink?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    appearance?: T;
-                  };
-            };
-        id?: T;
-      };
-  showComparison?: T;
   id?: T;
   blockName?: T;
 }
@@ -4293,10 +3724,6 @@ export interface ServicesSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
-        servicesGrid?: T | ServicesGridBlockSelect<T>;
-        techStack?: T | TechStackBlockSelect<T>;
-        processSteps?: T | ProcessStepsBlockSelect<T>;
-        pricingTable?: T | PricingTableBlockSelect<T>;
         testimonial?: T | TestimonialBlockSelect<T>;
         featureGrid?: T | FeatureGridBlockSelect<T>;
         statsCounter?: T | StatsCounterBlockSelect<T>;
@@ -4753,18 +4180,6 @@ export interface PayloadJobsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-folders_select".
- */
-export interface PayloadFoldersSelect<T extends boolean = true> {
-  name?: T;
-  folder?: T;
-  documentsAndFolders?: T;
-  folderType?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -4796,16 +4211,33 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Configure the site header navigation and branding
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header".
  */
 export interface Header {
   id: number;
+  /**
+   * Main navigation menu items (maximum 8 items)
+   */
   tabs?:
     | {
+        /**
+         * Navigation item label (max 50 characters)
+         */
         label: string;
+        /**
+         * Enable direct navigation link
+         */
         enableDirectLink?: boolean | null;
+        /**
+         * Enable dropdown submenu
+         */
         enableDropdown?: boolean | null;
+        /**
+         * Configure direct navigation link
+         */
         directLink?: {
           link?: {
             type?: ('reference' | 'custom') | null;
@@ -4834,8 +4266,17 @@ export interface Header {
             url?: string | null;
           };
         };
+        /**
+         * Configure dropdown submenu
+         */
         dropdown?: {
+          /**
+           * Optional description for the dropdown (max 200 characters)
+           */
           description?: string | null;
+          /**
+           * Links within the dropdown description (max 3)
+           */
           descriptionLinks?:
             | {
                 link: {
@@ -4868,9 +4309,15 @@ export interface Header {
                 id?: string | null;
               }[]
             | null;
+          /**
+           * Dropdown navigation items (max 12)
+           */
           navItems?:
             | {
-                style?: ('default' | 'featured' | 'list') | null;
+                /**
+                 * Visual style for this dropdown item
+                 */
+                style: 'default' | 'featured' | 'list';
                 defaultLink?: {
                   link: {
                     type?: ('reference' | 'custom') | null;
@@ -4899,11 +4346,23 @@ export interface Header {
                     url?: string | null;
                     label: string;
                   };
+                  /**
+                   * Optional description (max 100 characters)
+                   */
                   description?: string | null;
                 };
                 featuredLink?: {
+                  /**
+                   * Featured tag (e.g., "New", "Popular") - max 20 characters
+                   */
                   tag?: string | null;
-                  label?: string | null;
+                  /**
+                   * Featured item label (max 50 characters)
+                   */
+                  label: string;
+                  /**
+                   * Featured links (max 5)
+                   */
                   links?:
                     | {
                         link: {
@@ -4938,7 +4397,13 @@ export interface Header {
                     | null;
                 };
                 listLinks?: {
+                  /**
+                   * List section tag (max 20 characters)
+                   */
                   tag?: string | null;
+                  /**
+                   * List links (max 8)
+                   */
                   links?:
                     | {
                         link: {
@@ -4979,6 +4444,17 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Header logo image (recommended: SVG or PNG with transparent background)
+   */
+  logo?: (number | null) | Media;
+  /**
+   * Alt text for the logo (required for accessibility)
+   */
+  logoAlt?: string | null;
+  /**
+   * Call-to-action button in the header
+   */
   menuCta: {
     type?: ('reference' | 'custom') | null;
     newTab?: boolean | null;
@@ -5005,6 +4481,10 @@ export interface Header {
         } | null);
     url?: string | null;
     label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'secondary' | 'outline') | null;
   };
   meta?: {
     title?: string | null;
@@ -5098,14 +4578,25 @@ export interface Header {
   createdAt?: string | null;
 }
 /**
+ * Configure the site footer navigation and content
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer".
  */
 export interface Footer {
   id: number;
+  /**
+   * Footer navigation columns (max 6 columns)
+   */
   columns?:
     | {
+        /**
+         * Column heading (max 50 characters)
+         */
         label: string;
+        /**
+         * Navigation links for this column (max 10)
+         */
         navItems?:
           | {
               link: {
@@ -5141,6 +4632,116 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Copyright notice and legal text
+   */
+  copyright?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Legal and policy links (max 8)
+   */
+  legalLinks?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'blogs';
+                value: number | BlogPage;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | ServicePage;
+              } | null)
+            | ({
+                relationTo: 'legal';
+                value: number | LegalPage;
+              } | null)
+            | ({
+                relationTo: 'contacts';
+                value: number | ContactPage;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Social media links and profiles
+   */
+  socialMedia?: {
+    enabled?: boolean | null;
+    /**
+     * Social media profile links (max 10)
+     */
+    links?:
+      | {
+          /**
+           * Social media platform
+           */
+          platform:
+            | 'facebook'
+            | 'twitter'
+            | 'linkedin'
+            | 'instagram'
+            | 'youtube'
+            | 'github'
+            | 'discord'
+            | 'tiktok'
+            | 'other';
+          /**
+           * Profile URL
+           */
+          url: string;
+          /**
+           * Custom label (optional, defaults to platform name)
+           */
+          label?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Newsletter signup configuration
+   */
+  newsletter?: {
+    enabled?: boolean | null;
+    /**
+     * Newsletter section title
+     */
+    title?: string | null;
+    /**
+     * Newsletter description text
+     */
+    description?: string | null;
+    /**
+     * Email input placeholder text
+     */
+    placeholder?: string | null;
+    /**
+     * Subscribe button text
+     */
+    buttonText?: string | null;
+  };
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -5233,16 +4834,167 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Configure global contact information and social media
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact".
  */
-export interface Contact {
+export interface ContactInformation {
   id: number;
+  /**
+   * Official company or organization name
+   */
+  companyName: string;
+  /**
+   * Company tagline or slogan
+   */
+  tagline?: string | null;
+  /**
+   * Main contact information displayed publicly
+   */
+  primaryContact: {
+    /**
+     * Primary contact email address
+     */
+    email: string;
+    /**
+     * Primary phone number
+     */
+    phone?: string | null;
+    /**
+     * Business address information
+     */
+    address?: {
+      /**
+       * Street address
+       */
+      street?: string | null;
+      /**
+       * City
+       */
+      city?: string | null;
+      /**
+       * State or province
+       */
+      state?: string | null;
+      /**
+       * Postal or ZIP code
+       */
+      postalCode?: string | null;
+      /**
+       * Country
+       */
+      country?: string | null;
+    };
+  };
+  /**
+   * Additional contact methods or departments (max 5)
+   */
+  additionalContacts?:
+    | {
+        /**
+         * Contact label (e.g., "Sales", "Support", "Media")
+         */
+        label: string;
+        /**
+         * Contact email
+         */
+        email?: string | null;
+        /**
+         * Contact phone
+         */
+        phone?: string | null;
+        /**
+         * Brief description of this contact method
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   socialMedia?: {
     links?:
       | {
           platform: 'facebook' | 'twitter' | 'linkedin' | 'instagram' | 'youtube' | 'github';
           url: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Configure when your business is open
+   */
+  businessHours?: {
+    /**
+     * Show business hours on the website
+     */
+    enabled?: boolean | null;
+    /**
+     * Business timezone
+     */
+    timezone?:
+      | (
+          | 'America/New_York'
+          | 'America/Chicago'
+          | 'America/Denver'
+          | 'America/Los_Angeles'
+          | 'UTC'
+          | 'Europe/London'
+          | 'Europe/Paris'
+        )
+      | null;
+    /**
+     * Configure hours for each day of the week
+     */
+    schedule?:
+      | {
+          /**
+           * Day of the week
+           */
+          day: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+          /**
+           * Is the business open on this day?
+           */
+          isOpen?: boolean | null;
+          /**
+           * Opening time (e.g., "9:00 AM")
+           */
+          openTime?: string | null;
+          /**
+           * Closing time (e.g., "5:00 PM")
+           */
+          closeTime?: string | null;
+          /**
+           * Optional note for this day (e.g., "Appointment only")
+           */
+          note?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Special hours for holidays or events (max 10)
+     */
+    specialHours?:
+      | {
+          /**
+           * Date for special hours
+           */
+          date: string;
+          /**
+           * Label for this special day (e.g., "Christmas Day")
+           */
+          label: string;
+          /**
+           * Is the business closed on this day?
+           */
+          isClosed?: boolean | null;
+          /**
+           * Special opening time
+           */
+          openTime?: string | null;
+          /**
+           * Special closing time
+           */
+          closeTime?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -5353,6 +5105,8 @@ export interface HeaderSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  logo?: T;
+  logoAlt?: T;
   menuCta?:
     | T
     | {
@@ -5361,6 +5115,7 @@ export interface HeaderSelect<T extends boolean = true> {
         reference?: T;
         url?: T;
         label?: T;
+        appearance?: T;
       };
   meta?:
     | T
@@ -5433,6 +5188,43 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  copyright?: T;
+  legalLinks?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  socialMedia?:
+    | T
+    | {
+        enabled?: T;
+        links?:
+          | T
+          | {
+              platform?: T;
+              url?: T;
+              label?: T;
+              id?: T;
+            };
+      };
+  newsletter?:
+    | T
+    | {
+        enabled?: T;
+        title?: T;
+        description?: T;
+        placeholder?: T;
+        buttonText?: T;
+      };
   meta?:
     | T
     | {
@@ -5484,6 +5276,32 @@ export interface FooterSelect<T extends boolean = true> {
  * via the `definition` "contact_select".
  */
 export interface ContactSelect<T extends boolean = true> {
+  companyName?: T;
+  tagline?: T;
+  primaryContact?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        address?:
+          | T
+          | {
+              street?: T;
+              city?: T;
+              state?: T;
+              postalCode?: T;
+              country?: T;
+            };
+      };
+  additionalContacts?:
+    | T
+    | {
+        label?: T;
+        email?: T;
+        phone?: T;
+        description?: T;
+        id?: T;
+      };
   socialMedia?:
     | T
     | {
@@ -5492,6 +5310,32 @@ export interface ContactSelect<T extends boolean = true> {
           | {
               platform?: T;
               url?: T;
+              id?: T;
+            };
+      };
+  businessHours?:
+    | T
+    | {
+        enabled?: T;
+        timezone?: T;
+        schedule?:
+          | T
+          | {
+              day?: T;
+              isOpen?: T;
+              openTime?: T;
+              closeTime?: T;
+              note?: T;
+              id?: T;
+            };
+        specialHours?:
+          | T
+          | {
+              date?: T;
+              label?: T;
+              isClosed?: T;
+              openTime?: T;
+              closeTime?: T;
               id?: T;
             };
       };

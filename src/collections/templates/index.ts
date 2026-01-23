@@ -8,6 +8,7 @@ import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
  */
 export const createBaseCollection = (config: {
   slug: string
+  dbName?: string
   labels: { singular: string; plural: string }
   fields: CollectionConfig['fields']
   access?: CollectionConfig['access']
@@ -20,6 +21,7 @@ export const createBaseCollection = (config: {
 }): CollectionConfig => {
   const {
     slug,
+    dbName,
     labels,
     fields,
     access,
@@ -33,6 +35,7 @@ export const createBaseCollection = (config: {
 
   return {
     slug,
+    dbName,
     labels,
     typescript: {
       interface: labels.singular.replace(/\s+/g, ''),
@@ -70,6 +73,7 @@ export const createBaseCollection = (config: {
  */
 export const createContentCollection = (config: {
   slug: string
+  dbName?: string
   labels: { singular: string; plural: string }
   fields: CollectionConfig['fields']
   access?: CollectionConfig['access']
@@ -101,6 +105,7 @@ export const createContentCollection = (config: {
  */
 export const createUserCollection = (config: {
   slug: string
+  dbName?: string
   labels: { singular: string; plural: string }
   fields: CollectionConfig['fields']
   access?: CollectionConfig['access']
@@ -128,6 +133,7 @@ export const createUserCollection = (config: {
  */
 export const createMediaCollection = (config: {
   slug: string
+  dbName?: string
   labels: { singular: string; plural: string }
   fields: CollectionConfig['fields']
   upload: CollectionConfig['upload']
@@ -161,6 +167,7 @@ export const createMediaCollection = (config: {
  */
 export const createSettingsCollection = (config: {
   slug: string
+  dbName?: string
   labels: { singular: string; plural: string }
   fields: CollectionConfig['fields']
   access?: CollectionConfig['access']

@@ -12,6 +12,7 @@ export const fields: Field[] = [
           {
             name: 'columns',
             type: 'array',
+            dbName: 'nav_cols', // Abbreviate navigation columns
             label: 'Footer Columns',
             minRows: 1,
             maxRows: 6,
@@ -35,6 +36,7 @@ export const fields: Field[] = [
               {
                 name: 'navItems',
                 type: 'array',
+                dbName: 'nav_items', // Snake case conversion
                 label: 'Navigation Items',
                 minRows: 1,
                 maxRows: 10,
@@ -69,6 +71,7 @@ export const fields: Field[] = [
           {
             name: 'legalLinks',
             type: 'array',
+            dbName: 'legal_links', // Snake case conversion
             label: 'Legal Links',
             maxRows: 8,
             admin: {
@@ -98,6 +101,7 @@ export const fields: Field[] = [
               {
                 name: 'links',
                 type: 'array',
+                dbName: 'links', // Keep semantic meaning
                 label: 'Social Links',
                 maxRows: 10,
                 admin: {
@@ -108,6 +112,7 @@ export const fields: Field[] = [
                   {
                     name: 'platform',
                     type: 'select',
+                    dbName: 'platform', // Keep short names
                     required: true,
                     options: [
                       { label: 'Facebook', value: 'facebook' },

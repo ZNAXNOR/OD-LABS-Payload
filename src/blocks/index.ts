@@ -5,13 +5,13 @@ import type { Block } from 'payload'
 // ============================================================================
 
 // Individual category exports for tree-shaking
-export * from './Hero'
 export * from './Content'
-export * from './services'
-export * from './portfolio'
-export * from './technical'
 export * from './cta'
+export * from './Hero'
 export * from './layout'
+export * from './portfolio'
+export * from './services'
+export * from './technical'
 
 // ============================================================================
 // LAZY-LOADED BLOCK REGISTRY FOR OPTIMAL BUNDLE SPLITTING
@@ -50,18 +50,21 @@ export const blockCategories: Record<string, BlockCategory> = {
     label: 'Services',
     description: 'Service offerings, tech stack, and pricing blocks',
     blocks: async () => {
-      const [
-        { ServicesGridBlock },
-        { TechStackBlock },
-        { ProcessStepsBlock },
-        { PricingTableBlock },
-      ] = await Promise.all([
-        import('./services/ServicesGrid/config'),
-        import('./services/TechStack/config'),
-        import('./services/ProcessSteps/config'),
-        import('./services/PricingTable/config'),
-      ])
-      return [ServicesGridBlock, TechStackBlock, ProcessStepsBlock, PricingTableBlock]
+      // All services blocks temporarily disabled due to database relation issues
+      // const [
+      //   { ServicesGridBlock },
+      //   { TechStackBlock },
+      //   { ProcessStepsBlock },
+      //   { PricingTableBlock },
+      // ] = await Promise.all([
+      //   import('./services/ServicesGrid/config'),
+      //   import('./services/TechStack/config'),
+      //   import('./services/ProcessSteps/config'),
+      //   import('./services/PricingTable/config'),
+      // ])
+      return [
+        /* ServicesGridBlock, TechStackBlock, ProcessStepsBlock, PricingTableBlock */
+      ]
     },
   },
   portfolio: {

@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const Code: Block = {
   slug: 'code',
+  dbName: 'code_block', // Root level optimization
   interfaceName: 'CodeBlock',
   labels: {
     singular: 'Code Block',

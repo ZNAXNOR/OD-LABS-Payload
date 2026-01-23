@@ -24,6 +24,7 @@ import type { Block } from 'payload'
  */
 export const ContainerBlock: Block = {
   slug: 'container',
+  dbName: 'container', // Root level optimization
   interfaceName: 'ContainerBlock',
   labels: {
     singular: 'Container Block',
@@ -43,6 +44,7 @@ export const ContainerBlock: Block = {
     {
       name: 'maxWidth',
       type: 'select',
+      dbName: 'max_width', // Snake case conversion
       options: [
         { label: 'Small (640px)', value: 'sm' },
         { label: 'Medium (768px)', value: 'md' },
@@ -60,6 +62,7 @@ export const ContainerBlock: Block = {
     {
       name: 'backgroundColor',
       type: 'select',
+      dbName: 'bg_color', // Abbreviation + snake case
       options: [
         { label: 'None', value: 'none' },
         { label: 'White', value: 'white' },
@@ -84,6 +87,7 @@ export const ContainerBlock: Block = {
     {
       name: 'paddingTop',
       type: 'select',
+      dbName: 'padding_top', // Snake case conversion
       options: [
         { label: 'None', value: 'none' },
         { label: 'Small', value: 'sm' },
@@ -100,6 +104,7 @@ export const ContainerBlock: Block = {
     {
       name: 'paddingBottom',
       type: 'select',
+      dbName: 'padding_bottom', // Snake case conversion
       options: [
         { label: 'None', value: 'none' },
         { label: 'Small', value: 'sm' },
@@ -116,6 +121,7 @@ export const ContainerBlock: Block = {
     {
       name: 'marginTop',
       type: 'select',
+      dbName: 'margin_top', // Snake case conversion
       options: [
         { label: 'None', value: 'none' },
         { label: 'Small', value: 'sm' },
@@ -132,6 +138,7 @@ export const ContainerBlock: Block = {
     {
       name: 'marginBottom',
       type: 'select',
+      dbName: 'margin_bottom', // Snake case conversion
       options: [
         { label: 'None', value: 'none' },
         { label: 'Small', value: 'sm' },

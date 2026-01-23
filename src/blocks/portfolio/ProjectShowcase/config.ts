@@ -1,10 +1,9 @@
-import type { Block } from 'payload'
 import { link } from '@/fields/link'
+import type { Block } from 'payload'
 
 export const ProjectShowcaseBlock: Block = {
   slug: 'projectShowcase',
   interfaceName: 'ProjectShowcaseBlock',
-  dbName:'proj_showcase',
   labels: {
     singular: 'Project Showcase Block',
     plural: 'Project Showcase Blocks',

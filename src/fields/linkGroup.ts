@@ -14,6 +14,7 @@ export const linkGroup: LinkGroupType = ({ appearances, overrides = {} } = {}) =
   const generatedLinkGroup: Field = {
     name: 'links',
     type: 'array',
+    dbName: 'link_groups', // Explicit database naming for array
     fields: [
       link({
         appearances,

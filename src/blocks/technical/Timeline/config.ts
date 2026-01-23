@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const TimelineBlock: Block = {
   slug: 'timeline',
+  dbName: 'timeline', // Root level optimization
   interfaceName: 'TimelineBlock',
   labels: {
     singular: 'Timeline Block',
@@ -49,6 +50,7 @@ export const TimelineBlock: Block = {
     {
       name: 'items',
       type: 'array',
+      dbName: 'items', // Keep short names as-is
       required: true,
       minRows: 2,
       fields: [

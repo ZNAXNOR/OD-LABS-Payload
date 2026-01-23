@@ -286,6 +286,7 @@ export const createTagsField = (
     return {
       name,
       type: 'select',
+      dbName: `${name}_select`, // Dynamic naming based on field name
       label,
       hasMany: true,
       options: predefinedTags.map((tag) => ({ label: tag, value: tag.toLowerCase() })),
@@ -300,6 +301,7 @@ export const createTagsField = (
   return {
     name,
     type: 'array',
+    dbName: `${name}_array`, // Dynamic naming based on field name
     label,
     maxRows,
     admin: {

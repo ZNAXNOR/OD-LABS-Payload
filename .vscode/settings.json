@@ -1,41 +1,34 @@
 {
-  "npm.packageManager": "pnpm",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
-    }
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
   },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
-    }
+  "files.associations": {
+    "*.config.ts": "typescript",
+    "*.config.js": "javascript"
   },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
-    }
+  "emmet.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
   },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
+  "payload.identifierValidation": {
+    "enabled": true,
+    "maxLength": 50,
+    "errorLength": 63,
+    "enforceSnakeCase": true,
+    "warnMissingDbName": true,
+    "dbNameRequiredDepth": 3,
+    "showInlineWarnings": true,
+    "validateOnSave": true,
+    "validateOnType": false
   },
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
-  },
-  "editor.formatOnSaveMode": "file",
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "[javascript][typescript][typescriptreact]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
-    }
-  },
-  "typescript.autoClosingTags": false
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/validation-reports/**": true
+  }
 }

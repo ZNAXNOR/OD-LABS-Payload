@@ -88,43 +88,44 @@ export interface BannerBlock {
 }
 
 // ============================================================================
-// SERVICES BLOCK TYPES
+// SERVICES BLOCK TYPES - temporarily disabled due to database relation issues
 // ============================================================================
 
-export interface ServicesGridBlock {
-  blockType: 'servicesGrid'
-  heading?: string
-  description?: string
-  columns: '2' | '3' | '4'
-  services: Array<{
-    icon?: string
-    title: string
-    description: string
-    features?: Array<{ feature: string }>
-    link?: Link
-    highlighted?: boolean
-  }>
-  style: 'cards' | 'minimal' | 'bordered'
-  showIcons: boolean
-  ctaText?: string
-  ctaLink?: Link
-}
+// export interface ServicesGridBlock {
+//   blockType: 'servicesGrid'
+//   heading?: string
+//   description?: string
+//   columns: '2' | '3' | '4'
+//   services: Array<{
+//     icon?: string
+//     title: string
+//     description: string
+//     features?: Array<{ feature: string }>
+//     link?: Link
+//     highlighted?: boolean
+//   }>
+//   style: 'cards' | 'minimal' | 'bordered'
+//   showIcons: boolean
+//   ctaText?: string
+//   ctaLink?: Link
+// }
 
-export interface TechStackBlock {
-  blockType: 'techStack'
-  heading?: string
-  description?: string
-  layout: 'grid' | 'carousel' | 'list'
-  technologies: Array<{
-    name: string
-    icon?: string | Media
-    category: 'frontend' | 'backend' | 'database' | 'devops' | 'tools' | 'other'
-    description?: string
-    proficiency?: 'beginner' | 'intermediate' | 'advanced' | 'expert'
-    yearsExperience?: number
-  }>
-  showDescriptions: boolean
-}
+// Services blocks - temporarily disabled due to database relation issues
+// export interface TechStackBlock {
+//   blockType: 'techStack'
+//   heading?: string
+//   description?: string
+//   layout: 'grid' | 'carousel' | 'list'
+//   technologies: Array<{
+//     name: string
+//     icon?: string | Media
+//     category: 'frontend' | 'backend' | 'database' | 'devops' | 'tools' | 'other'
+//     description?: string
+//     proficiency?: 'beginner' | 'intermediate' | 'advanced' | 'expert'
+//     yearsExperience?: number
+//   }>
+//   showDescriptions: boolean
+// }
 
 export interface ProcessStepsBlock {
   blockType: 'processSteps'
@@ -473,10 +474,10 @@ export type PageBlock =
   | MediaBlock
   | ArchiveBlock
   | BannerBlock
-  | ServicesGridBlock
-  | TechStackBlock
-  | ProcessStepsBlock
-  | PricingTableBlock
+  // | ServicesGridBlock // Temporarily disabled due to database relation issue
+  // | TechStackBlock // Temporarily disabled due to database relation issue
+  // | ProcessStepsBlock // Temporarily disabled due to database relation issue
+  // | PricingTableBlock // Temporarily disabled due to database relation issue
   | ProjectShowcaseBlock
   | CaseStudyBlock
   | BeforeAfterBlock

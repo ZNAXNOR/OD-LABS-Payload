@@ -81,6 +81,7 @@ export const link: LinkType = ({
           {
             name: 'type',
             type: 'radio',
+            dbName: 'link_type', // Prefixed to avoid enum conflicts when used in multiple contexts
             admin: {
               layout: 'horizontal',
               width: '50%',
@@ -193,6 +194,7 @@ export const link: LinkType = ({
             {
               name: 'rel',
               type: 'select',
+              dbName: 'link_rel', // Prefixed standard HTML attribute name
               hasMany: true,
               admin: {
                 width: '50%',
@@ -261,6 +263,7 @@ export const link: LinkType = ({
     linkResult.fields.push({
       name: 'appearance',
       type: 'select',
+      dbName: 'link_appearance', // Prefixed to avoid conflicts when used in multiple contexts
       admin: {
         description: 'Choose how the link should be rendered.',
       },

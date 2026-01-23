@@ -140,17 +140,19 @@ export const createTreeShakeableImports = () => {
       ),
 
     // Specialized blocks - individual chunks
-    servicesGrid: () =>
-      import(
-        /* webpackChunkName: "richtext-services" */
-        '@/components/blocks/services/ServicesGrid'
-      ).then((m) => ({ default: m.ServicesGridBlock })),
+    // Services blocks - temporarily disabled due to database relation issues
+    // servicesGrid: () =>
+    //   import(
+    //     /* webpackChunkName: "richtext-services" */
+    //     '@/components/blocks/services/ServicesGrid'
+    //   ).then((m) => ({ default: m.ServicesGridBlock })),
 
-    techStack: () =>
-      import(
-        /* webpackChunkName: "richtext-services" */
-        '@/components/blocks/services/TechStack'
-      ).then((m) => ({ default: m.TechStackBlock })),
+    // Services blocks - temporarily disabled due to database relation issues
+    // techStack: () =>
+    //   import(
+    //     /* webpackChunkName: "richtext-services" */
+    //     '@/components/blocks/services/TechStack'
+    //   ).then((m) => ({ default: m.TechStackBlock })),
 
     processSteps: () =>
       import(

@@ -3,6 +3,7 @@ import { link } from '@/fields/link'
 
 export const HeroBlock: Block = {
   slug: 'hero',
+  dbName: 'hero_block', // Root level optimization
   interfaceName: 'HeroBlock',
   labels: {
     singular: 'Hero Block',
@@ -145,6 +146,7 @@ export const HeroBlock: Block = {
         {
           name: 'contentSide',
           type: 'select',
+          dbName: 'content_side', // Snake case conversion
           options: [
             { label: 'Left', value: 'left' },
             { label: 'Right', value: 'right' },
@@ -158,6 +160,7 @@ export const HeroBlock: Block = {
         {
           name: 'mediaType',
           type: 'select',
+          dbName: 'media_type', // Snake case conversion
           options: [
             { label: 'Image', value: 'image' },
             { label: 'Video', value: 'video' },
@@ -182,6 +185,7 @@ export const HeroBlock: Block = {
         {
           name: 'colors',
           type: 'array',
+          dbName: 'colors', // Keep short names as-is
           minRows: 2,
           maxRows: 4,
           fields: [
@@ -216,6 +220,7 @@ export const HeroBlock: Block = {
     {
       name: 'actions',
       type: 'array',
+      dbName: 'actions', // Keep short names as-is
       maxRows: 3,
       fields: [
         {

@@ -7,6 +7,9 @@ export * from './payload'
 export * from './components'
 export * from './api'
 
+// Import payload extensions for dbName support
+import './payload-extensions'
+
 // ============================================================================
 // LAZY-LOADED TYPE CATEGORIES FOR CODE SPLITTING
 // ============================================================================

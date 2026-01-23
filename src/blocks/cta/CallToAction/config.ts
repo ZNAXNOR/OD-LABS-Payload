@@ -11,6 +11,7 @@ import { linkGroup } from '@/fields/linkGroup'
 
 export const CallToActionBlock: Block = {
   slug: 'cta',
+  dbName: 'cta_block', // Root level optimization
   interfaceName: 'CallToActionBlock',
   labels: {
     plural: 'Calls to Action',
@@ -98,6 +99,7 @@ export const CallToActionBlock: Block = {
     {
       name: 'backgroundColor',
       type: 'select',
+      dbName: 'bg_color', // Abbreviation + snake case
       defaultValue: 'default',
       options: [
         {

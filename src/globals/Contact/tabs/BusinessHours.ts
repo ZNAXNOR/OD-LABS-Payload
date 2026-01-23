@@ -6,7 +6,7 @@ export const BusinessHoursTab: Tab = {
   fields: [
     {
       name: 'businessHours',
-      type: 'group',
+      type: 'group',      
       admin: {
         description: 'Configure when your business is open',
       },
@@ -23,6 +23,7 @@ export const BusinessHoursTab: Tab = {
         {
           name: 'timezone',
           type: 'select',
+          dbName: 'timezone', // Keep semantic meaning
           options: [
             { label: 'Eastern Time (ET)', value: 'America/New_York' },
             { label: 'Central Time (CT)', value: 'America/Chicago' },
@@ -41,6 +42,7 @@ export const BusinessHoursTab: Tab = {
         {
           name: 'schedule',
           type: 'array',
+          dbName: 'schedule', // Keep semantic meaning
           label: 'Weekly Schedule',
           minRows: 7,
           maxRows: 7,
@@ -52,6 +54,7 @@ export const BusinessHoursTab: Tab = {
             {
               name: 'day',
               type: 'select',
+              dbName: 'day', // Keep short names
               required: true,
               options: [
                 { label: 'Monday', value: 'monday' },
@@ -129,6 +132,7 @@ export const BusinessHoursTab: Tab = {
         {
           name: 'specialHours',
           type: 'array',
+          dbName: 'special_hours', // Snake case conversion
           label: 'Special Hours',
           maxRows: 10,
           admin: {

@@ -6,6 +6,7 @@ import { access } from './access'
 
 export const Media: CollectionConfig = collectionTemplates.createMediaCollection({
   slug: 'media',
+  dbName: 'media', // Explicit database naming
   labels: {
     singular: 'Media',
     plural: 'Media',

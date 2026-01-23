@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const StatsCounterBlock: Block = {
   slug: 'statsCounter',
+  dbName: 'stats_counter', // Root level optimization
   interfaceName: 'StatsCounterBlock',
   labels: {
     singular: 'Stats Counter Block',
@@ -53,6 +54,7 @@ export const StatsCounterBlock: Block = {
     {
       name: 'stats',
       type: 'array',
+      dbName: 'stats', // Keep short names as-is
       required: true,
       minRows: 1,
       maxRows: 8,

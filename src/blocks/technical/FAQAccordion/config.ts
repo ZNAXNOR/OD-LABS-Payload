@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const FAQAccordionBlock: Block = {
   slug: 'faqAccordion',
+  dbName: 'faq_accordion', // Root level optimization
   interfaceName: 'FAQAccordionBlock',
   labels: {
     singular: 'FAQ Accordion Block',
@@ -54,6 +55,7 @@ export const FAQAccordionBlock: Block = {
     {
       name: 'faqs',
       type: 'array',
+      dbName: 'faqs', // Keep short names as-is
       required: true,
       minRows: 1,
       fields: [

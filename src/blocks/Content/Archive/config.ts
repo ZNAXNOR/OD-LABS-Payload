@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const ArchiveBlock: Block = {
   slug: 'archive',
+  dbName: 'archive_block', // Root level optimization
   interfaceName: 'ArchiveBlock',
   labels: {
     singular: 'Archive Block',
@@ -18,6 +19,7 @@ export const ArchiveBlock: Block = {
     {
       name: 'populateBy',
       type: 'select',
+      dbName: 'populate_by', // Snake case conversion
       options: [
         {
           label: 'Collection',
@@ -34,6 +36,7 @@ export const ArchiveBlock: Block = {
     {
       name: 'relationTo',
       type: 'select',
+      dbName: 'relation_to', // Snake case conversion
       options: [
         {
           label: 'Blogs',

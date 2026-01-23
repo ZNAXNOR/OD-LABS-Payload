@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const TechStackBlock: Block = {
   slug: 'techStack',
+  dbName: 'tech_stack', // Root level optimization
   interfaceName: 'TechStackBlock',
   labels: {
     singular: 'Tech Stack Block',
@@ -44,6 +45,7 @@ export const TechStackBlock: Block = {
     {
       name: 'technologies',
       type: 'array',
+      dbName: 'techs', // Abbreviation
       minRows: 1,
       maxRows: 50,
       labels: {

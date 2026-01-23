@@ -2,7 +2,7 @@ import React from 'react'
 
 import type { IconProps } from '../types'
 
-import classes from '../index.module.scss'
+import classes from '../index.module.js'
 
 export const LoaderIcon: React.FC<IconProps> = (props) => {
   const { className, size } = props

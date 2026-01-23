@@ -21,6 +21,7 @@ const contactBlocks = getBlocksForCollection('contacts')
 
 export const ContactPages: CollectionConfig = {
   slug: 'contacts',
+  dbName: 'contacts', // Explicit database naming
   typescript: {
     interface: 'ContactPage',
   },
@@ -137,6 +138,7 @@ export const ContactPages: CollectionConfig = {
                 {
                   name: 'purpose',
                   type: 'select',
+                  dbName: 'purpose', // Keep short name
                   options: [
                     { label: 'General Inquiry', value: 'general' },
                     { label: 'Technical Support', value: 'technical' },
@@ -189,6 +191,7 @@ export const ContactPages: CollectionConfig = {
             {
               name: 'contactInfoSections',
               type: 'select',
+              dbName: 'contact_info_sections', // Snake case for database
               hasMany: true,
               options: [
                 { label: 'General Info', value: 'general' },

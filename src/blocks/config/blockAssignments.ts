@@ -8,34 +8,34 @@ import { HeroBlock } from '@/blocks/Hero/config'
 // ============================================================================
 // CONTENT BLOCKS
 // ============================================================================
-import { ContentBlock } from '@/blocks/Content/config'
-import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { ArchiveBlock } from '@/blocks/Archive/config'
 import { Banner } from '@/blocks/Banner/config'
+import { ContentBlock } from '@/blocks/Content/config'
+import { MediaBlock } from '@/blocks/MediaBlock/config'
 
 // ============================================================================
 // SERVICES BLOCKS
-// ============================================================================
-import { ServicesGridBlock } from '@/blocks/services/ServicesGrid/config'
-import { TechStackBlock } from '@/blocks/services/TechStack/config'
-import { ProcessStepsBlock } from '@/blocks/services/ProcessSteps/config'
-import { PricingTableBlock } from '@/blocks/services/PricingTable/config'
+// Services blocks - temporarily disabled due to database relation issues
+// import { ServicesGridBlock } from '@/blocks/services/ServicesGrid/config'
+// import { TechStackBlock } from '@/blocks/services/TechStack/config'
+// import { ProcessStepsBlock } from '@/blocks/services/ProcessSteps/config'
+// import { PricingTableBlock } from '@/blocks/services/PricingTable/config'
 
 // ============================================================================
 // PORTFOLIO BLOCKS
 // ============================================================================
-import { ProjectShowcaseBlock } from '@/blocks/portfolio/ProjectShowcase/config'
-import { CaseStudyBlock } from '@/blocks/portfolio/CaseStudy/config'
 import { BeforeAfterBlock } from '@/blocks/portfolio/BeforeAfter/config'
+import { CaseStudyBlock } from '@/blocks/portfolio/CaseStudy/config'
+import { ProjectShowcaseBlock } from '@/blocks/portfolio/ProjectShowcase/config'
 import { TestimonialBlock } from '@/blocks/portfolio/Testimonial/config'
 
 // ============================================================================
 // TECHNICAL BLOCKS
 // ============================================================================
 import { Code } from '@/blocks/Code/config'
+import { FAQAccordionBlock } from '@/blocks/technical/FAQAccordion/config'
 import { FeatureGridBlock } from '@/blocks/technical/FeatureGrid/config'
 import { StatsCounterBlock } from '@/blocks/technical/StatsCounter/config'
-import { FAQAccordionBlock } from '@/blocks/technical/FAQAccordion/config'
 import { TimelineBlock } from '@/blocks/technical/Timeline/config'
 
 // ============================================================================
@@ -107,11 +107,11 @@ export const BLOCK_ASSIGNMENTS = {
       ContentBlock,
       MediaBlock,
       CallToActionBlock,
-      // Services blocks
-      ServicesGridBlock,
-      TechStackBlock,
-      ProcessStepsBlock,
-      PricingTableBlock,
+      // Services blocks - temporarily disabled due to database relation issues
+      // ServicesGridBlock,
+      // TechStackBlock,
+      // ProcessStepsBlock,
+      // PricingTableBlock,
       // Portfolio blocks (testimonial only)
       TestimonialBlock,
       // Technical blocks
@@ -185,11 +185,11 @@ export const BLOCK_ASSIGNMENTS = {
       ArchiveBlock,
       Banner,
       Code,
-      // Services blocks
-      ServicesGridBlock,
-      TechStackBlock,
-      ProcessStepsBlock,
-      PricingTableBlock,
+      // Services blocks - temporarily disabled due to database relation issues
+      // ServicesGridBlock,
+      // TechStackBlock,
+      // ProcessStepsBlock,
+      // PricingTableBlock,
       // Portfolio blocks
       ProjectShowcaseBlock,
       CaseStudyBlock,

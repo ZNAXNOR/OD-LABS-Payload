@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const SpacerBlock: Block = {
   slug: 'spacer',
+  dbName: 'spacer', // Root level optimization
   interfaceName: 'SpacerBlock',
   labels: {
     singular: 'Spacer Block',

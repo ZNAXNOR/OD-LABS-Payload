@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const DividerBlock: Block = {
   slug: 'divider',
+  dbName: 'divider', // Root level optimization
   interfaceName: 'DividerBlock',
   labels: {
     singular: 'Divider Block',
@@ -89,6 +90,7 @@ export const DividerBlock: Block = {
     {
       name: 'spacingTop',
       type: 'select',
+      dbName: 'spacing_top', // Snake case conversion
       options: [
         { label: 'None', value: 'none' },
         { label: 'Small', value: 'sm' },
@@ -105,6 +107,7 @@ export const DividerBlock: Block = {
     {
       name: 'spacingBottom',
       type: 'select',
+      dbName: 'spacing_bottom', // Snake case conversion
       options: [
         { label: 'None', value: 'none' },
         { label: 'Small', value: 'sm' },

@@ -1,9 +1,9 @@
-import React from 'react'
 import { cn } from '@/utilities/ui'
-import { getBlockMobileClasses, getMobilePerformanceClasses } from '../utils/responsiveUtils'
-import { getBlockTouchClasses, getTouchA11yClasses } from '../utils/touchUtils'
+import React from 'react'
 import { generateBlockAriaLabel, generateSectionAriaAttrs } from '../utils/accessibilityUtils'
+import { getBlockMobileClasses, getMobilePerformanceClasses } from '../utils/responsiveUtils'
 import { generateSemanticStructure } from '../utils/semanticHtml'
+import { getBlockTouchClasses, getTouchA11yClasses } from '../utils/touchUtils'
 
 // ============================================================================
 // BLOCK COMPONENT IMPORTS
@@ -13,10 +13,10 @@ import { generateSemanticStructure } from '../utils/semanticHtml'
 import { HeroBlock } from '@/components/blocks/hero/Hero'
 
 // Content blocks
-import { ContentBlock } from '@/components/blocks/content/Content'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CodeBlock } from '@/blocks/Code/Component'
+import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { ContentBlock } from '@/components/blocks/content/Content'
 
 // CTA blocks
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
@@ -24,22 +24,22 @@ import { ContactFormBlock } from '@/components/blocks/cta/ContactForm'
 import { NewsletterBlock } from '@/components/blocks/cta/Newsletter'
 import { SocialProofBlock } from '@/components/blocks/cta/SocialProof'
 
-// Services blocks
-import { ServicesGridBlock } from '@/components/blocks/services/ServicesGrid'
-import { TechStackBlock } from '@/components/blocks/services/TechStack'
-import { ProcessStepsBlock } from '@/components/blocks/services/ProcessSteps'
-import { PricingTableBlock } from '@/components/blocks/services/PricingTable'
+// Services blocks - temporarily disabled due to database relation issues
+// import { ServicesGridBlock } from '@/components/blocks/services/ServicesGrid'
+// import { TechStackBlock } from '@/components/blocks/services/TechStack'
+// import { ProcessStepsBlock } from '@/components/blocks/services/ProcessSteps'
+// import { PricingTableBlock } from '@/components/blocks/services/PricingTable'
 
 // Portfolio blocks
-import { ProjectShowcaseBlock } from '@/components/blocks/portfolio/ProjectShowcase'
-import { CaseStudyBlock } from '@/components/blocks/portfolio/CaseStudy'
 import { BeforeAfterBlock } from '@/components/blocks/portfolio/BeforeAfter'
+import { CaseStudyBlock } from '@/components/blocks/portfolio/CaseStudy'
+import { ProjectShowcaseBlock } from '@/components/blocks/portfolio/ProjectShowcase'
 import { TestimonialBlock } from '@/components/blocks/portfolio/Testimonial'
 
 // Technical blocks
+import { FAQAccordionBlock } from '@/components/blocks/technical/FAQAccordion'
 import { FeatureGridBlock } from '@/components/blocks/technical/FeatureGrid'
 import { StatsCounterBlock } from '@/components/blocks/technical/StatsCounter'
-import { FAQAccordionBlock } from '@/components/blocks/technical/FAQAccordion'
 import { TimelineBlock } from '@/components/blocks/technical/Timeline'
 
 // Layout blocks
@@ -327,30 +327,32 @@ export const defaultBlockConverters = {
   // ============================================================================
   // SERVICES BLOCKS
   // ============================================================================
-  servicesGrid: ({ node }: { node: any }) => {
-    const WrappedComponent = createErrorBoundaryWrapper(
-      ServicesGridBlock,
-      DefaultBlockErrorFallback,
-    )
-    const richTextClassName = getRichTextStyling('services')
-    const combinedClassName = [richTextClassName, 'mb-8'].filter(Boolean).join(' ')
+  // Services blocks - temporarily disabled due to database relation issues
+  // servicesGrid: ({ node }: { node: any }) => {
+  //   const WrappedComponent = createErrorBoundaryWrapper(
+  //     ServicesGridBlock,
+  //     DefaultBlockErrorFallback,
+  //   )
+  //   const richTextClassName = getRichTextStyling('services')
+  //   const combinedClassName = [richTextClassName, 'mb-8'].filter(Boolean).join(' ')
 
-    return React.createElement(WrappedComponent, {
-      block: node.fields as any, // Type assertion for compatibility
-      className: combinedClassName,
-    })
-  },
+  //   return React.createElement(WrappedComponent, {
+  //     block: node.fields as any, // Type assertion for compatibility
+  //     className: combinedClassName,
+  //   })
+  // },
 
-  techStack: ({ node }: { node: any }) => {
-    const WrappedComponent = createErrorBoundaryWrapper(TechStackBlock, DefaultBlockErrorFallback)
-    const richTextClassName = getRichTextStyling('services')
-    const combinedClassName = [richTextClassName, 'mb-8'].filter(Boolean).join(' ')
+  // Services blocks - temporarily disabled due to database relation issues
+  // techStack: ({ node }: { node: any }) => {
+  //   const WrappedComponent = createErrorBoundaryWrapper(TechStackBlock, DefaultBlockErrorFallback)
+  //   const richTextClassName = getRichTextStyling('services')
+  //   const combinedClassName = [richTextClassName, 'mb-8'].filter(Boolean).join(' ')
 
-    return React.createElement(WrappedComponent, {
-      block: node.fields as any, // Type assertion for compatibility
-      className: combinedClassName,
-    })
-  },
+  //   return React.createElement(WrappedComponent, {
+  //     block: node.fields as any, // Type assertion for compatibility
+  //     className: combinedClassName,
+  //   })
+  // },
 
   processSteps: ({ node }: { node: any }) => {
     const WrappedComponent = createErrorBoundaryWrapper(

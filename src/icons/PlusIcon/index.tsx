@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import type { IconProps } from '../types'
 
-import classes from '../index.module.scss'
+import classes from '../index.module.js'
 
 export const PlusIcon: React.FC<IconProps> = (props) => {
   const { bold, className, color, rotation, size } = props

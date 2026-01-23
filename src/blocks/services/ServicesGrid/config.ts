@@ -1,10 +1,10 @@
-import type { Block } from 'payload'
 import { link } from '@/fields/link'
+import type { Block } from 'payload'
 
 export const ServicesGridBlock: Block = {
   slug: 'servicesGrid',
   interfaceName: 'ServicesGridBlock',
-  dbName:'service_grid',
+  // dbName: 'svc_grid', // Temporarily removed to fix relation inference issue
   labels: {
     singular: 'Services Grid Block',
     plural: 'Services Grid Blocks',
@@ -46,6 +46,7 @@ export const ServicesGridBlock: Block = {
     {
       name: 'services',
       type: 'array',
+      dbName: 'services', // Keep semantic meaning - 'services' is already concise
       minRows: 1,
       maxRows: 12,
       labels: {
@@ -82,6 +83,7 @@ export const ServicesGridBlock: Block = {
         {
           name: 'features',
           type: 'array',
+          dbName: 'features', // Keep semantic meaning - prevents redundant 'service' prefix
           maxRows: 8,
           labels: {
             singular: 'Feature',

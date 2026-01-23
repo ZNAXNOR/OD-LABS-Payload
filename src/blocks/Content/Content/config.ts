@@ -3,6 +3,7 @@ import { link } from '@/fields/link'
 
 export const ContentBlock: Block = {
   slug: 'content',
+  dbName: 'content_block', // Root level optimization
   interfaceName: 'ContentBlock',
   labels: {
     singular: 'Content Block',
@@ -15,6 +16,7 @@ export const ContentBlock: Block = {
     {
       name: 'columns',
       type: 'array',
+      dbName: 'columns', // Keep short names as-is
       minRows: 1,
       maxRows: 4,
       labels: {
@@ -79,6 +81,7 @@ export const ContentBlock: Block = {
         {
           name: 'backgroundColor',
           type: 'select',
+          dbName: 'bg_color', // Abbreviation + snake case
           options: [
             { label: 'None', value: 'none' },
             { label: 'White', value: 'white' },

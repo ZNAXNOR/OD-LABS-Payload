@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const TestimonialBlock: Block = {
   slug: 'testimonial',
+  dbName: 'testimonial', // Root level optimization
   interfaceName: 'TestimonialBlock',
   labels: {
     singular: 'Testimonial Block',
@@ -36,6 +37,7 @@ export const TestimonialBlock: Block = {
     {
       name: 'testimonials',
       type: 'array',
+      dbName: 'testimonials', // Keep short names as-is
       minRows: 1,
       maxRows: 20,
       labels: {

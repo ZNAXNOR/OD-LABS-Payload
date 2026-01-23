@@ -1,6 +1,7 @@
-import { getPayload, Payload } from 'payload'
 import config from '@/payload.config'
-import { describe, it, beforeAll, afterAll, expect } from 'vitest'
+import { getPayload, Payload } from 'payload'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { cleanupDocuments, cleanupPayload, cleanupTestUser } from '../utils/testCleanup'
 
 let payload: Payload
 let testUserId: number
@@ -29,30 +30,13 @@ describe('Access Control Integration Tests', () => {
   afterAll(async () => {
     // Clean up created documents
     const collections = ['pages', 'blogs', 'services', 'contacts', 'legal']
-    for (const collection of collections) {
-      for (const id of createdDocIds) {
-        try {
-          await payload.delete({
-            collection: collection as any,
-            id,
-          })
-        } catch (error) {
-          // Ignore errors during cleanup
-        }
-      }
-    }
+    await cleanupDocuments(payload, collections, createdDocIds)
 
     // Clean up test user
-    if (testUserId) {
-      try {
-        await payload.delete({
-          collection: 'users',
-          id: testUserId,
-        })
-      } catch (error) {
-        // Ignore errors during cleanup
-      }
-    }
+    await cleanupTestUser(payload, testUserId)
+
+    // Close database connections to prevent hanging
+    await cleanupPayload(payload)
   })
 
   describe('Audit Fields Access Control', () => {

@@ -30,12 +30,14 @@ const blockImports = {
     import('@/components/blocks/cta/SocialProof').then((m) => ({ default: m.SocialProofBlock })),
 
   // Services blocks
-  servicesGrid: () =>
-    import('@/components/blocks/services/ServicesGrid').then((m) => ({
-      default: m.ServicesGridBlock,
-    })),
-  techStack: () =>
-    import('@/components/blocks/services/TechStack').then((m) => ({ default: m.TechStackBlock })),
+  // Services blocks - temporarily disabled due to database relation issues
+  // servicesGrid: () =>
+  //   import('@/components/blocks/services/ServicesGrid').then((m) => ({
+  //     default: m.ServicesGridBlock,
+  //   })),
+  // Services blocks - temporarily disabled due to database relation issues
+  // techStack: () =>
+  //   import('@/components/blocks/services/TechStack').then((m) => ({ default: m.TechStackBlock })),
   processSteps: () =>
     import('@/components/blocks/services/ProcessSteps').then((m) => ({
       default: m.ProcessStepsBlock,
@@ -439,7 +441,7 @@ export const monitorDynamicImports = () => {
 // EXPORTS
 // ============================================================================
 
-export { LoadingFallback, ErrorFallback, createDynamicConverter, CRITICAL_BLOCKS, COMMON_BLOCKS }
+export { COMMON_BLOCKS, createDynamicConverter, CRITICAL_BLOCKS, ErrorFallback, LoadingFallback }
 
 // Default export
 export default createDynamicBlockConverters

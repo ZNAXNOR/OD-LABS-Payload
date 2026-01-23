@@ -24,6 +24,7 @@ const serviceBlocks = getBlocksForCollection('services')
 
 export const ServicesPages: CollectionConfig = {
   slug: 'services',
+  dbName: 'services', // Explicit database naming
   typescript: {
     interface: 'ServicePage',
   },
@@ -203,6 +204,7 @@ export const ServicesPages: CollectionConfig = {
     {
       name: 'serviceType',
       type: 'select',
+      dbName: 'svc_type', // Abbreviation for service type
       options: [
         { label: 'Web Development', value: 'web-dev' },
         { label: 'Mobile Development', value: 'mobile-dev' },
@@ -244,6 +246,7 @@ export const ServicesPages: CollectionConfig = {
         {
           name: 'currency',
           type: 'select',
+          dbName: 'currency', // Keep short name
           options: [
             { label: 'USD ($)', value: 'USD' },
             { label: 'EUR (€)', value: 'EUR' },
@@ -255,6 +258,7 @@ export const ServicesPages: CollectionConfig = {
         {
           name: 'pricingModel',
           type: 'select',
+          dbName: 'pricing_model', // Snake case for database
           options: [
             { label: 'Fixed Price', value: 'fixed' },
             { label: 'Hourly Rate', value: 'hourly' },

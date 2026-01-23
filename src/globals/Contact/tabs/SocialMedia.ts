@@ -16,6 +16,7 @@ export const SocialMediaTab: Tab = {
     {
       name: 'links',
       type: 'array',
+      dbName: 'links', // Keep semantic meaning
       admin: {
         components: {
           RowLabel: '@/globals/Contact/RowLabels#SocialMediaRowLabel',
@@ -29,6 +30,7 @@ export const SocialMediaTab: Tab = {
             {
               name: 'platform',
               type: 'select',
+              dbName: 'platform', // Keep short names
               options: platforms,
               required: true,
               admin: {

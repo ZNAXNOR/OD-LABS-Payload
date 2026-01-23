@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const FeatureGridBlock: Block = {
   slug: 'featureGrid',
+  dbName: 'feature_grid', // Root level optimization
   interfaceName: 'FeatureGridBlock',
   labels: {
     singular: 'Feature Grid Block',
@@ -59,6 +60,7 @@ export const FeatureGridBlock: Block = {
     {
       name: 'features',
       type: 'array',
+      dbName: 'features', // Keep short names as-is
       required: true,
       minRows: 1,
       maxRows: 12,

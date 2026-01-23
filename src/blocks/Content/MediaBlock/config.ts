@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const MediaBlock: Block = {
   slug: 'mediaBlock',
+  dbName: 'media_block', // Root level optimization
   interfaceName: 'MediaBlock',
   labels: {
     singular: 'Media Block',

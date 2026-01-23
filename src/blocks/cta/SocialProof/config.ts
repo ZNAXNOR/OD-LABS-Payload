@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const SocialProofBlock: Block = {
   slug: 'socialProof',
+  dbName: 'social_proof', // Root level optimization
   interfaceName: 'SocialProofBlock',
   labels: {
     singular: 'Social Proof Block',
@@ -48,6 +49,7 @@ export const SocialProofBlock: Block = {
     {
       name: 'logos',
       type: 'array',
+      dbName: 'logos', // Keep short names as-is
       admin: {
         condition: (data) => ['logos', 'combined'].includes(data.type),
       },
@@ -83,6 +85,7 @@ export const SocialProofBlock: Block = {
     {
       name: 'stats',
       type: 'array',
+      dbName: 'stats', // Keep short names as-is
       admin: {
         condition: (data) => ['stats', 'combined'].includes(data.type),
       },
@@ -110,6 +113,7 @@ export const SocialProofBlock: Block = {
     {
       name: 'badges',
       type: 'array',
+      dbName: 'badges', // Keep short names as-is
       admin: {
         condition: (data) => ['badges', 'combined'].includes(data.type),
       },

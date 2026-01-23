@@ -2,9 +2,15 @@
   "mcpServers": {
     "neon": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp.neon.tech/mcp"],
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.neon.tech/mcp"
+      ],
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "run_sql"
+      ]
     }
   }
 }

@@ -2,9 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import { CopyButton } from './CopyButton'
 
-// Import Prism CSS
-import 'prismjs/themes/prism-tomorrow.css'
-
 type Props = {
   code: string
   language?: string
@@ -36,20 +33,37 @@ export const CodeBlockClient: React.FC<Props> = ({
     if (!mounted) return
 
     const loadPrism = async () => {
+      // Load Prism CSS theme
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href =
+        'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css'
+      document.head.appendChild(link)
+
       const Prism = (await import('prismjs')).default
 
       // Load line numbers plugin
       if (showLineNumbers) {
-        // @ts-ignore - CSS import
-        await import('prismjs/plugins/line-numbers/prism-line-numbers.css')
+        // Load CSS for line numbers
+        const lineNumbersLink = document.createElement('link')
+        lineNumbersLink.rel = 'stylesheet'
+        lineNumbersLink.href =
+          'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css'
+        document.head.appendChild(lineNumbersLink)
+
         // @ts-ignore - Plugin without types
         await import('prismjs/plugins/line-numbers/prism-line-numbers')
       }
 
       // Load line highlight plugin
       if (highlightLines) {
-        // @ts-ignore - CSS import
-        await import('prismjs/plugins/line-highlight/prism-line-highlight.css')
+        // Load CSS for line highlight
+        const lineHighlightLink = document.createElement('link')
+        lineHighlightLink.rel = 'stylesheet'
+        lineHighlightLink.href =
+          'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-highlight/prism-line-highlight.min.css'
+        document.head.appendChild(lineHighlightLink)
+
         // @ts-ignore - Plugin without types
         await import('prismjs/plugins/line-highlight/prism-line-highlight')
       }

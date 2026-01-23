@@ -20,6 +20,7 @@ const blogBlocks = getBlocksForCollection('blogs')
 
 export const BlogPages: CollectionConfig = {
   slug: 'blogs',
+  dbName: 'blogs', // Explicit database naming
   typescript: {
     interface: 'BlogPage',
   },
@@ -263,6 +264,7 @@ export const BlogPages: CollectionConfig = {
     {
       name: 'tags',
       type: 'array',
+      dbName: 'tags', // Keep short name
       admin: {
         position: 'sidebar',
       },

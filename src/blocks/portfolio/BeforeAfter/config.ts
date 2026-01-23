@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const BeforeAfterBlock: Block = {
   slug: 'beforeAfter',
+  dbName: 'before_after', // Root level optimization
   interfaceName: 'BeforeAfterBlock',
   labels: {
     singular: 'Before/After Comparison Block',

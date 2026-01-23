@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const ProcessStepsBlock: Block = {
   slug: 'processSteps',
+  dbName: 'process_steps', // Root level optimization
   interfaceName: 'ProcessStepsBlock',
   labels: {
     singular: 'Process Steps Block',
@@ -58,6 +59,7 @@ export const ProcessStepsBlock: Block = {
     {
       name: 'steps',
       type: 'array',
+      dbName: 'steps', // Keep short names as-is
       minRows: 2,
       maxRows: 12,
       labels: {

@@ -1,6 +1,7 @@
-import { getPayload, Payload } from 'payload'
 import config from '@/payload.config'
-import { describe, it, beforeAll, afterAll, expect } from 'vitest'
+import { getPayload, Payload } from 'payload'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { cleanupPayload, cleanupTestUser } from '../../utils/testCleanup'
 
 let payload: Payload
 let testUserId: number
@@ -39,16 +40,10 @@ describe('Pages Collection Integration Tests', () => {
     }
 
     // Clean up test user
-    if (testUserId) {
-      try {
-        await payload.delete({
-          collection: 'users',
-          id: testUserId,
-        })
-      } catch (error) {
-        // Ignore errors during cleanup
-      }
-    }
+    await cleanupTestUser(payload, testUserId)
+
+    // Close database connections to prevent hanging
+    await cleanupPayload(payload)
   })
 
   describe('CRUD Operations', () => {

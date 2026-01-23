@@ -1,14 +1,4 @@
 import type {
-  DefaultNodeTypes,
-  DefaultTypedEditorState,
-  SerializedBlockNode,
-  SerializedLinkNode,
-} from '@payloadcms/richtext-lexical'
-
-// Re-export for use in other files
-export type { SerializedBlockNode }
-import type { JSXConvertersFunction } from '@payloadcms/richtext-lexical/react'
-import type {
   ArchiveBlock,
   BannerBlock,
   BeforeAfterBlock,
@@ -25,16 +15,25 @@ import type {
   MediaBlock,
   NewsletterBlock,
   PricingTableBlock,
-  ProcessStepsBlock,
   ProjectShowcaseBlock,
-  ServicesGridBlock,
+  // ServicesGridBlock, // Temporarily disabled due to database relation issue
   SocialProofBlock,
   SpacerBlock,
   StatsCounterBlock,
-  TechStackBlock,
+  // TechStackBlock, // Temporarily disabled due to database relation issue
   TestimonialBlock,
   TimelineBlock,
 } from '@/payload-types'
+import type {
+  DefaultNodeTypes,
+  DefaultTypedEditorState,
+  SerializedBlockNode,
+  SerializedLinkNode,
+} from '@payloadcms/richtext-lexical'
+import type { JSXConvertersFunction } from '@payloadcms/richtext-lexical/react'
+
+// Re-export for use in other files
+export type { SerializedBlockNode }
 
 // Import keyboard navigation types
 import type { KeyboardNavConfig } from './utils/keyboardNavigation'
@@ -57,13 +56,13 @@ export type AllBlockTypes =
   | MediaBlock
   | NewsletterBlock
   | PricingTableBlock
-  | ProcessStepsBlock
+  // | ProcessStepsBlock // Temporarily disabled due to database relation issue
   | ProjectShowcaseBlock
-  | ServicesGridBlock
+  // | ServicesGridBlock // Temporarily disabled due to database relation issue
   | SocialProofBlock
   | SpacerBlock
   | StatsCounterBlock
-  | TechStackBlock
+  // | TechStackBlock // Temporarily disabled due to database relation issue
   | TestimonialBlock
   | TimelineBlock
 

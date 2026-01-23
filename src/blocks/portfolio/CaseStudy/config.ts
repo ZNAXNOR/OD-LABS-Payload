@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const CaseStudyBlock: Block = {
   slug: 'caseStudy',
+  dbName: 'case_study', // Root level optimization
   interfaceName: 'CaseStudyBlock',
   labels: {
     singular: 'Case Study Block',
@@ -105,6 +106,7 @@ export const CaseStudyBlock: Block = {
         {
           name: 'steps',
           type: 'array',
+          dbName: 'steps', // Keep short names as-is
           maxRows: 10,
           labels: {
             singular: 'Step',
@@ -154,6 +156,7 @@ export const CaseStudyBlock: Block = {
         {
           name: 'technologies',
           type: 'array',
+          dbName: 'techs', // Abbreviation
           maxRows: 15,
           labels: {
             singular: 'Technology',
@@ -202,6 +205,7 @@ export const CaseStudyBlock: Block = {
         {
           name: 'metrics',
           type: 'array',
+          dbName: 'metrics', // Keep short names as-is
           minRows: 1,
           maxRows: 8,
           labels: {

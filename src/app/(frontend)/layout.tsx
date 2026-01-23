@@ -1,17 +1,17 @@
 import React from 'react'
 import './styles.css'
 
+import { InitTheme } from '@/providers/Theme/InitTheme'
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
-import { InitTheme } from '@/providers/Theme/InitTheme'
 
+import { AdminBar } from '@/components/admin/AdminBar'
 import { Header } from '@/globals/Header/Component'
 import { Providers } from '@/providers'
-import { AdminBar } from '@/components/admin/AdminBar'
 
-import { draftMode } from 'next/headers'
 import { Footer } from '@/globals/Footer/Component'
+import { draftMode } from 'next/headers'
 
 import { GoogleAnalytics } from '@/components/layout/GoogleAnalytics'
 

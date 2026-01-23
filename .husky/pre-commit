@@ -1,6 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Run identifier validation
+echo "🔍 Validating database identifiers..."
+pnpm run validate:identifiers || exit 1
+
 # Run type checking
 echo "🔍 Running type check..."
 pnpm run type-check || exit 1

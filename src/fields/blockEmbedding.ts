@@ -1,33 +1,33 @@
-import type { Block } from 'payload'
 import { BlocksFeature } from '@payloadcms/richtext-lexical'
+import type { Block } from 'payload'
 
 // Import all available blocks
 import {
-  HeroBlock,
-  ContentBlock,
-  MediaBlock,
   ArchiveBlock,
   Banner,
-  ServicesGridBlock,
-  TechStackBlock,
-  ProcessStepsBlock,
-  PricingTableBlock,
-  ProjectShowcaseBlock,
-  CaseStudyBlock,
   BeforeAfterBlock,
-  TestimonialBlock,
-  Code,
-  FeatureGridBlock,
-  StatsCounterBlock,
-  FAQAccordionBlock,
-  TimelineBlock,
   CallToActionBlock,
+  CaseStudyBlock,
+  Code,
   ContactFormBlock,
-  NewsletterBlock,
-  SocialProofBlock,
   ContainerBlock,
+  ContentBlock,
   DividerBlock,
+  FAQAccordionBlock,
+  FeatureGridBlock,
+  HeroBlock,
+  MediaBlock,
+  NewsletterBlock,
+  // ProcessStepsBlock, // Temporarily disabled due to database relation issue
+  // PricingTableBlock, // Temporarily disabled due to database relation issue
+  ProjectShowcaseBlock,
+  // ServicesGridBlock, // Temporarily disabled due to database relation issue
+  SocialProofBlock,
   SpacerBlock,
+  StatsCounterBlock,
+  // TechStackBlock, // Temporarily disabled due to database relation issue
+  TestimonialBlock,
+  TimelineBlock,
 } from '@/blocks'
 
 // Block categories for organization in the editor
@@ -49,10 +49,10 @@ export const allBlocks: Block[] = [
   Banner,
 
   // Services blocks
-  ServicesGridBlock,
-  TechStackBlock,
-  ProcessStepsBlock,
-  PricingTableBlock,
+  // ServicesGridBlock, // Temporarily disabled due to database relation issue
+  // TechStackBlock, // Temporarily disabled due to database relation issue
+  // ProcessStepsBlock, // Temporarily disabled due to database relation issue
+  // PricingTableBlock, // Temporarily disabled due to database relation issue
 
   // Portfolio blocks
   ProjectShowcaseBlock,
@@ -104,7 +104,9 @@ export const blockCategories: Record<string, BlockCategory> = {
   services: {
     label: 'Services',
     description: 'Service offerings and business blocks',
-    blocks: [ServicesGridBlock, TechStackBlock, ProcessStepsBlock, PricingTableBlock],
+    blocks: [
+      /* ServicesGridBlock, TechStackBlock, ProcessStepsBlock, PricingTableBlock */
+    ],
   },
   portfolio: {
     label: 'Portfolio',

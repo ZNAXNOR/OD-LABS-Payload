@@ -120,6 +120,7 @@ export const ContactInfoTab: Tab = {
     {
       name: 'additionalContacts',
       type: 'array',
+      dbName: 'additional_contacts', // Snake case conversion
       label: 'Additional Contacts',
       maxRows: 5,
       admin: {

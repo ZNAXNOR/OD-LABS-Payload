@@ -1,32 +1,32 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import dotenv from 'dotenv'
 import path from 'path'
 import { buildConfig } from 'payload'
-import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-import dotenv from 'dotenv'
+import { fileURLToPath } from 'url'
 
 // Plugins
 import { plugins } from './plugins'
 
 // Collections - organized by type
-import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Users } from './collections/Users'
 
 // Page Collections - organized by content type
-import { Pages } from './pages/Pages'
 import { BlogPages } from './pages/Blogs'
-import { ServicesPages } from './pages/Services'
-import { LegalPages } from './pages/Legal'
 import { ContactPages } from './pages/Contacts'
+import { LegalPages } from './pages/Legal'
+import { Pages } from './pages/Pages'
+import { ServicesPages } from './pages/Services'
 
 // Globals - organized by functionality
-import { Header } from './globals/Header'
-import { Footer } from './globals/Footer'
 import { ContactGlobal } from './globals/Contact'
+import { Footer } from './globals/Footer'
+import { Header } from './globals/Header'
 
 // Utilities
-import { validateEnv, isDevelopment, isProduction } from './utilities/validateEnv'
+import { isDevelopment, isProduction, validateEnv } from './utilities/validateEnv'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -37,6 +37,14 @@ dotenv.config({
 
 // Validate environment variables
 validateEnv()
+
+// Development validation integration
+// const devValidation = createDevValidationIntegration({
+//   enabled: isDevelopment(),
+//   showInBrowser: true,
+//   validateOnChange: true,
+//   debounceDelay: 500,
+// })
 
 export default buildConfig({
   admin: {
@@ -74,7 +82,7 @@ export default buildConfig({
     },
     // Consistent database configuration
     migrationDir: path.resolve(dirname, 'migrations'),
-    push: false, // Disable auto-push for production safety
+    push: isDevelopment(), // Enable auto-push in development, disable in production
   }),
   sharp,
   plugins,
@@ -116,6 +124,9 @@ export default buildConfig({
       if (missingVars.length > 0) {
         payload.logger.warn(`Missing environment variables: ${missingVars.join(', ')}`)
       }
+
+      // Initialize development validation
+      // devValidation.onInit(payload)
     }
 
     // Production-specific initialization

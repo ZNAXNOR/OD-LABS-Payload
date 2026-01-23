@@ -4,7 +4,7 @@ import { link } from '@/fields/link'
 export const PricingTableBlock: Block = {
   slug: 'pricingTable',
   interfaceName: 'PricingTableBlock',
-  dbName:'pricing_table',
+  dbName: 'pricing_table', // Root level optimization
   labels: {
     singular: 'Pricing Table Block',
     plural: 'Pricing Table Blocks',
@@ -32,6 +32,7 @@ export const PricingTableBlock: Block = {
     {
       name: 'billingPeriod',
       type: 'select',
+      dbName: 'billing_period', // Snake case conversion
       options: [
         { label: 'Monthly', value: 'monthly' },
         { label: 'Yearly', value: 'yearly' },
@@ -46,6 +47,7 @@ export const PricingTableBlock: Block = {
     {
       name: 'tiers',
       type: 'array',
+      dbName: 'tiers', // Keep short names as-is
       minRows: 1,
       maxRows: 4,
       labels: {
@@ -107,6 +109,7 @@ export const PricingTableBlock: Block = {
         {
           name: 'features',
           type: 'array',
+          dbName: 'features', // Keep short names as-is
           minRows: 1,
           maxRows: 20,
           labels: {

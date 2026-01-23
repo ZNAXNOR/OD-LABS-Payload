@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const ContactFormBlock: Block = {
   slug: 'contactForm',
+  dbName: 'contact_form', // Root level optimization
   interfaceName: 'ContactFormBlock',
   labels: {
     singular: 'Contact Form Block',

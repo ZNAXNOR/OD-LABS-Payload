@@ -8,6 +8,7 @@ export const mediaFields = {
   alt: {
     name: 'alt',
     type: 'text',
+    dbName: 'alt', // Keep short name
     required: true,
     admin: {
       description: 'Alt text is required for accessibility compliance',
@@ -17,6 +18,7 @@ export const mediaFields = {
   caption: {
     name: 'caption',
     type: 'richText',
+    dbName: 'caption', // Keep short name
     editor: basicRichText,
     admin: {
       description: 'Optional caption for the media',
@@ -26,6 +28,7 @@ export const mediaFields = {
   focalPoint: {
     name: 'focalPoint',
     type: 'point',
+    dbName: 'focal_point', // Snake case conversion following project standards
     admin: {
       description: 'Click to set the focal point for responsive cropping',
     },
@@ -34,6 +37,7 @@ export const mediaFields = {
   copyright: {
     name: 'copyright',
     type: 'text',
+    dbName: 'copyright', // Keep short name
     admin: {
       description: 'Copyright information for the media',
     },
@@ -42,6 +46,7 @@ export const mediaFields = {
   photographer: {
     name: 'photographer',
     type: 'text',
+    dbName: 'photographer', // Keep short name
     admin: {
       description: 'Photographer or creator credit',
     },
@@ -53,12 +58,14 @@ export const userFields = {
   firstName: {
     name: 'firstName',
     type: 'text',
+    dbName: 'first_name', // Snake case conversion following project standards
     required: true,
   } as Field,
 
   lastName: {
     name: 'lastName',
     type: 'text',
+    dbName: 'last_name', // Snake case conversion following project standards
     required: true,
   } as Field,
 
@@ -92,6 +99,7 @@ export const userFields = {
   lastLoginAt: {
     name: 'lastLoginAt',
     type: 'date',
+    dbName: 'last_login_at', // Snake case conversion following project standards
     admin: {
       readOnly: true,
       position: 'sidebar',
@@ -101,6 +109,7 @@ export const userFields = {
   loginAttempts: {
     name: 'loginAttempts',
     type: 'number',
+    dbName: 'login_attempts', // Snake case conversion following project standards
     defaultValue: 0,
     admin: {
       readOnly: true,
@@ -119,6 +128,7 @@ export const userFields = {
   lockUntil: {
     name: 'lockUntil',
     type: 'date',
+    dbName: 'lock_until', // Snake case conversion following project standards
     admin: {
       readOnly: true,
       hidden: true,
@@ -139,6 +149,7 @@ export const pageFields = {
   content: {
     name: 'content',
     type: 'richText',
+    dbName: 'content', // Keep short name
     editor: comprehensiveRichText,
     required: true,
     admin: {
@@ -149,6 +160,7 @@ export const pageFields = {
   excerpt: {
     name: 'excerpt',
     type: 'textarea',
+    dbName: 'excerpt', // Keep short name
     admin: {
       description: 'Brief excerpt for listings and previews',
     },
@@ -157,6 +169,7 @@ export const pageFields = {
   layout: {
     name: 'layout',
     type: 'blocks',
+    dbName: 'layout_blocks', // Descriptive name to distinguish from other layout fields
     blocks: [], // Will be populated with actual blocks
     admin: {
       description: 'Page layout using blocks',
@@ -166,6 +179,7 @@ export const pageFields = {
   breadcrumbs: {
     name: 'breadcrumbs',
     type: 'array',
+    dbName: 'breadcrumbs', // Keep short name
     admin: {
       description: 'Custom breadcrumb navigation',
     },
@@ -178,6 +192,7 @@ export const pageFields = {
       {
         name: 'url',
         type: 'text',
+        dbName: 'url', // Keep short name
         required: true,
       },
     ],
@@ -186,6 +201,7 @@ export const pageFields = {
   parent: {
     name: 'parent',
     type: 'relationship',
+    dbName: 'parent_page', // Descriptive name to distinguish from other parent relationships
     relationTo: 'pages',
     admin: {
       description: 'Parent page for hierarchical organization',
@@ -198,6 +214,7 @@ export const blogFields = {
   readingTime: {
     name: 'readingTime',
     type: 'number',
+    dbName: 'reading_time', // Snake case conversion following project standards
     admin: {
       description: 'Estimated reading time in minutes',
       readOnly: true,
@@ -219,6 +236,7 @@ export const blogFields = {
   publishedAt: {
     name: 'publishedAt',
     type: 'date',
+    dbName: 'published_at', // Snake case conversion following project standards
     admin: {
       description: 'Publication date and time',
     },
@@ -237,6 +255,7 @@ export const blogFields = {
   categories: {
     name: 'categories',
     type: 'text',
+    dbName: 'categories', // Keep short name
     hasMany: true,
     admin: {
       description: 'Blog post categories (comma-separated)',
@@ -246,6 +265,7 @@ export const blogFields = {
   relatedPosts: {
     name: 'relatedPosts',
     type: 'relationship',
+    dbName: 'related_posts', // Snake case conversion following project standards
     relationTo: 'blogs',
     hasMany: true,
     maxRows: 3,
@@ -260,6 +280,7 @@ export const contactFields = {
   email: {
     name: 'email',
     type: 'email',
+    dbName: 'email', // Keep short name
     required: true,
     admin: {
       description: 'Contact email address',
@@ -269,6 +290,7 @@ export const contactFields = {
   phone: {
     name: 'phone',
     type: 'text',
+    dbName: 'phone', // Keep short name
     admin: {
       description: 'Contact phone number',
     },
@@ -283,6 +305,7 @@ export const contactFields = {
   address: {
     name: 'address',
     type: 'group',
+    dbName: 'address', // Keep short name
     fields: [
       {
         name: 'street',
@@ -294,6 +317,7 @@ export const contactFields = {
       {
         name: 'city',
         type: 'text',
+        dbName: 'city', // Keep short name
         admin: {
           description: 'City',
         },
@@ -301,6 +325,7 @@ export const contactFields = {
       {
         name: 'state',
         type: 'text',
+        dbName: 'state', // Keep short name
         admin: {
           description: 'State or province',
         },
@@ -308,6 +333,7 @@ export const contactFields = {
       {
         name: 'postalCode',
         type: 'text',
+        dbName: 'postal_code', // Snake case conversion following project standards
         admin: {
           description: 'Postal or ZIP code',
         },
@@ -315,6 +341,7 @@ export const contactFields = {
       {
         name: 'country',
         type: 'text',
+        dbName: 'country', // Keep short name
         admin: {
           description: 'Country',
         },
@@ -325,10 +352,12 @@ export const contactFields = {
   socialMedia: {
     name: 'socialMedia',
     type: 'group',
+    dbName: 'social_media', // Snake case conversion following project standards
     fields: [
       {
         name: 'website',
         type: 'text',
+        dbName: 'website', // Keep short name
         admin: {
           description: 'Website URL',
         },
@@ -354,6 +383,7 @@ export const contactFields = {
       {
         name: 'twitter',
         type: 'text',
+        dbName: 'twitter', // Keep short name
         admin: {
           description: 'Twitter/X profile URL',
         },
@@ -361,6 +391,7 @@ export const contactFields = {
       {
         name: 'facebook',
         type: 'text',
+        dbName: 'facebook', // Keep short name
         admin: {
           description: 'Facebook profile URL',
         },
@@ -374,10 +405,12 @@ export const serviceFields = {
   price: {
     name: 'price',
     type: 'group',
+    dbName: 'price', // Keep short name
     fields: [
       {
         name: 'amount',
         type: 'number',
+        dbName: 'amount', // Keep short name
         required: true,
         admin: {
           description: 'Service price amount',
@@ -386,6 +419,7 @@ export const serviceFields = {
       {
         name: 'currency',
         type: 'select',
+        dbName: 'currency', // Keep short name
         options: [
           { label: 'USD ($)', value: 'USD' },
           { label: 'EUR (€)', value: 'EUR' },
@@ -397,6 +431,7 @@ export const serviceFields = {
       {
         name: 'period',
         type: 'select',
+        dbName: 'period', // Keep short name
         options: [
           { label: 'One-time', value: 'once' },
           { label: 'Per hour', value: 'hour' },
@@ -413,10 +448,12 @@ export const serviceFields = {
   duration: {
     name: 'duration',
     type: 'group',
+    dbName: 'duration', // Keep short name
     fields: [
       {
         name: 'value',
         type: 'number',
+        dbName: 'value', // Keep short name
         required: true,
         admin: {
           description: 'Duration value',
@@ -425,6 +462,7 @@ export const serviceFields = {
       {
         name: 'unit',
         type: 'select',
+        dbName: 'unit', // Keep short name
         options: [
           { label: 'Hours', value: 'hours' },
           { label: 'Days', value: 'days' },
@@ -440,10 +478,12 @@ export const serviceFields = {
   features: {
     name: 'features',
     type: 'array',
+    dbName: 'features', // Keep short name
     fields: [
       {
         name: 'feature',
         type: 'text',
+        dbName: 'feature', // Keep short name
         required: true,
       },
       {

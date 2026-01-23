@@ -21,6 +21,13 @@ This directory contains comprehensive documentation for the PayloadCMS project.
 
 ### Technical Documentation
 
+#### Database and Configuration
+
+- [**Database Identifier Optimization**](DATABASE_IDENTIFIER_OPTIMIZATION.md) - Comprehensive guide to PostgreSQL identifier optimization
+- [**Identifier Guidelines**](IDENTIFIER_GUIDELINES.md) - Quick reference for maintaining identifier compliance
+- [**dbName Quick Reference**](DBNAME_QUICK_REFERENCE.md) - Developer quick reference for dbName usage
+- [**dbName Usage Examples**](DBNAME_USAGE_EXAMPLES.md) - Comprehensive examples of proper dbName patterns
+
 #### Security and Best Practices
 
 - [**Security Guidelines**](../.kiro/steering/security-critical.md) - Critical security patterns and practices
@@ -52,6 +59,8 @@ This directory contains comprehensive documentation for the PayloadCMS project.
 #### **Developers**
 
 - [Development Guide](../DEVELOPMENT.md) - Setup, workflow, and best practices
+- [Database Identifier Optimization](DATABASE_IDENTIFIER_OPTIMIZATION.md) - PostgreSQL identifier compliance
+- [dbName Quick Reference](DBNAME_QUICK_REFERENCE.md) - Quick reference for identifier naming
 - [Security Guidelines](../.kiro/steering/security-critical.md) - Critical security patterns
 - [Analysis Tools](../src/analysis-tools/README.md) - Code quality tools
 
@@ -93,6 +102,13 @@ This directory contains comprehensive documentation for the PayloadCMS project.
 - [GraphQL Optimization](../src/utilities/GRAPHQL_OPTIMIZATION.md) - API performance
 - [Performance Testing](../tests/performance/README.md) - Performance validation
 
+#### **Configuration & Database**
+
+- [Database Identifier Optimization](DATABASE_IDENTIFIER_OPTIMIZATION.md) - Complete optimization guide
+- [Identifier Guidelines](IDENTIFIER_GUIDELINES.md) - PostgreSQL compliance guidelines
+- [dbName Usage Examples](DBNAME_USAGE_EXAMPLES.md) - Comprehensive usage patterns
+- [Migration Guide](MIGRATION.md) - Deployment and migration procedures
+
 #### **Content Management**
 
 - [Block System](../src/blocks/BLOCK_PREVIEWS.md) - Content block documentation
@@ -110,6 +126,7 @@ This directory contains comprehensive documentation for the PayloadCMS project.
 ### Common Tasks
 
 - **Getting Started**: [README](../README.md) → [Development Guide](../DEVELOPMENT.md)
+- **Database Configuration**: [Identifier Guidelines](IDENTIFIER_GUIDELINES.md) → [dbName Quick Reference](DBNAME_QUICK_REFERENCE.md)
 - **Adding Features**: [Specifications](../.kiro/specs/) → [Best Practices](../.kiro/steering/)
 - **Security Implementation**: [Security Guidelines](../.kiro/steering/security-critical.md)
 - **Content Creation**: [Block System](../src/blocks/BLOCK_PREVIEWS.md) → [Examples](../src/pages/examples/README.md)
@@ -118,6 +135,7 @@ This directory contains comprehensive documentation for the PayloadCMS project.
 ### Troubleshooting
 
 - **Build Issues**: [Development Guide](../DEVELOPMENT.md#troubleshooting)
+- **Database Identifier Issues**: [Identifier Guidelines](IDENTIFIER_GUIDELINES.md#troubleshooting) → [dbName Quick Reference](DBNAME_QUICK_REFERENCE.md)
 - **Security Issues**: [Security Guidelines](../.kiro/steering/security-critical.md)
 - **Performance Issues**: [Performance Guidelines](../src/components/blocks/PERFORMANCE.md)
 - **Migration Issues**: [Migration Guide](MIGRATION.md)
