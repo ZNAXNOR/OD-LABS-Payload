@@ -1,9 +1,9 @@
+import { BlockRenderer } from '@/components/blocks/BlockRenderer'
+import config from '@payload-config'
+import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
-import config from '@payload-config'
-import { BlockRenderer } from '@/components/blocks/BlockRenderer'
-import type { Metadata } from 'next'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -68,8 +68,8 @@ export default async function LegalPage({ params }: PageProps) {
 
   return (
     <main id="main-content">
-      {page.layout && page.layout.length > 0 ? (
-        <BlockRenderer blocks={page.layout} />
+      {(page as any).layout && (page as any).layout.length > 0 ? (
+        <BlockRenderer blocks={(page as any).layout} />
       ) : (
         <article className="container mx-auto px-4 py-16 max-w-4xl">
           <header className="mb-12">

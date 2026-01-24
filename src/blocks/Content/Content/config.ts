@@ -1,5 +1,20 @@
-import type { Block } from 'payload'
 import { link } from '@/fields/link'
+import type { Block } from 'payload'
+import {
+  lexicalEditor,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+} from '@payloadcms/richtext-lexical'
+import {
+  structuralFeatures,
+  basicTextFeatures,
+  alignmentFeatures,
+  headingFeatures,
+  listFeatures,
+  enhancedLinkFeature,
+} from '@/fields/richTextFeatures'
+
+// Import rich text features
 
 export const ContentBlock: Block = {
   slug: 'content',
@@ -60,8 +75,21 @@ export const ContentBlock: Block = {
           type: 'richText',
           required: true,
           admin: {
-            description: 'Column content',
+            description: 'Column content with enhanced formatting options',
           },
+          editor: lexicalEditor({
+            features: ({ rootFeatures }: { rootFeatures: any[] }) => [
+              FixedToolbarFeature(),
+              InlineToolbarFeature(),
+              ...rootFeatures,
+              ...structuralFeatures,
+              ...basicTextFeatures,
+              ...alignmentFeatures,
+              ...headingFeatures,
+              ...listFeatures,
+              ...enhancedLinkFeature,
+            ],
+          }),
         },
         {
           name: 'enableLink',

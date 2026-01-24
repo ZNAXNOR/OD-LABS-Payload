@@ -1,5 +1,20 @@
-import type { Field } from 'payload'
 import { link } from '@/fields/link'
+import type { Field } from 'payload'
+import {
+  lexicalEditor,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+} from '@payloadcms/richtext-lexical'
+import {
+  structuralFeatures,
+  basicTextFeatures,
+  alignmentFeatures,
+  headingFeatures,
+  listFeatures,
+  enhancedLinkFeature,
+} from '@/fields/richTextFeatures'
+
+// Import rich text features
 
 export const fields: Field[] = [
   {
@@ -65,8 +80,21 @@ export const fields: Field[] = [
             name: 'copyright',
             type: 'richText',
             admin: {
-              description: 'Copyright notice and legal text',
+              description: 'Copyright notice and legal text with enhanced formatting',
             },
+            editor: lexicalEditor({
+              features: ({ rootFeatures }: { rootFeatures: any[] }) => [
+                FixedToolbarFeature(),
+                InlineToolbarFeature(),
+                ...rootFeatures,
+                ...structuralFeatures,
+                ...basicTextFeatures,
+                ...alignmentFeatures,
+                ...headingFeatures,
+                ...listFeatures,
+                ...enhancedLinkFeature,
+              ],
+            }),
           },
           {
             name: 'legalLinks',

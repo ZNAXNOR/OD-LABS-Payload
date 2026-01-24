@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
-import type { TechStackBlock as TechStackBlockType } from '@/payload-types'
+import type { TechStackBlock as TechStackBlockType } from '@/types/services-blocks'
 import { cn } from '@/utilities/ui'
-import Image from 'next/image'
 import * as LucideIcons from 'lucide-react'
+import Image from 'next/image'
+import React, { useState } from 'react'
 
 interface TechStackBlockProps {
   block: TechStackBlockType

@@ -11,8 +11,8 @@ export const CloseIcon: React.FC<IconProps> = (props) => {
     <svg
       className={[
         classes.icon,
-        color && classes[color],
-        size && classes[size],
+        color && (classes as any)[color],
+        size && (classes as any)[size],
         className,
         bold && classes.bold,
       ]

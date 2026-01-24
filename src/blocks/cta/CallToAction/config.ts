@@ -8,6 +8,13 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { linkGroup } from '@/fields/linkGroup'
+import {
+  alignmentFeatures,
+  basicTextFeatures,
+  enhancedLinkFeature,
+  listFeatures,
+  structuralFeatures,
+} from '@/fields/richTextFeatures'
 
 export const CallToActionBlock: Block = {
   slug: 'cta',
@@ -66,14 +73,17 @@ export const CallToActionBlock: Block = {
       name: 'richText',
       type: 'richText',
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
+        features: ({ rootFeatures }: { rootFeatures: any[] }) => [
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+          ...rootFeatures,
+          ...structuralFeatures,
+          ...basicTextFeatures,
+          ...alignmentFeatures,
+          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+          ...listFeatures,
+          ...enhancedLinkFeature,
+        ],
       }),
       label: 'Rich Text Content',
       admin: {

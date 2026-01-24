@@ -1,4 +1,19 @@
 import type { Block } from 'payload'
+import {
+  lexicalEditor,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+} from '@payloadcms/richtext-lexical'
+import {
+  structuralFeatures,
+  basicTextFeatures,
+  alignmentFeatures,
+  headingFeatures,
+  listFeatures,
+  enhancedLinkFeature,
+} from '@/fields/richTextFeatures'
+
+// Import rich text features
 
 export const FAQAccordionBlock: Block = {
   slug: 'faqAccordion',
@@ -72,8 +87,21 @@ export const FAQAccordionBlock: Block = {
           type: 'richText',
           required: true,
           admin: {
-            description: 'Answer with rich text formatting',
+            description: 'Answer with rich text formatting and enhanced features',
           },
+          editor: lexicalEditor({
+            features: ({ rootFeatures }: { rootFeatures: any[] }) => [
+              FixedToolbarFeature(),
+              InlineToolbarFeature(),
+              ...rootFeatures,
+              ...structuralFeatures,
+              ...basicTextFeatures,
+              ...alignmentFeatures,
+              ...headingFeatures,
+              ...listFeatures,
+              ...enhancedLinkFeature,
+            ],
+          }),
         },
         {
           name: 'category',

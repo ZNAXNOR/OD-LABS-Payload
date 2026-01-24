@@ -12,8 +12,8 @@ export const PlayIcon: React.FC<IconProps> = (props) => {
       className={[
         className,
         classes.icon,
-        color && classes[color],
-        size && classes[size],
+        color && (classes as any)[color],
+        size && (classes as any)[size],
         bold && classes.bold,
       ]
         .filter(Boolean)

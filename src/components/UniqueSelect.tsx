@@ -1,9 +1,12 @@
 'use client'
 
+import { useField } from '@payloadcms/ui'
 import type { SelectFieldClientComponent } from 'payload'
 import React from 'react'
 
-const UniqueSelect: SelectFieldClientComponent = ({ field, path, value, setValue }) => {
+const UniqueSelect: SelectFieldClientComponent = ({ field, path }) => {
+  const { value, setValue } = useField({ path })
+
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue(e.target.value)
   }
@@ -11,11 +14,11 @@ const UniqueSelect: SelectFieldClientComponent = ({ field, path, value, setValue
   return (
     <div className="unique-select-field">
       <label htmlFor={path} style={{ display: 'block', marginBottom: '4px', fontWeight: '500' }}>
-        {field.label}
+        {typeof field.label === 'string' ? field.label : 'Select'}
       </label>
       <select
         id={path}
-        value={value || ''}
+        value={(value as string) || ''}
         onChange={handleChange}
         style={{
           width: '100%',
@@ -28,7 +31,12 @@ const UniqueSelect: SelectFieldClientComponent = ({ field, path, value, setValue
         <option value="">Select an option...</option>
         {field.options?.map((option) => {
           const optionValue = typeof option === 'string' ? option : option.value
-          const optionLabel = typeof option === 'string' ? option : option.label
+          const optionLabel =
+            typeof option === 'string'
+              ? option
+              : typeof option.label === 'string'
+                ? option.label
+                : option.value
 
           return (
             <option key={optionValue} value={optionValue}>
@@ -37,7 +45,7 @@ const UniqueSelect: SelectFieldClientComponent = ({ field, path, value, setValue
           )
         })}
       </select>
-      {field.admin?.description && (
+      {field.admin?.description && typeof field.admin.description === 'string' && (
         <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#6b7280' }}>
           {field.admin.description}
         </p>

@@ -50,21 +50,18 @@ export const blockCategories: Record<string, BlockCategory> = {
     label: 'Services',
     description: 'Service offerings, tech stack, and pricing blocks',
     blocks: async () => {
-      // All services blocks temporarily disabled due to database relation issues
-      // const [
-      //   { ServicesGridBlock },
-      //   { TechStackBlock },
-      //   { ProcessStepsBlock },
-      //   { PricingTableBlock },
-      // ] = await Promise.all([
-      //   import('./services/ServicesGrid/config'),
-      //   import('./services/TechStack/config'),
-      //   import('./services/ProcessSteps/config'),
-      //   import('./services/PricingTable/config'),
-      // ])
-      return [
-        /* ServicesGridBlock, TechStackBlock, ProcessStepsBlock, PricingTableBlock */
-      ]
+      const [
+        { ServicesGridBlock },
+        { TechStackBlock },
+        { ProcessStepsBlock },
+        { PricingTableBlock },
+      ] = await Promise.all([
+        import('./services/ServicesGrid/config'),
+        import('./services/TechStack/config'),
+        import('./services/ProcessSteps/config'),
+        import('./services/PricingTable/config'),
+      ])
+      return [ServicesGridBlock, TechStackBlock, ProcessStepsBlock, PricingTableBlock]
     },
   },
   portfolio: {

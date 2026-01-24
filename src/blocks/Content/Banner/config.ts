@@ -1,4 +1,19 @@
 import type { Block } from 'payload'
+import {
+  lexicalEditor,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+} from '@payloadcms/richtext-lexical'
+import {
+  structuralFeatures,
+  basicTextFeatures,
+  alignmentFeatures,
+  headingFeatures,
+  listFeatures,
+  enhancedLinkFeature,
+} from '@/fields/richTextFeatures'
+
+// Import rich text features
 
 export const Banner: Block = {
   slug: 'banner',
@@ -29,6 +44,22 @@ export const Banner: Block = {
       type: 'richText',
       label: false,
       required: true,
+      admin: {
+        description: 'Banner content with enhanced formatting options',
+      },
+      editor: lexicalEditor({
+        features: ({ rootFeatures }: { rootFeatures: any[] }) => [
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+          ...rootFeatures,
+          ...structuralFeatures,
+          ...basicTextFeatures,
+          ...alignmentFeatures,
+          ...headingFeatures,
+          ...listFeatures,
+          ...enhancedLinkFeature,
+        ],
+      }),
       // ✅ Added field-level access control for sensitive content
       access: {
         // Only editors and admins can modify content

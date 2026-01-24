@@ -1,14 +1,30 @@
+import {
+  BlocksFeature,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 // Import shared utilities and hooks
-import { createSlugGenerationHook, validateSlugFormat } from '@/utilities/slugGeneration'
+import { auditFields } from '@/pages/shared/fields/auditFields'
 import { createAuditTrailHook } from '@/pages/shared/hooks/createAuditTrailHook'
 import { createRevalidateHook } from '@/pages/shared/hooks/createRevalidateHook'
-import { auditFields } from '@/pages/shared/fields/auditFields'
+import { createSlugGenerationHook, validateSlugFormat } from '@/utilities/slugGeneration'
 
 // Import access control functions
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+
+// Import rich text features
+import {
+  alignmentFeatures,
+  basicTextFeatures,
+  enhancedLinkFeature,
+  headingFeatures,
+  listFeatures,
+  structuralFeatures,
+} from '@/fields/richTextFeatures'
 
 // Import block configuration
 import { getBlocksForCollection } from '@/blocks/config/blockAssignments'
@@ -64,7 +80,7 @@ export const LegalPages: CollectionConfig = {
       tabs: [
         {
           label: 'Content',
-          description: 'Legal document content',
+          description: 'Legal document content with embedded blocks',
           fields: [
             {
               name: 'title',
@@ -92,41 +108,30 @@ export const LegalPages: CollectionConfig = {
               name: 'content',
               type: 'richText',
               required: true,
+              admin: {
+                description: 'Legal document content with embedded blocks for enhanced formatting',
+              },
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => [
+                  FixedToolbarFeature(),
+                  InlineToolbarFeature(),
+                  ...rootFeatures,
+                  ...structuralFeatures,
+                  ...basicTextFeatures,
+                  ...alignmentFeatures,
+                  ...headingFeatures,
+                  ...listFeatures,
+                  ...enhancedLinkFeature,
+                  BlocksFeature({
+                    blocks: legalBlocks.layout,
+                  }),
+                ],
+              }),
               validate: (value: unknown) => {
                 if (!value) {
                   return 'Content is required for legal documents'
                 }
                 return true
-              },
-            },
-          ],
-        },
-        {
-          label: 'Layout',
-          description: 'Add content blocks to build your legal page layout',
-          fields: [
-            {
-              name: 'legacyBlockWarning',
-              type: 'ui',
-              admin: {
-                components: {
-                  Field: {
-                    path: '@/components/LegacyBlockWarning',
-                    clientProps: {
-                      collectionType: 'legal',
-                    },
-                  },
-                },
-              },
-            },
-            {
-              name: 'layout',
-              type: 'blocks',
-              label: 'Content Blocks',
-              blocks: legalBlocks.layout,
-              admin: {
-                description:
-                  'Build your legal page layout using document-focused blocks. Legal pages do not include hero sections.',
               },
             },
           ],

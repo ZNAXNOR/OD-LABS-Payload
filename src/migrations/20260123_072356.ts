@@ -1,6 +1,6 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { MigrateDownArgs, MigrateUpArgs, sql } from '@payloadcms/db-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_pages_blocks_hero_actions_priority" AS ENUM('primary', 'secondary');
   CREATE TYPE "public"."enum_pages_blocks_hero_variant" AS ENUM('default', 'centered', 'minimal', 'split', 'gradient', 'codeTerminal');
@@ -770,7 +770,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   DROP TYPE "public"."enum__proj_showcase_v_columns";`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_actions_priority" AS ENUM('primary', 'secondary');
   CREATE TYPE "public"."enum_hero_block_variant" AS ENUM('default', 'centered', 'minimal', 'split', 'gradient', 'codeTerminal');

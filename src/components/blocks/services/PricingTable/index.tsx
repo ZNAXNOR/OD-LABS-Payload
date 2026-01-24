@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
-import type { PricingTableBlock as PricingTableBlockType } from '@/payload-types'
+import type { PricingTableBlock as PricingTableBlockType } from '@/types/services-blocks'
 import { cn } from '@/utilities/ui'
+import { Check, Info, X } from 'lucide-react'
 import Link from 'next/link'
-import { Check, X, Info } from 'lucide-react'
+import React, { useState } from 'react'
 
 interface PricingTableBlockProps {
   block: PricingTableBlockType

@@ -1,4 +1,19 @@
 import type { Block } from 'payload'
+import {
+  lexicalEditor,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+} from '@payloadcms/richtext-lexical'
+import {
+  structuralFeatures,
+  basicTextFeatures,
+  alignmentFeatures,
+  headingFeatures,
+  listFeatures,
+  enhancedLinkFeature,
+} from '@/fields/richTextFeatures'
+
+// Import rich text features
 
 /**
  * ContainerBlock - A styling wrapper block for layout control
@@ -38,8 +53,21 @@ export const ContainerBlock: Block = {
       name: 'content',
       type: 'richText',
       admin: {
-        description: 'Content to display inside the container',
+        description: 'Content to display inside the container with enhanced formatting',
       },
+      editor: lexicalEditor({
+        features: ({ rootFeatures }: { rootFeatures: any[] }) => [
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+          ...rootFeatures,
+          ...structuralFeatures,
+          ...basicTextFeatures,
+          ...alignmentFeatures,
+          ...headingFeatures,
+          ...listFeatures,
+          ...enhancedLinkFeature,
+        ],
+      }),
     },
     {
       name: 'maxWidth',

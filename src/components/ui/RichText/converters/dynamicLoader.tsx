@@ -30,14 +30,12 @@ const blockImports = {
     import('@/components/blocks/cta/SocialProof').then((m) => ({ default: m.SocialProofBlock })),
 
   // Services blocks
-  // Services blocks - temporarily disabled due to database relation issues
-  // servicesGrid: () =>
-  //   import('@/components/blocks/services/ServicesGrid').then((m) => ({
-  //     default: m.ServicesGridBlock,
-  //   })),
-  // Services blocks - temporarily disabled due to database relation issues
-  // techStack: () =>
-  //   import('@/components/blocks/services/TechStack').then((m) => ({ default: m.TechStackBlock })),
+  servicesGrid: () =>
+    import('@/components/blocks/services/ServicesGrid').then((m) => ({
+      default: m.ServicesGridBlock,
+    })),
+  techStack: () =>
+    import('@/components/blocks/services/TechStack').then((m) => ({ default: m.TechStackBlock })),
   processSteps: () =>
     import('@/components/blocks/services/ProcessSteps').then((m) => ({
       default: m.ProcessStepsBlock,

@@ -1,3 +1,9 @@
+import {
+  BlocksFeature,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 // Import utilities
@@ -15,6 +21,16 @@ import { revalidateService } from './hooks/revalidateService'
 // Import access control functions
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+
+// Import rich text features
+import {
+  alignmentFeatures,
+  basicTextFeatures,
+  enhancedLinkFeature,
+  headingFeatures,
+  listFeatures,
+  structuralFeatures,
+} from '@/fields/richTextFeatures'
 
 // Import block configuration
 import { getBlocksForCollection } from '@/blocks/config/blockAssignments'
@@ -70,7 +86,7 @@ export const ServicesPages: CollectionConfig = {
       tabs: [
         {
           label: 'Content',
-          description: 'Service description and details',
+          description: 'Service description with embedded blocks',
           fields: [
             {
               name: 'title',
@@ -98,51 +114,30 @@ export const ServicesPages: CollectionConfig = {
               name: 'content',
               type: 'richText',
               required: true,
+              admin: {
+                description: 'Service content with embedded blocks for enhanced formatting',
+              },
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => [
+                  FixedToolbarFeature(),
+                  InlineToolbarFeature(),
+                  ...rootFeatures,
+                  ...structuralFeatures,
+                  ...basicTextFeatures,
+                  ...alignmentFeatures,
+                  ...headingFeatures,
+                  ...listFeatures,
+                  ...enhancedLinkFeature,
+                  BlocksFeature({
+                    blocks: serviceBlocks.layout,
+                  }),
+                ],
+              }),
               validate: (value: unknown) => {
                 if (!value) {
                   return 'Content is required'
                 }
                 return true
-              },
-            },
-          ],
-        },
-        {
-          label: 'Layout',
-          description: 'Build your service page layout with blocks',
-          fields: [
-            {
-              name: 'legacyBlockWarning',
-              type: 'ui',
-              admin: {
-                components: {
-                  Field: {
-                    path: '@/components/LegacyBlockWarning',
-                    clientProps: {
-                      collectionType: 'services',
-                    },
-                  },
-                },
-              },
-            },
-            {
-              name: 'hero',
-              type: 'blocks',
-              label: 'Hero Section',
-              blocks: serviceBlocks.hero ?? [],
-              maxRows: 1,
-              admin: {
-                description: 'Optional hero section for the top of the page',
-              },
-            },
-            {
-              name: 'layout',
-              type: 'blocks',
-              label: 'Page Content',
-              blocks: serviceBlocks.layout,
-              admin: {
-                description:
-                  'Build your service page with blocks. Includes Services, Technical, CTA, and Layout blocks.',
               },
             },
           ],

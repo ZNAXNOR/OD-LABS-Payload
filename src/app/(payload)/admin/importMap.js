@@ -28,7 +28,7 @@ import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { default as default_de9f465c1f1dfc14a89b859414d49646 } from '@/components/BreadcrumbCell'
-import { default as default_881dd5ac32f0bb8b063b7352c68b3ee6 } from '@/components/LegacyBlockWarning'
+import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { NavItemRowLabel as NavItemRowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
 import { RowLabel as RowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
 import { NavItemRowLabel as NavItemRowLabel_e5f2ea2a3ff3620de63526e885e3b034 } from '@/globals/Footer/RowLabel'
@@ -68,7 +68,7 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@/components/BreadcrumbCell#default": default_de9f465c1f1dfc14a89b859414d49646,
-  "@/components/LegacyBlockWarning#default": default_881dd5ac32f0bb8b063b7352c68b3ee6,
+  "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@/globals/Header/RowLabel#NavItemRowLabel": NavItemRowLabel_17c6ef4bfe47bfa29d923fb5718170b7,
   "@/globals/Header/RowLabel#RowLabel": RowLabel_17c6ef4bfe47bfa29d923fb5718170b7,
   "@/globals/Footer/RowLabel#NavItemRowLabel": NavItemRowLabel_e5f2ea2a3ff3620de63526e885e3b034,

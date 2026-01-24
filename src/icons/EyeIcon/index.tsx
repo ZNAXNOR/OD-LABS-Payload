@@ -15,8 +15,8 @@ export const EyeIcon: React.FC<
     <svg
       className={[
         classes.icon,
-        color && classes[color],
-        size && classes[size],
+        color && (classes as any)[color],
+        size && (classes as any)[size],
         className,
         bold && classes.bold,
       ]

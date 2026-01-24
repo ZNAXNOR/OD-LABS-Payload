@@ -1,7 +1,7 @@
-import React from 'react'
-import type { ProcessStepsBlock as ProcessStepsBlockType } from '@/payload-types'
+import type { ProcessStepsBlock as ProcessStepsBlockType } from '@/types/services-blocks'
 import { cn } from '@/utilities/ui'
 import * as LucideIcons from 'lucide-react'
+import React from 'react'
 
 interface ProcessStepsBlockProps {
   block: ProcessStepsBlockType

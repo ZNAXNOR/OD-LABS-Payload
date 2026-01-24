@@ -1,5 +1,21 @@
-import { UploadFeature, type UploadFeatureProps } from '@payloadcms/richtext-lexical'
+import {
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+  UploadFeature,
+  type UploadFeatureProps,
+} from '@payloadcms/richtext-lexical'
 import type { CollectionSlug } from 'payload'
+
+// Import rich text features
+import {
+  alignmentFeatures,
+  basicTextFeatures,
+  enhancedLinkFeature,
+  headingFeatures,
+  listFeatures,
+  structuralFeatures,
+} from '@/fields/richTextFeatures'
 
 // ============================================================================
 // MEDIA FEATURE CONFIGURATIONS
@@ -22,6 +38,19 @@ export const basicImageUploadFeature = UploadFeature({
           name: 'caption',
           type: 'richText',
           label: 'Caption',
+          editor: lexicalEditor({
+            features: ({ rootFeatures }) => [
+              FixedToolbarFeature(),
+              InlineToolbarFeature(),
+              ...rootFeatures,
+              ...structuralFeatures,
+              ...basicTextFeatures,
+              ...alignmentFeatures,
+              ...headingFeatures,
+              ...listFeatures,
+              ...enhancedLinkFeature,
+            ],
+          }),
         },
       ],
     },
@@ -51,6 +80,19 @@ export const enhancedMediaUploadFeature = UploadFeature({
           admin: {
             description: 'Optional caption displayed below the image',
           },
+          editor: lexicalEditor({
+            features: ({ rootFeatures }) => [
+              FixedToolbarFeature(),
+              InlineToolbarFeature(),
+              ...rootFeatures,
+              ...structuralFeatures,
+              ...basicTextFeatures,
+              ...alignmentFeatures,
+              ...headingFeatures,
+              ...listFeatures,
+              ...enhancedLinkFeature,
+            ],
+          }),
         },
         {
           name: 'credit',
@@ -159,6 +201,19 @@ export const galleryUploadFeature = UploadFeature({
           name: 'caption',
           type: 'richText',
           label: 'Caption',
+          editor: lexicalEditor({
+            features: ({ rootFeatures }) => [
+              FixedToolbarFeature(),
+              InlineToolbarFeature(),
+              ...rootFeatures,
+              ...structuralFeatures,
+              ...basicTextFeatures,
+              ...alignmentFeatures,
+              ...headingFeatures,
+              ...listFeatures,
+              ...enhancedLinkFeature,
+            ],
+          }),
         },
         {
           name: 'gallerySettings',
@@ -255,6 +310,19 @@ export const videoUploadFeature = UploadFeature({
           name: 'caption',
           type: 'richText',
           label: 'Caption',
+          editor: lexicalEditor({
+            features: ({ rootFeatures }) => [
+              FixedToolbarFeature(),
+              InlineToolbarFeature(),
+              ...rootFeatures,
+              ...structuralFeatures,
+              ...basicTextFeatures,
+              ...alignmentFeatures,
+              ...headingFeatures,
+              ...listFeatures,
+              ...enhancedLinkFeature,
+            ],
+          }),
         },
         {
           name: 'videoSettings',
@@ -414,6 +482,19 @@ export const dragDropUploadFeature = UploadFeature({
           name: 'caption',
           type: 'richText',
           label: 'Caption',
+          editor: lexicalEditor({
+            features: ({ rootFeatures }) => [
+              FixedToolbarFeature(),
+              InlineToolbarFeature(),
+              ...rootFeatures,
+              ...structuralFeatures,
+              ...basicTextFeatures,
+              ...alignmentFeatures,
+              ...headingFeatures,
+              ...listFeatures,
+              ...enhancedLinkFeature,
+            ],
+          }),
         },
         {
           name: 'uploadSettings',
@@ -477,6 +558,19 @@ export const responsiveMediaFeature = UploadFeature({
           name: 'caption',
           type: 'richText',
           label: 'Caption',
+          editor: lexicalEditor({
+            features: ({ rootFeatures }) => [
+              FixedToolbarFeature(),
+              InlineToolbarFeature(),
+              ...rootFeatures,
+              ...structuralFeatures,
+              ...basicTextFeatures,
+              ...alignmentFeatures,
+              ...headingFeatures,
+              ...listFeatures,
+              ...enhancedLinkFeature,
+            ],
+          }),
         },
         {
           name: 'responsiveSettings',
@@ -644,6 +738,19 @@ export const createMediaUploadFeature = (
             name: 'caption',
             type: 'richText',
             label: 'Caption',
+            editor: lexicalEditor({
+              features: ({ rootFeatures }) => [
+                FixedToolbarFeature(),
+                InlineToolbarFeature(),
+                ...rootFeatures,
+                ...structuralFeatures,
+                ...basicTextFeatures,
+                ...alignmentFeatures,
+                ...headingFeatures,
+                ...listFeatures,
+                ...enhancedLinkFeature,
+              ],
+            }),
           },
         ],
       }

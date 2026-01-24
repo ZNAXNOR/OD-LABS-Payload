@@ -1,6 +1,6 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { MigrateDownArgs, MigrateUpArgs, sql } from '@payloadcms/db-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_pages_blocks_content_columns_width" AS ENUM('oneThird', 'half', 'twoThirds', 'full', 'auto');
   CREATE TYPE "public"."enum_pages_blocks_content_columns_background_color" AS ENUM('none', 'white', 'zinc-50', 'zinc-100', 'brand-primary');
@@ -489,7 +489,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   DROP TYPE "public"."enum__content_block_v_alignment";`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_columns_width" AS ENUM('oneThird', 'half', 'twoThirds', 'full', 'auto');
   CREATE TYPE "public"."enum_columns_padding" AS ENUM('none', 'small', 'medium', 'large');

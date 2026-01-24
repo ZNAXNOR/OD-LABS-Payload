@@ -1,9 +1,15 @@
+import {
+  BlocksFeature,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 // Import shared hooks (factory functions)
-import { createSlugGenerationHook, validateSlugFormat } from '@/utilities/slugGeneration'
 import { createAuditTrailHook } from '@/pages/shared/hooks/createAuditTrailHook'
 import { createRevalidateHook } from '@/pages/shared/hooks/createRevalidateHook'
+import { createSlugGenerationHook, validateSlugFormat } from '@/utilities/slugGeneration'
 
 // Import shared fields
 import { auditFields } from '@/pages/shared/fields/auditFields'
@@ -11,6 +17,16 @@ import { auditFields } from '@/pages/shared/fields/auditFields'
 // Import access control functions
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+
+// Import rich text features
+import {
+  alignmentFeatures,
+  basicTextFeatures,
+  enhancedLinkFeature,
+  headingFeatures,
+  listFeatures,
+  structuralFeatures,
+} from '@/fields/richTextFeatures'
 
 // Import block configuration
 import { getBlocksForCollection } from '@/blocks/config/blockAssignments'
@@ -90,7 +106,7 @@ export const BlogPages: CollectionConfig = {
       tabs: [
         {
           label: 'Content',
-          description: 'Main blog content',
+          description: 'Main blog content with embedded blocks',
           fields: [
             {
               name: 'title',
@@ -133,50 +149,30 @@ export const BlogPages: CollectionConfig = {
               name: 'content',
               type: 'richText',
               required: true,
+              admin: {
+                description: 'Blog content with embedded blocks for enhanced formatting',
+              },
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => [
+                  FixedToolbarFeature(),
+                  InlineToolbarFeature(),
+                  ...rootFeatures,
+                  ...structuralFeatures,
+                  ...basicTextFeatures,
+                  ...alignmentFeatures,
+                  ...headingFeatures,
+                  ...listFeatures,
+                  ...enhancedLinkFeature,
+                  BlocksFeature({
+                    blocks: blogBlocks.layout,
+                  }),
+                ],
+              }),
               validate: (value: unknown) => {
                 if (!value) {
                   return 'Content is required for blog posts'
                 }
                 return true
-              },
-            },
-          ],
-        },
-        {
-          label: 'Layout',
-          description: 'Add content blocks to build your blog post layout',
-          fields: [
-            {
-              name: 'legacyBlockWarning',
-              type: 'ui',
-              admin: {
-                components: {
-                  Field: {
-                    path: '@/components/LegacyBlockWarning',
-                    clientProps: {
-                      collectionType: 'blogs',
-                    },
-                  },
-                },
-              },
-            },
-            {
-              name: 'hero',
-              type: 'blocks',
-              label: 'Hero Section',
-              blocks: blogBlocks.hero ? [...blogBlocks.hero] : [],
-              maxRows: 1,
-              admin: {
-                description: 'Optional hero section for the blog post (maximum 1)',
-              },
-            },
-            {
-              name: 'layout',
-              type: 'blocks',
-              label: 'Content Blocks',
-              blocks: [...blogBlocks.layout],
-              admin: {
-                description: 'Build your blog post layout with content blocks',
               },
             },
           ],

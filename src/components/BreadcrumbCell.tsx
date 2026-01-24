@@ -1,8 +1,6 @@
 'use client'
 
-import type { CellComponent } from 'payload'
-
-const BreadcrumbCell: CellComponent = ({ cellData }) => {
+const BreadcrumbCell = ({ cellData }: { cellData: any }) => {
   if (!cellData || !Array.isArray(cellData)) {
     return <span>-</span>
   }

@@ -2,6 +2,19 @@
 import type { Field } from 'payload'
 import { fieldFactories } from '../factories'
 import { fieldValidators } from '../validation'
+import {
+  lexicalEditor,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+} from '@payloadcms/richtext-lexical'
+import {
+  structuralFeatures,
+  basicTextFeatures,
+  alignmentFeatures,
+  headingFeatures,
+  listFeatures,
+  enhancedLinkFeature,
+} from '@/fields/richTextFeatures'
 
 /**
  * Standard page field preset
@@ -32,6 +45,19 @@ export const pageFieldPreset: Field[] = [
             admin: {
               description: 'Main page content',
             },
+            editor: lexicalEditor({
+              features: ({ rootFeatures }: { rootFeatures: any[] }) => [
+                FixedToolbarFeature(),
+                InlineToolbarFeature(),
+                ...rootFeatures,
+                ...structuralFeatures,
+                ...basicTextFeatures,
+                ...alignmentFeatures,
+                ...headingFeatures,
+                ...listFeatures,
+                ...enhancedLinkFeature,
+              ],
+            }),
           },
         ],
       },
@@ -87,6 +113,19 @@ export const blogFieldPreset: Field[] = [
             admin: {
               description: 'Main blog post content',
             },
+            editor: lexicalEditor({
+              features: ({ rootFeatures }: { rootFeatures: any[] }) => [
+                FixedToolbarFeature(),
+                InlineToolbarFeature(),
+                ...rootFeatures,
+                ...structuralFeatures,
+                ...basicTextFeatures,
+                ...alignmentFeatures,
+                ...headingFeatures,
+                ...listFeatures,
+                ...enhancedLinkFeature,
+              ],
+            }),
           },
         ],
       },
@@ -180,6 +219,19 @@ export const serviceFieldPreset: Field[] = [
             admin: {
               description: 'Detailed service description',
             },
+            editor: lexicalEditor({
+              features: ({ rootFeatures }: { rootFeatures: any[] }) => [
+                FixedToolbarFeature(),
+                InlineToolbarFeature(),
+                ...rootFeatures,
+                ...structuralFeatures,
+                ...basicTextFeatures,
+                ...alignmentFeatures,
+                ...headingFeatures,
+                ...listFeatures,
+                ...enhancedLinkFeature,
+              ],
+            }),
           },
           {
             name: 'pricing',

@@ -18,14 +18,10 @@ import {
   HeroBlock,
   MediaBlock,
   NewsletterBlock,
-  // ProcessStepsBlock, // Temporarily disabled due to database relation issue
-  // PricingTableBlock, // Temporarily disabled due to database relation issue
   ProjectShowcaseBlock,
-  // ServicesGridBlock, // Temporarily disabled due to database relation issue
   SocialProofBlock,
   SpacerBlock,
   StatsCounterBlock,
-  // TechStackBlock, // Temporarily disabled due to database relation issue
   TestimonialBlock,
   TimelineBlock,
 } from '@/blocks'
@@ -48,11 +44,11 @@ export const allBlocks: Block[] = [
   ArchiveBlock,
   Banner,
 
-  // Services blocks
-  // ServicesGridBlock, // Temporarily disabled due to database relation issue
-  // TechStackBlock, // Temporarily disabled due to database relation issue
-  // ProcessStepsBlock, // Temporarily disabled due to database relation issue
-  // PricingTableBlock, // Temporarily disabled due to database relation issue
+  // Services blocks - temporarily commented out to fix type generation
+  // ServicesGridBlock,
+  // TechStackBlock,
+  // ProcessStepsBlock,
+  // PricingTableBlock,
 
   // Portfolio blocks
   ProjectShowcaseBlock,

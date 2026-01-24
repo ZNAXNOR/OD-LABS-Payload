@@ -1,29 +1,28 @@
-import type { TextFieldSingleValidation } from 'payload'
 import {
-  BoldFeature,
-  ItalicFeature,
-  UnderlineFeature,
-  StrikethroughFeature,
-  ParagraphFeature,
-  HeadingFeature,
-  OrderedListFeature,
-  UnorderedListFeature,
-  ChecklistFeature,
+  AlignFeature,
   BlockquoteFeature,
+  BoldFeature,
+  ChecklistFeature,
+  HeadingFeature,
   HorizontalRuleFeature,
+  IndentFeature,
+  ItalicFeature,
   // CodeFeature, // Not available in current version
   // CodeBlockFeature, // Not available in current version
   // TableFeature, // Not available in current version
   LinkFeature,
-  AlignFeature,
-  IndentFeature,
-  SuperscriptFeature,
+  OrderedListFeature,
+  ParagraphFeature,
+  StrikethroughFeature,
   SubscriptFeature,
+  SuperscriptFeature,
+  UnderlineFeature,
+  UnorderedListFeature,
   lexicalEditor,
   type LinkFields,
 } from '@payloadcms/richtext-lexical'
+import type { TextFieldSingleValidation } from 'payload'
 import { relOptions } from './link'
-import { createBlocksFeature, allBlocks, inlineBlocks } from './blockEmbedding'
 
 // Basic text formatting features
 export const basicTextFeatures = [
@@ -85,19 +84,8 @@ export const tableFeatures = [
   // }),
 ]
 
-// Block embedding features
-export const blockEmbeddingFeatures = [
-  createBlocksFeature({
-    allowedBlocks: allBlocks,
-    inlineBlocks: inlineBlocks,
-    showCategories: true,
-    enableSearch: true,
-    enablePreview: true,
-    enableReordering: true,
-    enableDuplication: true,
-    confirmDeletion: true,
-  }),
-]
+// Block embedding features - removed to avoid circular dependencies
+// Use blockEmbedding.ts directly for block embedding functionality
 // Enhanced link feature with all options
 export const enhancedLinkFeature = [
   LinkFeature({
@@ -240,8 +228,8 @@ export const comprehensiveRichText = lexicalEditor({
     // Links
     ...enhancedLinkFeature,
 
-    // Block embedding
-    ...blockEmbeddingFeatures,
+    // Note: Block embedding removed to avoid circular dependencies
+    // Use blockEmbedding.ts directly for block embedding functionality
   ],
 })
 
@@ -271,11 +259,14 @@ export const advancedRichText = lexicalEditor({
     ...codeFeatures,
     ...tableFeatures,
     ...enhancedLinkFeature,
-    ...blockEmbeddingFeatures,
+
+    // Note: Block embedding removed to avoid circular dependencies
+    // Use blockEmbedding.ts directly for block embedding functionality
   ],
 })
 
 // Rich text editor with basic block embedding (content-focused blocks only)
+// Note: Simplified to avoid circular dependencies
 export const richTextWithBasicBlocks = lexicalEditor({
   features: [
     ...structuralFeatures,
@@ -284,17 +275,11 @@ export const richTextWithBasicBlocks = lexicalEditor({
     ...headingFeatures,
     ...listFeatures,
     ...enhancedLinkFeature,
-    createBlocksFeature({
-      allowedBlocks: allBlocks.filter((block) =>
-        ['content', 'mediaBlock', 'code', 'divider', 'spacer'].includes(block.slug),
-      ),
-      inlineBlocks: inlineBlocks,
-      showCategories: false,
-    }),
   ],
 })
 
 // Rich text editor with content and technical blocks
+// Note: Simplified to avoid circular dependencies
 export const richTextWithContentBlocks = lexicalEditor({
   features: [
     ...structuralFeatures,
@@ -303,22 +288,6 @@ export const richTextWithContentBlocks = lexicalEditor({
     ...headingFeatures,
     ...listFeatures,
     ...enhancedLinkFeature,
-    createBlocksFeature({
-      allowedBlocks: allBlocks.filter((block) =>
-        [
-          'content',
-          'mediaBlock',
-          'code',
-          'featureGrid',
-          'statsCounter',
-          'faqAccordion',
-          'timeline',
-          'divider',
-          'spacer',
-        ].includes(block.slug),
-      ),
-      showCategories: true,
-    }),
   ],
 })
 

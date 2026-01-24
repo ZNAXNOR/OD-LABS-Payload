@@ -1,10 +1,16 @@
+import {
+  BlocksFeature,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 // Import hooks
-import { generateSlug } from './hooks/generateSlug'
 import { createAuditTrailHook } from '@/pages/shared/hooks/createAuditTrailHook'
 import { createRevalidateHook } from '@/pages/shared/hooks/createRevalidateHook'
 import { validateSlugFormat } from '@/utilities/slugGeneration'
+import { generateSlug } from './hooks/generateSlug'
 
 // Import shared fields
 import { auditFields } from '@/pages/shared/fields/auditFields'
@@ -12,6 +18,16 @@ import { auditFields } from '@/pages/shared/fields/auditFields'
 // Import access control functions
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+
+// Import rich text features
+import {
+  alignmentFeatures,
+  basicTextFeatures,
+  enhancedLinkFeature,
+  headingFeatures,
+  listFeatures,
+  structuralFeatures,
+} from '@/fields/richTextFeatures'
 
 // Import block configuration
 import { getBlocksForCollection } from '@/blocks/config/blockAssignments'
@@ -61,6 +77,7 @@ export const ContactPages: CollectionConfig = {
       tabs: [
         {
           label: 'Content',
+          description: 'Contact page content with embedded blocks',
           fields: [
             {
               name: 'title',
@@ -87,45 +104,25 @@ export const ContactPages: CollectionConfig = {
             {
               name: 'content',
               type: 'richText',
-            },
-          ],
-        },
-        {
-          label: 'Layout',
-          description: 'Build your contact page layout using content blocks',
-          fields: [
-            {
-              name: 'legacyBlockWarning',
-              type: 'ui',
               admin: {
-                components: {
-                  Field: {
-                    path: '@/components/LegacyBlockWarning',
-                    clientProps: {
-                      collectionType: 'contacts',
-                    },
-                  },
-                },
+                description: 'Contact page content with embedded blocks for enhanced formatting',
               },
-            },
-            {
-              name: 'hero',
-              type: 'blocks',
-              label: 'Hero Section',
-              blocks: contactBlocks.hero || [],
-              maxRows: 1,
-              admin: {
-                description: 'Optional hero section for the contact page',
-              },
-            },
-            {
-              name: 'layout',
-              type: 'blocks',
-              label: 'Content Blocks',
-              blocks: contactBlocks.layout,
-              admin: {
-                description: 'Add contact-focused blocks to build your page layout',
-              },
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => [
+                  FixedToolbarFeature(),
+                  InlineToolbarFeature(),
+                  ...rootFeatures,
+                  ...structuralFeatures,
+                  ...basicTextFeatures,
+                  ...alignmentFeatures,
+                  ...headingFeatures,
+                  ...listFeatures,
+                  ...enhancedLinkFeature,
+                  BlocksFeature({
+                    blocks: contactBlocks.layout,
+                  }),
+                ],
+              }),
             },
           ],
         },
@@ -191,7 +188,6 @@ export const ContactPages: CollectionConfig = {
             {
               name: 'contactInfoSections',
               type: 'select',
-              dbName: 'contact_info_sections', // Snake case for database
               hasMany: true,
               options: [
                 { label: 'General Info', value: 'general' },
@@ -223,7 +219,21 @@ export const ContactPages: CollectionConfig = {
                   type: 'richText',
                   admin: {
                     condition: (_, siblingData) => siblingData?.enableSidebar,
+                    description: 'Sidebar content with enhanced formatting options',
                   },
+                  editor: lexicalEditor({
+                    features: ({ rootFeatures }) => [
+                      FixedToolbarFeature(),
+                      InlineToolbarFeature(),
+                      ...rootFeatures,
+                      ...structuralFeatures,
+                      ...basicTextFeatures,
+                      ...alignmentFeatures,
+                      ...headingFeatures,
+                      ...listFeatures,
+                      ...enhancedLinkFeature,
+                    ],
+                  }),
                 },
               ],
             },

@@ -1,8 +1,8 @@
-import React from 'react'
-import type { ServicesGridBlock as ServicesGridBlockType } from '@/payload-types'
+import type { ServicesGridBlock as ServicesGridBlockType } from '@/types/services-blocks'
 import { cn } from '@/utilities/ui'
-import Link from 'next/link'
 import * as LucideIcons from 'lucide-react'
+import Link from 'next/link'
+import React from 'react'
 
 interface ServicesGridBlockProps {
   block: ServicesGridBlockType

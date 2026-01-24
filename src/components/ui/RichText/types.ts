@@ -14,16 +14,14 @@ import type {
   HeroBlock,
   MediaBlock,
   NewsletterBlock,
-  PricingTableBlock,
   ProjectShowcaseBlock,
-  // ServicesGridBlock, // Temporarily disabled due to database relation issue
   SocialProofBlock,
   SpacerBlock,
   StatsCounterBlock,
-  // TechStackBlock, // Temporarily disabled due to database relation issue
   TestimonialBlock,
   TimelineBlock,
 } from '@/payload-types'
+import type { PricingTableBlock } from '@/types/services-blocks'
 import type {
   DefaultNodeTypes,
   DefaultTypedEditorState,

@@ -24,11 +24,9 @@ import { ContactFormBlock } from '@/components/blocks/cta/ContactForm'
 import { NewsletterBlock } from '@/components/blocks/cta/Newsletter'
 import { SocialProofBlock } from '@/components/blocks/cta/SocialProof'
 
-// Services blocks - temporarily disabled due to database relation issues
-// import { ServicesGridBlock } from '@/components/blocks/services/ServicesGrid'
-// import { TechStackBlock } from '@/components/blocks/services/TechStack'
-// import { ProcessStepsBlock } from '@/components/blocks/services/ProcessSteps'
-// import { PricingTableBlock } from '@/components/blocks/services/PricingTable'
+// Services blocks
+import { PricingTableBlock } from '@/components/blocks/services/PricingTable'
+import { ProcessStepsBlock } from '@/components/blocks/services/ProcessSteps'
 
 // Portfolio blocks
 import { BeforeAfterBlock } from '@/components/blocks/portfolio/BeforeAfter'
