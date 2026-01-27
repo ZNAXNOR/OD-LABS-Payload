@@ -53,6 +53,9 @@ import { createCircularReferenceValidator } from '@/pages/shared/validation/circ
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
+// Import live preview utilities
+import { generatePagesPreviewUrl } from '@/utilities/livePreview'
+
 export const Pages: CollectionConfig = {
   slug: 'pages',
   typescript: {
@@ -66,6 +69,9 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     group: 'Pages',
+    livePreview: {
+      url: generatePagesPreviewUrl,
+    },
   },
   access: {
     create: authenticated,

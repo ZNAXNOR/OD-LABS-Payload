@@ -18,6 +18,9 @@ import { auditFields } from '@/pages/shared/fields/auditFields'
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
+// Import live preview utilities
+import { generateBlogPagesPreviewUrl } from '@/utilities/livePreview'
+
 // Import rich text features
 import {
   alignmentFeatures,
@@ -48,6 +51,9 @@ export const BlogPages: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     group: 'Pages',
+    livePreview: {
+      url: generateBlogPagesPreviewUrl,
+    },
   },
   access: {
     create: authenticated,

@@ -22,6 +22,9 @@ import { revalidateService } from './hooks/revalidateService'
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
+// Import live preview utilities
+import { generateServicesPagesPreviewUrl } from '@/utilities/livePreview'
+
 // Import rich text features
 import {
   alignmentFeatures,
@@ -52,6 +55,12 @@ export const ServicesPages: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     group: 'Pages',
+    livePreview: {
+      url: ({ data, locale }) => {
+        console.log('[Services Live Preview] URL generation called with:', { data, locale })
+        return generateServicesPagesPreviewUrl(data, locale)
+      },
+    },
   },
   access: {
     create: authenticated,

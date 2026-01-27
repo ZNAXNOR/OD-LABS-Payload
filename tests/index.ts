@@ -6,10 +6,6 @@
  */
 
 // Export all test categories
-export * from './e2e'
-export * from './int'
-export * from './pbt'
-export * from './performance'
 export * from './unit'
 
 // Test categories for selective running

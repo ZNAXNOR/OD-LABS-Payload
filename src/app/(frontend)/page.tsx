@@ -1,10 +1,10 @@
+import { CMSLink } from '@/components/ui/Link'
+import config from '@/payload.config'
+import { getServicesCollection, isPreviewMode } from '@/utilities/livePreviewData'
+import { ArrowRight, CheckCircle2, ShieldCheck, Zap } from 'lucide-react'
 import { headers as getHeaders } from 'next/headers'
 import Image from 'next/image'
 import { getPayload } from 'payload'
-import React from 'react'
-import config from '@/payload.config'
-import { CMSLink } from '@/components/ui/Link'
-import { ArrowRight, CheckCircle2, ShieldCheck, Zap } from 'lucide-react'
 
 export default async function HomePage() {
   const headers = await getHeaders()
@@ -12,14 +12,20 @@ export default async function HomePage() {
   const payload = await getPayload({ config: payloadConfig })
   await payload.auth({ headers })
 
-  // Fetch services to display on the homepage
-  const { docs: services } = await payload.find({
-    collection: 'services',
-    limit: 3,
-  })
+  // Fetch services using live preview data utility
+  const servicesData = await getServicesCollection({ limit: 3 })
+  const services = servicesData.docs
+  const isPreview = await isPreviewMode()
 
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Preview indicator for development */}
+      {isPreview && process.env.NODE_ENV === 'development' && (
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-2 text-sm">
+          <strong>Preview Mode:</strong> You are viewing draft content
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black text-white">
         {/* Abstract Background Image */}
@@ -103,8 +109,9 @@ export default async function HomePage() {
                   </div>
                   <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
                   <p className="text-muted-foreground mb-6 line-clamp-3">
-                    {/* Simplified preview of content */}
-                    Explore our specialized solution designed to accelerate your growth.
+                    {/* Show actual content if available, otherwise fallback */}
+                    {service.description ||
+                      'Explore our specialized solution designed to accelerate your growth.'}
                   </p>
                   <CMSLink
                     url={`/services/${service.slug}`}
@@ -126,6 +133,16 @@ export default async function HomePage() {
               </div>
             )}
           </div>
+
+          {/* Preview mode indicator for services */}
+          {isPreview && services.length > 0 && (
+            <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-700">
+                <strong>Live Preview:</strong> Showing {servicesData.totalDocs} services
+                {servicesData.isPreview ? ' (including drafts)' : ' (published only)'}
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

@@ -7,6 +7,8 @@ import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 
 import { AdminBar } from '@/components/admin/AdminBar'
+import { LivePreviewListener } from '@/components/admin/LivePreviewListener'
+import { PreviewModeIndicator } from '@/components/admin/PreviewModeIndicator'
 import { Header } from '@/globals/Header/Component'
 import { Providers } from '@/providers'
 
@@ -35,15 +37,18 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       </head>
       <body>
         <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
+          <LivePreviewListener>
+            <PreviewModeIndicator />
+            <AdminBar
+              adminBarProps={{
+                preview: isEnabled,
+              }}
+            />
 
-          <Header />
-          {children}
-          <Footer />
+            <Header />
+            {children}
+            <Footer />
+          </LivePreviewListener>
         </Providers>
       </body>
     </html>

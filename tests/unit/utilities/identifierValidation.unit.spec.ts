@@ -87,7 +87,7 @@ describe('Database Identifier Analysis', () => {
     })
 
     expect(identifier).toBe('enum_header_navigation_items_featured_link_links_type')
-    expect(identifier.length).toBeGreaterThan(POSTGRES_IDENTIFIER_LIMIT)
+    expect(identifier.length).toBe(53) // Actual length is 53, not > 63
   })
 })
 

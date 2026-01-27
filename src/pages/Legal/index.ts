@@ -16,6 +16,9 @@ import { createSlugGenerationHook, validateSlugFormat } from '@/utilities/slugGe
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
+// Import live preview utilities
+import { generateLegalPagesPreviewUrl } from '@/utilities/livePreview'
+
 // Import rich text features
 import {
   alignmentFeatures,
@@ -47,6 +50,9 @@ export const LegalPages: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     group: 'Pages',
+    livePreview: {
+      url: generateLegalPagesPreviewUrl,
+    },
   },
   access: {
     create: authenticated,
