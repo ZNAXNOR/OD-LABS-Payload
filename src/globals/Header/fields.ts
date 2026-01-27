@@ -1,5 +1,5 @@
-import type { Field } from 'payload'
 import { link } from '@/fields/link'
+import type { Field } from 'payload'
 
 export const fields: Field[] = [
   {
@@ -12,7 +12,6 @@ export const fields: Field[] = [
           {
             name: 'tabs',
             type: 'array',
-            dbName: 'nav_tabs', // Abbreviate navigation tabs
             label: 'Navigation Tabs',
             minRows: 1,
             maxRows: 8,
@@ -89,7 +88,6 @@ export const fields: Field[] = [
                   {
                     name: 'descriptionLinks',
                     type: 'array',
-                    dbName: 'desc_links', // Abbreviate and snake case
                     label: 'Description Links',
                     maxRows: 3,
                     admin: {
@@ -104,7 +102,6 @@ export const fields: Field[] = [
                   {
                     name: 'navItems',
                     type: 'array',
-                    dbName: 'nav_items', // Snake case conversion - CRITICAL for breaking long chains
                     label: 'Dropdown Items',
                     minRows: 1,
                     maxRows: 12,
@@ -118,7 +115,7 @@ export const fields: Field[] = [
                       {
                         name: 'style',
                         type: 'select',
-                        dbName: 'style', // Keep short names
+                        dbName: 'style',
                         defaultValue: 'default',
                         required: true,
                         options: [
@@ -178,7 +175,6 @@ export const fields: Field[] = [
                           {
                             name: 'links',
                             type: 'array',
-                            dbName: 'links', // CRITICAL - this was the problematic field
                             minRows: 1,
                             maxRows: 5,
                             admin: {
@@ -210,7 +206,6 @@ export const fields: Field[] = [
                           {
                             name: 'links',
                             type: 'array',
-                            dbName: 'links', // Keep semantic meaning
                             minRows: 1,
                             maxRows: 8,
                             admin: {

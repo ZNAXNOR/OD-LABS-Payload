@@ -19,11 +19,15 @@ import {
   MediaBlock,
   NewsletterBlock,
   ProjectShowcaseBlock,
+  ProcessStepsBlock,
+  PricingTableBlock,
+  ServicesGridBlock,
   SocialProofBlock,
   SpacerBlock,
   StatsCounterBlock,
   TestimonialBlock,
   TimelineBlock,
+  TechStackBlock,
 } from '@/blocks'
 
 // Block categories for organization in the editor
@@ -45,10 +49,10 @@ export const allBlocks: Block[] = [
   Banner,
 
   // Services blocks - temporarily commented out to fix type generation
-  // ServicesGridBlock,
-  // TechStackBlock,
-  // ProcessStepsBlock,
-  // PricingTableBlock,
+  ServicesGridBlock,
+  TechStackBlock,
+  ProcessStepsBlock,
+  PricingTableBlock,
 
   // Portfolio blocks
   ProjectShowcaseBlock,
@@ -101,7 +105,7 @@ export const blockCategories: Record<string, BlockCategory> = {
     label: 'Services',
     description: 'Service offerings and business blocks',
     blocks: [
-      /* ServicesGridBlock, TechStackBlock, ProcessStepsBlock, PricingTableBlock */
+      ServicesGridBlock, TechStackBlock, ProcessStepsBlock, PricingTableBlock
     ],
   },
   portfolio: {

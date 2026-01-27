@@ -290,7 +290,6 @@ export async function exampleHeaderOptimization() {
                       {
                         name: 'descriptionLinks',
                         type: 'array',
-                        // dbName: 'desc_links', // Removed - not supported on all field types
                         fields: [
                           {
                             name: 'linkType',

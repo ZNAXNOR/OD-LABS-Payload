@@ -1,18 +1,12 @@
 import { link } from '@/fields/link'
-import type { Field } from 'payload'
+import { basicTextFeatures, enhancedLinkFeature } from '@/fields/richTextFeatures'
+import { socialMediaLinks } from '@/fields/socialMediaLinks'
 import {
-  lexicalEditor,
   FixedToolbarFeature,
   InlineToolbarFeature,
+  lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import {
-  structuralFeatures,
-  basicTextFeatures,
-  alignmentFeatures,
-  headingFeatures,
-  listFeatures,
-  enhancedLinkFeature,
-} from '@/fields/richTextFeatures'
+import type { Field } from 'payload'
 
 // Import rich text features
 
@@ -83,15 +77,10 @@ export const fields: Field[] = [
               description: 'Copyright notice and legal text with enhanced formatting',
             },
             editor: lexicalEditor({
-              features: ({ rootFeatures }: { rootFeatures: any[] }) => [
+              features: [
                 FixedToolbarFeature(),
                 InlineToolbarFeature(),
-                ...rootFeatures,
-                ...structuralFeatures,
                 ...basicTextFeatures,
-                ...alignmentFeatures,
-                ...headingFeatures,
-                ...listFeatures,
                 ...enhancedLinkFeature,
               ],
             }),
@@ -106,85 +95,106 @@ export const fields: Field[] = [
               description: 'Legal and policy links (max 8)',
             },
             fields: [
-              link({
-                appearances: false,
-                enableAdvancedOptions: false,
-              }),
-            ],
-          },
-          {
-            name: 'socialMedia',
-            type: 'group',
-            label: 'Social Media',
-            admin: {
-              description: 'Social media links and profiles',
-            },
-            fields: [
               {
-                name: 'enabled',
-                type: 'checkbox',
-                label: 'Show Social Media Links',
-                defaultValue: true,
-              },
-              {
-                name: 'links',
-                type: 'array',
-                dbName: 'links', // Keep semantic meaning
-                label: 'Social Links',
-                maxRows: 10,
+                name: 'link',
+                type: 'group',
                 admin: {
-                  condition: (_, siblingData) => siblingData.enabled,
-                  description: 'Social media profile links (max 10)',
+                  hideGutter: true,
                 },
                 fields: [
                   {
-                    name: 'platform',
-                    type: 'select',
-                    dbName: 'platform', // Keep short names
-                    required: true,
-                    options: [
-                      { label: 'Facebook', value: 'facebook' },
-                      { label: 'Twitter/X', value: 'twitter' },
-                      { label: 'LinkedIn', value: 'linkedin' },
-                      { label: 'Instagram', value: 'instagram' },
-                      { label: 'YouTube', value: 'youtube' },
-                      { label: 'GitHub', value: 'github' },
-                      { label: 'Discord', value: 'discord' },
-                      { label: 'TikTok', value: 'tiktok' },
-                      { label: 'Other', value: 'other' },
+                    type: 'row',
+                    fields: [
+                      {
+                        name: 'type',
+                        type: 'radio',
+                        dbName: 'link_type',
+                        admin: {
+                          layout: 'horizontal',
+                          width: '50%',
+                        },
+                        defaultValue: 'reference',
+                        options: [
+                          {
+                            label: 'Legal Page',
+                            value: 'reference',
+                          },
+                          {
+                            label: 'Custom URL',
+                            value: 'custom',
+                          },
+                        ],
+                      },
+                      {
+                        name: 'newTab',
+                        type: 'checkbox',
+                        admin: {
+                          style: {
+                            alignSelf: 'flex-end',
+                          },
+                          width: '50%',
+                        },
+                        label: 'Open in new tab',
+                      },
                     ],
-                    admin: {
-                      description: 'Social media platform',
-                    },
                   },
                   {
-                    name: 'url',
-                    type: 'text',
-                    required: true,
-                    admin: {
-                      description: 'Profile URL',
-                    },
-                    validate: (value: any) => {
-                      if (!value) return 'URL is required'
-                      try {
-                        new URL(value)
-                        return true
-                      } catch {
-                        return 'Please enter a valid URL'
-                      }
-                    },
-                  },
-                  {
-                    name: 'label',
-                    type: 'text',
-                    admin: {
-                      description: 'Custom label (optional, defaults to platform name)',
-                    },
+                    type: 'row',
+                    fields: [
+                      {
+                        name: 'reference',
+                        type: 'relationship',
+                        admin: {
+                          condition: (_, siblingData) => siblingData?.type === 'reference',
+                          width: '50%',
+                        },
+                        label: 'Legal Page',
+                        relationTo: ['legal'], // Only show Legal pages
+                        required: true,
+                      },
+                      {
+                        name: 'url',
+                        type: 'text',
+                        admin: {
+                          condition: (_, siblingData) => siblingData?.type === 'custom',
+                          width: '50%',
+                        },
+                        label: 'Custom URL',
+                        required: true,
+                        validate: (value: any) => {
+                          if (!value) return true
+                          try {
+                            new URL(value)
+                            return true
+                          } catch {
+                            if (value.startsWith('/') || value.startsWith('#')) {
+                              return true
+                            }
+                            return 'Please enter a valid URL (e.g., https://example.com or /page)'
+                          }
+                        },
+                      },
+                      {
+                        name: 'label',
+                        type: 'text',
+                        admin: {
+                          width: '50%',
+                        },
+                        label: 'Label',
+                        required: true,
+                      },
+                    ],
                   },
                 ],
               },
             ],
           },
+          socialMediaLinks({
+            label: 'Social Media',
+            description: 'Select social media links to display in the footer',
+            maxLinks: 15,
+            enableToggle: true,
+          }),
         ],
       },
       {

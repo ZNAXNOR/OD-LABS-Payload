@@ -11,6 +11,7 @@ import { plugins } from './plugins'
 
 // Collections - organized by type
 import { Media } from './collections/Media'
+import { SocialMedia } from './collections/SocialMedia'
 import { Users } from './collections/Users'
 
 // Page Collections - organized by content type
@@ -62,6 +63,7 @@ export default buildConfig({
     // Core collections
     Users,
     Media,
+    SocialMedia,
     // Content collections
     Pages,
     BlogPages,

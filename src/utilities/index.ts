@@ -3,13 +3,14 @@
 // ============================================================================
 
 // Individual category exports for tree-shaking
+export * from './accessibility'
 export * from './api'
-export * from './validation'
+export * from './cms'
+export * from './dbname-cleanup'
 export * from './formatting'
 export * from './media'
-export * from './cms'
 export * from './ui'
-export * from './accessibility'
+export * from './validation'
 
 // ============================================================================
 // LAZY-LOADED UTILITY CATEGORIES FOR CODE SPLITTING
@@ -24,6 +25,7 @@ export const utilityCategories = {
   cms: () => import('./cms'),
   ui: () => import('./ui'),
   accessibility: () => import('./accessibility'),
+  dbnameCleanup: () => import('./dbname-cleanup'),
 } as const
 
 // Type definitions for utility categories
@@ -41,6 +43,7 @@ export const loadMediaUtilities = () => import('./media')
 export const loadCMSUtilities = () => import('./cms')
 export const loadUIUtilities = () => import('./ui')
 export const loadAccessibilityUtilities = () => import('./accessibility')
+export const loadDbNameCleanupUtilities = () => import('./dbname-cleanup')
 
 // ============================================================================
 // UTILITY REGISTRY FOR DYNAMIC LOADING
@@ -80,6 +83,9 @@ export const utilityRegistry: Record<string, UtilityInfo> = {
 
   // Accessibility Utilities
   accessibility: { category: 'accessibility', loader: () => import('./accessibility') },
+
+  // DbName Cleanup Utilities
+  dbnameCleanup: { category: 'dbnameCleanup', loader: () => import('./dbname-cleanup') },
 }
 
 // Helper to load utility dynamically

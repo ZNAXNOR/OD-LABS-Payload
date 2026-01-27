@@ -2,21 +2,22 @@
 import type { CollectionConfig } from 'payload'
 
 // Core collections
-export { Users } from './Users'
 export { Media } from './Media'
+export { SocialMedia } from './SocialMedia'
+export { Users } from './Users'
 
 // Page collections (re-exported from pages directory for consistency)
-export { Pages } from '../pages/Pages'
 export { BlogPages } from '../pages/Blogs'
-export { ServicesPages } from '../pages/Services'
-export { LegalPages } from '../pages/Legal'
 export { ContactPages } from '../pages/Contacts'
+export { LegalPages } from '../pages/Legal'
+export { Pages } from '../pages/Pages'
+export { ServicesPages } from '../pages/Services'
 
 // Collection utilities and templates
-export * from './templates'
-export * from './fields'
 export * from './access'
+export * from './fields'
 export * from './hooks'
+export * from './templates'
 
 // Collection arrays for easy configuration
 export const coreCollections: CollectionConfig[] = [
@@ -31,7 +32,7 @@ export const pageCollections: CollectionConfig[] = [
 export const collectionGroups = {
   core: ['users', 'media'],
   content: ['pages', 'blogs', 'services', 'legal', 'contacts'],
-  settings: [], // Add settings collections here
+  settings: ['social-media'], // Add settings collections here
 } as const
 
 // Collection metadata for documentation and tooling

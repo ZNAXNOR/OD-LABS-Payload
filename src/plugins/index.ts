@@ -80,7 +80,6 @@ export const plugins: Plugin[] = [
     generateTitle,
     generateURL,
     collections: ['pages', 'blogs', 'services', 'legal', 'contacts'],
-    globals: ['header', 'footer'],
     uploadsCollection: 'media',
     tabbedUI: true,
     fields: ({ defaultFields }) => [

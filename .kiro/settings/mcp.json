@@ -9,7 +9,12 @@
       ],
       "disabled": false,
       "autoApprove": [
-        "run_sql"
+        "search",
+        "fetch",
+        "get_database_tables",
+        "describe_table_schema",
+        "describe_branch",
+        "list_projects"
       ]
     }
   }

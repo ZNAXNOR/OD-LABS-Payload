@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    'social-media': SocialMedia;
     pages: Page;
     blogs: BlogPage;
     services: ServicePage;
@@ -87,6 +88,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'social-media': SocialMediaSelect<false> | SocialMediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
@@ -268,6 +270,50 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * Manage social media links as global assets
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-media".
+ */
+export interface SocialMedia {
+  id: number;
+  /**
+   * Social media platform
+   */
+  platform:
+    | 'Facebook'
+    | 'Twitter/X'
+    | 'LinkedIn'
+    | 'Instagram'
+    | 'YouTube'
+    | 'GitHub'
+    | 'Discord'
+    | 'TikTok'
+    | 'Pinterest'
+    | 'Snapchat'
+    | 'WhatsApp'
+    | 'Telegram'
+    | 'Other';
+  /**
+   * Profile URL
+   */
+  url: string;
+  /**
+   * Custom label (optional, defaults to platform name)
+   */
+  label?: string | null;
+  /**
+   * Optional description for this social media account
+   */
+  description?: string | null;
+  /**
+   * Whether this social media link is active and should be displayed
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2750,6 +2796,10 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
+        relationTo: 'social-media';
+        value: number | SocialMedia;
+      } | null)
+    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -2922,6 +2972,19 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-media_select".
+ */
+export interface SocialMediaSelect<T extends boolean = true> {
+  platform?: T;
+  url?: T;
+  label?: T;
+  description?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4361,94 +4424,6 @@ export interface Header {
      */
     appearance?: ('default' | 'secondary' | 'outline') | null;
   };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Comma-separated keywords relevant to this content
-     */
-    keywords?: string | null;
-    robots?: {
-      /**
-       * Check this to prevent search engines from indexing this page
-       */
-      noIndex?: boolean | null;
-      /**
-       * Check this to tell search engines not to follow links on this page
-       */
-      noFollow?: boolean | null;
-      /**
-       * Prevent search engines from showing cached versions of this page
-       */
-      noArchive?: boolean | null;
-      /**
-       * Prevent search engines from showing text snippets in search results
-       */
-      noSnippet?: boolean | null;
-    };
-    /**
-     * The canonical URL for this page (leave empty to use the page URL)
-     */
-    canonical?: string | null;
-    structured?: {
-      /**
-       * Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).
-       */
-      type?:
-        | (
-            | 'Article'
-            | 'BlogPosting'
-            | 'WebPage'
-            | 'Organization'
-            | 'Service'
-            | 'LocalBusiness'
-            | 'FAQPage'
-            | 'ContactPage'
-            | 'AboutPage'
-            | 'custom'
-          )
-        | null;
-      /**
-       * Enter custom JSON-LD structured data
-       */
-      customSchema?: string | null;
-      /**
-       * Author of this content (for articles and blog posts)
-       */
-      author?: (number | null) | User;
-      /**
-       * Publication date (for articles and blog posts)
-       */
-      datePublished?: string | null;
-      /**
-       * Last modification date (for articles and blog posts)
-       */
-      dateModified?: string | null;
-    };
-    social?: {
-      twitter?: {
-        card?: ('summary' | 'summary_large_image' | 'app' | 'player') | null;
-        /**
-         * Twitter username for the website
-         */
-        site?: string | null;
-        /**
-         * Twitter username for the content creator
-         */
-        creator?: string | null;
-      };
-      facebook?: {
-        /**
-         * Facebook App ID for analytics
-         */
-        appId?: string | null;
-      };
-    };
-  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -4533,27 +4508,10 @@ export interface Footer {
         link: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'blogs';
-                value: number | BlogPage;
-              } | null)
-            | ({
-                relationTo: 'services';
-                value: number | ServicePage;
-              } | null)
-            | ({
-                relationTo: 'legal';
-                value: number | LegalPage;
-              } | null)
-            | ({
-                relationTo: 'contacts';
-                value: number | ContactPage;
-              } | null);
+          reference?: {
+            relationTo: 'legal';
+            value: number | LegalPage;
+          } | null;
           url?: string | null;
           label: string;
         };
@@ -4561,39 +4519,14 @@ export interface Footer {
       }[]
     | null;
   /**
-   * Social media links and profiles
+   * Select social media links to display in the footer
    */
   socialMedia?: {
     enabled?: boolean | null;
     /**
-     * Social media profile links (max 10)
+     * Select social media links from the global social media collection
      */
-    links?:
-      | {
-          /**
-           * Social media platform
-           */
-          platform:
-            | 'facebook'
-            | 'twitter'
-            | 'linkedin'
-            | 'instagram'
-            | 'youtube'
-            | 'github'
-            | 'discord'
-            | 'tiktok'
-            | 'other';
-          /**
-           * Profile URL
-           */
-          url: string;
-          /**
-           * Custom label (optional, defaults to platform name)
-           */
-          label?: string | null;
-          id?: string | null;
-        }[]
-      | null;
+    links?: (number | SocialMedia)[] | null;
   };
   /**
    * Newsletter signup configuration
@@ -4616,94 +4549,6 @@ export interface Footer {
      * Subscribe button text
      */
     buttonText?: string | null;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Comma-separated keywords relevant to this content
-     */
-    keywords?: string | null;
-    robots?: {
-      /**
-       * Check this to prevent search engines from indexing this page
-       */
-      noIndex?: boolean | null;
-      /**
-       * Check this to tell search engines not to follow links on this page
-       */
-      noFollow?: boolean | null;
-      /**
-       * Prevent search engines from showing cached versions of this page
-       */
-      noArchive?: boolean | null;
-      /**
-       * Prevent search engines from showing text snippets in search results
-       */
-      noSnippet?: boolean | null;
-    };
-    /**
-     * The canonical URL for this page (leave empty to use the page URL)
-     */
-    canonical?: string | null;
-    structured?: {
-      /**
-       * Select the most appropriate schema type for this content. Note: This field is auto-populated for specific collections (Blogs, Legal, Services, Contacts).
-       */
-      type?:
-        | (
-            | 'Article'
-            | 'BlogPosting'
-            | 'WebPage'
-            | 'Organization'
-            | 'Service'
-            | 'LocalBusiness'
-            | 'FAQPage'
-            | 'ContactPage'
-            | 'AboutPage'
-            | 'custom'
-          )
-        | null;
-      /**
-       * Enter custom JSON-LD structured data
-       */
-      customSchema?: string | null;
-      /**
-       * Author of this content (for articles and blog posts)
-       */
-      author?: (number | null) | User;
-      /**
-       * Publication date (for articles and blog posts)
-       */
-      datePublished?: string | null;
-      /**
-       * Last modification date (for articles and blog posts)
-       */
-      dateModified?: string | null;
-    };
-    social?: {
-      twitter?: {
-        card?: ('summary' | 'summary_large_image' | 'app' | 'player') | null;
-        /**
-         * Twitter username for the website
-         */
-        site?: string | null;
-        /**
-         * Twitter username for the content creator
-         */
-        creator?: string | null;
-      };
-      facebook?: {
-        /**
-         * Facebook App ID for analytics
-         */
-        appId?: string | null;
-      };
-    };
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -4786,15 +4631,6 @@ export interface ContactInformation {
         id?: string | null;
       }[]
     | null;
-  socialMedia?: {
-    links?:
-      | {
-          platform: 'facebook' | 'twitter' | 'linkedin' | 'instagram' | 'youtube' | 'github';
-          url: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
   /**
    * Configure when your business is open
    */
@@ -4992,48 +4828,6 @@ export interface HeaderSelect<T extends boolean = true> {
         label?: T;
         appearance?: T;
       };
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        keywords?: T;
-        robots?:
-          | T
-          | {
-              noIndex?: T;
-              noFollow?: T;
-              noArchive?: T;
-              noSnippet?: T;
-            };
-        canonical?: T;
-        structured?:
-          | T
-          | {
-              type?: T;
-              customSchema?: T;
-              author?: T;
-              datePublished?: T;
-              dateModified?: T;
-            };
-        social?:
-          | T
-          | {
-              twitter?:
-                | T
-                | {
-                    card?: T;
-                    site?: T;
-                    creator?: T;
-                  };
-              facebook?:
-                | T
-                | {
-                    appId?: T;
-                  };
-            };
-      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -5082,14 +4876,7 @@ export interface FooterSelect<T extends boolean = true> {
     | T
     | {
         enabled?: T;
-        links?:
-          | T
-          | {
-              platform?: T;
-              url?: T;
-              label?: T;
-              id?: T;
-            };
+        links?: T;
       };
   newsletter?:
     | T
@@ -5099,48 +4886,6 @@ export interface FooterSelect<T extends boolean = true> {
         description?: T;
         placeholder?: T;
         buttonText?: T;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        keywords?: T;
-        robots?:
-          | T
-          | {
-              noIndex?: T;
-              noFollow?: T;
-              noArchive?: T;
-              noSnippet?: T;
-            };
-        canonical?: T;
-        structured?:
-          | T
-          | {
-              type?: T;
-              customSchema?: T;
-              author?: T;
-              datePublished?: T;
-              dateModified?: T;
-            };
-        social?:
-          | T
-          | {
-              twitter?:
-                | T
-                | {
-                    card?: T;
-                    site?: T;
-                    creator?: T;
-                  };
-              facebook?:
-                | T
-                | {
-                    appId?: T;
-                  };
-            };
       };
   updatedAt?: T;
   createdAt?: T;
@@ -5176,17 +4921,6 @@ export interface ContactSelect<T extends boolean = true> {
         phone?: T;
         description?: T;
         id?: T;
-      };
-  socialMedia?:
-    | T
-    | {
-        links?:
-          | T
-          | {
-              platform?: T;
-              url?: T;
-              id?: T;
-            };
       };
   businessHours?:
     | T

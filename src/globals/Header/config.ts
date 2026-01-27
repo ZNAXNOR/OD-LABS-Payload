@@ -1,8 +1,8 @@
 import type { GlobalConfig } from 'payload'
 
+import { authenticated } from '@/access/authenticated'
 import { link } from '@/fields/link'
 import { revalidateHeader } from './hooks/revalidateHeader'
-import { authenticated } from '@/access/authenticated'
 
 export const Header: GlobalConfig = {
   slug: 'header',
@@ -11,12 +11,11 @@ export const Header: GlobalConfig = {
     update: authenticated,
   },
   label: 'Header',
-  dbName:'header',
+  dbName: 'header',
   fields: [
     {
       name: 'tabs',
       type: 'array',
-      dbName:'head_tabs',
       admin: {
         components: {
           RowLabel: '@/globals/Header/RowLabel#RowLabel',
