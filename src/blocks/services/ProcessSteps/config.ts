@@ -15,6 +15,7 @@ export const ProcessStepsBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      maxLength: 120,
       admin: {
         description: 'Optional heading for the process section',
         placeholder: 'Our Process',
@@ -23,6 +24,7 @@ export const ProcessStepsBlock: Block = {
     {
       name: 'description',
       type: 'textarea',
+      maxLength: 300,
       admin: {
         description: 'Optional description text',
         placeholder: 'How we work with you',
@@ -31,12 +33,21 @@ export const ProcessStepsBlock: Block = {
     {
       name: 'layout',
       type: 'select',
-      options: [
-        { label: 'Vertical', value: 'vertical' },
-        { label: 'Horizontal', value: 'horizontal' },
-        { label: 'Grid', value: 'grid' },
-      ],
       defaultValue: 'vertical',
+      options: [
+        {
+          label: 'Vertical',
+          value: 'vertical',
+        },
+        {
+          label: 'Horizontal',
+          value: 'horizontal',
+        },
+        {
+          label: 'Grid',
+          value: 'grid',
+        },
+      ],
       required: true,
       admin: {
         description: 'How to display the process steps',
@@ -45,12 +56,21 @@ export const ProcessStepsBlock: Block = {
     {
       name: 'style',
       type: 'select',
-      options: [
-        { label: 'Numbered', value: 'numbered' },
-        { label: 'Icons', value: 'icons' },
-        { label: 'Timeline', value: 'timeline' },
-      ],
       defaultValue: 'numbered',
+      options: [
+        {
+          label: 'Numbered',
+          value: 'numbered',
+        },
+        {
+          label: 'Icons',
+          value: 'icons',
+        },
+        {
+          label: 'Timeline',
+          value: 'timeline',
+        },
+      ],
       required: true,
       admin: {
         description: 'Visual style of the steps',
@@ -70,6 +90,7 @@ export const ProcessStepsBlock: Block = {
         {
           name: 'icon',
           type: 'text',
+          maxLength: 50,
           admin: {
             description: 'Lucide icon name (used when style is "icons")',
             placeholder: 'CheckCircle',
@@ -83,6 +104,13 @@ export const ProcessStepsBlock: Block = {
           name: 'title',
           type: 'text',
           required: true,
+          maxLength: 100,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Step title is required'
+            }
+            return true
+          },
           admin: {
             description: 'Step title',
             placeholder: 'Discovery & Planning',
@@ -92,6 +120,13 @@ export const ProcessStepsBlock: Block = {
           name: 'description',
           type: 'textarea',
           required: true,
+          maxLength: 300,
+          validate: (value) => {
+            if (!value || value.trim().length === 0) {
+              return 'Step description is required'
+            }
+            return true
+          },
           admin: {
             description: 'Step description',
             placeholder: 'We start by understanding your goals and requirements',
@@ -100,6 +135,7 @@ export const ProcessStepsBlock: Block = {
         {
           name: 'duration',
           type: 'text',
+          maxLength: 50,
           admin: {
             description: 'Optional duration for this step',
             placeholder: '1-2 weeks',
@@ -108,6 +144,7 @@ export const ProcessStepsBlock: Block = {
         {
           name: 'details',
           type: 'textarea',
+          maxLength: 200,
           admin: {
             description: 'Optional additional details',
             placeholder: 'Key activities, deliverables, etc.',
@@ -116,6 +153,9 @@ export const ProcessStepsBlock: Block = {
       ],
       admin: {
         description: 'Add process steps',
+        components: {
+          RowLabel: '@/blocks/services/ProcessSteps/RowLabel#StepRowLabel',
+        },
       },
     },
     {

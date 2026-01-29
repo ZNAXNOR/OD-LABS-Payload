@@ -16,6 +16,13 @@ export const NewsletterBlock: Block = {
       name: 'heading',
       type: 'text',
       required: true,
+      maxLength: 120,
+      validate: (value: unknown) => {
+        if (!value || typeof value !== 'string' || value.trim().length === 0) {
+          return 'Heading is required and cannot be empty'
+        }
+        return true
+      },
       admin: {
         description: 'Main heading for the newsletter signup',
       },
@@ -23,6 +30,7 @@ export const NewsletterBlock: Block = {
     {
       name: 'description',
       type: 'textarea',
+      maxLength: 300,
       admin: {
         description: 'Optional description text',
       },
@@ -31,6 +39,7 @@ export const NewsletterBlock: Block = {
       name: 'placeholder',
       type: 'text',
       defaultValue: 'Enter your email',
+      maxLength: 50,
       admin: {
         description: 'Placeholder text for the email input',
       },
@@ -40,6 +49,13 @@ export const NewsletterBlock: Block = {
       type: 'text',
       defaultValue: 'Subscribe',
       required: true,
+      maxLength: 30,
+      validate: (value: unknown) => {
+        if (!value || typeof value !== 'string' || value.trim().length === 0) {
+          return 'Button text is required'
+        }
+        return true
+      },
       admin: {
         description: 'Text for the submit button',
       },
@@ -63,7 +79,8 @@ export const NewsletterBlock: Block = {
         },
       ],
       admin: {
-        description: 'Visual style of the newsletter signup',
+        description:
+          'Visual style: Inline (horizontal layout), Card (contained with background), Minimal (clean text-only)',
       },
     },
     {
@@ -78,6 +95,7 @@ export const NewsletterBlock: Block = {
       name: 'privacyText',
       type: 'text',
       defaultValue: 'We respect your privacy. Unsubscribe at any time.',
+      maxLength: 200,
       admin: {
         description: 'Privacy note text',
         condition: (data) => data.showPrivacyNote === true,
@@ -88,6 +106,13 @@ export const NewsletterBlock: Block = {
       type: 'text',
       defaultValue: 'Thanks for subscribing!',
       required: true,
+      maxLength: 100,
+      validate: (value: unknown) => {
+        if (!value || typeof value !== 'string' || value.trim().length === 0) {
+          return 'Success message is required'
+        }
+        return true
+      },
       admin: {
         description: 'Message shown after successful subscription',
       },
@@ -111,7 +136,8 @@ export const NewsletterBlock: Block = {
         },
       ],
       admin: {
-        description: 'Email service provider integration',
+        description:
+          'Email service provider: Custom (manual integration), Mailchimp (automated integration), ConvertKit (automated integration)',
       },
     },
   ],

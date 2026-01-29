@@ -1,14 +1,9 @@
 import { link } from '@/fields/link'
-import { basicTextFeatures, enhancedLinkFeature } from '@/fields/richTextFeatures'
 import { socialMediaLinks } from '@/fields/socialMediaLinks'
-import {
-  FixedToolbarFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 import type { Field } from 'payload'
 
 // Import rich text features
+import { minimalRichText } from '@/fields/richTextFeatures'
 
 export const fields: Field[] = [
   {
@@ -76,14 +71,7 @@ export const fields: Field[] = [
             admin: {
               description: 'Copyright notice and legal text with enhanced formatting',
             },
-            editor: lexicalEditor({
-              features: [
-                FixedToolbarFeature(),
-                InlineToolbarFeature(),
-                ...basicTextFeatures,
-                ...enhancedLinkFeature,
-              ],
-            }),
+            editor: minimalRichText,
           },
           {
             name: 'legalLinks',

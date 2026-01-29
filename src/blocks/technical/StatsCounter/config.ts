@@ -15,6 +15,7 @@ export const StatsCounterBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      maxLength: 120,
       admin: {
         description: 'Optional heading for the stats section',
         placeholder: 'Our Impact',
@@ -26,8 +27,14 @@ export const StatsCounterBlock: Block = {
       defaultValue: 'row',
       required: true,
       options: [
-        { label: 'Row', value: 'row' },
-        { label: 'Grid', value: 'grid' },
+        {
+          label: 'Row',
+          value: 'row',
+        },
+        {
+          label: 'Grid',
+          value: 'grid',
+        },
       ],
       admin: {
         description: 'Layout style for the stats',
@@ -63,6 +70,15 @@ export const StatsCounterBlock: Block = {
           name: 'value',
           type: 'number',
           required: true,
+          validate: (value: any) => {
+            if (value === null || value === undefined) {
+              return 'Stat value is required'
+            }
+            if (value < 0) {
+              return 'Stat value cannot be negative'
+            }
+            return true
+          },
           admin: {
             description: 'The numeric value to display',
             placeholder: '100',
@@ -71,6 +87,7 @@ export const StatsCounterBlock: Block = {
         {
           name: 'prefix',
           type: 'text',
+          maxLength: 10,
           admin: {
             description: 'Optional prefix (e.g., $, +)',
             placeholder: '$',
@@ -79,6 +96,7 @@ export const StatsCounterBlock: Block = {
         {
           name: 'suffix',
           type: 'text',
+          maxLength: 10,
           admin: {
             description: 'Optional suffix (e.g., +, %, K, M)',
             placeholder: '+',
@@ -88,6 +106,13 @@ export const StatsCounterBlock: Block = {
           name: 'label',
           type: 'text',
           required: true,
+          maxLength: 80,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Stat label is required'
+            }
+            return true
+          },
           admin: {
             description: 'Label describing the stat',
             placeholder: 'Happy Clients',
@@ -96,6 +121,7 @@ export const StatsCounterBlock: Block = {
         {
           name: 'description',
           type: 'textarea',
+          maxLength: 150,
           admin: {
             description: 'Optional additional description',
             placeholder: 'And counting...',
@@ -104,6 +130,7 @@ export const StatsCounterBlock: Block = {
         {
           name: 'icon',
           type: 'text',
+          maxLength: 50,
           admin: {
             description: 'Optional Lucide icon name',
             placeholder: 'Users',
@@ -113,6 +140,11 @@ export const StatsCounterBlock: Block = {
       labels: {
         singular: 'Stat',
         plural: 'Stats',
+      },
+      admin: {
+        components: {
+          RowLabel: '@/blocks/technical/StatsCounter/RowLabel#StatRowLabel',
+        },
       },
     },
   ],

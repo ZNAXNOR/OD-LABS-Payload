@@ -304,21 +304,24 @@ export class PayloadConflictResolver {
     }
 
     // Find potential conflicts
-    for (const [key, groupedUsages] of fieldNameGroups.entries()) {
+    for (const [, groupedUsages] of fieldNameGroups.entries()) {
       if (groupedUsages.length > 1) {
         // Check if removing dbName would cause conflicts
         const wouldConflict = groupedUsages.some(
-          (usage) => usage.dbNameValue && usage.dbNameValue !== usage.fieldName,
+          (usage: DbNameUsage) => usage.dbNameValue && usage.dbNameValue !== usage.fieldName,
         )
 
         if (wouldConflict) {
-          conflicts.push({
-            type: 'duplicate_field_name',
-            severity: 'warning',
-            description: `Field name '${groupedUsages[0].fieldName}' would conflict after dbName removal in collection '${groupedUsages[0].context.collectionSlug}'`,
-            affectedUsages: groupedUsages,
-            suggestedResolution: `Keep strategic dbName values to avoid field name conflicts`,
-          })
+          const firstUsage = groupedUsages[0]
+          if (firstUsage) {
+            conflicts.push({
+              type: 'duplicate_field_name',
+              severity: 'warning',
+              description: `Field name '${firstUsage.fieldName}' would conflict after dbName removal in collection '${firstUsage.context.collectionSlug}'`,
+              affectedUsages: groupedUsages,
+              suggestedResolution: `Keep strategic dbName values to avoid field name conflicts`,
+            })
+          }
         }
       }
     }
@@ -339,7 +342,7 @@ export class PayloadConflictResolver {
     if (significantPatterns.length > 1) {
       const affectedUsages = usages.filter(
         (usage) =>
-          usage.dbNameValue && this.getPatternType(usage.dbNameValue) !== patterns[0].pattern,
+          usage.dbNameValue && this.getPatternType(usage.dbNameValue) !== patterns[0]?.pattern,
       )
 
       if (affectedUsages.length > 0) {
@@ -348,7 +351,7 @@ export class PayloadConflictResolver {
           severity: 'warning',
           description: `Inconsistent naming patterns detected: ${significantPatterns.map((p) => p.pattern).join(', ')}`,
           affectedUsages,
-          suggestedResolution: `Standardize to ${patterns[0].pattern} pattern for consistency`,
+          suggestedResolution: `Standardize to ${patterns[0]?.pattern} pattern for consistency`,
         })
       }
     }
@@ -430,16 +433,19 @@ export class PayloadConflictResolver {
 
     // Keep the most strategic usage
     const keepUsage = sortedUsages[0]
-    actions.push({
-      usage: keepUsage,
-      action: 'keep',
-      reason: `Keeping strategic dbName for ${this.getStrategicReason(keepUsage)}`,
-      confidence: 0.9,
-    })
+    if (keepUsage) {
+      actions.push({
+        usage: keepUsage,
+        action: 'keep',
+        reason: `Keeping strategic dbName for ${this.getStrategicReason(keepUsage)}`,
+        confidence: 0.9,
+      })
+    }
 
     // Handle remaining usages
     for (let i = 1; i < sortedUsages.length; i++) {
       const usage = sortedUsages[i]
+      if (!usage) continue
 
       if (usage.dbNameValue === usage.fieldName) {
         // Remove redundant dbName
@@ -597,12 +603,12 @@ export class PayloadConflictResolver {
 
     // Return the most frequent pattern, with preference for camelCase in ties
     const dominant = patterns[0]
-    if (patterns.length > 1 && patterns[0].frequency === patterns[1].frequency) {
+    if (dominant && patterns.length > 1 && patterns[0]?.frequency === patterns[1]?.frequency) {
       const camelCasePattern = patterns.find((p) => p.pattern === 'camelCase')
       if (camelCasePattern) return 'camelCase'
     }
 
-    return dominant.pattern
+    return dominant?.pattern || 'camelCase'
   }
 
   /**

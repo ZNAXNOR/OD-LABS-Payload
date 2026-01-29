@@ -1,20 +1,6 @@
 import { link } from '@/fields/link'
+import { standardRichText } from '@/fields/richTextFeatures'
 import type { Block } from 'payload'
-import {
-  lexicalEditor,
-  FixedToolbarFeature,
-  InlineToolbarFeature,
-} from '@payloadcms/richtext-lexical'
-import {
-  structuralFeatures,
-  basicTextFeatures,
-  alignmentFeatures,
-  headingFeatures,
-  listFeatures,
-  enhancedLinkFeature,
-} from '@/fields/richTextFeatures'
-
-// Import rich text features
 
 export const ContentBlock: Block = {
   slug: 'content',
@@ -77,23 +63,12 @@ export const ContentBlock: Block = {
           admin: {
             description: 'Column content with enhanced formatting options',
           },
-          editor: lexicalEditor({
-            features: ({ rootFeatures }: { rootFeatures: any[] }) => [
-              FixedToolbarFeature(),
-              InlineToolbarFeature(),
-              ...rootFeatures,
-              ...structuralFeatures,
-              ...basicTextFeatures,
-              ...alignmentFeatures,
-              ...headingFeatures,
-              ...listFeatures,
-              ...enhancedLinkFeature,
-            ],
-          }),
+          editor: standardRichText,
         },
         {
           name: 'enableLink',
           type: 'checkbox',
+          defaultValue: false,
           label: 'Enable Link',
           admin: {
             description: 'Make this column clickable',
@@ -139,6 +114,9 @@ export const ContentBlock: Block = {
       ],
       admin: {
         description: 'Add columns to create flexible layouts',
+        components: {
+          RowLabel: '@/blocks/Content/Content/RowLabel#ColumnRowLabel',
+        },
       },
     },
     {

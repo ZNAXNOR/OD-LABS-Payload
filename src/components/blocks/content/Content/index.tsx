@@ -1,8 +1,8 @@
-import React from 'react'
+import RichText from '@/components/ui/RichText'
 import type { ContentBlock as ContentBlockType } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import Link from 'next/link'
-import RichText from '@/components/ui/RichText'
+import React from 'react'
 
 interface ContentBlockProps {
   block: ContentBlockType
@@ -11,6 +11,11 @@ interface ContentBlockProps {
 
 export const ContentBlock: React.FC<ContentBlockProps> = ({ block, className }) => {
   const { columns, gap = 'medium', alignment = 'top' } = block
+
+  // Early return if no columns
+  if (!columns || columns.length === 0) {
+    return null
+  }
 
   const gapClasses = {
     none: 'gap-0',
@@ -50,11 +55,11 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({ block, className }) 
 
   const getLinkHref = (linkData: any) => {
     if (!linkData) return '#'
-    if (linkData.type === 'custom') return linkData.url || '#'
+    if (linkData.type === 'custom' && linkData.url) return linkData.url
     if (linkData.type === 'reference' && linkData.reference) {
       const ref = linkData.reference
-      if (typeof ref === 'object' && ref.slug) {
-        return `/${ref.slug}`
+      if (typeof ref === 'object' && ref.value && typeof ref.value === 'object' && ref.value.slug) {
+        return `/${ref.value.slug}`
       }
     }
     return '#'
@@ -70,20 +75,28 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({ block, className }) 
             alignmentClasses[alignment as keyof typeof alignmentClasses],
           )}
         >
-          {columns?.map((column, index) => {
+          {columns.map((column, index) => {
+            // Safe access to column properties with fallbacks
+            const columnWidth = column?.width || 'full'
+            const columnBackgroundColor = column?.backgroundColor || 'none'
+            const columnPadding = column?.padding || 'none'
+
             const hasLink =
-              column.enableLink && column.link && (column.link.url || column.link.reference)
+              column?.enableLink && column?.link && (column.link.url || column.link.reference)
+
             const columnClasses = cn(
               'w-full',
-              widthClasses[column.width as keyof typeof widthClasses],
-              backgroundClasses[column.backgroundColor as keyof typeof backgroundClasses],
-              paddingClasses[column.padding as keyof typeof paddingClasses],
-              column.backgroundColor !== 'none' && 'rounded-lg',
+              widthClasses[columnWidth as keyof typeof widthClasses],
+              backgroundClasses[columnBackgroundColor as keyof typeof backgroundClasses],
+              paddingClasses[columnPadding as keyof typeof paddingClasses],
+              columnBackgroundColor !== 'none' && 'rounded-lg',
             )
 
             const columnContent = (
               <div className="prose prose-zinc dark:prose-invert max-w-none">
-                <RichText data={column.content as any} enableGutter={false} enableProse={false} />
+                {column?.content && (
+                  <RichText data={column.content as any} enableGutter={false} enableProse={false} />
+                )}
               </div>
             )
 

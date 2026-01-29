@@ -116,7 +116,8 @@ export class DatabaseSchemaAnalyzer {
     `
 
     const result = await this.payload.db.drizzle.execute(query)
-    return this.groupTableResults(result)
+    const rows = Array.isArray(result) ? result : result.rows || []
+    return this.groupTableResults(rows)
   }
 
   /**

@@ -1,9 +1,3 @@
-import {
-  BlocksFeature,
-  FixedToolbarFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 // Import shared hooks (factory functions)
@@ -22,20 +16,7 @@ import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { generateBlogPagesPreviewUrl } from '@/utilities/livePreview'
 
 // Import rich text features
-import {
-  alignmentFeatures,
-  basicTextFeatures,
-  enhancedLinkFeature,
-  headingFeatures,
-  listFeatures,
-  structuralFeatures,
-} from '@/fields/richTextFeatures'
-
-// Import block configuration
-import { getBlocksForCollection } from '@/blocks/config/blockAssignments'
-
-// Get blog-specific blocks
-const blogBlocks = getBlocksForCollection('blogs')
+import { comprehensiveRichText } from '@/fields/richTextFeatures'
 
 export const BlogPages: CollectionConfig = {
   slug: 'blogs',
@@ -158,22 +139,7 @@ export const BlogPages: CollectionConfig = {
               admin: {
                 description: 'Blog content with embedded blocks for enhanced formatting',
               },
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => [
-                  FixedToolbarFeature(),
-                  InlineToolbarFeature(),
-                  ...rootFeatures,
-                  ...structuralFeatures,
-                  ...basicTextFeatures,
-                  ...alignmentFeatures,
-                  ...headingFeatures,
-                  ...listFeatures,
-                  ...enhancedLinkFeature,
-                  BlocksFeature({
-                    blocks: blogBlocks.layout,
-                  }),
-                ],
-              }),
+              editor: comprehensiveRichText,
               validate: (value: unknown) => {
                 if (!value) {
                   return 'Content is required for blog posts'

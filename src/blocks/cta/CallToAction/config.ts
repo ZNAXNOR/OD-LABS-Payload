@@ -1,20 +1,7 @@
 import type { Block } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
 import { linkGroup } from '@/fields/linkGroup'
-import {
-  alignmentFeatures,
-  basicTextFeatures,
-  enhancedLinkFeature,
-  listFeatures,
-  structuralFeatures,
-} from '@/fields/richTextFeatures'
+import { contentOnlyRichText } from '@/fields/richTextFeatures'
 
 export const CallToActionBlock: Block = {
   slug: 'cta',
@@ -51,13 +38,24 @@ export const CallToActionBlock: Block = {
         },
       ],
       admin: {
-        description: 'Choose the layout style for the call-to-action',
+        description:
+          'Layout style: Centered (content in center), Split (content and media side-by-side), Banner (full-width with background), Card (contained with border)',
       },
     },
     {
       name: 'heading',
       type: 'text',
       required: true,
+      maxLength: 120,
+      validate: (value: unknown) => {
+        if (!value || typeof value !== 'string' || value.trim().length === 0) {
+          return 'Heading is required and cannot be empty'
+        }
+        if (value.trim().length < 3) {
+          return 'Heading must be at least 3 characters long'
+        }
+        return true
+      },
       admin: {
         description: 'Main heading for the CTA',
       },
@@ -65,6 +63,7 @@ export const CallToActionBlock: Block = {
     {
       name: 'description',
       type: 'textarea',
+      maxLength: 300,
       admin: {
         description: 'Optional description text',
       },
@@ -72,19 +71,7 @@ export const CallToActionBlock: Block = {
     {
       name: 'richText',
       type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }: { rootFeatures: any[] }) => [
-          FixedToolbarFeature(),
-          InlineToolbarFeature(),
-          ...rootFeatures,
-          ...structuralFeatures,
-          ...basicTextFeatures,
-          ...alignmentFeatures,
-          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-          ...listFeatures,
-          ...enhancedLinkFeature,
-        ],
-      }),
+      editor: contentOnlyRichText,
       label: 'Rich Text Content',
       admin: {
         description: 'Optional rich text content for more complex CTAs',
@@ -130,7 +117,8 @@ export const CallToActionBlock: Block = {
         },
       ],
       admin: {
-        description: 'Background color scheme',
+        description:
+          'Background color scheme: Default (neutral), Primary (brand color), Dark (dark theme), Light (light theme)',
       },
     },
     {
@@ -156,7 +144,8 @@ export const CallToActionBlock: Block = {
         },
       ],
       admin: {
-        description: 'Optional background pattern',
+        description:
+          'Background pattern overlay: None (solid background), Dots (dotted pattern), Grid (grid lines), Waves (wave pattern)',
       },
     },
   ],

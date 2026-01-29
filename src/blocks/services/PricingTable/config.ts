@@ -1,5 +1,5 @@
-import type { Block } from 'payload'
 import { link } from '@/fields/link'
+import type { Block } from 'payload'
 
 export const PricingTableBlock: Block = {
   slug: 'pricingTable',
@@ -16,6 +16,7 @@ export const PricingTableBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      maxLength: 120,
       admin: {
         description: 'Optional heading for the pricing section',
         placeholder: 'Pricing Plans',
@@ -24,6 +25,7 @@ export const PricingTableBlock: Block = {
     {
       name: 'description',
       type: 'textarea',
+      maxLength: 300,
       admin: {
         description: 'Optional description text',
         placeholder: 'Choose the plan that fits your needs',
@@ -32,13 +34,22 @@ export const PricingTableBlock: Block = {
     {
       name: 'billingPeriod',
       type: 'select',
+      defaultValue: 'monthly',
       dbName: 'billing_period', // Snake case conversion
       options: [
-        { label: 'Monthly', value: 'monthly' },
-        { label: 'Yearly', value: 'yearly' },
-        { label: 'Both', value: 'both' },
+        {
+          label: 'Monthly',
+          value: 'monthly',
+        },
+        {
+          label: 'Yearly',
+          value: 'yearly',
+        },
+        {
+          label: 'Both',
+          value: 'both',
+        },
       ],
-      defaultValue: 'monthly',
       required: true,
       admin: {
         description: 'Billing period options to display',
@@ -59,6 +70,13 @@ export const PricingTableBlock: Block = {
           name: 'name',
           type: 'text',
           required: true,
+          maxLength: 50,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Pricing tier name is required'
+            }
+            return true
+          },
           admin: {
             description: 'Tier name',
             placeholder: 'Professional',
@@ -67,6 +85,7 @@ export const PricingTableBlock: Block = {
         {
           name: 'description',
           type: 'textarea',
+          maxLength: 150,
           admin: {
             description: 'Optional tier description',
             placeholder: 'Perfect for growing businesses',
@@ -76,6 +95,15 @@ export const PricingTableBlock: Block = {
           name: 'price',
           type: 'number',
           required: true,
+          validate: (value: any) => {
+            if (value === null || value === undefined) {
+              return 'Price is required'
+            }
+            if (value < 0) {
+              return 'Price cannot be negative'
+            }
+            return true
+          },
           admin: {
             description: 'Price amount',
             placeholder: '99',
@@ -86,6 +114,17 @@ export const PricingTableBlock: Block = {
           type: 'text',
           defaultValue: 'USD',
           required: true,
+          maxLength: 10,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Currency is required'
+            }
+            // Basic validation for currency codes (3 letters)
+            if (!/^[A-Z]{3}$/.test(value.trim().toUpperCase())) {
+              return 'Currency should be a 3-letter code (e.g., USD, EUR, GBP)'
+            }
+            return true
+          },
           admin: {
             description: 'Currency code',
             placeholder: 'USD',
@@ -94,13 +133,25 @@ export const PricingTableBlock: Block = {
         {
           name: 'period',
           type: 'select',
-          options: [
-            { label: 'Per Month', value: 'month' },
-            { label: 'Per Year', value: 'year' },
-            { label: 'Per Project', value: 'project' },
-            { label: 'Per Hour', value: 'hour' },
-          ],
           defaultValue: 'month',
+          options: [
+            {
+              label: 'Per Month',
+              value: 'month',
+            },
+            {
+              label: 'Per Year',
+              value: 'year',
+            },
+            {
+              label: 'Per Project',
+              value: 'project',
+            },
+            {
+              label: 'Per Hour',
+              value: 'hour',
+            },
+          ],
           required: true,
           admin: {
             description: 'Billing period',
@@ -121,6 +172,13 @@ export const PricingTableBlock: Block = {
               name: 'text',
               type: 'text',
               required: true,
+              maxLength: 100,
+              validate: (value: any) => {
+                if (!value || value.trim().length === 0) {
+                  return 'Feature text is required'
+                }
+                return true
+              },
               admin: {
                 placeholder: 'Unlimited projects',
               },
@@ -136,6 +194,7 @@ export const PricingTableBlock: Block = {
             {
               name: 'tooltip',
               type: 'text',
+              maxLength: 200,
               admin: {
                 description: 'Optional tooltip text for more info',
                 placeholder: 'Additional details about this feature',
@@ -144,6 +203,9 @@ export const PricingTableBlock: Block = {
           ],
           admin: {
             description: 'List of features for this tier',
+            components: {
+              RowLabel: '@/blocks/services/PricingTable/RowLabel#FeatureRowLabel',
+            },
           },
         },
         {
@@ -157,6 +219,7 @@ export const PricingTableBlock: Block = {
         {
           name: 'badge',
           type: 'text',
+          maxLength: 30,
           admin: {
             description: 'Optional badge text',
             placeholder: 'Most Popular',
@@ -168,6 +231,13 @@ export const PricingTableBlock: Block = {
           type: 'text',
           required: true,
           defaultValue: 'Get Started',
+          maxLength: 30,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Call-to-action text is required'
+            }
+            return true
+          },
           admin: {
             description: 'Call-to-action button text',
             placeholder: 'Get Started',
@@ -184,6 +254,9 @@ export const PricingTableBlock: Block = {
       ],
       admin: {
         description: 'Add pricing tiers (max 4 recommended)',
+        components: {
+          RowLabel: '@/blocks/services/PricingTable/RowLabel#TierRowLabel',
+        },
       },
     },
     {

@@ -201,8 +201,8 @@ export const enhancedLinkFeature = [
   }),
 ]
 
-// Comprehensive rich text editor with all features including blocks
-export const comprehensiveRichText = lexicalEditor({
+// Legacy comprehensive rich text editor (deprecated - use comprehensiveRichText below)
+export const legacyComprehensiveRichText = lexicalEditor({
   features: [
     // Basic structure
     ...structuralFeatures,
@@ -233,63 +233,138 @@ export const comprehensiveRichText = lexicalEditor({
   ],
 })
 
-// Preset configurations for different use cases
-export const basicRichText = lexicalEditor({
-  features: [ParagraphFeature(), ...basicTextFeatures, ...enhancedLinkFeature],
+// =============================================================================
+// CONTROLLED FEATURE SETS FOR DIFFERENT CONTEXTS
+// =============================================================================
+
+/**
+ * Minimal feature set for simple text fields like headings, descriptions, labels
+ * Use for: Block headings, descriptions, labels, simple text content
+ */
+export const minimalFeatures = [
+  ParagraphFeature(),
+  ...basicTextFeatures, // Bold, italic, underline, strikethrough, super/subscript
+  ...enhancedLinkFeature,
+]
+
+/**
+ * Standard feature set for general content editing
+ * Use for: Most rich text content, blog posts, page content, general text areas
+ */
+export const standardFeatures = [
+  ...structuralFeatures, // Paragraph, blockquote, horizontal rule
+  ...basicTextFeatures, // Bold, italic, underline, strikethrough, super/subscript
+  ...alignmentFeatures, // Align, indent
+  ...headingFeatures, // H1-H6
+  ...listFeatures, // Ordered, unordered, checklist
+  ...enhancedLinkFeature,
+]
+
+/**
+ * Comprehensive feature set for advanced content editing
+ * Use for: Complex content, documentation, articles requiring full formatting
+ */
+export const comprehensiveFeatures = [
+  ...structuralFeatures, // Paragraph, blockquote, horizontal rule
+  ...basicTextFeatures, // Bold, italic, underline, strikethrough, super/subscript
+  ...alignmentFeatures, // Align, indent
+  ...headingFeatures, // H1-H6
+  ...listFeatures, // Ordered, unordered, checklist
+  ...codeFeatures, // Code blocks (when available)
+  ...tableFeatures, // Tables (when available)
+  ...enhancedLinkFeature,
+]
+
+/**
+ * Heading-specific feature set (restricted formatting)
+ * Use for: Block headings, titles, labels where only basic formatting is needed
+ */
+export const headingOnlyFeatures = [
+  ParagraphFeature(),
+  BoldFeature(),
+  ItalicFeature(),
+  ...enhancedLinkFeature,
+]
+
+/**
+ * Content-focused feature set (no headings to avoid hierarchy conflicts)
+ * Use for: Content within blocks that already have their own heading structure
+ */
+export const contentOnlyFeatures = [
+  ...structuralFeatures, // Paragraph, blockquote, horizontal rule
+  ...basicTextFeatures, // Bold, italic, underline, strikethrough, super/subscript
+  ...alignmentFeatures, // Align, indent
+  ...listFeatures, // Ordered, unordered, checklist
+  ...enhancedLinkFeature,
+]
+
+// =============================================================================
+// CONTEXT-SPECIFIC CONFIGURATIONS
+// =============================================================================
+
+/**
+ * Minimal rich text editor for simple text fields
+ * Use for: Block headings, descriptions, labels
+ */
+export const minimalRichText = lexicalEditor({
+  features: minimalFeatures,
 })
 
+/**
+ * Standard rich text editor for general content
+ * Use for: Most rich text content, blog posts, page content
+ */
 export const standardRichText = lexicalEditor({
-  features: [
-    ...structuralFeatures,
-    ...basicTextFeatures,
-    ...alignmentFeatures,
-    ...headingFeatures,
-    ...listFeatures,
-    ...enhancedLinkFeature,
-  ],
+  features: standardFeatures,
 })
 
-export const advancedRichText = lexicalEditor({
-  features: [
-    ...structuralFeatures,
-    ...basicTextFeatures,
-    ...alignmentFeatures,
-    ...headingFeatures,
-    ...listFeatures,
-    ...codeFeatures,
-    ...tableFeatures,
-    ...enhancedLinkFeature,
-
-    // Note: Block embedding removed to avoid circular dependencies
-    // Use blockEmbedding.ts directly for block embedding functionality
-  ],
+/**
+ * Comprehensive rich text editor for advanced content
+ * Use for: Complex content, documentation, articles
+ */
+export const comprehensiveRichText = lexicalEditor({
+  features: comprehensiveFeatures,
 })
 
-// Rich text editor with basic block embedding (content-focused blocks only)
-// Note: Simplified to avoid circular dependencies
-export const richTextWithBasicBlocks = lexicalEditor({
-  features: [
-    ...structuralFeatures,
-    ...basicTextFeatures,
-    ...alignmentFeatures,
-    ...headingFeatures,
-    ...listFeatures,
-    ...enhancedLinkFeature,
-  ],
+/**
+ * Heading-only rich text editor (restricted formatting)
+ * Use for: Block headings, titles, labels
+ */
+export const headingOnlyRichText = lexicalEditor({
+  features: headingOnlyFeatures,
 })
 
-// Rich text editor with content and technical blocks
-// Note: Simplified to avoid circular dependencies
-export const richTextWithContentBlocks = lexicalEditor({
-  features: [
-    ...structuralFeatures,
-    ...basicTextFeatures,
-    ...alignmentFeatures,
-    ...headingFeatures,
-    ...listFeatures,
-    ...enhancedLinkFeature,
-  ],
+/**
+ * Content-only rich text editor (no headings)
+ * Use for: Content within blocks that have their own heading structure
+ */
+export const contentOnlyRichText = lexicalEditor({
+  features: contentOnlyFeatures,
 })
+
+// =============================================================================
+// LEGACY CONFIGURATIONS (DEPRECATED - Use context-specific configs above)
+// =============================================================================
+
+/**
+ * @deprecated Use minimalRichText instead
+ */
+export const basicRichText = minimalRichText
+
+/**
+ * @deprecated Use comprehensiveRichText instead
+ */
+export const advancedRichText = comprehensiveRichText
+
+/**
+ * @deprecated Use standardRichText instead
+ */
+export const richTextWithBasicBlocks = standardRichText
+
+/**
+ * @deprecated Use standardRichText instead
+ */
+export const richTextWithContentBlocks = standardRichText
 
 // Export individual feature groups for custom configurations
 // (Already exported above as individual const declarations)

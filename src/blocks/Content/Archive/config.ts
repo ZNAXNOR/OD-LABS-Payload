@@ -1,19 +1,5 @@
+import { minimalRichText } from '@/fields/richTextFeatures'
 import type { Block } from 'payload'
-import {
-  lexicalEditor,
-  FixedToolbarFeature,
-  InlineToolbarFeature,
-} from '@payloadcms/richtext-lexical'
-import {
-  structuralFeatures,
-  basicTextFeatures,
-  alignmentFeatures,
-  headingFeatures,
-  listFeatures,
-  enhancedLinkFeature,
-} from '@/fields/richTextFeatures'
-
-// Import rich text features
 
 export const ArchiveBlock: Block = {
   slug: 'archive',
@@ -33,19 +19,7 @@ export const ArchiveBlock: Block = {
       admin: {
         description: 'Optional introduction content for the archive',
       },
-      editor: lexicalEditor({
-        features: ({ rootFeatures }: { rootFeatures: any[] }) => [
-          FixedToolbarFeature(),
-          InlineToolbarFeature(),
-          ...rootFeatures,
-          ...structuralFeatures,
-          ...basicTextFeatures,
-          ...alignmentFeatures,
-          ...headingFeatures,
-          ...listFeatures,
-          ...enhancedLinkFeature,
-        ],
-      }),
+      editor: minimalRichText,
     },
     {
       name: 'populateBy',

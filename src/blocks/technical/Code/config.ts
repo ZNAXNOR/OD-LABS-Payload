@@ -18,7 +18,8 @@ export const Code: Block = {
       defaultValue: 'typescript',
       required: true,
       admin: {
-        description: 'Select the programming language for syntax highlighting',
+        description:
+          'Programming language for syntax highlighting. Choose the language that matches your code snippet for proper highlighting and formatting.',
       },
       options: [
         { label: 'TypeScript', value: 'typescript' },
@@ -53,6 +54,15 @@ export const Code: Block = {
       type: 'code',
       label: false,
       required: true,
+      validate: (value) => {
+        if (!value || value.trim().length === 0) {
+          return 'Code snippet is required'
+        }
+        if (value.trim().length < 3) {
+          return 'Code snippet must be at least 3 characters long'
+        }
+        return true
+      },
       admin: {
         description: 'Enter your code snippet',
       },
@@ -60,6 +70,7 @@ export const Code: Block = {
     {
       name: 'filename',
       type: 'text',
+      maxLength: 100,
       admin: {
         description: 'Optional filename to display above the code block',
         placeholder: 'e.g., index.ts',
@@ -76,6 +87,7 @@ export const Code: Block = {
     {
       name: 'highlightLines',
       type: 'text',
+      maxLength: 100,
       admin: {
         description: 'Comma-separated line numbers to highlight (e.g., 1,3-5,7)',
         placeholder: '1,3-5,7',
@@ -91,7 +103,8 @@ export const Code: Block = {
         { label: 'Light', value: 'light' },
       ],
       admin: {
-        description: 'Color theme for the code block',
+        description:
+          'Color theme: Auto (matches user system preference), Dark (dark background), Light (light background)',
       },
     },
     {
@@ -105,6 +118,7 @@ export const Code: Block = {
     {
       name: 'caption',
       type: 'text',
+      maxLength: 200,
       admin: {
         description: 'Optional caption to display below the code block',
         placeholder: 'e.g., Example implementation',

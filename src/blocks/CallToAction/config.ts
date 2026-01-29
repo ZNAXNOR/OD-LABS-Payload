@@ -1,19 +1,6 @@
 import type { Block } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
-import {
-  alignmentFeatures,
-  basicTextFeatures,
-  enhancedLinkFeature,
-  listFeatures,
-  structuralFeatures,
-} from '@/fields/richTextFeatures'
+import { contentOnlyRichText } from '@/fields/richTextFeatures'
 
 import { linkGroup } from '../../fields/linkGroup'
 
@@ -72,19 +59,7 @@ export const CallToActionBlock: Block = {
     {
       name: 'richText',
       type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }: { rootFeatures: any[] }) => [
-          FixedToolbarFeature(),
-          InlineToolbarFeature(),
-          ...rootFeatures,
-          ...structuralFeatures,
-          ...basicTextFeatures,
-          ...alignmentFeatures,
-          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-          ...listFeatures,
-          ...enhancedLinkFeature,
-        ],
-      }),
+      editor: contentOnlyRichText,
       label: 'Rich Text Content',
       admin: {
         description: 'Optional rich text content for more complex CTAs',

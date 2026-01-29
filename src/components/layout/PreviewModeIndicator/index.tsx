@@ -5,6 +5,7 @@ import { useLivePreview } from '@/providers/LivePreview'
 import { cn } from '@/utilities/ui'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
+import { DeveloperPanel } from './DeveloperPanel'
 import { ErrorDisplay } from './ErrorDisplay'
 import { PerformanceMetrics } from './PerformanceMetrics'
 
@@ -76,13 +77,6 @@ export function PreviewModeIndicator({
       second: '2-digit',
       hour12: false,
     }).format(date)
-  }, [])
-
-  // Format duration
-  const formatDuration = useCallback((ms: number) => {
-    if (ms < 1000) return `${ms.toFixed(0)}ms`
-    if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`
-    return `${(ms / 60000).toFixed(1)}m`
   }, [])
 
   // Get position classes

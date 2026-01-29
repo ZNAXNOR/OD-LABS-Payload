@@ -10,12 +10,6 @@ import { getPayload } from 'payload'
  * Requirements: 5.4, 7.5
  */
 
-interface ExitPreviewResponse {
-  success: boolean
-  redirectUrl?: string
-  error?: string
-}
-
 export async function POST(request: Request): Promise<Response> {
   try {
     const payload = await getPayload({ config: configPromise })
@@ -51,8 +45,7 @@ export async function POST(request: Request): Promise<Response> {
 
     return response
   } catch (error) {
-    const payload = await getPayload({ config: configPromise })
-    payload.logger.error('Preview exit failed:', error)
+    console.error('Preview exit failed:', String(error))
 
     return Response.json({ success: false, error: 'Internal server error' }, { status: 500 })
   }
@@ -90,8 +83,7 @@ export async function GET(request: Request): Promise<Response> {
 
     return response
   } catch (error) {
-    const payload = await getPayload({ config: configPromise })
-    payload.logger.error('Preview exit GET request failed:', error)
+    console.error('Preview exit GET request failed:', String(error))
 
     // Fallback redirect to home
     return new Response(null, {

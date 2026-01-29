@@ -1,5 +1,6 @@
 import { LivePreviewProvider } from '@/providers/LivePreview'
 import { render, screen } from '@testing-library/react'
+import React from 'react'
 import { AdminBar } from '../index'
 
 // Mock next/navigation

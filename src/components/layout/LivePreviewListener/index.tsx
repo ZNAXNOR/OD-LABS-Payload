@@ -56,7 +56,7 @@ export function LivePreviewListener({
   })
 
   // Refs for debouncing and retry logic
-  const debounceTimeoutRef = useRef<NodeJS.Timeout>()
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const retryCountRef = useRef(0)
   const updateTimesRef = useRef<number[]>([])
   const eventHandlerRef = useRef<LivePreviewEventHandler | null>(null)
@@ -169,7 +169,7 @@ export function LivePreviewListener({
 
   // Debounced refresh function
   const debouncedRefresh = useCallback(
-    (data?: any) => {
+    (_data?: any) => {
       // Clear existing timeout
       if (debounceTimeoutRef.current) {
         clearTimeout(debounceTimeoutRef.current)

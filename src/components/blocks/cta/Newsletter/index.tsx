@@ -1,30 +1,24 @@
 'use client'
 
+import type { NewsletterBlock as NewsletterBlockType } from '@/payload-types'
 import React, { useState } from 'react'
 
 interface NewsletterBlockProps {
-  blockType: 'newsletter'
-  heading: string
-  description?: string | null
-  placeholder?: string | null
-  buttonText: string
-  style?: 'inline' | 'card' | 'minimal' | null
-  showPrivacyNote?: boolean | null
-  privacyText?: string | null
-  successMessage: string
-  provider?: 'custom' | 'mailchimp' | 'convertkit' | null
+  block: NewsletterBlockType
+  className?: string
 }
 
-export const NewsletterBlock: React.FC<NewsletterBlockProps> = ({
-  heading,
-  description,
-  placeholder = 'Enter your email',
-  buttonText = 'Subscribe',
-  style = 'inline',
-  showPrivacyNote = true,
-  privacyText = 'We respect your privacy. Unsubscribe at any time.',
-  successMessage = 'Thanks for subscribing!',
-}) => {
+export const NewsletterBlock: React.FC<NewsletterBlockProps> = ({ block }) => {
+  const {
+    heading,
+    description,
+    placeholder = 'Enter your email',
+    buttonText = 'Subscribe',
+    style = 'inline',
+    showPrivacyNote = true,
+    privacyText = 'We respect your privacy. Unsubscribe at any time.',
+    successMessage = 'Thanks for subscribing!',
+  } = block
   const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)

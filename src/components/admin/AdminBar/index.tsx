@@ -1,10 +1,13 @@
 'use client'
 
-import type { PayloadAdminBarProps, PayloadMeUser } from '@payloadcms/admin-bar'
+import type { PayloadAdminBarProps } from '@payloadcms/admin-bar'
 
 // Extended user interface to include token
-interface ExtendedPayloadMeUser extends PayloadMeUser {
+interface ExtendedPayloadMeUser {
+  id: string
+  email?: string
   token?: string
+  [key: string]: any
 }
 
 import { useLivePreview } from '@/providers/LivePreview'
@@ -195,9 +198,10 @@ export function AdminBar(props: { adminBarProps?: PayloadAdminBarProps }) {
       window.addEventListener('keydown', handleKeyDown)
       return () => window.removeEventListener('keydown', handleKeyDown)
     }
+    return undefined
   }, [])
 
-  const onAuthChange = useCallback((user: PayloadMeUser) => {
+  const onAuthChange = useCallback((user: any) => {
     setShow(Boolean(user?.id))
     setCurrentUser(user as ExtendedPayloadMeUser)
   }, [])

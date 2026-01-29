@@ -10,7 +10,59 @@ export * from './dbname-cleanup'
 export * from './formatting'
 export * from './media'
 export * from './ui'
-export * from './validation'
+// Export validation utilities explicitly to avoid ValidationError conflict
+export * from './validateEnv'
+export * from './validation/buildTimeValidator'
+export * from './validation/databaseNameGeneration'
+export * from './validation/identifierAnalysis'
+export {
+  generateFixSuggestions,
+  validateIdentifiers,
+  validateIdentifiersCLI,
+} from './validation/identifierValidationPipeline'
+export type {
+  FixSuggestion,
+  ValidationResult as IdentifierValidationResult,
+  ValidationPipelineConfig,
+} from './validation/identifierValidationPipeline'
+export * from './validation/separationConfig'
+export * from './validation/separationOfConcerns'
+export * from './validation/validateProject'
+// Export error handling utilities with specific exports to avoid ValidationError conflict
+export {
+  AuthenticationError,
+  AuthorizationError,
+  ConflictError,
+  createErrorBoundary,
+  handleAsyncError,
+  handleDatabaseError,
+  NotFoundError,
+  PayloadError,
+  RateLimitError,
+  safeJsonParse,
+  safeJsonStringify,
+  setupGlobalErrorHandling,
+  validateEmail as validateEmailUtil,
+  validateRequiredFields,
+  validateUrl,
+  withErrorHandling,
+  withRetry,
+} from './errorHandling'
+// Export field validation utilities
+export {
+  createArrayLengthValidator,
+  createConditionalValidator,
+  createDateRangeValidator,
+  createLengthValidator,
+  fieldValidators,
+  validateEmail,
+  validateHexColor,
+  validatePasswordStrength,
+  validatePhone,
+  validatePositiveNumber,
+  validateSlugFormat,
+  validateURL,
+} from '../fields/validation'
 
 // ============================================================================
 // LAZY-LOADED UTILITY CATEGORIES FOR CODE SPLITTING

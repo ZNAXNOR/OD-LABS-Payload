@@ -15,6 +15,7 @@ export const BeforeAfterBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      maxLength: 120,
       admin: {
         description: 'Optional heading for the comparison section',
         placeholder: 'See the Transformation',
@@ -23,6 +24,7 @@ export const BeforeAfterBlock: Block = {
     {
       name: 'description',
       type: 'textarea',
+      maxLength: 300,
       admin: {
         description: 'Optional description text',
         placeholder: 'Compare the before and after results',
@@ -50,6 +52,7 @@ export const BeforeAfterBlock: Block = {
       name: 'beforeLabel',
       type: 'text',
       defaultValue: 'Before',
+      maxLength: 30,
       admin: {
         description: 'Label for the before image',
         placeholder: 'Before',
@@ -59,6 +62,7 @@ export const BeforeAfterBlock: Block = {
       name: 'afterLabel',
       type: 'text',
       defaultValue: 'After',
+      maxLength: 30,
       admin: {
         description: 'Label for the after image',
         placeholder: 'After',
@@ -67,11 +71,17 @@ export const BeforeAfterBlock: Block = {
     {
       name: 'orientation',
       type: 'select',
-      options: [
-        { label: 'Horizontal', value: 'horizontal' },
-        { label: 'Vertical', value: 'vertical' },
-      ],
       defaultValue: 'horizontal',
+      options: [
+        {
+          label: 'Horizontal',
+          value: 'horizontal',
+        },
+        {
+          label: 'Vertical',
+          value: 'vertical',
+        },
+      ],
       required: true,
       admin: {
         description: 'Slider orientation',

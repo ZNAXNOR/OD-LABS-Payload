@@ -216,7 +216,7 @@ export class PayloadFileModifier implements FileModifier {
       'gm',
     )
 
-    return content.replace(pattern, (match, prefix, openQuote, oldValue, closeQuote, suffix) => {
+    return content.replace(pattern, (_match, prefix, openQuote, _oldValue, _closeQuote, suffix) => {
       // Preserve the original quote style
       const quote = openQuote || "'"
       return `${prefix}${quote}${newValue}${quote}${suffix}`
@@ -253,7 +253,7 @@ export class PayloadFileModifier implements FileModifier {
       const dbNamePattern = /(^\s*dbName\s*:\s*)(['"\`]?)([^'"\`,\n}]+)(['"\`]?)(,?\s*$)/gm
       return content.replace(
         dbNamePattern,
-        (match, prefix, openQuote, oldValue, closeQuote, suffix) => {
+        (prefix, openQuote, suffix) => {
           const quote = openQuote || "'"
           return `${prefix}${quote}${newValue}${quote}${suffix}`
         },

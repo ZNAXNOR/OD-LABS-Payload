@@ -1,9 +1,3 @@
-import {
-  BlocksFeature,
-  FixedToolbarFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 // Import utilities
@@ -26,20 +20,7 @@ import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { generateServicesPagesPreviewUrl } from '@/utilities/livePreview'
 
 // Import rich text features
-import {
-  alignmentFeatures,
-  basicTextFeatures,
-  enhancedLinkFeature,
-  headingFeatures,
-  listFeatures,
-  structuralFeatures,
-} from '@/fields/richTextFeatures'
-
-// Import block configuration
-import { getBlocksForCollection } from '@/blocks/config/blockAssignments'
-
-// Get service-specific blocks
-const serviceBlocks = getBlocksForCollection('services')
+import { standardRichText } from '@/fields/richTextFeatures'
 
 export const ServicesPages: CollectionConfig = {
   slug: 'services',
@@ -126,22 +107,7 @@ export const ServicesPages: CollectionConfig = {
               admin: {
                 description: 'Service content with embedded blocks for enhanced formatting',
               },
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => [
-                  FixedToolbarFeature(),
-                  InlineToolbarFeature(),
-                  ...rootFeatures,
-                  ...structuralFeatures,
-                  ...basicTextFeatures,
-                  ...alignmentFeatures,
-                  ...headingFeatures,
-                  ...listFeatures,
-                  ...enhancedLinkFeature,
-                  BlocksFeature({
-                    blocks: serviceBlocks.layout,
-                  }),
-                ],
-              }),
+              editor: standardRichText,
               validate: (value: unknown) => {
                 if (!value) {
                   return 'Content is required'

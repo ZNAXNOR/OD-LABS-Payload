@@ -16,6 +16,7 @@ export const ServicesGridBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      maxLength: 120,
       admin: {
         description: 'Optional heading for the services section',
         placeholder: 'Our Services',
@@ -24,6 +25,7 @@ export const ServicesGridBlock: Block = {
     {
       name: 'description',
       type: 'textarea',
+      maxLength: 300,
       admin: {
         description: 'Optional description text',
         placeholder: 'Discover what we can do for you',
@@ -32,12 +34,21 @@ export const ServicesGridBlock: Block = {
     {
       name: 'columns',
       type: 'select',
-      options: [
-        { label: '2 Columns', value: '2' },
-        { label: '3 Columns', value: '3' },
-        { label: '4 Columns', value: '4' },
-      ],
       defaultValue: '3',
+      options: [
+        {
+          label: '2 Columns',
+          value: '2',
+        },
+        {
+          label: '3 Columns',
+          value: '3',
+        },
+        {
+          label: '4 Columns',
+          value: '4',
+        },
+      ],
       required: true,
       admin: {
         description: 'Number of columns in the grid',
@@ -57,6 +68,7 @@ export const ServicesGridBlock: Block = {
         {
           name: 'icon',
           type: 'text',
+          maxLength: 50,
           admin: {
             description: 'Lucide icon name (e.g., Code, Palette, Rocket)',
             placeholder: 'Code',
@@ -66,6 +78,13 @@ export const ServicesGridBlock: Block = {
           name: 'title',
           type: 'text',
           required: true,
+          maxLength: 80,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Service title is required'
+            }
+            return true
+          },
           admin: {
             description: 'Service title',
             placeholder: 'Web Development',
@@ -75,6 +94,13 @@ export const ServicesGridBlock: Block = {
           name: 'description',
           type: 'textarea',
           required: true,
+          maxLength: 200,
+          validate: (value) => {
+            if (!value || value.trim().length === 0) {
+              return 'Service description is required'
+            }
+            return true
+          },
           admin: {
             description: 'Service description',
             placeholder: 'Build modern, responsive websites',
@@ -84,6 +110,7 @@ export const ServicesGridBlock: Block = {
           name: 'features',
           type: 'array',
           dbName: 'features', // Keep semantic meaning - prevents redundant 'service' prefix
+          minRows: 1,
           maxRows: 8,
           labels: {
             singular: 'Feature',
@@ -94,6 +121,13 @@ export const ServicesGridBlock: Block = {
               name: 'feature',
               type: 'text',
               required: true,
+              maxLength: 100,
+              validate: (value: any) => {
+                if (!value || value.trim().length === 0) {
+                  return 'Feature description is required'
+                }
+                return true
+              },
               admin: {
                 placeholder: 'Responsive design',
               },
@@ -101,6 +135,9 @@ export const ServicesGridBlock: Block = {
           ],
           admin: {
             description: 'List of key features for this service',
+            components: {
+              RowLabel: '@/blocks/services/ServicesGrid/RowLabel#FeatureRowLabel',
+            },
           },
         },
         {
@@ -122,17 +159,29 @@ export const ServicesGridBlock: Block = {
       ],
       admin: {
         description: 'Add service cards to display',
+        components: {
+          RowLabel: '@/blocks/services/ServicesGrid/RowLabel#ServiceRowLabel',
+        },
       },
     },
     {
       name: 'style',
       type: 'select',
-      options: [
-        { label: 'Cards', value: 'cards' },
-        { label: 'Minimal', value: 'minimal' },
-        { label: 'Bordered', value: 'bordered' },
-      ],
       defaultValue: 'cards',
+      options: [
+        {
+          label: 'Cards',
+          value: 'cards',
+        },
+        {
+          label: 'Minimal',
+          value: 'minimal',
+        },
+        {
+          label: 'Bordered',
+          value: 'bordered',
+        },
+      ],
       required: true,
       admin: {
         description: 'Visual style of the service cards',
@@ -149,6 +198,7 @@ export const ServicesGridBlock: Block = {
     {
       name: 'ctaText',
       type: 'text',
+      maxLength: 50,
       admin: {
         description: 'Optional call-to-action button text',
         placeholder: 'View All Services',

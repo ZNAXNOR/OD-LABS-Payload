@@ -50,6 +50,8 @@ export const SocialProofBlock: Block = {
       name: 'logos',
       type: 'array',
       dbName: 'logos', // Keep short names as-is
+      minRows: 1,
+      maxRows: 12,
       admin: {
         condition: (data) => ['logos', 'combined'].includes(data.type),
       },
@@ -79,13 +81,13 @@ export const SocialProofBlock: Block = {
           },
         },
       ],
-      minRows: 1,
-      maxRows: 12,
     },
     {
       name: 'stats',
       type: 'array',
       dbName: 'stats', // Keep short names as-is
+      minRows: 1,
+      maxRows: 6,
       admin: {
         condition: (data) => ['stats', 'combined'].includes(data.type),
       },
@@ -107,13 +109,13 @@ export const SocialProofBlock: Block = {
           },
         },
       ],
-      minRows: 1,
-      maxRows: 6,
     },
     {
       name: 'badges',
       type: 'array',
       dbName: 'badges', // Keep short names as-is
+      minRows: 1,
+      maxRows: 8,
       admin: {
         condition: (data) => ['badges', 'combined'].includes(data.type),
       },
@@ -136,8 +138,6 @@ export const SocialProofBlock: Block = {
           },
         },
       ],
-      minRows: 1,
-      maxRows: 8,
     },
     {
       name: 'layout',

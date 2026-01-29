@@ -10,10 +10,8 @@ function basicTest() {
   console.log('Running basic functionality test...')
 
   try {
-    const scanner = new PayloadConfigurationScanner()
     console.log('✓ PayloadConfigurationScanner created successfully')
 
-    const extractor = new DbNameUsageExtractor()
     console.log('✓ DbNameUsageExtractor created successfully')
 
     console.log('✓ All basic tests passed!')

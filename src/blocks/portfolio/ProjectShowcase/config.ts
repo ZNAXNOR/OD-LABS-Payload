@@ -15,6 +15,7 @@ export const ProjectShowcaseBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      maxLength: 120,
       admin: {
         description: 'Optional heading for the project showcase section',
         placeholder: 'Our Projects',
@@ -23,6 +24,7 @@ export const ProjectShowcaseBlock: Block = {
     {
       name: 'description',
       type: 'textarea',
+      maxLength: 300,
       admin: {
         description: 'Optional description text',
         placeholder: 'Explore our latest work',
@@ -31,12 +33,21 @@ export const ProjectShowcaseBlock: Block = {
     {
       name: 'layout',
       type: 'select',
-      options: [
-        { label: 'Grid', value: 'grid' },
-        { label: 'Masonry', value: 'masonry' },
-        { label: 'Carousel', value: 'carousel' },
-      ],
       defaultValue: 'grid',
+      options: [
+        {
+          label: 'Grid',
+          value: 'grid',
+        },
+        {
+          label: 'Masonry',
+          value: 'masonry',
+        },
+        {
+          label: 'Carousel',
+          value: 'carousel',
+        },
+      ],
       required: true,
       admin: {
         description: 'Layout style for displaying projects',
@@ -45,12 +56,21 @@ export const ProjectShowcaseBlock: Block = {
     {
       name: 'columns',
       type: 'select',
-      options: [
-        { label: '2 Columns', value: '2' },
-        { label: '3 Columns', value: '3' },
-        { label: '4 Columns', value: '4' },
-      ],
       defaultValue: '3',
+      options: [
+        {
+          label: '2 Columns',
+          value: '2',
+        },
+        {
+          label: '3 Columns',
+          value: '3',
+        },
+        {
+          label: '4 Columns',
+          value: '4',
+        },
+      ],
       required: true,
       admin: {
         description: 'Number of columns in the grid',
@@ -71,6 +91,13 @@ export const ProjectShowcaseBlock: Block = {
           name: 'title',
           type: 'text',
           required: true,
+          maxLength: 100,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Project title is required'
+            }
+            return true
+          },
           admin: {
             description: 'Project title',
             placeholder: 'E-commerce Platform',
@@ -80,6 +107,13 @@ export const ProjectShowcaseBlock: Block = {
           name: 'description',
           type: 'textarea',
           required: true,
+          maxLength: 200,
+          validate: (value) => {
+            if (!value || value.trim().length === 0) {
+              return 'Project description is required'
+            }
+            return true
+          },
           admin: {
             description: 'Brief project description',
             placeholder: 'A modern e-commerce solution built with Next.js',
@@ -97,6 +131,7 @@ export const ProjectShowcaseBlock: Block = {
         {
           name: 'technologies',
           type: 'array',
+          minRows: 1,
           maxRows: 10,
           labels: {
             singular: 'Technology',
@@ -107,6 +142,13 @@ export const ProjectShowcaseBlock: Block = {
               name: 'technology',
               type: 'text',
               required: true,
+              maxLength: 50,
+              validate: (value: any) => {
+                if (!value || value.trim().length === 0) {
+                  return 'Technology name is required'
+                }
+                return true
+              },
               admin: {
                 placeholder: 'React',
               },
@@ -114,12 +156,22 @@ export const ProjectShowcaseBlock: Block = {
           ],
           admin: {
             description: 'Technologies used in this project',
+            components: {
+              RowLabel: '@/blocks/portfolio/ProjectShowcase/RowLabel#TechnologyRowLabel',
+            },
           },
         },
         {
           name: 'category',
           type: 'text',
           required: true,
+          maxLength: 50,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Project category is required'
+            }
+            return true
+          },
           admin: {
             description: 'Project category for filtering',
             placeholder: 'Web Development',
@@ -136,6 +188,19 @@ export const ProjectShowcaseBlock: Block = {
         {
           name: 'githubUrl',
           type: 'text',
+          maxLength: 200,
+          validate: (value: any) => {
+            if (!value) return true // Optional field
+            try {
+              const url = new URL(value)
+              if (!url.hostname.includes('github.com')) {
+                return 'Please enter a valid GitHub URL'
+              }
+              return true
+            } catch {
+              return 'Please enter a valid URL'
+            }
+          },
           admin: {
             description: 'GitHub repository URL',
             placeholder: 'https://github.com/username/repo',
@@ -144,6 +209,16 @@ export const ProjectShowcaseBlock: Block = {
         {
           name: 'liveUrl',
           type: 'text',
+          maxLength: 200,
+          validate: (value: any) => {
+            if (!value) return true // Optional field
+            try {
+              new URL(value)
+              return true
+            } catch {
+              return 'Please enter a valid URL'
+            }
+          },
           admin: {
             description: 'Live project URL',
             placeholder: 'https://example.com',
@@ -160,6 +235,9 @@ export const ProjectShowcaseBlock: Block = {
       ],
       admin: {
         description: 'Add projects to showcase',
+        components: {
+          RowLabel: '@/blocks/portfolio/ProjectShowcase/RowLabel#ProjectRowLabel',
+        },
       },
     },
     {
@@ -173,6 +251,7 @@ export const ProjectShowcaseBlock: Block = {
     {
       name: 'filterCategories',
       type: 'array',
+      minRows: 1,
       maxRows: 10,
       labels: {
         singular: 'Category',
@@ -183,6 +262,7 @@ export const ProjectShowcaseBlock: Block = {
           name: 'category',
           type: 'text',
           required: true,
+          maxLength: 50,
           admin: {
             placeholder: 'Web Development',
           },
@@ -191,6 +271,9 @@ export const ProjectShowcaseBlock: Block = {
       admin: {
         description: 'Categories to show in filter (leave empty to auto-generate from projects)',
         condition: (data) => data.enableFiltering === true,
+        components: {
+          RowLabel: '@/blocks/portfolio/ProjectShowcase/RowLabel#CategoryRowLabel',
+        },
       },
     },
     {

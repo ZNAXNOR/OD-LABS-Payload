@@ -1,19 +1,5 @@
+import { standardRichText } from '@/fields/richTextFeatures'
 import type { Block } from 'payload'
-import {
-  lexicalEditor,
-  FixedToolbarFeature,
-  InlineToolbarFeature,
-} from '@payloadcms/richtext-lexical'
-import {
-  structuralFeatures,
-  basicTextFeatures,
-  alignmentFeatures,
-  headingFeatures,
-  listFeatures,
-  enhancedLinkFeature,
-} from '@/fields/richTextFeatures'
-
-// Import rich text features
 
 export const FAQAccordionBlock: Block = {
   slug: 'faqAccordion',
@@ -30,6 +16,7 @@ export const FAQAccordionBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      maxLength: 120,
       admin: {
         description: 'Optional heading for the FAQ section',
         placeholder: 'Frequently Asked Questions',
@@ -38,6 +25,7 @@ export const FAQAccordionBlock: Block = {
     {
       name: 'description',
       type: 'textarea',
+      maxLength: 300,
       admin: {
         description: 'Optional description text below the heading',
         placeholder: 'Find answers to common questions',
@@ -54,6 +42,7 @@ export const FAQAccordionBlock: Block = {
     {
       name: 'defaultOpen',
       type: 'text',
+      maxLength: 50,
       admin: {
         description: 'Comma-separated indices of items to open by default (e.g., 0,2)',
         placeholder: '0',
@@ -73,11 +62,22 @@ export const FAQAccordionBlock: Block = {
       dbName: 'faqs', // Keep short names as-is
       required: true,
       minRows: 1,
+      maxRows: 50,
       fields: [
         {
           name: 'question',
           type: 'text',
           required: true,
+          maxLength: 200,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Question is required'
+            }
+            if (!value.trim().endsWith('?')) {
+              return 'Question should end with a question mark'
+            }
+            return true
+          },
           admin: {
             placeholder: 'What is your question?',
           },
@@ -89,23 +89,12 @@ export const FAQAccordionBlock: Block = {
           admin: {
             description: 'Answer with rich text formatting and enhanced features',
           },
-          editor: lexicalEditor({
-            features: ({ rootFeatures }: { rootFeatures: any[] }) => [
-              FixedToolbarFeature(),
-              InlineToolbarFeature(),
-              ...rootFeatures,
-              ...structuralFeatures,
-              ...basicTextFeatures,
-              ...alignmentFeatures,
-              ...headingFeatures,
-              ...listFeatures,
-              ...enhancedLinkFeature,
-            ],
-          }),
+          editor: standardRichText,
         },
         {
           name: 'category',
           type: 'text',
+          maxLength: 50,
           admin: {
             description: 'Optional category for grouping',
             placeholder: 'General',
@@ -115,6 +104,11 @@ export const FAQAccordionBlock: Block = {
       labels: {
         singular: 'FAQ',
         plural: 'FAQs',
+      },
+      admin: {
+        components: {
+          RowLabel: '@/blocks/technical/FAQAccordion/RowLabel#FAQRowLabel',
+        },
       },
     },
   ],

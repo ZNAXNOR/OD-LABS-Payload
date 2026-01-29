@@ -15,6 +15,7 @@ export const TestimonialBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      maxLength: 120,
       admin: {
         description: 'Optional heading for the testimonials section',
         placeholder: 'What Our Clients Say',
@@ -23,12 +24,21 @@ export const TestimonialBlock: Block = {
     {
       name: 'layout',
       type: 'select',
+      defaultValue: 'single',
       options: [
-        { label: 'Single', value: 'single' },
-        { label: 'Grid', value: 'grid' },
-        { label: 'Carousel', value: 'carousel' },
+        {
+          label: 'Single',
+          value: 'single',
+        },
+        {
+          label: 'Grid',
+          value: 'grid',
+        },
+        {
+          label: 'Carousel',
+          value: 'carousel',
+        },
       ],
-      defaultValue: 'grid',
       required: true,
       admin: {
         description: 'Layout style for displaying testimonials',
@@ -49,6 +59,16 @@ export const TestimonialBlock: Block = {
           name: 'quote',
           type: 'textarea',
           required: true,
+          maxLength: 500,
+          validate: (value) => {
+            if (!value || value.trim().length === 0) {
+              return 'Testimonial quote is required'
+            }
+            if (value.trim().length < 10) {
+              return 'Testimonial quote should be at least 10 characters long'
+            }
+            return true
+          },
           admin: {
             description: 'Testimonial quote',
             placeholder: 'Working with this team was an exceptional experience...',
@@ -58,6 +78,13 @@ export const TestimonialBlock: Block = {
           name: 'author',
           type: 'text',
           required: true,
+          maxLength: 80,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Author name is required'
+            }
+            return true
+          },
           admin: {
             description: 'Author name',
             placeholder: 'John Doe',
@@ -67,6 +94,13 @@ export const TestimonialBlock: Block = {
           name: 'role',
           type: 'text',
           required: true,
+          maxLength: 80,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Author role is required'
+            }
+            return true
+          },
           admin: {
             description: 'Author role or title',
             placeholder: 'CEO',
@@ -75,6 +109,7 @@ export const TestimonialBlock: Block = {
         {
           name: 'company',
           type: 'text',
+          maxLength: 80,
           admin: {
             description: 'Company name',
             placeholder: 'Acme Corporation',
@@ -101,6 +136,7 @@ export const TestimonialBlock: Block = {
         {
           name: 'date',
           type: 'text',
+          maxLength: 50,
           admin: {
             description: 'Testimonial date',
             placeholder: 'January 2024',
@@ -109,6 +145,7 @@ export const TestimonialBlock: Block = {
         {
           name: 'projectType',
           type: 'text',
+          maxLength: 50,
           admin: {
             description: 'Type of project',
             placeholder: 'Web Development',
@@ -117,6 +154,9 @@ export const TestimonialBlock: Block = {
       ],
       admin: {
         description: 'Add testimonials to display',
+        components: {
+          RowLabel: '@/blocks/portfolio/Testimonial/RowLabel#TestimonialRowLabel',
+        },
       },
     },
     {

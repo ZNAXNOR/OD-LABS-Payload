@@ -473,16 +473,17 @@ export class PayloadConfigurationScanner implements ConfigurationScanner {
     for (let i = 0; i < fields.length; i++) {
       const field = fields[i]
       const fieldPath = `${basePath}[${i}]`
-      const currentParentFields = [...parentFields, field.name]
+      const fieldName = field?.name || `field_${i}`
+      const currentParentFields = [...parentFields, fieldName].filter(Boolean)
       const fullPath = currentParentFields.join('.')
 
       // Check if field has dbName
-      if (field.dbName) {
+      if (field?.dbName) {
         usages.push({
           location: `${fieldPath}.dbName`,
-          fieldName: field.name,
+          fieldName: fieldName,
           dbNameValue: field.dbName,
-          fieldType: field.type,
+          fieldType: field.type || 'unknown',
           nestingLevel,
           context: {
             parentFields,
@@ -494,7 +495,7 @@ export class PayloadConfigurationScanner implements ConfigurationScanner {
       }
 
       // Recursively check nested fields
-      if (field.fields && Array.isArray(field.fields)) {
+      if (field?.fields && Array.isArray(field.fields)) {
         this.extractFieldDbNameUsages(
           field.fields,
           usages,

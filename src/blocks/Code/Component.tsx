@@ -1,8 +1,11 @@
+import type { CodeBlock as CodeBlockType } from '@/payload-types'
 import React from 'react'
 import { CodeBlockClient } from './Component.client'
 
-export type CodeBlockProps = {
-  code: string
+interface CodeBlockProps {
+  block?: CodeBlockType
+  // Legacy props for backward compatibility
+  code?: string
   language?: string
   filename?: string
   showLineNumbers?: boolean
@@ -10,24 +13,35 @@ export type CodeBlockProps = {
   theme?: 'auto' | 'dark' | 'light'
   enableCopy?: boolean
   caption?: string
-  blockType: 'code'
-}
-
-type Props = CodeBlockProps & {
+  blockType?: 'code'
   className?: string
 }
 
-export const CodeBlock: React.FC<Props> = ({
-  className,
-  code,
-  language = 'typescript',
-  filename,
-  showLineNumbers = true,
-  highlightLines,
-  theme = 'auto',
-  enableCopy = true,
-  caption,
-}) => {
+export const CodeBlock: React.FC<CodeBlockProps> = (props) => {
+  // Handle both new block structure and legacy props
+  const {
+    block,
+    className,
+    // Legacy props
+    code: legacyCode,
+    language: legacyLanguage,
+    filename: legacyFilename,
+    showLineNumbers: legacyShowLineNumbers,
+    highlightLines: legacyHighlightLines,
+    theme: legacyTheme,
+    enableCopy: legacyEnableCopy,
+    caption: legacyCaption,
+  } = props
+
+  // Use block data if available, otherwise fall back to legacy props
+  const code = block?.code || legacyCode || ''
+  const language = block?.language || legacyLanguage || 'typescript'
+  const filename = block?.filename || legacyFilename
+  const showLineNumbers = block?.showLineNumbers ?? legacyShowLineNumbers ?? true
+  const highlightLines = block?.highlightLines || legacyHighlightLines
+  const theme = block?.theme || legacyTheme || 'auto'
+  const enableCopy = block?.enableCopy ?? legacyEnableCopy ?? true
+  const caption = block?.caption || legacyCaption
   return (
     <div className={['not-prose', className].filter(Boolean).join(' ')}>
       <CodeBlockClient

@@ -34,7 +34,7 @@ export class DbNameUsageExtractor {
 
     // Extract collection-level dbName usage
     if (config.dbName) {
-      const usage = this.createCollectionLevelUsage(config, filePath)
+      const usage = this.createCollectionLevelUsage(config)
       usages.push(usage)
     }
 
@@ -57,17 +57,15 @@ export class DbNameUsageExtractor {
   /**
    * Create collection-level dbName usage
    */
-  private createCollectionLevelUsage(
-    config: CollectionConfig | GlobalConfig,
-    filePath: string,
-  ): DbNameUsage {
+  private createCollectionLevelUsage(config: CollectionConfig | GlobalConfig): DbNameUsage {
     const fullPath = config.slug
-    const identifierPath = this.calculateFullIdentifierPath([], config.slug, config.dbName)
+    const dbName = config.dbName || config.slug
+    const identifierPath = this.calculateFullIdentifierPath([], config.slug, dbName)
 
     return {
       location: 'dbName',
       fieldName: config.slug,
-      dbNameValue: config.dbName!,
+      dbNameValue: dbName,
       fieldType: 'collection',
       nestingLevel: 0,
       context: {
@@ -76,8 +74,8 @@ export class DbNameUsageExtractor {
         isNested: false,
         fullPath,
         identifierPath,
-        estimatedDatabaseName: config.dbName,
-        wouldExceedLimit: config.dbName.length > DBNAME_POSTGRES_IDENTIFIER_LIMIT,
+        estimatedDatabaseName: dbName,
+        wouldExceedLimit: dbName.length > DBNAME_POSTGRES_IDENTIFIER_LIMIT,
         parentFieldTypes: [],
         fieldDepth: 0,
         isInArray: false,
@@ -109,8 +107,10 @@ export class DbNameUsageExtractor {
     for (let i = 0; i < fields.length; i++) {
       const field = fields[i]
       const fieldPath = `${basePath}[${i}]`
-      const currentParentFields = [...parentFields, field.name]
-      const currentParentFieldTypes = [...parentFieldTypes, field.type]
+      const fieldName = field?.name || `field_${i}`
+      const fieldType = field?.type || 'unknown'
+      const currentParentFields = [...parentFields, fieldName].filter(Boolean)
+      const currentParentFieldTypes = [...parentFieldTypes, fieldType].filter(Boolean)
       const fullPath = currentParentFields.join('.')
 
       // Calculate nesting context
@@ -120,10 +120,10 @@ export class DbNameUsageExtractor {
       const fieldDepth = currentParentFields.length - 1
 
       // Check if field has dbName
-      if (field.dbName) {
+      if (field?.dbName) {
         const identifierPath = this.calculateFullIdentifierPath(
           parentFields,
-          field.name,
+          fieldName,
           field.dbName,
         )
 
@@ -135,9 +135,9 @@ export class DbNameUsageExtractor {
 
         const usage: DbNameUsage = {
           location: `${fieldPath}.dbName`,
-          fieldName: field.name,
+          fieldName: fieldName,
           dbNameValue: field.dbName,
-          fieldType: field.type,
+          fieldType: fieldType,
           nestingLevel,
           context: {
             parentFields,
@@ -162,13 +162,13 @@ export class DbNameUsageExtractor {
       }
 
       // Recursively process nested fields based on field type
-      if (field.fields && Array.isArray(field.fields)) {
+      if (field?.fields && Array.isArray(field.fields)) {
         let newArrayNesting = arrayNestingLevel
         let newGroupNesting = groupNestingLevel
         let newBlocksNesting = blocksNestingLevel
 
         // Update nesting counters based on field type
-        switch (field.type) {
+        switch (fieldType) {
           case 'array':
             newArrayNesting++
             break
@@ -196,12 +196,13 @@ export class DbNameUsageExtractor {
       }
 
       // Handle blocks field type with block definitions
-      if (field.type === 'blocks' && field.blocks && Array.isArray(field.blocks)) {
+      if (fieldType === 'blocks' && field?.blocks && Array.isArray(field.blocks)) {
         for (let blockIndex = 0; blockIndex < field.blocks.length; blockIndex++) {
           const block = field.blocks[blockIndex]
           if (block.fields && Array.isArray(block.fields)) {
             const blockPath = `${fieldPath}.blocks[${blockIndex}]`
-            const blockParentFields = [...currentParentFields, block.slug || `block_${blockIndex}`]
+            const blockSlug = block.slug || `block_${blockIndex}`
+            const blockParentFields = [...currentParentFields, blockSlug]
 
             this.extractFieldUsagesRecursively(
               block.fields,
@@ -230,8 +231,23 @@ export class DbNameUsageExtractor {
     fieldName: string,
     dbName?: string,
   ): string {
-    const pathSegments = [...parentFields, dbName || fieldName]
-    return pathSegments.join('.')
+    const segments: string[] = []
+
+    // Add parent field segments
+    for (let i = 0; i < parentFields.length; i++) {
+      const segment = parentFields[i]
+      if (segment) {
+        segments.push(segment)
+      }
+    }
+
+    // Add final field name (use dbName if provided)
+    const finalSegment = dbName || fieldName
+    if (finalSegment) {
+      segments.push(finalSegment)
+    }
+
+    return segments.join('.')
   }
 
   /**
@@ -254,12 +270,18 @@ export class DbNameUsageExtractor {
 
     // Add parent field segments
     for (let i = 0; i < fieldPath.length - 1; i++) {
-      segments.push(fieldPath[i])
+      const segment = fieldPath[i]
+      if (segment) {
+        segments.push(segment)
+      }
     }
 
     // Add final field name (use dbName if provided)
     const finalFieldName = fieldPath[fieldPath.length - 1]
-    segments.push(dbName || finalFieldName)
+    const finalSegment = dbName || finalFieldName
+    if (finalSegment) {
+      segments.push(finalSegment)
+    }
 
     return segments.join('_')
   }
@@ -283,23 +305,27 @@ export class DbNameUsageExtractor {
       score += 10
     }
 
-    if (context.estimatedDatabaseName.length > 50) {
+    const estimatedLength = context.estimatedDatabaseName?.length || 0
+    if (estimatedLength > 50) {
       reasons.push('Significantly reduces identifier length')
       score += 5
     }
 
     // Check nesting complexity
-    if (context.fieldDepth >= 3) {
+    const fieldDepth = context.fieldDepth || 0
+    if (fieldDepth >= 3) {
       reasons.push('Simplifies deeply nested field identifier')
       score += 3
     }
 
-    if (context.isInArray && context.arrayNestingLevel >= 2) {
+    const arrayNestingLevel = context.arrayNestingLevel || 0
+    if (context.isInArray && arrayNestingLevel >= 2) {
       reasons.push('Reduces complexity in nested array structures')
       score += 2
     }
 
-    if (context.isInBlocks && context.blocksNestingLevel >= 1) {
+    const blocksNestingLevel = context.blocksNestingLevel || 0
+    if (context.isInBlocks && blocksNestingLevel >= 1) {
       reasons.push('Simplifies block field identifiers')
       score += 2
     }
@@ -361,20 +387,28 @@ export class DbNameUsageExtractor {
     const context = usage.context
 
     // Identifier analysis
+    const estimatedLength = context.estimatedDatabaseName?.length || 0
+    const wouldExceedLimit = context.wouldExceedLimit || false
+
     const identifierAnalysis = {
       currentLength: usage.dbNameValue.length,
-      estimatedLength: context.estimatedDatabaseName.length,
-      wouldExceedLimit: context.wouldExceedLimit,
+      estimatedLength,
+      wouldExceedLimit,
       compressionRatio:
         usage.fieldName.length > 0 ? usage.dbNameValue.length / usage.fieldName.length : 1,
     }
 
     // Nesting analysis
+    const totalDepth = context.fieldDepth || 0
+    const arrayDepth = context.arrayNestingLevel || 0
+    const groupDepth = context.groupNestingLevel || 0
+    const blocksDepth = context.blocksNestingLevel || 0
+
     const nestingAnalysis = {
-      totalDepth: context.fieldDepth,
-      arrayDepth: context.arrayNestingLevel,
-      groupDepth: context.groupNestingLevel,
-      blocksDepth: context.blocksNestingLevel,
+      totalDepth,
+      arrayDepth,
+      groupDepth,
+      blocksDepth,
       complexityScore: this.calculateComplexityScore(context),
     }
 
@@ -395,12 +429,12 @@ export class DbNameUsageExtractor {
     let score = 0
 
     // Base score for field depth
-    score += context.fieldDepth * 2
+    score += (context.fieldDepth ?? 0) * 2
 
     // Additional score for specific nesting types
-    score += context.arrayNestingLevel * 3
-    score += context.groupNestingLevel * 2
-    score += context.blocksNestingLevel * 4
+    score += (context.arrayNestingLevel ?? 0) * 3
+    score += (context.groupNestingLevel ?? 0) * 2
+    score += (context.blocksNestingLevel ?? 0) * 4
 
     // Bonus for multiple nesting types
     const nestingTypes = [context.isInArray, context.isInGroup, context.isInBlocks].filter(

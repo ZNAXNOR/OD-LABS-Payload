@@ -54,7 +54,7 @@ export interface ContentBlock {
   blockType: 'content'
   columns: Array<{
     width: 'oneThird' | 'half' | 'twoThirds' | 'full' | 'auto'
-    content: any // Rich text
+    content: RichTextContent
     enableLink: boolean
     link?: Link
     backgroundColor?: string
@@ -71,61 +71,62 @@ export interface MediaBlock {
 
 export interface ArchiveBlock {
   blockType: 'archive'
-  introContent?: any // Rich text
+  introContent?: RichTextContent
   populateBy: 'collection' | 'selection'
   relationTo?: string
   categories?: string[]
   limit?: number
-  selectedDocs?: Array<string | any>
-  populatedDocs?: any[]
+  selectedDocs?: DocumentArray
+  populatedDocs?: DocumentArray
   populatedDocsTotal?: number
 }
 
 export interface BannerBlock {
   blockType: 'banner'
   style: 'info' | 'warning' | 'error' | 'success'
-  content: any // Rich text
+  content: RichTextContent
 }
 
 // ============================================================================
-// SERVICES BLOCK TYPES - temporarily disabled due to database relation issues
+// SERVICES BLOCK TYPES
 // ============================================================================
 
-// export interface ServicesGridBlock {
-//   blockType: 'servicesGrid'
-//   heading?: string
-//   description?: string
-//   columns: '2' | '3' | '4'
-//   services: Array<{
-//     icon?: string
-//     title: string
-//     description: string
-//     features?: Array<{ feature: string }>
-//     link?: Link
-//     highlighted?: boolean
-//   }>
-//   style: 'cards' | 'minimal' | 'bordered'
-//   showIcons: boolean
-//   ctaText?: string
-//   ctaLink?: Link
-// }
+export interface ServicesGridBlock {
+  blockType: 'servicesGrid'
+  heading?: string
+  description?: string
+  columns: '2' | '3' | '4'
+  services: Array<{
+    icon?: string
+    title: string
+    description: string
+    features?: Array<{ feature: string }>
+    link?: Link
+    highlighted?: boolean
+  }>
+  style: 'cards' | 'minimal' | 'bordered'
+  showIcons: boolean
+  ctaText?: string
+  ctaLink?: Link
+}
 
-// Services blocks - temporarily disabled due to database relation issues
-// export interface TechStackBlock {
-//   blockType: 'techStack'
-//   heading?: string
-//   description?: string
-//   layout: 'grid' | 'carousel' | 'list'
-//   technologies: Array<{
-//     name: string
-//     icon?: string | Media
-//     category: 'frontend' | 'backend' | 'database' | 'devops' | 'tools' | 'other'
-//     description?: string
-//     proficiency?: 'beginner' | 'intermediate' | 'advanced' | 'expert'
-//     yearsExperience?: number
-//   }>
-//   showDescriptions: boolean
-// }
+export interface TechStackBlock {
+  blockType: 'techStack'
+  heading?: string
+  description?: string
+  layout: 'grid' | 'carousel' | 'list'
+  technologies: Array<{
+    name: string
+    icon?: string | Media
+    iconName?: string
+    category: 'frontend' | 'backend' | 'database' | 'devops' | 'tools' | 'other'
+    description?: string
+    proficiency?: 'beginner' | 'intermediate' | 'advanced' | 'expert'
+    yearsExperience?: number
+  }>
+  showDescriptions: boolean
+  enableFiltering?: boolean
+}
 
 export interface ProcessStepsBlock {
   blockType: 'processSteps'
@@ -313,7 +314,7 @@ export interface FAQAccordionBlock {
   description?: string
   faqs: Array<{
     question: string
-    answer: string // Rich text
+    answer: RichTextContent
     category?: string
   }>
   allowMultipleOpen: boolean
@@ -345,7 +346,7 @@ export interface CallToActionBlock {
   variant: 'centered' | 'split' | 'banner' | 'card'
   heading: string
   description?: string
-  richText?: any // Rich text
+  richText?: RichTextContent
   links?: Array<{
     link: Link
     appearance?: 'default' | 'outline'
@@ -410,32 +411,76 @@ export interface SocialProofBlock {
 
 export interface ContainerBlock {
   blockType: 'container'
-  content?: any // RichText content
-  maxWidth: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
-  backgroundColor?: 'none' | 'white' | 'zinc-50' | 'zinc-100' | 'zinc-900' | 'brand-primary'
-  backgroundImage?: string | Media
-  paddingTop: 'none' | 'sm' | 'md' | 'lg' | 'xl'
-  paddingBottom: 'none' | 'sm' | 'md' | 'lg' | 'xl'
-  marginTop: 'none' | 'sm' | 'md' | 'lg' | 'xl'
-  marginBottom: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+  content?: {
+    richText?: RichTextContent
+    textAlignment: 'left' | 'center' | 'right' | 'justify'
+  }
+  layout: {
+    maxWidth: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
+    containerAlignment: 'left' | 'center' | 'right'
+    minHeight: 'auto' | 'sm' | 'md' | 'lg' | 'screen'
+  }
+  styling: {
+    backgroundColor: 'none' | 'white' | 'zinc-50' | 'zinc-100' | 'zinc-900' | 'brand-primary'
+    backgroundImage?: string | Media
+    backgroundImageSettings?: {
+      size: 'cover' | 'contain' | 'auto'
+      position: 'center' | 'top' | 'bottom' | 'left' | 'right'
+      overlay?: {
+        enabled: boolean
+        color: 'black' | 'white' | 'brand-primary'
+        opacity: number
+      }
+    }
+    border?: {
+      enabled: boolean
+      style: 'solid' | 'dashed' | 'dotted'
+      width: '1' | '2' | '4'
+      color: 'zinc-200' | 'zinc-400' | 'zinc-800' | 'brand-primary'
+      radius: 'none' | 'sm' | 'md' | 'lg' | 'full'
+    }
+  }
+  spacing: {
+    paddingTop: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+    paddingBottom: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+    paddingX: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+    marginTop: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+    marginBottom: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  }
 }
 
 export interface DividerBlock {
   blockType: 'divider'
-  style: 'solid' | 'dashed' | 'dotted' | 'gradient'
-  thickness: 1 | 2 | 3 | 4
-  color?: string
-  width: 'full' | 'half' | 'quarter'
-  alignment: 'left' | 'center' | 'right'
-  spacingTop: 'none' | 'sm' | 'md' | 'lg' | 'xl'
-  spacingBottom: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+  appearance: {
+    style: 'solid' | 'dashed' | 'dotted' | 'gradient'
+    thickness: '1' | '2' | '3' | '4'
+    color: 'zinc-200' | 'zinc-300' | 'zinc-400' | 'zinc-800' | 'brand-primary'
+  }
+  layout: {
+    width: 'full' | 'three-quarters' | 'half' | 'quarter' | 'small'
+    alignment: 'left' | 'center' | 'right'
+  }
+  spacing: {
+    spacingTop: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+    spacingBottom: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  }
 }
 
 export interface SpacerBlock {
   blockType: 'spacer'
-  heightMobile: number
-  heightTablet: number
-  heightDesktop: number
+  heights: {
+    heightMobile: number
+    heightTablet: number
+    heightDesktop: number
+  }
+  presets?: {
+    usePreset: boolean
+    presetSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  }
+  advanced?: {
+    showInEditor: boolean
+    label?: string
+  }
 }
 
 // ============================================================================
@@ -458,11 +503,36 @@ export interface Link {
   newTab?: boolean
   reference?: {
     relationTo: string
-    value: string | any
+    value: string | DocumentReference
   }
   url?: string
   label?: string
 }
+
+// Rich text content types
+export interface RichTextContent {
+  root: {
+    type: string
+    children: Array<{
+      type: string
+      version: number
+      [key: string]: any
+    }>
+    direction: 'ltr' | 'rtl' | null
+    format: string
+    indent: number
+    version: number
+  }
+}
+
+// Document reference types for relationships
+export interface DocumentReference {
+  relationTo: string
+  value: string | Record<string, any>
+}
+
+// Array of documents for selection-based content
+export type DocumentArray = Array<string | Record<string, any>>
 
 // ============================================================================
 // UNION TYPE FOR ALL BLOCKS
@@ -474,10 +544,10 @@ export type PageBlock =
   | MediaBlock
   | ArchiveBlock
   | BannerBlock
-  // | ServicesGridBlock // Temporarily disabled due to database relation issue
-  // | TechStackBlock // Temporarily disabled due to database relation issue
-  // | ProcessStepsBlock // Temporarily disabled due to database relation issue
-  // | PricingTableBlock // Temporarily disabled due to database relation issue
+  | ServicesGridBlock
+  | TechStackBlock
+  | ProcessStepsBlock
+  | PricingTableBlock
   | ProjectShowcaseBlock
   | CaseStudyBlock
   | BeforeAfterBlock
@@ -492,5 +562,14 @@ export type PageBlock =
   | NewsletterBlock
   | SocialProofBlock
   | ContainerBlock
+  | DividerBlock
+  | SpacerBlock
+
+// Helper type to extract block type discriminator values
+export type BlockType = PageBlock['blockType']
+
+// Helper type to get block interface by blockType
+export type BlockByType<T extends BlockType> =
+  | Extract<PageBlock, { blockType: T }>
   | DividerBlock
   | SpacerBlock

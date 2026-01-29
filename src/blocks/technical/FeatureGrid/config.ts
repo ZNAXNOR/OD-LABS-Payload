@@ -15,6 +15,7 @@ export const FeatureGridBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      maxLength: 120,
       admin: {
         description: 'Optional heading for the feature grid section',
         placeholder: 'Our Features',
@@ -23,6 +24,7 @@ export const FeatureGridBlock: Block = {
     {
       name: 'description',
       type: 'textarea',
+      maxLength: 300,
       admin: {
         description: 'Optional description text below the heading',
         placeholder: 'Discover what makes us different',
@@ -40,7 +42,8 @@ export const FeatureGridBlock: Block = {
         { label: '6 Columns', value: '6' },
       ],
       admin: {
-        description: 'Number of columns in the grid layout',
+        description:
+          'Grid layout: 2 Columns (large features), 3 Columns (balanced), 4 Columns (compact), 6 Columns (dense)',
       },
     },
     {
@@ -54,7 +57,8 @@ export const FeatureGridBlock: Block = {
         { label: 'Icons Only', value: 'icons' },
       ],
       admin: {
-        description: 'Visual style of the feature grid',
+        description:
+          'Visual style: Cards (bordered containers), Minimal (clean layout), Icons Only (icon-focused design)',
       },
     },
     {
@@ -69,6 +73,17 @@ export const FeatureGridBlock: Block = {
           name: 'icon',
           type: 'text',
           required: true,
+          maxLength: 50,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Icon name is required'
+            }
+            // Basic validation for icon names (alphanumeric and common separators)
+            if (!/^[a-zA-Z][a-zA-Z0-9\-_]*$/.test(value.trim())) {
+              return 'Icon name should start with a letter and contain only letters, numbers, hyphens, and underscores'
+            }
+            return true
+          },
           admin: {
             description: 'Lucide icon name (e.g., Zap, Shield, Rocket)',
             placeholder: 'Zap',
@@ -78,6 +93,13 @@ export const FeatureGridBlock: Block = {
           name: 'title',
           type: 'text',
           required: true,
+          maxLength: 80,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Feature title is required'
+            }
+            return true
+          },
           admin: {
             placeholder: 'Feature Title',
           },
@@ -86,6 +108,13 @@ export const FeatureGridBlock: Block = {
           name: 'description',
           type: 'textarea',
           required: true,
+          maxLength: 200,
+          validate: (value) => {
+            if (!value || value.trim().length === 0) {
+              return 'Feature description is required'
+            }
+            return true
+          },
           admin: {
             placeholder: 'Brief description of this feature',
           },
@@ -97,6 +126,7 @@ export const FeatureGridBlock: Block = {
             {
               name: 'url',
               type: 'text',
+              maxLength: 200,
               admin: {
                 placeholder: '/features/feature-name',
               },
@@ -104,6 +134,7 @@ export const FeatureGridBlock: Block = {
             {
               name: 'label',
               type: 'text',
+              maxLength: 50,
               admin: {
                 placeholder: 'Learn more',
               },
@@ -117,6 +148,11 @@ export const FeatureGridBlock: Block = {
       labels: {
         singular: 'Feature',
         plural: 'Features',
+      },
+      admin: {
+        components: {
+          RowLabel: '@/blocks/technical/FeatureGrid/RowLabel#FeatureRowLabel',
+        },
       },
     },
   ],

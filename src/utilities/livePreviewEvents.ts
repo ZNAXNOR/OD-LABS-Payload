@@ -112,7 +112,7 @@ export class LivePreviewEventHandler {
       }
 
       this.websocket.onclose = () => {
-        this.isConnected = false
+        this.isConnected
 
         if (process.env.NODE_ENV === 'development') {
           console.log('[LivePreview] WebSocket disconnected')
@@ -276,9 +276,6 @@ export class LivePreviewEventHandler {
   private handleBlockUpdate(event: LivePreviewEvent): void {
     if (!event.blockPath) return
 
-    // Parse block path (e.g., "layout.0.content" for first layout block's content)
-    const pathParts = event.blockPath.split('.')
-
     if (process.env.NODE_ENV === 'development') {
       console.log('[LivePreview] Block update:', {
         path: event.blockPath,
@@ -372,7 +369,7 @@ export class LivePreviewEventHandler {
       this.pollInterval = null
     }
 
-    this.isConnected = false
+    this.isConnected
     this.concurrentState.activeEditors.clear()
     this.concurrentState.pendingChanges.clear()
   }

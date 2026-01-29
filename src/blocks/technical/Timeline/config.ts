@@ -15,6 +15,7 @@ export const TimelineBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      maxLength: 120,
       admin: {
         description: 'Optional heading for the timeline section',
         placeholder: 'Our Journey',
@@ -26,8 +27,14 @@ export const TimelineBlock: Block = {
       defaultValue: 'vertical',
       required: true,
       options: [
-        { label: 'Vertical', value: 'vertical' },
-        { label: 'Horizontal', value: 'horizontal' },
+        {
+          label: 'Vertical',
+          value: 'vertical',
+        },
+        {
+          label: 'Horizontal',
+          value: 'horizontal',
+        },
       ],
       admin: {
         description: 'Timeline orientation',
@@ -39,9 +46,18 @@ export const TimelineBlock: Block = {
       defaultValue: 'default',
       required: true,
       options: [
-        { label: 'Default', value: 'default' },
-        { label: 'Minimal', value: 'minimal' },
-        { label: 'Detailed', value: 'detailed' },
+        {
+          label: 'Default',
+          value: 'default',
+        },
+        {
+          label: 'Minimal',
+          value: 'minimal',
+        },
+        {
+          label: 'Detailed',
+          value: 'detailed',
+        },
       ],
       admin: {
         description: 'Visual style of the timeline',
@@ -53,11 +69,19 @@ export const TimelineBlock: Block = {
       dbName: 'items', // Keep short names as-is
       required: true,
       minRows: 2,
+      maxRows: 20,
       fields: [
         {
           name: 'date',
           type: 'text',
           required: true,
+          maxLength: 50,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Date is required'
+            }
+            return true
+          },
           admin: {
             description: 'Date or time period',
             placeholder: 'January 2024',
@@ -67,6 +91,13 @@ export const TimelineBlock: Block = {
           name: 'title',
           type: 'text',
           required: true,
+          maxLength: 100,
+          validate: (value: any) => {
+            if (!value || value.trim().length === 0) {
+              return 'Timeline item title is required'
+            }
+            return true
+          },
           admin: {
             placeholder: 'Milestone Title',
           },
@@ -75,6 +106,13 @@ export const TimelineBlock: Block = {
           name: 'description',
           type: 'textarea',
           required: true,
+          maxLength: 300,
+          validate: (value) => {
+            if (!value || value.trim().length === 0) {
+              return 'Timeline item description is required'
+            }
+            return true
+          },
           admin: {
             placeholder: 'Description of this milestone',
           },
@@ -82,6 +120,7 @@ export const TimelineBlock: Block = {
         {
           name: 'icon',
           type: 'text',
+          maxLength: 50,
           admin: {
             description: 'Optional Lucide icon name',
             placeholder: 'Rocket',
@@ -102,6 +141,7 @@ export const TimelineBlock: Block = {
             {
               name: 'url',
               type: 'text',
+              maxLength: 200,
               admin: {
                 placeholder: '/blog/milestone-post',
               },
@@ -109,6 +149,7 @@ export const TimelineBlock: Block = {
             {
               name: 'label',
               type: 'text',
+              maxLength: 50,
               admin: {
                 placeholder: 'Read more',
               },
@@ -122,6 +163,11 @@ export const TimelineBlock: Block = {
       labels: {
         singular: 'Timeline Item',
         plural: 'Timeline Items',
+      },
+      admin: {
+        components: {
+          RowLabel: '@/blocks/technical/Timeline/RowLabel#TimelineItemRowLabel',
+        },
       },
     },
   ],

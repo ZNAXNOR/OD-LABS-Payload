@@ -15,6 +15,7 @@ export const ContactFormBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      maxLength: 120,
       admin: {
         description: 'Main heading for the contact form section',
       },
@@ -22,6 +23,7 @@ export const ContactFormBlock: Block = {
     {
       name: 'description',
       type: 'textarea',
+      maxLength: 300,
       admin: {
         description: 'Optional description text above the form',
       },
@@ -41,7 +43,8 @@ export const ContactFormBlock: Block = {
         },
       ],
       admin: {
-        description: 'Choose the layout style',
+        description:
+          'Layout style: Single Column (form only), Split (form with contact information sidebar)',
       },
     },
     {
@@ -77,6 +80,7 @@ export const ContactFormBlock: Block = {
         {
           name: 'phone',
           type: 'text',
+          maxLength: 50,
           admin: {
             description: 'Contact phone number',
           },
@@ -84,6 +88,7 @@ export const ContactFormBlock: Block = {
         {
           name: 'address',
           type: 'textarea',
+          maxLength: 200,
           admin: {
             description: 'Physical address',
           },
@@ -91,6 +96,7 @@ export const ContactFormBlock: Block = {
         {
           name: 'hours',
           type: 'text',
+          maxLength: 100,
           admin: {
             description: 'Business hours',
             placeholder: 'Mon-Fri: 9am-5pm',

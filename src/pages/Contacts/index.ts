@@ -1,9 +1,3 @@
-import {
-  BlocksFeature,
-  FixedToolbarFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 // Import hooks
@@ -23,20 +17,8 @@ import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { generateContactPagesPreviewUrl } from '@/utilities/livePreview'
 
 // Import rich text features
-import {
-  alignmentFeatures,
-  basicTextFeatures,
-  enhancedLinkFeature,
-  headingFeatures,
-  listFeatures,
-  structuralFeatures,
-} from '@/fields/richTextFeatures'
+import { minimalRichText, standardRichText } from '@/fields/richTextFeatures'
 
-// Import block configuration
-import { getBlocksForCollection } from '@/blocks/config/blockAssignments'
-
-// Get contact-specific blocks
-const contactBlocks = getBlocksForCollection('contacts')
 
 export const ContactPages: CollectionConfig = {
   slug: 'contacts',
@@ -113,22 +95,7 @@ export const ContactPages: CollectionConfig = {
               admin: {
                 description: 'Contact page content with embedded blocks for enhanced formatting',
               },
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => [
-                  FixedToolbarFeature(),
-                  InlineToolbarFeature(),
-                  ...rootFeatures,
-                  ...structuralFeatures,
-                  ...basicTextFeatures,
-                  ...alignmentFeatures,
-                  ...headingFeatures,
-                  ...listFeatures,
-                  ...enhancedLinkFeature,
-                  BlocksFeature({
-                    blocks: contactBlocks.layout,
-                  }),
-                ],
-              }),
+              editor: standardRichText,
             },
           ],
         },
@@ -227,19 +194,7 @@ export const ContactPages: CollectionConfig = {
                     condition: (_, siblingData) => siblingData?.enableSidebar,
                     description: 'Sidebar content with enhanced formatting options',
                   },
-                  editor: lexicalEditor({
-                    features: ({ rootFeatures }) => [
-                      FixedToolbarFeature(),
-                      InlineToolbarFeature(),
-                      ...rootFeatures,
-                      ...structuralFeatures,
-                      ...basicTextFeatures,
-                      ...alignmentFeatures,
-                      ...headingFeatures,
-                      ...listFeatures,
-                      ...enhancedLinkFeature,
-                    ],
-                  }),
+                  editor: minimalRichText,
                 },
               ],
             },

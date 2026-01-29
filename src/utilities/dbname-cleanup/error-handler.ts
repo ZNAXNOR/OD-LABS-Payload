@@ -239,7 +239,7 @@ export class ValidationError extends BaseCleanupError {
     })
   }
 
-  private static generateRecoveryActions(context: ErrorContext): RecoveryAction[] {
+  private static generateRecoveryActions(_context: ErrorContext): RecoveryAction[] {
     const actions: RecoveryAction[] = []
 
     actions.push({
@@ -282,7 +282,7 @@ export class AnalysisError extends BaseCleanupError {
     })
   }
 
-  private static generateRecoveryActions(context: ErrorContext): RecoveryAction[] {
+  private static generateRecoveryActions(_context: ErrorContext): RecoveryAction[] {
     return [
       {
         action: 'skip_problematic_file',

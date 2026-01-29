@@ -1,9 +1,3 @@
-import {
-  BlocksFeature,
-  FixedToolbarFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 // Import shared utilities and hooks
@@ -20,20 +14,7 @@ import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { generateLegalPagesPreviewUrl } from '@/utilities/livePreview'
 
 // Import rich text features
-import {
-  alignmentFeatures,
-  basicTextFeatures,
-  enhancedLinkFeature,
-  headingFeatures,
-  listFeatures,
-  structuralFeatures,
-} from '@/fields/richTextFeatures'
-
-// Import block configuration
-import { getBlocksForCollection } from '@/blocks/config/blockAssignments'
-
-// Get legal-specific blocks
-const legalBlocks = getBlocksForCollection('legal')
+import { standardRichText } from '@/fields/richTextFeatures'
 
 export const LegalPages: CollectionConfig = {
   slug: 'legal',
@@ -117,22 +98,7 @@ export const LegalPages: CollectionConfig = {
               admin: {
                 description: 'Legal document content with embedded blocks for enhanced formatting',
               },
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => [
-                  FixedToolbarFeature(),
-                  InlineToolbarFeature(),
-                  ...rootFeatures,
-                  ...structuralFeatures,
-                  ...basicTextFeatures,
-                  ...alignmentFeatures,
-                  ...headingFeatures,
-                  ...listFeatures,
-                  ...enhancedLinkFeature,
-                  BlocksFeature({
-                    blocks: legalBlocks.layout,
-                  }),
-                ],
-              }),
+              editor: standardRichText,
               validate: (value: unknown) => {
                 if (!value) {
                   return 'Content is required for legal documents'

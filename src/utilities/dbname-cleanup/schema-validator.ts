@@ -266,7 +266,7 @@ export class PayloadSchemaValidator implements SchemaValidator {
     const collectionNames = new Set<string>()
     const duplicateCollections = new Set<string>()
 
-    for (const [filePath, changes] of changesByFile.entries()) {
+    for (const [filePath] of changesByFile.entries()) {
       // Extract collection name from file path
       const collectionName = this.extractCollectionFromPath(filePath)
 
@@ -348,13 +348,15 @@ export class PayloadSchemaValidator implements SchemaValidator {
     // Look for the field name in the path
     for (let i = 0; i < parts.length; i++) {
       const part = parts[i]
+      if (!part) continue
 
       // Handle array notation: fields[0]
       if (part.includes('[') && part.includes(']')) {
         const arrayMatch = part.match(/^(\w+)\[(\d+)\]$/)
         if (arrayMatch && arrayMatch[1] === 'fields') {
           // This is a field array index, the name should be in the next part
-          if (i + 1 < parts.length && parts[i + 1] === 'name') {
+          const nextPart = parts[i + 1]
+          if (nextPart && nextPart === 'name') {
             // We need to look at the actual field configuration to get the name
             // For now, return a placeholder that indicates we need more context
             return 'field_name_unknown'
@@ -365,7 +367,7 @@ export class PayloadSchemaValidator implements SchemaValidator {
       // Handle direct field reference
       if (part === 'fields' && i + 1 < parts.length) {
         const nextPart = parts[i + 1]
-        if (nextPart !== 'dbName' && !nextPart.includes('[')) {
+        if (nextPart && nextPart !== 'dbName' && !nextPart.includes('[')) {
           return nextPart
         }
       }
@@ -384,13 +386,16 @@ export class PayloadSchemaValidator implements SchemaValidator {
     const collectionsIndex = pathParts.findIndex((part) => part === 'collections')
 
     if (collectionsIndex !== -1 && collectionsIndex + 1 < pathParts.length) {
-      return pathParts[collectionsIndex + 1]
+      const collectionPart = pathParts[collectionsIndex + 1]
+      return collectionPart || null
     }
 
     // Check if this is a collection config file
     const fileName = pathParts[pathParts.length - 1]
     if (fileName && (fileName.includes('collection') || fileName.includes('config'))) {
-      return fileName.replace(/\.(ts|js)$/, '').replace(/[-_]?(config|collection)[-_]?/gi, '')
+      return (
+        fileName.replace(/\.(ts|js)$/, '').replace(/[-_]?(config|collection)[-_]?/gi, '') || null
+      )
     }
 
     return null
