@@ -1,0 +1,120 @@
+.layout-field-helper {
+  margin-bottom: var(--base);
+  border: 1px solid var(--theme-elevation-200);
+  border-radius: var(--border-radius-m);
+  overflow: hidden;
+
+  &__toggle {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--base) / 2);
+    width: 100%;
+    padding: calc(var(--base) / 2) var(--base);
+    background: var(--theme-elevation-50);
+    border: none;
+    font-size: 0.875rem;
+    color: var(--theme-text);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: var(--theme-elevation-100);
+    }
+  }
+
+  &__toggle-icon {
+    font-size: 0.75rem;
+    color: var(--theme-text-dim);
+    transition: transform 0.2s ease;
+  }
+
+  &__toggle-text {
+    font-weight: 500;
+  }
+
+  &__content {
+    padding: var(--base);
+    background: var(--theme-elevation-0);
+    border-top: 1px solid var(--theme-elevation-200);
+  }
+
+  &__description {
+    margin: 0 0 var(--base) 0;
+    font-size: 0.875rem;
+    color: var(--theme-text-dim);
+    line-height: 1.4;
+  }
+
+  &__blocks {
+    margin-bottom: var(--base);
+  }
+
+  &__blocks-title {
+    margin: 0 0 calc(var(--base) / 2) 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--theme-text);
+  }
+
+  &__blocks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: calc(var(--base) / 2);
+  }
+
+  &__block {
+    padding: calc(var(--base) / 2);
+    background: var(--theme-elevation-25);
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: var(--border-radius-s);
+  }
+
+  &__block-name {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--theme-text);
+  }
+
+  &__block-description {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--theme-text-dim);
+    line-height: 1.3;
+  }
+
+  &__tips {
+    border-top: 1px solid var(--theme-elevation-150);
+    padding-top: var(--base);
+  }
+
+  &__tips-title {
+    margin: 0 0 calc(var(--base) / 2) 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--theme-text);
+  }
+
+  &__tips-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    font-size: 0.8125rem;
+    color: var(--theme-text-dim);
+    line-height: 1.4;
+
+    li {
+      margin-bottom: 0.25rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  @include small-break {
+    &__blocks-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

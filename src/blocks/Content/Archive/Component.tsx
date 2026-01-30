@@ -1,7 +1,17 @@
-import type { ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
+// Define local type since ArchiveBlock is not in payload-types
+interface ArchiveBlockProps {
+  id?: string | null
+  blockName?: string | null
+  blockType: 'archive'
+  introContent?: any
+  relationTo?: string
+  selectedDocs?: any[]
+  limit?: number
+  // Add other archive-specific properties as needed
+}
+import RichText from '@/components/ui/RichText'
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import RichText from '@/components/ui/RichText'
 
 export interface ArchiveComponentProps extends ArchiveBlockProps {
   className?: string

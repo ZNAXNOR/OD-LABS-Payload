@@ -1,11 +1,23 @@
 import RichText from '@/components/ui/RichText'
-import type { ContentBlock as ContentBlockType } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
 
+// Define ContentBlock type locally since it's not in the main blocks
+interface ContentBlock {
+  blockType: 'content'
+  columns: Array<{
+    content: any // Rich text content
+    width?: 'oneThird' | 'half' | 'twoThirds' | 'full'
+  }>
+  backgroundColor?: string
+  padding?: 'none' | 'small' | 'medium' | 'large'
+  gap?: 'none' | 'small' | 'medium' | 'large'
+  alignment?: 'top' | 'center' | 'bottom'
+}
+
 interface ContentBlockProps {
-  block: ContentBlockType
+  block: ContentBlock
   className?: string
 }
 
@@ -75,7 +87,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({ block, className }) 
             alignmentClasses[alignment as keyof typeof alignmentClasses],
           )}
         >
-          {columns.map((column, index) => {
+          {columns.map((column: any, index: number) => {
             // Safe access to column properties with fallbacks
             const columnWidth = column?.width || 'full'
             const columnBackgroundColor = column?.backgroundColor || 'none'

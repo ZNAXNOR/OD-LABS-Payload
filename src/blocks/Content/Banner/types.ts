@@ -1,4 +1,10 @@
-import type { BannerBlock } from '@/payload-types'
+// Define local type since BannerBlock is not in payload-types
+interface BannerBlock {
+  id?: string | null
+  blockName?: string | null
+  blockType: 'banner'
+  // Add other banner-specific properties as needed
+}
 
 export interface BannerBlockProps extends BannerBlock {
   className?: string

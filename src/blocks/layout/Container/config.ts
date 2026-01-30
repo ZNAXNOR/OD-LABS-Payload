@@ -314,6 +314,7 @@ export const ContainerBlock: Block = {
                   name: 'color',
                   type: 'select',
                   label: 'Overlay Color',
+                  dbName: 'overlay_color',
                   options: [
                     {
                       label: 'Black',

@@ -1,12 +1,26 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
-import type { BeforeAfterBlock as BeforeAfterBlockType } from '@/payload-types'
+import type { Media } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import Image from 'next/image'
+import React, { useEffect, useRef, useState } from 'react'
+
+// Define BeforeAfterBlock type locally since it's not in the main blocks
+interface BeforeAfterBlock {
+  blockType: 'beforeAfter'
+  heading?: string
+  description?: string
+  beforeImage: Media
+  afterImage: Media
+  beforeLabel?: string
+  afterLabel?: string
+  orientation?: 'horizontal' | 'vertical'
+  showLabels?: boolean
+  defaultPosition?: number
+}
 
 interface BeforeAfterBlockProps {
-  block: BeforeAfterBlockType
+  block: BeforeAfterBlock
   className?: string
 }
 

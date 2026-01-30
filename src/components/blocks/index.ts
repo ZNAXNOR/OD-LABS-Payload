@@ -1,4 +1,5 @@
-export { HeroBlock, default as HeroBlockDefault } from './hero/Hero'
+export { HeroBlock } from './hero/Hero'
+export type { default as HeroBlockDefault } from './hero/Hero'
 
 // Services Blocks
 // Services blocks - temporarily disabled due to database relation issues
@@ -12,13 +13,14 @@ export { HeroBlock, default as HeroBlockDefault } from './hero/Hero'
 // export { default as PricingTableBlockDefault } from './services/PricingTable'
 
 // Portfolio Blocks
-export { BeforeAfterBlock, default as BeforeAfterBlockDefault } from './portfolio/BeforeAfter'
-export { CaseStudyBlock, default as CaseStudyBlockDefault } from './portfolio/CaseStudy'
-export {
-  ProjectShowcaseBlock,
-  default as ProjectShowcaseBlockDefault,
-} from './portfolio/ProjectShowcase'
-export { TestimonialBlock, default as TestimonialBlockDefault } from './portfolio/Testimonial'
+export { BeforeAfterBlock } from './portfolio/BeforeAfter'
+export type { default as BeforeAfterBlockDefault } from './portfolio/BeforeAfter'
+export { CaseStudyBlock } from './portfolio/CaseStudy'
+export type { default as CaseStudyBlockDefault } from './portfolio/CaseStudy'
+export { ProjectShowcaseBlock } from './portfolio/ProjectShowcase'
+export type { default as ProjectShowcaseBlockDefault } from './portfolio/ProjectShowcase'
+export { TestimonialBlock } from './portfolio/Testimonial'
+export type { default as TestimonialBlockDefault } from './portfolio/Testimonial'
 
 // Technical Blocks
 export {
@@ -41,10 +43,14 @@ export { NewsletterBlock, NewsletterBlock as NewsletterBlockDefault } from './ct
 export { SocialProofBlock, SocialProofBlock as SocialProofBlockDefault } from './cta/SocialProof'
 
 // Layout Blocks
-export { ContentBlock, default as ContentBlockDefault } from './content/Content'
-export { ContainerBlock, default as ContainerBlockDefault } from './layout/Container'
-export { DividerBlock, default as DividerBlockDefault } from './layout/Divider'
-export { SpacerBlock, default as SpacerBlockDefault } from './layout/Spacer'
+export { ContentBlock } from './content/Content'
+export type { default as ContentBlockDefault } from './content/Content'
+export { ContainerBlock } from './layout/Container'
+export type { default as ContainerBlockDefault } from './layout/Container'
+export { DividerBlock } from './layout/Divider'
+export type { default as DividerBlockDefault } from './layout/Divider'
+export { SpacerBlock } from './layout/Spacer'
+export type { default as SpacerBlockDefault } from './layout/Spacer'
 
 // Category-based exports for tree-shaking
 export const blockCategories = {

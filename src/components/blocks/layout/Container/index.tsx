@@ -1,10 +1,24 @@
 import RichText from '@/components/ui/RichText'
-import type { ContainerBlock as ContainerBlockType, Media } from '@/payload-types'
+import type { Media } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import React from 'react'
 
+// Define ContainerBlock type locally since it's not in the main blocks
+interface ContainerBlock {
+  blockType: 'container'
+  content: any // Rich text content
+  backgroundColor?: string
+  padding?: 'none' | 'small' | 'medium' | 'large'
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
+  backgroundImage?: Media | string
+  paddingTop?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+  paddingBottom?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+  marginTop?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+  marginBottom?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+}
+
 interface ContainerBlockProps {
-  block: ContainerBlockType
+  block: ContainerBlock
   className?: string
 }
 

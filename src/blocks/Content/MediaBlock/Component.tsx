@@ -1,12 +1,23 @@
 import type { StaticImageData } from 'next/image'
 
+import { Media as MediaComponent } from '@/components/ui/Media'
+import RichText from '@/components/ui/RichText'
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import RichText from '@/components/ui/RichText'
 
-import type { MediaBlock as MediaBlockProps } from '@/payload-types'
+import type { Media } from '@/payload-types'
 
-import { Media } from '@/components/ui/Media'
+// Define MediaBlock type locally since it's not in the main blocks
+interface MediaBlock {
+  blockType: 'mediaBlock'
+  media: Media
+  caption?: string
+  enableZoom?: boolean
+}
+
+export interface MediaBlockProps {
+  block: MediaBlock
+}
 
 type Props = MediaBlockProps & {
   breakout?: boolean
@@ -16,6 +27,7 @@ type Props = MediaBlockProps & {
   imgClassName?: string
   staticImage?: StaticImageData
   disableInnerContainer?: boolean
+  media?: Media
 }
 
 export const MediaBlock: React.FC<Props> = (props) => {
@@ -43,7 +55,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
       )}
     >
       {(media || staticImage) && (
-        <Media
+        <MediaComponent
           imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
           resource={media}
           src={staticImage}

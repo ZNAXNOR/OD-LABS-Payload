@@ -14,12 +14,8 @@ import { Media } from './collections/Media'
 import { SocialMedia } from './collections/SocialMedia'
 import { Users } from './collections/Users'
 
-// Page Collections - organized by content type
-import { BlogPages } from './pages/Blogs'
-import { ContactPages } from './pages/Contacts'
-import { LegalPages } from './pages/Legal'
-import { Pages } from './pages/Pages'
-import { ServicesPages } from './pages/Services'
+// Consolidated Pages collection
+import { Pages } from './collections/Pages'
 
 // Globals - organized by functionality
 import { ContactGlobal } from './globals/Contact'
@@ -86,12 +82,8 @@ export default buildConfig({
     Users,
     Media,
     SocialMedia,
-    // Content collections
+    // Consolidated content collection
     Pages,
-    BlogPages,
-    ServicesPages,
-    LegalPages,
-    ContactPages,
   ],
   // Globals organized by functionality
   globals: [Header, Footer, ContactGlobal],

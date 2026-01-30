@@ -1,26 +1,4 @@
-import type {
-  ArchiveBlock,
-  BannerBlock,
-  BeforeAfterBlock,
-  CallToActionBlock,
-  CaseStudyBlock,
-  CodeBlock,
-  ContactFormBlock,
-  ContainerBlock,
-  ContentBlock,
-  DividerBlock,
-  FAQAccordionBlock,
-  FeatureGridBlock,
-  HeroBlock,
-  MediaBlock,
-  NewsletterBlock,
-  ProjectShowcaseBlock,
-  SocialProofBlock,
-  SpacerBlock,
-  StatsCounterBlock,
-  TestimonialBlock,
-  TimelineBlock,
-} from '@/payload-types'
+import type { CallToActionBlock, CodeBlock, HeroBlock } from '@/payload-types'
 import type { PricingTableBlock } from '@/types/services-blocks'
 import type {
   DefaultNodeTypes,
@@ -37,32 +15,7 @@ export type { SerializedBlockNode }
 import type { KeyboardNavConfig } from './utils/keyboardNavigation'
 
 // All available block types in the system
-export type AllBlockTypes =
-  | ArchiveBlock
-  | BannerBlock
-  | BeforeAfterBlock
-  | CallToActionBlock
-  | CaseStudyBlock
-  | CodeBlock
-  | ContactFormBlock
-  | ContainerBlock
-  | ContentBlock
-  | DividerBlock
-  | FAQAccordionBlock
-  | FeatureGridBlock
-  | HeroBlock
-  | MediaBlock
-  | NewsletterBlock
-  | PricingTableBlock
-  // | ProcessStepsBlock // Temporarily disabled due to database relation issue
-  | ProjectShowcaseBlock
-  // | ServicesGridBlock // Temporarily disabled due to database relation issue
-  | SocialProofBlock
-  | SpacerBlock
-  | StatsCounterBlock
-  // | TechStackBlock // Temporarily disabled due to database relation issue
-  | TestimonialBlock
-  | TimelineBlock
+export type AllBlockTypes = CallToActionBlock | CodeBlock | HeroBlock | PricingTableBlock
 
 // Extended node types including all blocks
 export type ExtendedNodeTypes = DefaultNodeTypes | SerializedBlockNode<AllBlockTypes>
@@ -240,32 +193,7 @@ export interface PerformanceReport {
 }
 
 // Utility types for block filtering
-export type BlockTypeString =
-  | 'archive'
-  | 'banner'
-  | 'beforeAfter'
-  | 'cta'
-  | 'caseStudy'
-  | 'code'
-  | 'contactForm'
-  | 'container'
-  | 'content'
-  | 'divider'
-  | 'faqAccordion'
-  | 'featureGrid'
-  | 'hero'
-  | 'mediaBlock'
-  | 'newsletter'
-  | 'pricingTable'
-  | 'processSteps'
-  | 'projectShowcase'
-  | 'servicesGrid'
-  | 'socialProof'
-  | 'spacer'
-  | 'statsCounter'
-  | 'techStack'
-  | 'testimonial'
-  | 'timeline'
+export type BlockTypeString = 'cta' | 'code' | 'hero' | 'pricingTable'
 
 // Block category types for organization
 export type BlockCategory =

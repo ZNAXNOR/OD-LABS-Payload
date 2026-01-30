@@ -9,6 +9,14 @@ export * from './LegacyBlockWarning'
 export * from './RowLabel'
 export * from './UniqueSelect'
 
+// Pages collection admin components
+export * from './LayoutFieldHelper'
+export * from './PagesListHeader'
+export * from './PagesPreviewButton'
+export * from './PagesSaveButton'
+export * from './PageTypeFilter'
+export * from './PageTypeSelector'
+
 // Category-based exports for tree-shaking
 export const adminComponents = {
   AdminBar: () => import('./AdminBar'),
@@ -17,6 +25,14 @@ export const adminComponents = {
   LegacyBlockWarning: () => import('./LegacyBlockWarning'),
   RowLabel: () => import('./RowLabel'),
   UniqueSelect: () => import('./UniqueSelect'),
+
+  // Pages collection components
+  PagesListHeader: () => import('./PagesListHeader'),
+  PageTypeFilter: () => import('./PageTypeFilter'),
+  PagesSaveButton: () => import('./PagesSaveButton'),
+  PagesPreviewButton: () => import('./PagesPreviewButton'),
+  PageTypeSelector: () => import('./PageTypeSelector'),
+  LayoutFieldHelper: () => import('./LayoutFieldHelper'),
 } as const
 
 // Type definitions

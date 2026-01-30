@@ -1,13 +1,31 @@
 'use client'
 
-import React, { useState } from 'react'
-import type { TestimonialBlock as TestimonialBlockType } from '@/payload-types'
+import type { Media } from '@/payload-types'
 import { cn } from '@/utilities/ui'
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import Image from 'next/image'
-import { Star, ChevronLeft, ChevronRight } from 'lucide-react'
+import React, { useState } from 'react'
+
+// Define TestimonialBlock type locally since it's not in the main blocks
+interface TestimonialBlock {
+  blockType: 'testimonial'
+  heading?: string
+  testimonials: Array<{
+    quote: string
+    author: string
+    role?: string
+    company?: string
+    avatar?: Media
+    rating?: number
+    projectType?: string
+    date?: string
+  }>
+  layout?: 'grid' | 'carousel' | 'single'
+  showRatings?: boolean
+}
 
 interface TestimonialBlockProps {
-  block: TestimonialBlockType
+  block: TestimonialBlock
   className?: string
 }
 
@@ -37,7 +55,7 @@ export const TestimonialBlock: React.FC<TestimonialBlockProps> = ({ block, class
 
     return (
       <div className="flex gap-1 mb-4">
-        {Array.from({ length: 5 }).map((_, index) => (
+        {Array.from({ length: 5 }).map((_: any, index: number) => (
           <Star
             key={index}
             className={cn(

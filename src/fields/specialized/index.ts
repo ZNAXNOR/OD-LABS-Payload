@@ -83,6 +83,11 @@ export const userFields = {
     defaultValue: ['user'],
     required: true,
     saveToJWT: true,
+    admin: {
+      components: {
+        Cell: '@/components/admin/SafeSelectCell',
+      },
+    },
     access: {
       read: ({ req: { user } }) => {
         if (user?.roles?.includes('admin') || user?.roles?.includes('super-admin')) {
@@ -266,7 +271,7 @@ export const blogFields = {
     name: 'relatedPosts',
     type: 'relationship',
     dbName: 'related_posts', // Snake case conversion following project standards
-    relationTo: 'blogs',
+    relationTo: 'pages',
     hasMany: true,
     maxRows: 3,
     admin: {
@@ -427,6 +432,11 @@ export const serviceFields = {
         ],
         defaultValue: 'USD',
         required: true,
+        admin: {
+          components: {
+            Cell: '@/components/admin/SafeSelectCell',
+          },
+        },
       },
       {
         name: 'period',
@@ -441,6 +451,11 @@ export const serviceFields = {
           { label: 'Per year', value: 'year' },
         ],
         defaultValue: 'once',
+        admin: {
+          components: {
+            Cell: '@/components/admin/SafeSelectCell',
+          },
+        },
       },
     ],
   } as Field,
@@ -471,6 +486,11 @@ export const serviceFields = {
         ],
         defaultValue: 'hours',
         required: true,
+        admin: {
+          components: {
+            Cell: '@/components/admin/SafeSelectCell',
+          },
+        },
       },
     ],
   } as Field,

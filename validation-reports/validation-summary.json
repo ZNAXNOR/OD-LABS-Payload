@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-01-30T09:44:26.389Z",
+  "environment": "development",
+  "configPath": "./src/payload.config.ts",
+  "reportFormats": [
+    "json",
+    "markdown"
+  ],
+  "success": true
+}

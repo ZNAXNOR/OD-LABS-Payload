@@ -15,10 +15,10 @@ export const revalidate = 60
 export async function generateStaticParams() {
   const payload = await getPayload({ config })
   const pages = await payload.find({
-    collection: 'blogs',
+    collection: 'pages',
     limit: 1000,
     where: {
-      _status: { equals: 'published' },
+      and: [{ _status: { equals: 'published' } }, { pageType: { equals: 'blog' } }],
     },
   })
 

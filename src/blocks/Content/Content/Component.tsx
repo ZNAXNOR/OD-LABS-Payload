@@ -1,7 +1,16 @@
-import type { ContentBlock as ContentBlockProps } from '@/payload-types'
+// Define local type since ContentBlock is not in payload-types
+interface ContentBlockProps {
+  id?: string | null
+  blockName?: string | null
+  blockType: 'content'
+  columns?: any[]
+  gap?: 'small' | 'medium' | 'large'
+  alignment?: 'top' | 'center' | 'bottom'
+  // Add other content-specific properties as needed
+}
+import RichText from '@/components/ui/RichText'
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import RichText from '@/components/ui/RichText'
 
 export interface ContentComponentProps extends ContentBlockProps {
   className?: string
@@ -20,7 +29,6 @@ export const ContentComponent: React.FC<ContentComponentProps> = ({
       <div className="container mx-auto px-4">
         <div
           className={cn('grid', {
-            'gap-0': gap === 'none',
             'gap-4': gap === 'small',
             'gap-8': gap === 'medium',
             'gap-12': gap === 'large',
@@ -30,7 +38,7 @@ export const ContentComponent: React.FC<ContentComponentProps> = ({
           })}
           style={{
             gridTemplateColumns: columns
-              .map((column) => {
+              .map((column: any) => {
                 switch (column.width) {
                   case 'oneThird':
                     return '1fr'
@@ -49,7 +57,7 @@ export const ContentComponent: React.FC<ContentComponentProps> = ({
               .join(' '),
           }}
         >
-          {columns.map((column, index) => {
+          {columns.map((column: any, index: any) => {
             const ColumnWrapper = column.enableLink && column.link ? 'a' : 'div'
             const linkProps =
               column.enableLink && column.link

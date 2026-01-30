@@ -231,7 +231,7 @@ export const validateInternalLink = (
   }
 
   // Check if the collection is valid
-  const validCollections = ['pages', 'blogs', 'services', 'legal', 'contacts']
+  const validCollections = ['pages']
   if (!validCollections.includes(relationTo)) {
     return {
       isValid: false,

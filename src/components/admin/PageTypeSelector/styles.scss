@@ -1,0 +1,118 @@
+.page-type-selector {
+  &__field {
+    margin-bottom: var(--base);
+  }
+
+  &__info {
+    background: var(--theme-elevation-50);
+    border: 1px solid var(--theme-elevation-200);
+    border-radius: var(--border-radius-m);
+    padding: var(--base);
+    margin-top: calc(var(--base) / 2);
+  }
+
+  &__info-header {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--base) / 2);
+    margin-bottom: calc(var(--base) / 2);
+  }
+
+  &__info-icon {
+    font-size: 1.25rem;
+  }
+
+  &__info-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--theme-text);
+  }
+
+  &__info-description {
+    margin: 0 0 calc(var(--base) / 2) 0;
+    font-size: 0.875rem;
+    color: var(--theme-text-dim);
+    line-height: 1.4;
+  }
+
+  &__info-examples {
+    font-size: 0.875rem;
+    color: var(--theme-text-dim);
+
+    strong {
+      color: var(--theme-text);
+    }
+  }
+
+  &__help {
+    background: var(--theme-elevation-25);
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: var(--border-radius-m);
+    padding: var(--base);
+    margin-top: calc(var(--base) / 2);
+  }
+
+  &__help-title {
+    margin: 0 0 var(--base) 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--theme-text);
+  }
+
+  &__help-options {
+    display: grid;
+    gap: calc(var(--base) / 2);
+  }
+
+  &__help-option {
+    display: flex;
+    align-items: flex-start;
+    gap: calc(var(--base) / 2);
+    padding: calc(var(--base) / 2);
+    background: var(--theme-elevation-0);
+    border: 1px solid var(--theme-elevation-100);
+    border-radius: var(--border-radius-s);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: var(--theme-elevation-50);
+      border-color: var(--theme-elevation-200);
+    }
+  }
+
+  &__help-option-icon {
+    font-size: 1.125rem;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+  }
+
+  &__help-option-content {
+    flex: 1;
+
+    strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.875rem;
+      color: var(--theme-text);
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.8125rem;
+      color: var(--theme-text-dim);
+      line-height: 1.3;
+    }
+  }
+
+  @include small-break {
+    &__help-option {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    &__help-option-icon {
+      margin-top: 0;
+    }
+  }
+}

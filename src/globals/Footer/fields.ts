@@ -137,7 +137,7 @@ export const fields: Field[] = [
                           width: '50%',
                         },
                         label: 'Legal Page',
-                        relationTo: ['legal'], // Only show Legal pages
+                        relationTo: ['pages'], // Only show Pages (filtered by pageType in admin)
                         required: true,
                       },
                       {

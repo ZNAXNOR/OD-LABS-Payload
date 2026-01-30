@@ -6,12 +6,8 @@ export { Media } from './Media'
 export { SocialMedia } from './SocialMedia'
 export { Users } from './Users'
 
-// Page collections (re-exported from pages directory for consistency)
-export { BlogPages } from '../pages/Blogs'
-export { ContactPages } from '../pages/Contacts'
-export { LegalPages } from '../pages/Legal'
-export { Pages } from '../pages/Pages'
-export { ServicesPages } from '../pages/Services'
+// Consolidated Pages collection
+export { Pages } from './Pages'
 
 // Collection utilities and templates
 export * from './access'
@@ -31,8 +27,8 @@ export const pageCollections: CollectionConfig[] = [
 // Collection groups for admin organization
 export const collectionGroups = {
   core: ['users', 'media'],
-  content: ['pages', 'blogs', 'services', 'legal', 'contacts'],
-  settings: ['social-media'], // Add settings collections here
+  content: ['pages'], // Consolidated into single pages collection
+  settings: ['social-media'],
 } as const
 
 // Collection metadata for documentation and tooling
@@ -53,38 +49,11 @@ export const collectionMetadata = {
     hasUpload: true,
   },
   pages: {
-    description: 'Website pages and content',
+    description: 'All website pages and content (consolidated)',
     category: 'content',
     hasAuth: false,
     hasVersions: true,
     hasDrafts: true,
-  },
-  blogs: {
-    description: 'Blog posts and articles',
-    category: 'content',
-    hasAuth: false,
-    hasVersions: true,
-    hasDrafts: true,
-  },
-  services: {
-    description: 'Service offerings and descriptions',
-    category: 'content',
-    hasAuth: false,
-    hasVersions: true,
-    hasDrafts: true,
-  },
-  legal: {
-    description: 'Legal pages and policies',
-    category: 'content',
-    hasAuth: false,
-    hasVersions: true,
-    hasDrafts: true,
-  },
-  contacts: {
-    description: 'Contact pages and information',
-    category: 'content',
-    hasAuth: false,
-    hasVersions: true,
-    hasDrafts: true,
+    pageTypes: ['page', 'blog', 'service', 'legal', 'contact'],
   },
 } as const

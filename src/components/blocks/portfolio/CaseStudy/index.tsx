@@ -1,11 +1,55 @@
-import React from 'react'
-import type { CaseStudyBlock as CaseStudyBlockType } from '@/payload-types'
+import type { Media } from '@/payload-types'
 import { cn } from '@/utilities/ui'
-import Image from 'next/image'
 import * as LucideIcons from 'lucide-react'
+import Image from 'next/image'
+import React from 'react'
+
+// Define CaseStudyBlock type locally since it's not in the main blocks
+interface CaseStudyBlock {
+  blockType: 'caseStudy'
+  project: string
+  client: string
+  industry?: string
+  duration?: string
+  role?: string
+  challenge: {
+    heading: string
+    content: string
+    image?: Media
+  }
+  approach: {
+    heading: string
+    content: string
+    steps: Array<{
+      step: string
+    }>
+  }
+  solution: {
+    heading: string
+    content: string
+    image?: Media
+    technologies: Array<{
+      technology: string
+    }>
+  }
+  results: {
+    heading: string
+    metrics: Array<{
+      label: string
+      value: string
+      change?: string
+      icon?: string
+    }>
+    testimonial?: {
+      quote: string
+      author: string
+      role: string
+    }
+  }
+}
 
 interface CaseStudyBlockProps {
-  block: CaseStudyBlockType
+  block: CaseStudyBlock
   className?: string
 }
 
@@ -103,7 +147,7 @@ export const CaseStudyBlock: React.FC<CaseStudyBlockProps> = ({ block, className
             </p>
             {approach.steps && approach.steps.length > 0 && (
               <div className="grid md:grid-cols-2 gap-4">
-                {approach.steps.map((step, index) => (
+                {approach.steps.map((step: any, index: number) => (
                   <div
                     key={index}
                     className="flex items-start gap-3 bg-white dark:bg-zinc-800 p-4 rounded-lg"
@@ -146,7 +190,7 @@ export const CaseStudyBlock: React.FC<CaseStudyBlockProps> = ({ block, className
                       Technologies Used
                     </h3>
                     <div className="flex flex-wrap gap-2">
-                      {solution.technologies.map((tech, index) => (
+                      {solution.technologies.map((tech: any, index: number) => (
                         <span
                           key={index}
                           className="px-3 py-1 bg-brand-primary/10 text-brand-primary text-sm rounded-full"
@@ -172,7 +216,7 @@ export const CaseStudyBlock: React.FC<CaseStudyBlockProps> = ({ block, className
             {/* Metrics */}
             {results.metrics && results.metrics.length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-                {results.metrics.map((metric, index) => {
+                {results.metrics.map((metric: any, index: number) => {
                   const icon = getIcon(metric.icon || undefined)
                   return (
                     <div

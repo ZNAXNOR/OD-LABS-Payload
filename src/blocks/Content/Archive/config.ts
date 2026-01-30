@@ -69,7 +69,7 @@ export const ArchiveBlock: Block = {
     {
       name: 'selectedDocs',
       type: 'relationship',
-      relationTo: ['blogs', 'services'],
+      relationTo: ['pages'],
       hasMany: true,
       admin: {
         condition: (_, siblingData) => siblingData?.populateBy === 'selection',

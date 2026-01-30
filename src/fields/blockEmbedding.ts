@@ -1,4 +1,7 @@
-import { BlocksFeature } from '@payloadcms/richtext-lexical'
+// Note: BlocksFeature is not currently used in rich text configurations
+// This file contains block definitions for regular block fields (type: 'blocks')
+// not for embedding blocks within rich text content
+
 import type { Block } from 'payload'
 
 // Import all available blocks
@@ -18,16 +21,16 @@ import {
   HeroBlock,
   MediaBlock,
   NewsletterBlock,
-  ProjectShowcaseBlock,
-  ProcessStepsBlock,
   PricingTableBlock,
+  ProcessStepsBlock,
+  ProjectShowcaseBlock,
   ServicesGridBlock,
   SocialProofBlock,
   SpacerBlock,
   StatsCounterBlock,
+  TechStackBlock,
   TestimonialBlock,
   TimelineBlock,
-  TechStackBlock,
 } from '@/blocks'
 
 // Block categories for organization in the editor
@@ -79,15 +82,10 @@ export const allBlocks: Block[] = [
   SpacerBlock,
 ]
 
-// Blocks suitable for inline embedding (smaller, content-focused blocks)
-export const inlineBlocks: Block[] = [
-  MediaBlock,
-  Code,
-  DividerBlock,
-  SpacerBlock,
-  NewsletterBlock,
-  SocialProofBlock,
-]
+// Remove the inlineBlocks array since it's not used without BlocksFeature
+// Keeping the list as comments for reference
+// Blocks suitable for inline embedding (smaller, content-focused blocks):
+// MediaBlock, Code, DividerBlock, SpacerBlock, NewsletterBlock, SocialProofBlock
 
 // Blocks organized by category for better UX
 export const blockCategories: Record<string, BlockCategory> = {
@@ -104,9 +102,7 @@ export const blockCategories: Record<string, BlockCategory> = {
   services: {
     label: 'Services',
     description: 'Service offerings and business blocks',
-    blocks: [
-      ServicesGridBlock, TechStackBlock, ProcessStepsBlock, PricingTableBlock
-    ],
+    blocks: [ServicesGridBlock, TechStackBlock, ProcessStepsBlock, PricingTableBlock],
   },
   portfolio: {
     label: 'Portfolio',
@@ -130,12 +126,10 @@ export const blockCategories: Record<string, BlockCategory> = {
   },
 }
 
-// Configuration options for block embedding
+// Configuration options for block fields (not rich text embedding)
 export interface BlockEmbeddingConfig {
   // Which blocks to allow (defaults to all)
   allowedBlocks?: Block[]
-  // Which blocks to allow for inline embedding
-  inlineBlocks?: Block[]
   // Whether to show block categories in the UI
   showCategories?: boolean
   // Whether to enable block search
@@ -152,10 +146,9 @@ export interface BlockEmbeddingConfig {
   validateBlock?: (block: any) => boolean | string
 }
 
-// Default configuration
+// Default configuration for block fields
 export const defaultBlockEmbeddingConfig: BlockEmbeddingConfig = {
   allowedBlocks: allBlocks,
-  inlineBlocks: inlineBlocks,
   showCategories: true,
   enableSearch: true,
   enablePreview: true,
@@ -169,9 +162,17 @@ export function getBlocksByCategory(category: keyof typeof blockCategories): Blo
   return blockCategories[category]?.blocks || []
 }
 
-// Helper function to check if a block is inline
+// Helper function to check if a block is suitable for inline use
 export function isInlineBlock(blockSlug: string): boolean {
-  return inlineBlocks.some((block) => block.slug === blockSlug)
+  const inlineBlockSlugs = [
+    'mediaBlock',
+    'code',
+    'dividerBlock',
+    'spacerBlock',
+    'newsletterBlock',
+    'socialProofBlock',
+  ]
+  return inlineBlockSlugs.includes(blockSlug)
 }
 
 // Helper function to get block by slug
@@ -190,41 +191,10 @@ export function validateBlockData(blockSlug: string, _data: any): boolean {
   return true
 }
 
-// Create BlocksFeature configuration for lexical editor
-export function createBlocksFeature(config: Partial<BlockEmbeddingConfig> = {}): any {
-  const finalConfig = { ...defaultBlockEmbeddingConfig, ...config }
+// Note: The following functions were for rich text BlocksFeature integration
+// which is not currently used. Keeping for potential future use.
 
-  return BlocksFeature({
-    blocks: finalConfig.allowedBlocks || allBlocks,
-    inlineBlocks: finalConfig.inlineBlocks || inlineBlocks,
-  })
-}
-
-// Preset configurations for different use cases
-export const basicBlockEmbedding = createBlocksFeature({
-  allowedBlocks: [ContentBlock, MediaBlock, Code, DividerBlock],
-  inlineBlocks: [MediaBlock, Code, DividerBlock],
-  showCategories: false,
-})
-
-export const contentBlockEmbedding = createBlocksFeature({
-  allowedBlocks: getBlocksByCategory('content').concat(
-    getBlocksByCategory('technical'),
-    getBlocksByCategory('layout'),
-  ),
-  showCategories: true,
-})
-
-export const fullBlockEmbedding = createBlocksFeature({
-  allowedBlocks: allBlocks,
-  inlineBlocks: inlineBlocks,
-  showCategories: true,
-})
-
-// Export the main blocks feature for use in rich text editors
-export const blocksFeature = createBlocksFeature()
-
-// Block embedding field configuration
+// Block field configuration (for regular block fields, not rich text embedding)
 export interface BlockEmbeddingFieldConfig {
   name?: string
   label?: string
@@ -232,14 +202,9 @@ export interface BlockEmbeddingFieldConfig {
   config?: Partial<BlockEmbeddingConfig>
 }
 
-// Helper to create a block embedding field
+// Helper to create a block field (type: 'blocks')
 export function blockEmbeddingField(options: BlockEmbeddingFieldConfig = {}) {
-  const {
-    name = 'embeddedBlocks',
-    label = 'Embedded Blocks',
-    required = false,
-    config = {},
-  } = options
+  const { name = 'blocks', label = 'Content Blocks', required = false, config = {} } = options
 
   return {
     name,
@@ -248,7 +213,7 @@ export function blockEmbeddingField(options: BlockEmbeddingFieldConfig = {}) {
     required,
     blocks: config.allowedBlocks || allBlocks,
     admin: {
-      description: 'Add blocks to embed within this content',
+      description: 'Add content blocks to build your page layout',
       initCollapsed: false,
     },
   }

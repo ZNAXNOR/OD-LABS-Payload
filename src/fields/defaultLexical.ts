@@ -1,21 +1,21 @@
-import type { TextFieldSingleValidation } from 'payload'
 import {
   BoldFeature,
   ItalicFeature,
+  lexicalEditor,
   LinkFeature,
   ParagraphFeature,
-  lexicalEditor,
   UnderlineFeature,
   type LinkFields,
 } from '@payloadcms/richtext-lexical'
+import type { TextFieldSingleValidation } from 'payload'
 import { relOptions } from './link'
 import {
-  comprehensiveRichText,
-  standardRichText,
-  basicRichText,
   advancedRichText,
+  basicRichText,
+  comprehensiveRichText,
   richTextWithBasicBlocks,
   richTextWithContentBlocks,
+  standardRichText,
 } from './richTextFeatures'
 
 export const defaultLexical = lexicalEditor({
@@ -25,7 +25,7 @@ export const defaultLexical = lexicalEditor({
     BoldFeature(),
     ItalicFeature(),
     LinkFeature({
-      enabledCollections: ['pages', 'blogs', 'services', 'legal', 'contacts'],
+      enabledCollections: ['pages'],
       fields: ({ defaultFields }) => {
         const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
           if ('name' in field && field.name === 'url') return false
@@ -100,9 +100,9 @@ export const enhancedLexical = comprehensiveRichText
 
 // Export additional preset configurations
 export {
-  standardRichText,
-  basicRichText,
   advancedRichText,
+  basicRichText,
   richTextWithBasicBlocks,
   richTextWithContentBlocks,
+  standardRichText,
 }

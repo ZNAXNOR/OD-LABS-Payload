@@ -1,13 +1,13 @@
-import React from 'react'
+import { cn } from '@/utilities/ui'
 import type { SerializedLinkNode } from '@payloadcms/richtext-lexical'
+import React from 'react'
 import type {
-  BlockTypeString,
   BlockCategory,
   BlockRegistry,
-  ResponsiveOptions,
+  BlockTypeString,
   EnhancedRichTextProps,
+  ResponsiveOptions,
 } from './types'
-import { cn } from '@/utilities/ui'
 
 // Block registry with metadata for all available blocks
 export const blockRegistry: BlockRegistry = {
@@ -18,136 +18,25 @@ export const blockRegistry: BlockRegistry = {
     supportsRichText: true,
   },
 
-  // Content blocks
-  content: {
-    category: 'content',
-    description: 'Flexible content block with columns',
-    supportsRichText: true,
-  },
-  archive: {
-    category: 'content',
-    description: 'Archive listing with filtering',
-    supportsRichText: false,
-  },
-  code: {
-    category: 'content',
-    description: 'Code block with syntax highlighting',
-    supportsRichText: false,
-  },
-
-  // Layout blocks
-  container: {
-    category: 'layout',
-    description: 'Container wrapper with max-width options',
-    supportsRichText: true,
-  },
-  divider: {
-    category: 'layout',
-    description: 'Visual divider with customizable styles',
-    supportsRichText: false,
-  },
-  spacer: {
-    category: 'layout',
-    description: 'Spacing element with responsive heights',
-    supportsRichText: false,
-  },
-
   // CTA blocks
   cta: {
     category: 'cta',
     description: 'Call-to-action with multiple layout variants',
     supportsRichText: true,
   },
-  banner: {
-    category: 'cta',
-    description: 'Notification banner with status styles',
-    supportsRichText: true,
-  },
-  contactForm: {
-    category: 'cta',
-    description: 'Contact form with customizable fields',
+
+  // Code blocks
+  code: {
+    category: 'content',
+    description: 'Code block with syntax highlighting',
     supportsRichText: false,
   },
-  newsletter: {
-    category: 'cta',
-    description: 'Newsletter signup form',
-    supportsRichText: true,
-  },
-  socialProof: {
-    category: 'cta',
-    description: 'Social proof elements (logos, testimonials)',
-    supportsRichText: true,
-  },
 
-  // Portfolio blocks
-  projectShowcase: {
-    category: 'portfolio',
-    description: 'Project showcase with media and details',
-    supportsRichText: true,
-  },
-  caseStudy: {
-    category: 'portfolio',
-    description: 'Case study presentation',
-    supportsRichText: true,
-  },
-  beforeAfter: {
-    category: 'portfolio',
-    description: 'Before/after comparison slider',
-    supportsRichText: true,
-  },
-  testimonial: {
-    category: 'portfolio',
-    description: 'Customer testimonials',
-    supportsRichText: true,
-  },
-
-  // Services blocks
-  servicesGrid: {
-    category: 'services',
-    description: 'Grid of services with icons and descriptions',
-    supportsRichText: true,
-  },
-  techStack: {
-    category: 'services',
-    description: 'Technology stack showcase',
-    supportsRichText: true,
-  },
-  processSteps: {
-    category: 'services',
-    description: 'Step-by-step process visualization',
-    supportsRichText: true,
-  },
+  // Pricing blocks
   pricingTable: {
     category: 'services',
     description: 'Pricing comparison table',
     supportsRichText: true,
-  },
-
-  // Technical blocks
-  faqAccordion: {
-    category: 'technical',
-    description: 'FAQ accordion with expandable items',
-    supportsRichText: true,
-  },
-  featureGrid: {
-    category: 'technical',
-    description: 'Feature grid with icons and descriptions',
-    supportsRichText: true,
-  },
-  statsCounter: {
-    category: 'technical',
-    description: 'Statistics counter with animations',
-    supportsRichText: true,
-  },
-  timeline: {
-    category: 'technical',
-    description: 'Timeline visualization',
-    supportsRichText: true,
-  },
-  mediaBlock: {
-    category: 'technical',
-    description: 'Media display with captions',
-    supportsRichText: false,
   },
 }
 

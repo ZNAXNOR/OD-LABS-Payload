@@ -1,10 +1,23 @@
 'use client'
 
-import type { NewsletterBlock as NewsletterBlockType } from '@/payload-types'
 import React, { useState } from 'react'
 
+// Define NewsletterBlock type locally since it's not in the main blocks
+interface NewsletterBlock {
+  blockType: 'newsletter'
+  heading?: string
+  description?: string
+  placeholder?: string
+  buttonText?: string
+  successMessage?: string
+  errorMessage?: string
+  style?: 'inline' | 'card' | 'minimal'
+  showPrivacyNote?: boolean
+  privacyText?: string
+}
+
 interface NewsletterBlockProps {
-  block: NewsletterBlockType
+  block: NewsletterBlock
   className?: string
 }
 

@@ -1,14 +1,51 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
-import type { ProjectShowcaseBlock as ProjectShowcaseBlockType } from '@/payload-types'
+import type { Media } from '@/payload-types'
 import { cn } from '@/utilities/ui'
-import Link from 'next/link'
+import { ExternalLink, GitBranch } from 'lucide-react'
 import Image from 'next/image'
-import { ExternalLink, Github } from 'lucide-react'
+import Link from 'next/link'
+import React, { useMemo, useState } from 'react'
+
+// Define ProjectShowcaseBlock type locally since it's not in the main blocks
+interface ProjectShowcaseBlock {
+  blockType: 'projectShowcase'
+  heading?: string
+  description?: string
+  layout?: 'grid' | 'masonry' | 'carousel'
+  columns?: '2' | '3' | '4'
+  enableFiltering?: boolean
+  showLoadMore?: boolean
+  itemsPerPage?: number
+  projects: Array<{
+    title: string
+    description: string
+    image: Media
+    category: string
+    technologies: Array<{
+      technology: string
+    }>
+    liveUrl?: string
+    githubUrl?: string
+    featured?: boolean
+    projectLink?: {
+      link: {
+        type: 'custom' | 'reference'
+        url?: string
+        reference?: any
+        label?: string
+        newTab?: boolean
+      }
+    }
+  }>
+  filterCategories?: Array<{
+    category: string
+    label: string
+  }>
+}
 
 interface ProjectShowcaseBlockProps {
-  block: ProjectShowcaseBlockType
+  block: ProjectShowcaseBlock
   className?: string
 }
 
@@ -31,9 +68,9 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
   // Extract unique categories from projects
   const categories = useMemo(() => {
     if (filterCategories && filterCategories.length > 0) {
-      return filterCategories.map((cat) => cat.category).filter(Boolean)
+      return filterCategories.map((cat: any) => cat.category).filter(Boolean)
     }
-    const uniqueCategories = new Set(projects?.map((p) => p.category).filter(Boolean))
+    const uniqueCategories = new Set(projects?.map((p: any) => p.category).filter(Boolean))
     return Array.from(uniqueCategories)
   }, [projects, filterCategories])
 
@@ -41,7 +78,7 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
   const filteredProjects = useMemo(() => {
     if (!projects) return []
     if (selectedCategory === 'all') return projects
-    return projects.filter((p) => p.category === selectedCategory)
+    return projects.filter((p: any) => p.category === selectedCategory)
   }, [projects, selectedCategory])
 
   // Apply pagination
@@ -108,7 +145,7 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
             >
               All Projects
             </button>
-            {categories.map((category) => (
+            {categories.map((category: string) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
@@ -134,7 +171,7 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
             layout === 'carousel' && 'md:grid-cols-1',
           )}
         >
-          {displayedProjects?.map((project, index) => {
+          {displayedProjects?.map((project: any, index: number) => {
             const imageUrl = getImageUrl(project.image)
             const linkData = project.projectLink?.link
             const hasLink = linkData && (linkData.url || linkData.reference)
@@ -184,7 +221,7 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
                   {/* Technologies */}
                   {project.technologies && project.technologies.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {project.technologies.map((tech, techIndex) => (
+                      {project.technologies.map((tech: any, techIndex: number) => (
                         <span
                           key={techIndex}
                           className="px-2 py-1 bg-brand-primary/10 text-brand-primary text-xs rounded"
@@ -228,7 +265,7 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
                         className="text-zinc-600 dark:text-zinc-400 hover:text-brand-primary dark:hover:text-brand-primary transition-colors"
                         aria-label="View on GitHub"
                       >
-                        <Github className="w-5 h-5" />
+                        <GitBranch className="w-5 h-5" />
                       </a>
                     )}
                     {project.liveUrl && (
@@ -253,7 +290,9 @@ export const ProjectShowcaseBlock: React.FC<ProjectShowcaseBlockProps> = ({ bloc
         {hasMore && (
           <div className="text-center mt-12">
             <button
-              onClick={() => setVisibleCount((prev) => (prev || 0) + (itemsPerPage || 0))}
+              onClick={() =>
+                setVisibleCount((prev: number | null) => (prev || 0) + (itemsPerPage || 0))
+              }
               className="inline-flex items-center px-6 py-3 bg-brand-primary text-white font-medium rounded-lg hover:bg-brand-primary/90 transition-colors"
             >
               Load More Projects

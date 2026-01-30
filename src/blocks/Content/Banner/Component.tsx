@@ -1,8 +1,16 @@
-import type { BannerBlock as BannerBlockProps } from '@/payload-types'
+// Define local type since BannerBlock is not in payload-types
+interface BannerBlockProps {
+  id?: string | null
+  blockName?: string | null
+  blockType: 'banner'
+  content?: any
+  style?: 'info' | 'error' | 'success' | 'warning'
+  // Add other banner-specific properties as needed
+}
 
+import RichText from '@/components/ui/RichText'
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import RichText from '@/components/ui/RichText'
 
 type Props = {
   className?: string

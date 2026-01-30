@@ -89,7 +89,7 @@ export const tableFeatures = [
 // Enhanced link feature with all options
 export const enhancedLinkFeature = [
   LinkFeature({
-    enabledCollections: ['pages', 'blogs', 'services', 'legal', 'contacts'],
+    enabledCollections: ['pages'],
     fields: ({ defaultFields }) => {
       const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
         if ('name' in field && field.name === 'url') return false

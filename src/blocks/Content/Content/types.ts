@@ -1,4 +1,13 @@
-import type { ContentBlock } from '@/payload-types'
+// Define local type since ContentBlock is not in payload-types
+interface ContentBlock {
+  id?: string | null
+  blockName?: string | null
+  blockType: 'content'
+  columns?: any[]
+  gap?: 'small' | 'medium' | 'large'
+  alignment?: 'top' | 'center' | 'bottom'
+  // Add other content-specific properties as needed
+}
 
 export interface ContentBlockProps extends ContentBlock {
   className?: string

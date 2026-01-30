@@ -1,16 +1,14 @@
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { seoPlugin } from '@payloadcms/plugin-seo'
-import { Plugin } from 'payload'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import { Plugin } from 'payload'
 
-import { Page, BlogPage, ServicePage, LegalPage, ContactPage } from '@/payload-types'
+import { Page } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
 // Enhanced title generation with collection-specific logic
-const generateTitle: GenerateTitle<Page | BlogPage | ServicePage | LegalPage | ContactPage> = ({
-  doc,
-}) => {
+const generateTitle: GenerateTitle<Page> = ({ doc }) => {
   const baseTitle = 'OD LABS'
   const siteName = 'OD LABS Website'
 
@@ -18,54 +16,69 @@ const generateTitle: GenerateTitle<Page | BlogPage | ServicePage | LegalPage | C
     return siteName
   }
 
-  // Collection-specific title formatting
+  // Collection-specific title formatting based on pageType
   let prefix = ''
 
-  // Type guard to check if doc has a specific collection type
-  if ('serviceType' in doc && doc.serviceType) {
-    prefix = 'Services - '
-  } else if ('documentType' in doc && doc.documentType) {
-    prefix = 'Legal - '
-  } else if ('purpose' in doc && doc.purpose) {
-    prefix = 'Contact - '
-  } else if ('publishedDate' in doc) {
-    prefix = 'Blog - '
+  // Use pageType to determine the prefix
+  switch (doc.pageType) {
+    case 'service':
+      prefix = 'Services - '
+      break
+    case 'legal':
+      prefix = 'Legal - '
+      break
+    case 'contact':
+      prefix = 'Contact - '
+      break
+    case 'blog':
+      prefix = 'Blog - '
+      break
+    case 'page':
+    default:
+      // No prefix for regular pages
+      break
   }
 
   return `${prefix}${doc.title} | ${baseTitle}`
 }
 
 // Enhanced URL generation with collection-specific routing
-const generateURL: GenerateURL<Page | BlogPage | ServicePage | LegalPage | ContactPage> = ({
-  doc,
-}) => {
+const generateURL: GenerateURL<Page> = ({ doc }) => {
   const baseURL = getServerSideURL()
 
   if (!doc?.slug) {
     return baseURL
   }
 
-  // Collection-specific URL routing
+  // Collection-specific URL routing based on pageType
   let collectionPath = ''
 
-  // Determine collection path based on document properties
-  if ('serviceType' in doc) {
-    collectionPath = '/services'
-  } else if ('documentType' in doc) {
-    collectionPath = '/legal'
-  } else if ('purpose' in doc) {
-    collectionPath = '/contacts'
-  } else if ('publishedDate' in doc) {
-    collectionPath = '/blogs'
+  // Use pageType to determine the URL path
+  switch (doc.pageType) {
+    case 'service':
+      collectionPath = '/services'
+      break
+    case 'legal':
+      collectionPath = '/legal'
+      break
+    case 'contact':
+      collectionPath = '/contacts'
+      break
+    case 'blog':
+      collectionPath = '/blogs'
+      break
+    case 'page':
+    default:
+      // Pages use root path
+      break
   }
-  // Pages collection uses root path
 
   const fullPath = collectionPath ? `${collectionPath}/${doc.slug}` : `/${doc.slug}`
   return `${baseURL}${fullPath}`
 }
 
-import { dashboardAnalytics } from 'payload-dashboard-analytics'
 import path from 'path'
+import { dashboardAnalytics } from 'payload-dashboard-analytics'
 
 export const plugins: Plugin[] = [
   dashboardAnalytics({
@@ -79,7 +92,7 @@ export const plugins: Plugin[] = [
   seoPlugin({
     generateTitle,
     generateURL,
-    collections: ['pages', 'blogs', 'services', 'legal', 'contacts'],
+    collections: ['pages'],
     uploadsCollection: 'media',
     tabbedUI: true,
     fields: ({ defaultFields }) => [

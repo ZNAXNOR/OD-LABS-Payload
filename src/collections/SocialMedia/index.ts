@@ -45,11 +45,14 @@ export const SocialMedia: CollectionConfig = {
       admin: {
         description: 'Social media platform',
         width: '50%',
+        components: {
+          Cell: '@/components/admin/SafeSelectCell',
+        },
       },
     },
     {
       name: 'url',
-      type: 'text',      
+      type: 'text',
       required: true,
       admin: {
         description: 'Profile URL',
