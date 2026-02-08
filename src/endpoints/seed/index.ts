@@ -3,16 +3,17 @@ import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from '
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
 import { home } from './home'
-import { image1 } from './image-1'
-import { image2 } from './image-2'
+import { image1 } from './image-post1'
+import { image2 } from './image-post2'
+import { image3 } from './image-post3'
 import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
-import { imageAvatar1 } from './image-avatar-1'
-import { imageAvatar2 } from './image-avatar-2'
-import { imageAvatar3 } from './image-avatar-3'
-import { imageAvatar4 } from './image-avatar-4'
+import { imageAvatar1 } from './image-avatar1'
+import { imageAvatar2 } from './image-avatar2'
+import { imageAvatar3 } from './image-avatar3'
+import { imageAvatar4 } from './image-avatar4'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -99,7 +100,7 @@ export const seed = async ({
   ] = await Promise.all([
     // Payload Images
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/base-payload/src/endpoints/seed/image-hero1.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/base-payload/src/endpoints/seed/image-post1.webp',
     ),
     fetchFileByURL(
       'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/base-payload/src/endpoints/seed/image-post2.webp',
@@ -112,16 +113,16 @@ export const seed = async ({
     ),
     // Avatar Images
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/image-avatar1.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar1.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/image-avatar2.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar2.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/image-avatar3.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar3.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/image-avatar4.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar4.webp',
     ),
   ])
 
@@ -156,7 +157,7 @@ export const seed = async ({
     }),
     payload.create({
       collection: 'media',
-      data: image2,
+      data: image3,
       file: image3Buffer,
     }),
     payload.create({
