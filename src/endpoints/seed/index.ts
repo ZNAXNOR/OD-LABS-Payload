@@ -3,9 +3,9 @@ import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from '
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
 import { home } from './home'
-import { image1 } from './image-post1'
-import { image2 } from './image-post2'
-import { image3 } from './image-post3'
+import { image1 as imagePost1 } from './image-post1'
+import { image2 as imagePost2 } from './image-post2'
+import { image3 as imagePost3 } from './image-post3'
 import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
@@ -89,9 +89,9 @@ export const seed = async ({
   payload.logger.info(`— Seeding media...`)
 
   const [
-    image1Buffer,
-    image2Buffer,
-    image3Buffer,
+    post1Buffer,
+    post2Buffer,
+    post3Buffer,
     hero1Buffer,
     avatar1Buffer,
     avatar2Buffer,
@@ -128,14 +128,14 @@ export const seed = async ({
 
   const [
     demoAuthor,
-    image1Doc,
-    image2Doc,
-    image3Doc,
+    imagePost1Doc,
+    imagePost2Doc,
+    imagePost3Doc,
     imageHomeDoc,
-    avatar1Doc,
-    avatar2Doc,
-    avatar3Doc,
-    avatar4Doc,
+    imageAvatar1Doc,
+    imageAvatar2Doc,
+    imageAvatar3Doc,
+    imageAvatar4Doc,
   ] = await Promise.all([
     payload.create({
       collection: 'users',
@@ -147,18 +147,18 @@ export const seed = async ({
     }),
     payload.create({
       collection: 'media',
-      data: image1,
-      file: image1Buffer,
+      data: imagePost1,
+      file: post1Buffer,
     }),
     payload.create({
       collection: 'media',
-      data: image2,
-      file: image2Buffer,
+      data: imagePost2,
+      file: post2Buffer,
     }),
     payload.create({
       collection: 'media',
-      data: image3,
-      file: image3Buffer,
+      data: imagePost3,
+      file: post3Buffer,
     }),
     payload.create({
       collection: 'media',
@@ -206,7 +206,7 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post1({ heroImage: image1Doc, blockImage: image2Doc, author: demoAuthor }),
+    data: post1({ heroImage: imagePost1Doc, blockImage: imagePost2Doc, author: demoAuthor }),
   })
 
   const post2Doc = await payload.create({
@@ -215,7 +215,7 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post2({ heroImage: image2Doc, blockImage: image3Doc, author: demoAuthor }),
+    data: post2({ heroImage: imagePost2Doc, blockImage: imagePost3Doc, author: demoAuthor }),
   })
 
   const post3Doc = await payload.create({
@@ -224,7 +224,7 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post3({ heroImage: image3Doc, blockImage: image1Doc, author: demoAuthor }),
+    data: post3({ heroImage: imagePost3Doc, blockImage: imagePost1Doc, author: demoAuthor }),
   })
 
   // update each post with related posts
@@ -266,8 +266,8 @@ export const seed = async ({
       depth: 0,
       data: home({
         heroImage: imageHomeDoc,
-        metaImage: image2Doc,
-        avatarImage: [avatar1Doc, avatar2Doc, avatar3Doc, avatar4Doc],
+        metaImage: imagePost2Doc,
+        avatarImage: [imageAvatar1Doc, imageAvatar2Doc, imageAvatar3Doc, imageAvatar4Doc],
       }),
     }),
     payload.create({
