@@ -1,25 +1,15 @@
+import type { Page } from '@/payload-types'
 import React from 'react'
 
-import type { Page } from '@/payload-types'
+import { LowImpactHeroDefault } from './Default_LowImpactHero'
+import { LowImpactHeroRating } from './Rating_LowImpactHero'
 
-import RichText from '@/components/RichText'
+export const LowImpactHero: React.FC<Page['hero']> = (props) => {
+  const { lowImpactVariant } = props
 
-type LowImpactHeroType =
-  | {
-      children?: React.ReactNode
-      richText?: never
-    }
-  | (Omit<Page['hero'], 'richText'> & {
-      children?: never
-      richText?: Page['hero']['richText']
-    })
+  if (lowImpactVariant === 'rating') {
+    return <LowImpactHeroRating {...props} />
+  }
 
-export const LowImpactHero: React.FC<LowImpactHeroType> = ({ children, richText }) => {
-  return (
-    <div className="container mt-16">
-      <div className="max-w-[48rem]">
-        {children || (richText && <RichText data={richText} enableGutter={false} />)}
-      </div>
-    </div>
-  )
+  return <LowImpactHeroDefault {...props} />
 }

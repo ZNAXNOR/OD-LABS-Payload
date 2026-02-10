@@ -34,6 +34,17 @@ const columnFields: Field[] = [
     ],
   },
   {
+    name: 'icon',
+    type: 'select',
+    defaultValue: 'none',
+    options: [
+      { label: 'None', value: 'none' },
+      { label: 'Timer', value: 'timer' },
+      { label: 'Zap', value: 'zap' },
+      { label: 'Zoom In', value: 'zoomIn' },
+    ],
+  },
+  {
     name: 'richText',
     type: 'richText',
     editor: lexicalEditor({
@@ -67,6 +78,31 @@ export const Content: Block = {
   slug: 'content',
   interfaceName: 'ContentBlock',
   fields: [
+    {
+      name: 'variant',
+      type: 'select',
+      defaultValue: 'default',
+      options: [
+        {
+          label: 'Default',
+          value: 'default',
+        },
+        {
+          label: 'Icon Card',
+          value: 'iconCard',
+        },
+      ],
+    },
+    {
+      name: 'intro',
+      type: 'text',
+      label: 'Intro',
+    },
+    {
+      name: 'title',
+      type: 'text',
+      label: 'Title',
+    },
     {
       name: 'columns',
       type: 'array',
