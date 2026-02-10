@@ -4,20 +4,17 @@ import RichText from '@/components/RichText'
 
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
-import { CMSLink } from '../../components/Link'
+import { CMSLink } from '../../../components/Link'
+
+import { colsSpanClasses } from '../index'
 
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
-  const { columns } = props
-
-  const colsSpanClasses = {
-    full: '12',
-    half: '6',
-    oneThird: '4',
-    twoThirds: '8',
-  }
+  const { columns, intro, title } = props
 
   return (
     <div className="container my-16">
+      {intro && <p className="mb-4 text-sm text-muted-foreground lg:text-base">{intro}</p>}
+      {title && <h2 className="mb-14 text-3xl font-medium lg:text-4xl">{title}</h2>}
       <div className="grid grid-cols-4 lg:grid-cols-12 gap-y-8 gap-x-16">
         {columns &&
           columns.length > 0 &&
