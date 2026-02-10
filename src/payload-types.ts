@@ -500,9 +500,13 @@ export interface CallToActionBlock {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
+  variant?: ('default' | 'iconCard') | null;
+  intro?: string | null;
+  title?: string | null;
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+        icon?: ('none' | 'timer' | 'zap' | 'zoomIn') | null;
         richText?: {
           root: {
             type: string;
@@ -1154,10 +1158,14 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
  * via the `definition` "ContentBlock_select".
  */
 export interface ContentBlockSelect<T extends boolean = true> {
+  variant?: T;
+  intro?: T;
+  title?: T;
   columns?:
     | T
     | {
         size?: T;
+        icon?: T;
         richText?: T;
         enableLink?: T;
         link?:
