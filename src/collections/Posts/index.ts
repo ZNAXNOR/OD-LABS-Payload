@@ -136,6 +136,26 @@ export const Posts: CollectionConfig<'posts'> = {
           name: 'meta',
           label: 'SEO',
           fields: [
+            {
+              name: 'icon',
+              type: 'select',
+              options: [
+                { label: 'None', value: 'none' },
+                { label: 'Cog', value: 'cog' },
+                { label: 'Code', value: 'code' },
+                { label: 'Pen Tool', value: 'penTool' },
+                { label: 'Shrub', value: 'shrub' },
+                { label: 'Zap', value: 'zap' },
+                { label: 'Cloud', value: 'cloud' },
+                { label: 'Database', value: 'database' },
+                { label: 'Monitor', value: 'monitor' },
+                { label: 'Smartphone', value: 'smartphone' },
+                { label: 'Globe', value: 'globe' },
+                { label: 'Search', value: 'search' },
+                { label: 'Mail', value: 'mail' },
+                { label: 'Layout', value: 'layout' },
+              ],
+            },
             OverviewField({
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',

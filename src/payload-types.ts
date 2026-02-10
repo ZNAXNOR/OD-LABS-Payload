@@ -211,6 +211,24 @@ export interface Page {
   };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
   meta?: {
+    icon?:
+      | (
+          | 'none'
+          | 'cog'
+          | 'code'
+          | 'penTool'
+          | 'shrub'
+          | 'zap'
+          | 'cloud'
+          | 'database'
+          | 'monitor'
+          | 'smartphone'
+          | 'globe'
+          | 'search'
+          | 'mail'
+          | 'layout'
+        )
+      | null;
     title?: string | null;
     /**
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
@@ -564,6 +582,7 @@ export interface MediaBlock {
  * via the `definition` "ArchiveBlock".
  */
 export interface ArchiveBlock {
+  variant?: ('default' | 'iconCard' | 'imageCard') | null;
   introContent?: {
     root: {
       type: string;
@@ -580,14 +599,20 @@ export interface ArchiveBlock {
     [k: string]: unknown;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
+  relationTo?: ('posts' | 'pages') | null;
   categories?: (number | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: number | Post;
-      }[]
+    | (
+        | {
+            relationTo: 'posts';
+            value: number | Post;
+          }
+        | {
+            relationTo: 'pages';
+            value: number | Page;
+          }
+      )[]
     | null;
   id?: string | null;
   blockName?: string | null;
@@ -1118,6 +1143,7 @@ export interface PagesSelect<T extends boolean = true> {
   meta?:
     | T
     | {
+        icon?: T;
         title?: T;
         image?: T;
         description?: T;
@@ -1197,6 +1223,7 @@ export interface MediaBlockSelect<T extends boolean = true> {
  * via the `definition` "ArchiveBlock_select".
  */
 export interface ArchiveBlockSelect<T extends boolean = true> {
+  variant?: T;
   introContent?: T;
   populateBy?: T;
   relationTo?: T;
@@ -1230,6 +1257,7 @@ export interface PostsSelect<T extends boolean = true> {
   meta?:
     | T
     | {
+        icon?: T;
         title?: T;
         image?: T;
         description?: T;

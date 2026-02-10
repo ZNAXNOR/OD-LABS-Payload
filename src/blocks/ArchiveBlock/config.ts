@@ -12,6 +12,25 @@ export const Archive: Block = {
   interfaceName: 'ArchiveBlock',
   fields: [
     {
+      name: 'variant',
+      type: 'select',
+      defaultValue: 'default',
+      options: [
+        {
+          label: 'Default',
+          value: 'default',
+        },
+        {
+          label: 'Icon Card',
+          value: 'iconCard',
+        },
+        {
+          label: 'Image Card',
+          value: 'imageCard',
+        },
+      ],
+    },
+    {
       name: 'introContent',
       type: 'richText',
       editor: lexicalEditor({
@@ -54,6 +73,10 @@ export const Archive: Block = {
           label: 'Posts',
           value: 'posts',
         },
+        {
+          label: 'Pages',
+          value: 'pages',
+        },
       ],
     },
     {
@@ -84,7 +107,7 @@ export const Archive: Block = {
       },
       hasMany: true,
       label: 'Selection',
-      relationTo: ['posts'],
+      relationTo: ['posts', 'pages'],
     },
   ],
   labels: {
