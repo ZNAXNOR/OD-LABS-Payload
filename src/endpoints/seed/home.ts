@@ -4,17 +4,27 @@ import type { Media } from '@/payload-types'
 type HomeArgs = {
   heroImage: Media
   metaImage: Media
+  avatarImage: Media[]
 }
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
   metaImage,
+  avatarImage: avatars,
 }) => {
   return {
     slug: 'home',
     _status: 'published',
     hero: {
-      type: 'highImpact',
+      type: 'lowImpact',
+      lowImpactVariant: 'rating',
+      Rating: {
+        score: 5,
+        label: 'from 200+ reviews',
+        avatars: avatars.map((avatar) => ({
+          image: avatar.id,
+        })),
+      },
       links: [
         {
           link: {
@@ -33,7 +43,6 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
           },
         },
       ],
-      media: heroImage.id,
       richText: {
         root: {
           type: 'root',
