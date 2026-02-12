@@ -391,6 +391,24 @@ export interface Post {
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
   meta?: {
+    icon?:
+      | (
+          | 'none'
+          | 'cog'
+          | 'code'
+          | 'penTool'
+          | 'shrub'
+          | 'zap'
+          | 'cloud'
+          | 'database'
+          | 'monitor'
+          | 'smartphone'
+          | 'globe'
+          | 'search'
+          | 'mail'
+          | 'layout'
+        )
+      | null;
     title?: string | null;
     /**
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
@@ -524,7 +542,9 @@ export interface ContentBlock {
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
-        icon?: ('none' | 'timer' | 'zap' | 'zoomIn') | null;
+        icon?:
+          | ('none' | 'headset' | 'trending-up' | 'shield-check' | 'zap' | 'message-square' | 'circle-check-big')
+          | null;
         richText?: {
           root: {
             type: string;

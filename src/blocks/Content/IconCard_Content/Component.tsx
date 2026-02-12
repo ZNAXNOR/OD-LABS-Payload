@@ -1,5 +1,5 @@
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
-import { Timer, Zap, ZoomIn, type LucideIcon } from 'lucide-react'
+import { Headset, TrendingUp, ShieldCheck, Zap, MessageSquare, CircleCheckBig, type LucideIcon } from 'lucide-react'
 import React from 'react'
 import { cn } from '@/utilities/ui'
 
@@ -7,9 +7,12 @@ import RichText from '@/components/RichText'
 import { colsSpanClasses } from '../index'
 
 const icons: Record<string, LucideIcon> = {
-  timer: Timer,
+  headset: Headset,
+  'trending-up': TrendingUp,
+  'shield-check': ShieldCheck,
   zap: Zap,
-  zoomIn: ZoomIn,
+  'message-square': MessageSquare,
+  'circle-check-big': CircleCheckBig,
 }
 
 export const IconCardBlock: React.FC<ContentBlockProps> = (props) => {

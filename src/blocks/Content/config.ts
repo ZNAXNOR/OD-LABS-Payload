@@ -39,9 +39,12 @@ const columnFields: Field[] = [
     defaultValue: 'none',
     options: [
       { label: 'None', value: 'none' },
-      { label: 'Timer', value: 'timer' },
+      { label: 'Headset', value: 'headset' },
+      { label: 'Trending Up', value: 'trending-up' },
+      { label: 'Shield Check', value: 'shield-check' },
       { label: 'Zap', value: 'zap' },
-      { label: 'Zoom In', value: 'zoomIn' },
+      { label: 'Message Square', value: 'message-square' },
+      { label: 'Circle Check Big', value: 'circle-check-big' },
     ],
   },
   {
