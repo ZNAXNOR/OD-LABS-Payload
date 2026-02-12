@@ -3,12 +3,17 @@ import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from '
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
 import { home } from './home'
-import { image1 } from './image-1'
-import { image2 } from './image-2'
+import { image1 } from './image-post1'
+import { image2 } from './image-post2'
+import { image3 } from './image-post3'
 import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { imageAvatar1 } from './image-avatar1'
+import { imageAvatar2 } from './image-avatar2'
+import { imageAvatar3 } from './image-avatar3'
+import { imageAvatar4 } from './image-avatar4'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -83,22 +88,55 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding media...`)
 
-  const [image1Buffer, image2Buffer, image3Buffer, hero1Buffer] = await Promise.all([
+  const [
+    image1Buffer,
+    image2Buffer,
+    image3Buffer,
+    hero1Buffer,
+    avatar1Buffer,
+    avatar2Buffer,
+    avatar3Buffer,
+    avatar4Buffer,
+  ] = await Promise.all([
+    // Payload Images
     fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post1.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/base-payload/src/endpoints/seed/image-post1.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post2.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/base-payload/src/endpoints/seed/image-post2.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post3.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/base-payload/src/endpoints/seed/image-post3.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-hero1.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/base-payload/src/endpoints/seed/image-hero1.webp',
+    ),
+    // Avatar Images
+    fetchFileByURL(
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar1.webp',
+    ),
+    fetchFileByURL(
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar2.webp',
+    ),
+    fetchFileByURL(
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar3.webp',
+    ),
+    fetchFileByURL(
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar4.webp',
     ),
   ])
 
-  const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
+  const [
+    demoAuthor,
+    image1Doc,
+    image2Doc,
+    image3Doc,
+    imageHomeDoc,
+    avatar1Doc,
+    avatar2Doc,
+    avatar3Doc,
+    avatar4Doc,
+  ] = await Promise.all([
     payload.create({
       collection: 'users',
       data: {
@@ -119,13 +157,33 @@ export const seed = async ({
     }),
     payload.create({
       collection: 'media',
-      data: image2,
+      data: image3,
       file: image3Buffer,
     }),
     payload.create({
       collection: 'media',
       data: imageHero1,
       file: hero1Buffer,
+    }),
+    payload.create({
+      collection: 'media',
+      data: imageAvatar1,
+      file: avatar1Buffer,
+    }),
+    payload.create({
+      collection: 'media',
+      data: imageAvatar2,
+      file: avatar2Buffer,
+    }),
+    payload.create({
+      collection: 'media',
+      data: imageAvatar3,
+      file: avatar3Buffer,
+    }),
+    payload.create({
+      collection: 'media',
+      data: imageAvatar4,
+      file: avatar4Buffer,
     }),
     categories.map((category) =>
       payload.create({
@@ -206,7 +264,11 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
+      data: home({
+        heroImage: imageHomeDoc,
+        metaImage: image2Doc,
+        avatarImage: [avatar1Doc, avatar2Doc, avatar3Doc, avatar4Doc],
+      }),
     }),
     payload.create({
       collection: 'pages',
