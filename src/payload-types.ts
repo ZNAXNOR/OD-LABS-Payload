@@ -624,22 +624,21 @@ export interface ArchiveBlock {
  */
 export interface FormBlock {
   form: number | Form;
-  enableIntro?: boolean | null;
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  style?: ('default' | 'contactDetail') | null;
+  title?: string | null;
+  description?: string | null;
+  contactDetails?: {
+    phone?: string | null;
+    email?: string | null;
+    websiteLabel?: string | null;
+    websiteUrl?: string | null;
+    features?:
+      | {
+          feature?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -1239,8 +1238,23 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
  */
 export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
-  enableIntro?: T;
-  introContent?: T;
+  style?: T;
+  title?: T;
+  description?: T;
+  contactDetails?:
+    | T
+    | {
+        phone?: T;
+        email?: T;
+        websiteLabel?: T;
+        websiteUrl?: T;
+        features?:
+          | T
+          | {
+              feature?: T;
+              id?: T;
+            };
+      };
   id?: T;
   blockName?: T;
 }
