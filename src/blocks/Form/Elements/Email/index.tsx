@@ -1,8 +1,8 @@
 import type { EmailField } from '@payloadcms/plugin-form-builder/types'
 import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
 
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Input } from '@/blocks/Form/Elements/Input'
+import { Label } from '@/blocks/Form/Elements/Label'
 import React from 'react'
 
 import { Error } from '../Error'
@@ -12,8 +12,9 @@ export const Email: React.FC<
   EmailField & {
     errors: Partial<FieldErrorsImpl>
     register: UseFormRegister<FieldValues>
+    placeholder?: string
   }
-> = ({ name, defaultValue, errors, label, register, required, width }) => {
+> = ({ name, defaultValue, errors, label, placeholder, register, required, width }) => {
   return (
     <Width width={width}>
       <Label htmlFor={name}>
@@ -28,6 +29,7 @@ export const Email: React.FC<
       <Input
         defaultValue={defaultValue}
         id={name}
+        placeholder={placeholder}
         type="text"
         {...register(name, { pattern: /^\S[^\s@]*@\S+$/, required })}
       />

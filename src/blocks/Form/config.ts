@@ -18,27 +18,70 @@ export const FormBlock: Block = {
       required: true,
     },
     {
-      name: 'enableIntro',
-      type: 'checkbox',
-      label: 'Enable Intro Content',
+      name: 'style',
+      type: 'select',
+      defaultValue: 'default',
+      options: [
+        { label: 'Default', value: 'default' },
+        { label: 'Contact Detail', value: 'contactDetail' },
+      ],
     },
     {
-      name: 'introContent',
-      type: 'richText',
+      name: 'title',
+      type: 'text',
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+    },
+    {
+      name: 'contactDetails',
+      label: 'Contact Details',
+      type: 'group',
       admin: {
-        condition: (_, { enableIntro }) => Boolean(enableIntro),
+        condition: (_, { style }) => style === 'contactDetail',
       },
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
+      fields: [
+        {
+          name: 'phone',
+          type: 'text',
         },
-      }),
-      label: 'Intro Content',
+        {
+          name: 'email',
+          type: 'text',
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'websiteLabel',
+              label: 'Website Label',
+              type: 'text',
+              admin: {
+                width: '50%',
+              },
+            },
+            {
+              name: 'websiteUrl',
+              label: 'Website Url',
+              type: 'text',
+              admin: {
+                width: '50%',
+              },
+            },
+          ],
+        },
+        {
+          name: 'features',
+          type: 'array',
+          fields: [
+            {
+              name: 'feature',
+              type: 'text',
+            },
+          ],
+        },
+      ],
     },
   ],
   graphQL: {
