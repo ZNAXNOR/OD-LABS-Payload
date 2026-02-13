@@ -3,13 +3,16 @@ import { RequiredDataFromCollectionSlug } from 'payload'
 
 type ContactArgs = {
   contactForm: Form
+  pageTypeId: number
 }
 
 export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   contactForm,
+  pageTypeId,
 }) => {
   return {
     slug: 'contact',
+    pageType: pageTypeId,
     _status: 'published',
     hero: {
       type: 'none',
