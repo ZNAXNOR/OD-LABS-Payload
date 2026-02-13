@@ -83,11 +83,24 @@ export const Archive: Block = {
       name: 'categories',
       type: 'relationship',
       admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'collection',
+        condition: (_, siblingData) =>
+          siblingData.populateBy === 'collection' &&
+          (!siblingData.relationTo || siblingData.relationTo === 'posts'),
       },
       hasMany: true,
       label: 'Categories To Show',
       relationTo: 'categories',
+    },
+    {
+      name: 'pageTypes',
+      type: 'relationship',
+      admin: {
+        condition: (_, siblingData) =>
+          siblingData.populateBy === 'collection' && siblingData.relationTo === 'pages',
+      },
+      hasMany: true,
+      label: 'Page Type to Show',
+      relationTo: 'page-types',
     },
     {
       name: 'limit',

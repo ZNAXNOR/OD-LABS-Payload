@@ -12,7 +12,15 @@ export const ArchiveBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const { categories, limit: limitFromProps, populateBy, selectedDocs, variant, relationTo } = props
+  const {
+    categories,
+    limit: limitFromProps,
+    populateBy,
+    selectedDocs,
+    variant,
+    relationTo,
+    pageTypes,
+  } = props
 
   const limit = limitFromProps || 3
 
@@ -26,19 +34,35 @@ export const ArchiveBlock: React.FC<
       else return category
     })
 
+    const flattenedPageTypes = pageTypes?.map((pageType) => {
+      if (typeof pageType === 'object') return pageType.id
+      else return pageType
+    })
+
     const fetchedPosts = await payload.find({
       collection: (relationTo as 'posts' | 'pages') || 'posts',
       depth: 1,
       limit,
-      ...(flattenedCategories && flattenedCategories.length > 0
-        ? {
-            where: {
-              categories: {
-                in: flattenedCategories,
-              },
-            },
-          }
-        : {}),
+      where: {
+        ...(relationTo === 'posts' || !relationTo
+          ? flattenedCategories && flattenedCategories.length > 0
+            ? {
+                categories: {
+                  in: flattenedCategories,
+                },
+              }
+            : {}
+          : {}),
+        ...(relationTo === 'pages'
+          ? flattenedPageTypes && flattenedPageTypes.length > 0
+            ? {
+                pageType: {
+                  in: flattenedPageTypes,
+                },
+              }
+            : {}
+          : {}),
+      },
     })
 
     posts = fetchedPosts.docs as (Post | Page)[]
