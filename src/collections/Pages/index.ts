@@ -35,6 +35,10 @@ export const Pages: CollectionConfig<'pages'> = {
   defaultPopulate: {
     title: true,
     slug: true,
+    meta: {
+      image: true,
+      description: true,
+    },
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
@@ -54,20 +58,57 @@ export const Pages: CollectionConfig<'pages'> = {
       }),
     useAsTitle: 'title',
   },
+
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          admin: {
+            width: '55%',
+          },
+        },
+        {
+          name: 'Page Type',
+          type: 'select',
+          defaultValue: 'page',
+          options: [
+            {
+              label: 'Standard Page',
+              value: 'page',
+            },
+            {
+              label: 'Service Page',
+              value: 'service',
+            },
+            {
+              label: 'Contact Page',
+              value: 'contact',
+            },
+            {
+              label: 'Legal Page',
+              value: 'legal',
+            },
+          ],
+          required: true,
+          admin: {
+            width: '45%',
+          },
+        },
+      ],
     },
     {
       type: 'tabs',
       tabs: [
         {
-          fields: [hero],
           label: 'Hero',
+          fields: [hero],
         },
         {
+          label: 'Content',
           fields: [
             {
               name: 'layout',
@@ -79,7 +120,6 @@ export const Pages: CollectionConfig<'pages'> = {
               },
             },
           ],
-          label: 'Content',
         },
         {
           name: 'meta',
