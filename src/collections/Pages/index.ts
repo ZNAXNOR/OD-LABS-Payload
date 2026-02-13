@@ -72,27 +72,10 @@ export const Pages: CollectionConfig<'pages'> = {
           },
         },
         {
-          name: 'Page Type',
-          type: 'select',
-          defaultValue: 'page',
-          options: [
-            {
-              label: 'Standard Page',
-              value: 'page',
-            },
-            {
-              label: 'Service Page',
-              value: 'service',
-            },
-            {
-              label: 'Contact Page',
-              value: 'contact',
-            },
-            {
-              label: 'Legal Page',
-              value: 'legal',
-            },
-          ],
+          name: 'pageType',
+          label: 'Page Type',
+          type: 'relationship',
+          relationTo: 'page-types',
           required: true,
           admin: {
             width: '45%',
