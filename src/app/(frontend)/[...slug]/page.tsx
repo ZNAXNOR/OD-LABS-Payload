@@ -21,17 +21,23 @@ export async function generateStaticParams() {
     limit: 1000,
     overrideAccess: false,
     pagination: false,
-    select: {
-      slug: true,
-    },
+    depth: 1,
   })
 
   const params = pages.docs
     ?.filter((doc) => {
       return doc.slug !== 'home'
     })
-    .map(({ slug }) => {
-      return { slug }
+    .map((doc) => {
+      const { slug, pageType } = doc
+      let pageTypeSlug =
+        typeof pageType === 'object' && pageType ? (pageType as any).slug : undefined
+
+      if (pageTypeSlug && pageTypeSlug !== 'default' && pageTypeSlug !== 'page') {
+        return { slug: [pageTypeSlug, slug] }
+      }
+
+      return { slug: [slug] }
     })
 
   return params
@@ -39,24 +45,26 @@ export async function generateStaticParams() {
 
 type Args = {
   params: Promise<{
-    slug?: string
+    slug?: string[]
   }>
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = 'home' } = await paramsPromise
+  const { slug = ['home'] } = (await paramsPromise) || {}
+
   // Decode to support slugs with special characters
-  const decodedSlug = decodeURIComponent(slug)
-  const url = '/' + decodedSlug
+  // const decodedSlug = decodeURIComponent(slug)
+  const url = '/' + slug.map((s) => decodeURIComponent(s)).join('/')
+
   let page: RequiredDataFromCollectionSlug<'pages'> | null
 
   page = await queryPageBySlug({
-    slug: decodedSlug,
+    slug,
   })
 
   // Remove this code once your website is seeded
-  if (!page && slug === 'home') {
+  if (!page && slug.length === 1 && slug[0] === 'home') {
     page = homeStatic(0) as any
   }
 
@@ -81,20 +89,62 @@ export default async function Page({ params: paramsPromise }: Args) {
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = 'home' } = await paramsPromise
-  // Decode to support slugs with special characters
-  const decodedSlug = decodeURIComponent(slug)
+  const { slug = ['home'] } = (await paramsPromise) || {}
   const page = await queryPageBySlug({
-    slug: decodedSlug,
+    slug,
   })
 
   return generateMeta({ doc: page })
 }
 
-const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryPageBySlug = cache(async ({ slug }: { slug: string[] }) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
+
+  let pageSlug = slug[slug.length - 1]
+  let pageTypeSlug: string | undefined
+  const hasPrefix = slug.length > 1
+
+  if (hasPrefix) {
+    pageTypeSlug = slug[0]
+  }
+
+  const where: any = {
+    slug: {
+      equals: pageSlug,
+    },
+  }
+
+  if (pageTypeSlug) {
+    where['pageType.slug'] = {
+      equals: pageTypeSlug,
+    }
+  } else {
+    /* 
+       If no prefix is present (e.g. /about), we want to match pages that:
+       1. Have NO pageType
+       2. Have pageType 'default'
+       3. Have pageType 'page'
+    */
+    where['or'] = [
+      {
+        'pageType.slug': {
+          equals: 'default',
+        },
+      },
+      {
+        'pageType.slug': {
+          equals: 'page',
+        },
+      },
+      {
+        pageType: {
+          exists: false,
+        },
+      },
+    ]
+  }
 
   const result = await payload.find({
     collection: 'pages',
@@ -102,11 +152,7 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     limit: 1,
     pagination: false,
     overrideAccess: draft,
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
+    where,
   })
 
   return result.docs?.[0] || null

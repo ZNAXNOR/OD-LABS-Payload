@@ -24,7 +24,20 @@ const collections: CollectionSlug[] = [
 const globals: GlobalSlug[] = ['header', 'footer']
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
-const pageTypes = ['Standard Page', 'Service Page', 'Contact Page', 'Legal Page']
+const pageTypes = [
+  {
+    title: 'Service Page',
+    slug: 'services',
+  },
+  {
+    title: 'Contact Page',
+    slug: 'contact',
+  },
+  {
+    title: 'Legal Page',
+    slug: 'legal',
+  },
+]
 
 // Next.js revalidation errors are normal when seeding the database without a server running
 // i.e. running `yarn seed` locally instead of using the admin UI within an active app
@@ -142,9 +155,7 @@ export const seed = async ({
       pageTypes.map((pageType) =>
         payload.create({
           collection: 'page-types' as any,
-          data: {
-            title: pageType,
-          },
+          data: pageType,
         }),
       ),
     ),
@@ -222,25 +233,25 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: home({
-        heroImage: imageHomeDoc,
-        metaImage: image2Doc,
-        pageTypeId: getPageTypeId('Standard Page'),
-      }),
+  const contactPage = await payload.create({
+    collection: 'pages',
+    depth: 0,
+    data: contactPageData({
+      contactForm: contactForm,
+      pageTypeId: getPageTypeId('Contact Page'),
     }),
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: contactPageData({
-        contactForm: contactForm,
-        pageTypeId: getPageTypeId('Contact Page'),
-      }),
+  })
+
+  await payload.create({
+    collection: 'pages',
+    depth: 0,
+    data: home({
+      heroImage: imageHomeDoc,
+      metaImage: image2Doc,
+      pageTypeId: null,
+      contactDoc: contactPage,
     }),
-  ])
+  })
 
   payload.logger.info(`— Seeding globals...`)
 

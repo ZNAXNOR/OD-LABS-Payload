@@ -1,16 +1,18 @@
 import type { RequiredDataFromCollectionSlug } from 'payload'
-import type { Media } from '@/payload-types'
+import type { Media, Page } from '@/payload-types'
 
 type HomeArgs = {
   heroImage: Media
   metaImage: Media
-  pageTypeId: number
+  pageTypeId: number | null | undefined
+  contactDoc: Page
 }
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
   metaImage,
   pageTypeId,
+  contactDoc,
 }) => {
   return {
     slug: 'home',
@@ -29,10 +31,13 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         },
         {
           link: {
-            type: 'custom',
+            type: 'reference',
             appearance: 'outline',
             label: 'Contact',
-            url: '/contact',
+            reference: {
+              relationTo: 'pages',
+              value: contactDoc.id,
+            },
           },
         },
       ],

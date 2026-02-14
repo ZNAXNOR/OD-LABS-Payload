@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import type { PageType as PageTypeInterface } from '../../payload-types'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
@@ -39,23 +40,52 @@ export const Pages: CollectionConfig<'pages'> = {
       image: true,
       description: true,
     },
+    pageType: true,
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
-      url: ({ data, req }) =>
-        generatePreviewPath({
-          slug: data?.slug,
+      url: async ({ data, req }) => {
+        let pageTypeSlug = (data?.pageType as PageTypeInterface)?.slug
+
+        if (!pageTypeSlug && typeof data?.pageType === 'number' && req.payload) {
+          const pageType = await req.payload.findByID({
+            collection: 'page-types',
+            id: data.pageType,
+            depth: 0,
+          })
+          pageTypeSlug = pageType?.slug
+        }
+
+        const path = generatePreviewPath({
+          slug: typeof data?.slug === 'string' ? data.slug : '',
           collection: 'pages',
           req,
-        }),
+          pageType: pageTypeSlug,
+        })
+
+        return path
+      },
     },
-    preview: (data, { req }) =>
-      generatePreviewPath({
-        slug: data?.slug as string,
+    preview: async (data, { req }) => {
+      let pageTypeSlug = (data?.pageType as PageTypeInterface)?.slug
+
+      if (!pageTypeSlug && typeof data?.pageType === 'number' && req.payload) {
+        const pageType = await req.payload.findByID({
+          collection: 'page-types',
+          id: data.pageType,
+          depth: 0,
+        })
+        pageTypeSlug = pageType?.slug
+      }
+
+      return generatePreviewPath({
+        slug: typeof data?.slug === 'string' ? data.slug : '',
         collection: 'pages',
         req,
-      }),
+        pageType: pageTypeSlug,
+      })
+    },
     useAsTitle: 'title',
   },
 
@@ -76,7 +106,6 @@ export const Pages: CollectionConfig<'pages'> = {
           label: 'Page Type',
           type: 'relationship',
           relationTo: 'page-types',
-          required: true,
           admin: {
             width: '45%',
           },

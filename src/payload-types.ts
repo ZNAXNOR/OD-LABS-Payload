@@ -157,7 +157,7 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  pageType: number | PageType;
+  pageType?: (number | null) | PageType;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
