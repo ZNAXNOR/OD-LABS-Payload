@@ -21,17 +21,22 @@ export async function generateStaticParams() {
     limit: 1000,
     overrideAccess: false,
     pagination: false,
-    select: {
-      slug: true,
-    },
+    depth: 1,
   })
 
   const params = pages.docs
     ?.filter((doc) => {
       return doc.slug !== 'home'
     })
-    .map(({ slug }) => {
-      return { slug }
+    .map((doc) => {
+      const { slug, pageType } = doc
+      const pageTypeSlug = typeof pageType === 'string' ? pageType : 'standard'
+
+      if (pageTypeSlug && pageTypeSlug !== 'standard') {
+        return { slug: [pageTypeSlug, slug] }
+      }
+
+      return { slug: [slug] }
     })
 
   return params
@@ -39,32 +44,39 @@ export async function generateStaticParams() {
 
 type Args = {
   params: Promise<{
-    slug?: string
+    slug?: string[]
   }>
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = 'home' } = await paramsPromise
+  const { slug = ['home'] } = (await paramsPromise) || {}
+
   // Decode to support slugs with special characters
-  const decodedSlug = decodeURIComponent(slug)
-  const url = '/' + decodedSlug
+  // const decodedSlug = decodeURIComponent(slug)
+  const url = '/' + slug.map((s) => decodeURIComponent(s)).join('/')
+
   let page: RequiredDataFromCollectionSlug<'pages'> | null
 
   page = await queryPageBySlug({
-    slug: decodedSlug,
+    slug,
   })
 
   // Remove this code once your website is seeded
-  if (!page && slug === 'home') {
-    page = homeStatic
+  if (!page && slug.length === 1 && slug[0] === 'home') {
+    page = homeStatic('standard') as any
   }
 
   if (!page) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout } = page
+  const { hero, layout, layoutServices, layoutLegal, pageType } = page as any
+
+  // Select the correct layout based on pageType
+  let blocks = layout
+  if (pageType === 'services') blocks = layoutServices
+  if (pageType === 'legal') blocks = layoutLegal
 
   return (
     <article className="pt-16 pb-24">
@@ -75,26 +87,62 @@ export default async function Page({ params: paramsPromise }: Args) {
       {draft && <LivePreviewListener />}
 
       <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} />
+      <RenderBlocks blocks={blocks} />
     </article>
   )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = 'home' } = await paramsPromise
-  // Decode to support slugs with special characters
-  const decodedSlug = decodeURIComponent(slug)
+  const { slug = ['home'] } = (await paramsPromise) || {}
   const page = await queryPageBySlug({
-    slug: decodedSlug,
+    slug,
   })
 
   return generateMeta({ doc: page })
 }
 
-const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryPageBySlug = cache(async ({ slug }: { slug: string[] }) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
+
+  let pageSlug = slug[slug.length - 1]
+  let pageTypeSlug: string | undefined
+  const hasPrefix = slug.length > 1
+
+  if (hasPrefix) {
+    pageTypeSlug = slug[0]
+  }
+
+  const where: any = {
+    slug: {
+      equals: pageSlug,
+    },
+  }
+
+  if (pageTypeSlug) {
+    where['pageType'] = {
+      equals: pageTypeSlug,
+    }
+  } else {
+    /* 
+       If no prefix is present (e.g. /about), we want to match pages that:
+       1. Have NO pageType (legacy)
+       2. Have pageType 'standard'
+    */
+    where['or'] = [
+      {
+        pageType: {
+          equals: 'standard',
+        },
+      },
+      {
+        pageType: {
+          exists: false,
+        },
+      },
+    ]
+  }
 
   const result = await payload.find({
     collection: 'pages',
@@ -102,11 +150,7 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     limit: 1,
     pagination: false,
     overrideAccess: draft,
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
+    where,
   })
 
   return result.docs?.[0] || null

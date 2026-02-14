@@ -16,6 +16,15 @@ export const PayloadRedirects: React.FC<Props> = async ({ disableNotFound, url }
 
   const redirectItem = redirects.find((redirect) => redirect.from === url)
 
+  const getPageSlug = (page: Page) => {
+    const { slug, pageType } = page
+    let prefix = ''
+    if (typeof pageType === 'string' && pageType !== 'standard') {
+      prefix = `/${pageType}`
+    }
+    return `${prefix}/${slug}`
+  }
+
   if (redirectItem) {
     if (redirectItem.to?.url) {
       redirect(redirectItem.to.url)
@@ -28,15 +37,22 @@ export const PayloadRedirects: React.FC<Props> = async ({ disableNotFound, url }
       const id = redirectItem.to?.reference?.value
 
       const document = (await getCachedDocument(collection, id)()) as Page | Post
-      redirectUrl = `${redirectItem.to?.reference?.relationTo !== 'pages' ? `/${redirectItem.to?.reference?.relationTo}` : ''}/${
-        document?.slug
-      }`
+
+      if (collection === 'pages') {
+        redirectUrl = getPageSlug(document as Page)
+      } else {
+        redirectUrl = `/${collection}/${document?.slug}`
+      }
     } else {
-      redirectUrl = `${redirectItem.to?.reference?.relationTo !== 'pages' ? `/${redirectItem.to?.reference?.relationTo}` : ''}/${
-        typeof redirectItem.to?.reference?.value === 'object'
-          ? redirectItem.to?.reference?.value?.slug
-          : ''
-      }`
+      const relationTo = redirectItem.to?.reference?.relationTo
+      const value = redirectItem.to?.reference?.value
+
+      if (relationTo === 'pages' && typeof value === 'object') {
+        redirectUrl = getPageSlug(value as Page)
+      } else {
+        const slug = typeof value === 'object' ? value?.slug : ''
+        redirectUrl = `${relationTo !== 'pages' ? `/${relationTo}` : ''}/${slug}`
+      }
     }
 
     if (redirectUrl) redirect(redirectUrl)
