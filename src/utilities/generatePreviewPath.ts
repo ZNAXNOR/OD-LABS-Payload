@@ -24,7 +24,7 @@ export const generatePreviewPath = ({ collection, slug, pageType }: Props) => {
   let path = `${collectionPrefixMap[collection]}/${encodedSlug}`
 
   if (collection === 'pages') {
-    if (pageType && pageType !== 'default' && pageType !== 'page') {
+    if (pageType && pageType !== 'standard') {
       path = `/${pageType}/${encodedSlug}`
     } else {
       path = `/${encodedSlug}`

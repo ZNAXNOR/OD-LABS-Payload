@@ -19,10 +19,8 @@ export const PayloadRedirects: React.FC<Props> = async ({ disableNotFound, url }
   const getPageSlug = (page: Page) => {
     const { slug, pageType } = page
     let prefix = ''
-    if (typeof pageType === 'object' && pageType?.slug) {
-      if (pageType.slug !== 'default' && pageType.slug !== 'page') {
-        prefix = `/${pageType.slug}`
-      }
+    if (typeof pageType === 'string' && pageType !== 'standard') {
+      prefix = `/${pageType}`
     }
     return `${prefix}/${slug}`
   }

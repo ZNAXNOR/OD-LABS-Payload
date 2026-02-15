@@ -1,5 +1,4 @@
 import type { CollectionConfig } from 'payload'
-import type { PageType as PageTypeInterface } from '../../payload-types'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
@@ -46,16 +45,7 @@ export const Pages: CollectionConfig<'pages'> = {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: async ({ data, req }) => {
-        let pageTypeSlug = (data?.pageType as PageTypeInterface)?.slug
-
-        if (!pageTypeSlug && typeof data?.pageType === 'number' && req.payload) {
-          const pageType = await req.payload.findByID({
-            collection: 'page-types',
-            id: data.pageType,
-            depth: 0,
-          })
-          pageTypeSlug = pageType?.slug
-        }
+        const pageTypeSlug = typeof data?.pageType === 'string' ? data.pageType : 'standard'
 
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
@@ -68,16 +58,7 @@ export const Pages: CollectionConfig<'pages'> = {
       },
     },
     preview: async (data, { req }) => {
-      let pageTypeSlug = (data?.pageType as PageTypeInterface)?.slug
-
-      if (!pageTypeSlug && typeof data?.pageType === 'number' && req.payload) {
-        const pageType = await req.payload.findByID({
-          collection: 'page-types',
-          id: data.pageType,
-          depth: 0,
-        })
-        pageTypeSlug = pageType?.slug
-      }
+      const pageTypeSlug = typeof data?.pageType === 'string' ? data.pageType : 'standard'
 
       return generatePreviewPath({
         slug: typeof data?.slug === 'string' ? data.slug : '',
@@ -104,9 +85,27 @@ export const Pages: CollectionConfig<'pages'> = {
         {
           name: 'pageType',
           label: 'Page Type',
+          type: 'select',
+          defaultValue: 'standard',
+          options: [
+            { label: 'Standard', value: 'standard' },
+            { label: 'Services', value: 'services' },
+            { label: 'Legal', value: 'legal' },
+            { label: 'Contact', value: 'contact' },
+          ],
+          required: true,
+          admin: {
+            width: '45%',
+          },
+        },
+        {
+          name: 'legacyPageType',
+          label: 'Legacy Page Type',
           type: 'relationship',
           relationTo: 'page-types',
           admin: {
+            readOnly: true,
+            hidden: true,
             width: '45%',
           },
         },

@@ -30,10 +30,9 @@ export async function generateStaticParams() {
     })
     .map((doc) => {
       const { slug, pageType } = doc
-      let pageTypeSlug =
-        typeof pageType === 'object' && pageType ? (pageType as any).slug : undefined
+      const pageTypeSlug = typeof pageType === 'string' ? pageType : 'standard'
 
-      if (pageTypeSlug && pageTypeSlug !== 'default' && pageTypeSlug !== 'page') {
+      if (pageTypeSlug && pageTypeSlug !== 'standard') {
         return { slug: [pageTypeSlug, slug] }
       }
 
@@ -65,14 +64,19 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   // Remove this code once your website is seeded
   if (!page && slug.length === 1 && slug[0] === 'home') {
-    page = homeStatic(0) as any
+    page = homeStatic('standard') as any
   }
 
   if (!page) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout } = page
+  const { hero, layout, layoutServices, layoutLegal, pageType } = page as any
+
+  // Select the correct layout based on pageType
+  let blocks = layout
+  if (pageType === 'services') blocks = layoutServices
+  if (pageType === 'legal') blocks = layoutLegal
 
   return (
     <article className="pt-16 pb-24">
@@ -83,7 +87,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       {draft && <LivePreviewListener />}
 
       <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} />
+      <RenderBlocks blocks={blocks} />
     </article>
   )
 }
@@ -117,25 +121,19 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string[] }) => {
   }
 
   if (pageTypeSlug) {
-    where['pageType.slug'] = {
+    where['pageType'] = {
       equals: pageTypeSlug,
     }
   } else {
     /* 
        If no prefix is present (e.g. /about), we want to match pages that:
-       1. Have NO pageType
-       2. Have pageType 'default'
-       3. Have pageType 'page'
+       1. Have NO pageType (legacy)
+       2. Have pageType 'standard'
     */
     where['or'] = [
       {
-        'pageType.slug': {
-          equals: 'default',
-        },
-      },
-      {
-        'pageType.slug': {
-          equals: 'page',
+        pageType: {
+          equals: 'standard',
         },
       },
       {

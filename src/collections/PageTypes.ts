@@ -14,6 +14,7 @@ export const PageTypes: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    hidden: true,
   },
   fields: [
     {

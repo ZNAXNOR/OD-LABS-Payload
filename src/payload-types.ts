@@ -157,7 +157,8 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  pageType?: (number | null) | PageType;
+  pageType: 'standard' | 'services' | 'legal' | 'contact';
+  legacyPageType?: (number | null) | PageType;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -1079,6 +1080,7 @@ export interface PayloadMigration {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   pageType?: T;
+  legacyPageType?: T;
   hero?:
     | T
     | {
