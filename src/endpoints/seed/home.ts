@@ -6,6 +6,7 @@ type HomeArgs = {
   metaImage: Media
   pageType: 'standard' | 'services' | 'legal'
   contactDoc: Page
+  avatars: Media[]
 }
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
@@ -13,6 +14,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
   metaImage,
   pageType,
   contactDoc,
+  avatars,
 }) => {
   return {
     slug: 'home',

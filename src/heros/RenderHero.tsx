@@ -1,10 +1,11 @@
 import React from 'react'
-
 import type { Page } from '@/payload-types'
-
-import { HighImpactHero } from '@/heros/HighImpact'
-import { LowImpactHero } from '@/heros/LowImpact'
-import { MediumImpactHero } from '@/heros/MediumImpact'
+import { HighImpactHero } from '@/heros/StandardHero/HighImpact'
+import { LowImpactHero } from '@/heros/StandardHero/LowImpact'
+import { MediumImpactHero } from '@/heros/StandardHero/MediumImpact'
+import { ServicesHeroLowImpact } from '@/heros/ServicesHero/LowImpact'
+import { ServicesHeroMediumImpact } from '@/heros/ServicesHero/MediumImpact'
+import { ServicesHeroHighImpact } from '@/heros/ServicesHero/HighImpact'
 
 const heroes = {
   highImpact: HighImpactHero,
@@ -12,14 +13,31 @@ const heroes = {
   mediumImpact: MediumImpactHero,
 }
 
-export const RenderHero: React.FC<Page['hero']> = (props) => {
-  const { type } = props || {}
+const servicesHeroes = {
+  highImpact: ServicesHeroHighImpact,
+  lowImpact: ServicesHeroLowImpact,
+  mediumImpact: ServicesHeroMediumImpact,
+}
 
-  if (!type || type === 'none') return null
+type Props = Partial<Page>
 
-  const HeroToRender = heroes[type]
+export const RenderHero: React.FC<Props> = (props) => {
+  const { hero, servicesHero, pageType } = props || {}
 
-  if (!HeroToRender) return null
+  const isServices = pageType === 'services'
+  const heroData = isServices ? servicesHero : hero
+  const heroMap = isServices ? servicesHeroes : heroes
 
-  return <HeroToRender {...props} />
+  if (heroData) {
+    const { type } = heroData as any
+    if (!type || type === 'none') return null
+
+    const HeroToRender = heroMap[type as keyof typeof heroMap]
+
+    if (!HeroToRender) return null
+
+    return <HeroToRender {...(heroData as any)} />
+  }
+
+  return null
 }

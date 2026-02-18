@@ -115,7 +115,7 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'tabs',
       tabs: [
         {
-          fields: [hero],
+          fields: [...hero],
           label: 'Hero',
         },
         {

@@ -159,7 +159,7 @@ export interface Page {
   title: string;
   pageType: 'standard' | 'services' | 'legal' | 'contact';
   legacyPageType?: (number | null) | PageType;
-  hero: {
+  hero?: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     lowImpactVariant?: ('default' | 'rating') | null;
     richText?: {
@@ -211,6 +211,14 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    media?: (number | null) | Media;
+  };
+  servicesHero?: {
+    type: 'lowImpact' | 'mediumImpact' | 'highImpact';
+    title: string;
+    alignment?: ('left' | 'center') | null;
+    description?: string | null;
+    icon?: (number | null) | Media;
     media?: (number | null) | Media;
   };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
@@ -1125,6 +1133,16 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+        media?: T;
+      };
+  servicesHero?:
+    | T
+    | {
+        type?: T;
+        title?: T;
+        alignment?: T;
+        description?: T;
+        icon?: T;
         media?: T;
       };
   layout?:

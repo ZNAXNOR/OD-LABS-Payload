@@ -276,9 +276,10 @@ export const seed = async ({
     depth: 0,
     data: home({
       heroImage: imageHomeDoc,
-      metaImage: image2Doc,
+      metaImage: imagePost2Doc,
       pageType: 'standard',
       contactDoc: contactPage,
+      avatars: [imageAvatar1Doc, imageAvatar2Doc, imageAvatar3Doc, imageAvatar4Doc],
     }),
   })
 

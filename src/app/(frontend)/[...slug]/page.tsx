@@ -86,8 +86,16 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <RenderHero {...hero} />
-      <RenderBlocks blocks={blocks} />
+      <RenderHero {...page} />
+      {pageType === 'services' ? (
+        <div className="container">
+          <div className="max-w-[48rem] mx-auto">
+            <RenderBlocks blocks={blocks} />
+          </div>
+        </div>
+      ) : (
+        <RenderBlocks blocks={blocks} />
+      )}
     </article>
   )
 }
