@@ -1,13 +1,12 @@
 import React from 'react'
-
 import type { Page, Media as MediaType } from '@/payload-types'
-
 import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import RatingWithScore from '@/components/RatingWithScore'
 
-export const LowImpactHeroRating: React.FC<Page['hero']> = ({ links, Rating, richText }) => {
+export const LowImpactHeroRating: React.FC<NonNullable<Page['hero']>> = (props) => {
+  const { links, Rating, richText } = props as any
   const { avatars } = Rating || {}
 
   return (
@@ -19,15 +18,15 @@ export const LowImpactHeroRating: React.FC<Page['hero']> = ({ links, Rating, ric
 
         {Array.isArray(links) && links.length > 0 && (
           <div className="mt-10 flex justify-center gap-4">
-            {links.map(({ link }, i) => (
+            {links.map(({ link }: any, i: number) => (
               <CMSLink key={i} size="lg" {...link} />
             ))}
           </div>
         )}
-        
+
         <div className="mx-auto mt-10 flex w-fit flex-col items-center gap-4 sm:flex-row">
           <span className="mx-4 inline-flex items-center -space-x-4">
-            {avatars?.map((avatar, index) => {
+            {avatars?.map((avatar: any, index: number) => {
               const image = avatar.image as MediaType
               if (typeof image === 'object' && image?.url) {
                 return (

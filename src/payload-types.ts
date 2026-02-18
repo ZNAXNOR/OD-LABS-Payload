@@ -72,6 +72,7 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    'page-types': PageType;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -94,6 +95,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'page-types': PageTypesSelect<false> | PageTypesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -155,7 +157,9 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  hero: {
+  pageType: 'standard' | 'services' | 'legal' | 'contact';
+  legacyPageType?: (number | null) | PageType;
+  hero?: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     lowImpactVariant?: ('default' | 'rating') | null;
     richText?: {
@@ -209,6 +213,14 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
+  servicesHero?: {
+    type: 'lowImpact' | 'mediumImpact' | 'highImpact';
+    title: string;
+    alignment?: ('left' | 'center') | null;
+    description?: string | null;
+    icon?: (number | null) | Media;
+    media?: (number | null) | Media;
+  };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
   meta?: {
     icon?:
@@ -245,6 +257,21 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-types".
+ */
+export interface PageType {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1048,6 +1075,10 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'page-types';
+        value: number | PageType;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1115,6 +1146,8 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
+  pageType?: T;
+  legacyPageType?: T;
   hero?:
     | T
     | {
@@ -1148,6 +1181,16 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+        media?: T;
+      };
+  servicesHero?:
+    | T
+    | {
+        type?: T;
+        title?: T;
+        alignment?: T;
+        description?: T;
+        icon?: T;
         media?: T;
       };
   layout?:
@@ -1446,6 +1489,17 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-types_select".
+ */
+export interface PageTypesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

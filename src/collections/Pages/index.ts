@@ -35,36 +35,87 @@ export const Pages: CollectionConfig<'pages'> = {
   defaultPopulate: {
     title: true,
     slug: true,
+    meta: {
+      image: true,
+      description: true,
+    },
+    pageType: true,
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
-      url: ({ data, req }) =>
-        generatePreviewPath({
-          slug: data?.slug,
+      url: async ({ data, req }) => {
+        const pageTypeSlug = typeof data?.pageType === 'string' ? data.pageType : 'standard'
+
+        const path = generatePreviewPath({
+          slug: typeof data?.slug === 'string' ? data.slug : '',
           collection: 'pages',
           req,
-        }),
+          pageType: pageTypeSlug,
+        })
+
+        return path
+      },
     },
-    preview: (data, { req }) =>
-      generatePreviewPath({
-        slug: data?.slug as string,
+    preview: async (data, { req }) => {
+      const pageTypeSlug = typeof data?.pageType === 'string' ? data.pageType : 'standard'
+
+      return generatePreviewPath({
+        slug: typeof data?.slug === 'string' ? data.slug : '',
         collection: 'pages',
         req,
-      }),
+        pageType: pageTypeSlug,
+      })
+    },
     useAsTitle: 'title',
   },
+
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          admin: {
+            width: '55%',
+          },
+        },
+        {
+          name: 'pageType',
+          label: 'Page Type',
+          type: 'select',
+          defaultValue: 'standard',
+          options: [
+            { label: 'Standard', value: 'standard' },
+            { label: 'Services', value: 'services' },
+            { label: 'Legal', value: 'legal' },
+            { label: 'Contact', value: 'contact' },
+          ],
+          required: true,
+          admin: {
+            width: '45%',
+          },
+        },
+        {
+          name: 'legacyPageType',
+          label: 'Legacy Page Type',
+          type: 'relationship',
+          relationTo: 'page-types',
+          admin: {
+            readOnly: true,
+            hidden: true,
+            width: '45%',
+          },
+        },
+      ],
     },
     {
       type: 'tabs',
       tabs: [
         {
-          fields: [hero],
+          fields: [...hero],
           label: 'Hero',
         },
         {
