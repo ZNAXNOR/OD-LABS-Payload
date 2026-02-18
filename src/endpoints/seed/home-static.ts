@@ -1,8 +1,11 @@
 import type { RequiredDataFromCollectionSlug } from 'payload'
 
 // Used for pre-seeded content so that the homepage is not empty
-export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
+export const homeStatic = (
+  pageType: 'standard' | 'services' | 'legal',
+): RequiredDataFromCollectionSlug<'pages'> => ({
   slug: 'home',
+  pageType,
   _status: 'published',
   hero: {
     type: 'lowImpact',
@@ -85,4 +88,4 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
   },
   title: 'Home',
   layout: [],
-}
+})

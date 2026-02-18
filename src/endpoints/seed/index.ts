@@ -138,6 +138,8 @@ export const seed = async ({
     ),
   ])
 
+  // No longer needed
+
   payload.logger.info(`— Seeding posts...`)
 
   // Do not create posts with `Promise.all` because we want the posts to be created in order
@@ -202,18 +204,25 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
+  const contactPage = await payload.create({
+    collection: 'pages',
+    depth: 0,
+    data: contactPageData({
+      contactForm: contactForm,
+      pageType: 'contact',
     }),
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: contactPageData({ contactForm: contactForm }),
+  })
+
+  await payload.create({
+    collection: 'pages',
+    depth: 0,
+    data: home({
+      heroImage: imageHomeDoc,
+      metaImage: image2Doc,
+      pageType: 'standard',
+      contactDoc: contactPage,
     }),
-  ])
+  })
 
   payload.logger.info(`— Seeding globals...`)
 
