@@ -4,6 +4,8 @@ import {
   BlocksFeature,
   FixedToolbarFeature,
   HeadingFeature,
+  UnorderedListFeature,
+  OrderedListFeature,
   HorizontalRuleFeature,
   InlineToolbarFeature,
   lexicalEditor,
@@ -91,6 +93,8 @@ export const Posts: CollectionConfig<'posts'> = {
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
                     BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
                     FixedToolbarFeature(),
+                    UnorderedListFeature(),
+                    OrderedListFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
                   ]

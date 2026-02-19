@@ -12,6 +12,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import RichText from '@/components/RichText'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -71,13 +72,6 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout, layoutServices, layoutLegal, pageType } = page as any
-
-  // Select the correct layout based on pageType
-  let blocks = layout
-  if (pageType === 'services') blocks = layoutServices
-  if (pageType === 'legal') blocks = layoutLegal
-
   return (
     <article className="pt-16 pb-24">
       <PageClient />
@@ -86,8 +80,17 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <RenderHero {...hero} />
-      <RenderBlocks blocks={blocks} />
+      <RenderHero {...page.hero} />
+
+      {page.pageType === 'services' ? (
+        <div className="flex flex-col items-center gap-4 pt-8">
+          <div className="container">
+            <RichText className="max-w-[48rem] mx-auto" data={page.content} enableGutter={false} />
+          </div>
+        </div>
+      ) : (
+        <RenderBlocks blocks={page.layout} />
+      )}
     </article>
   )
 }

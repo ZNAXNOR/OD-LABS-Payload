@@ -88,4 +88,14 @@ export const homeStatic = (
   },
   title: 'Home',
   layout: [],
+  content: {
+    root: {
+      type: 'root',
+      children: [],
+      direction: null,
+      format: '',
+      indent: 0,
+      version: 1,
+    },
+  },
 })

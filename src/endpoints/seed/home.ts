@@ -679,5 +679,15 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       title: 'Payload Website Template',
     },
     title: 'Home',
+    content: {
+      root: {
+        type: 'root',
+        children: [],
+        direction: null,
+        format: '',
+        indent: 0,
+        version: 1,
+      },
+    },
   }
 }
