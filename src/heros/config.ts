@@ -2,9 +2,8 @@ import type { Field } from 'payload'
 
 // Import Sub-configs
 import { standardHero } from './StandardHero/config'
-import { servicesHero } from './ServicesHero/config'
 
-// Export both hero types, isolated by pageType
+// Export standard hero type, isolated to standard pages
 export const hero: Field[] = [
   {
     ...standardHero,
@@ -12,5 +11,4 @@ export const hero: Field[] = [
       condition: (_: any, { pageType }: any = {}) => !pageType || pageType === 'standard',
     },
   } as any,
-  servicesHero,
 ]

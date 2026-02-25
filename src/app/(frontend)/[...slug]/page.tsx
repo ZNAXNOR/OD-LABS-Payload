@@ -12,6 +12,8 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { ServicesPage } from './ServicesPage'
+import type { Page } from '@/payload-types'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -71,7 +73,7 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout, layoutServices, layoutLegal, pageType } = page as any
+  const { hero, layout, layoutServices, layoutLegal, pageType, expertise, content } = page as any
 
   // Select the correct layout based on pageType
   let blocks = layout
@@ -86,15 +88,13 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <RenderHero {...page} />
       {pageType === 'services' ? (
-        <div className="container">
-          <div className="max-w-[48rem] mx-auto">
-            <RenderBlocks blocks={blocks} />
-          </div>
-        </div>
+        <ServicesPage page={page as Page} blocks={blocks} />
       ) : (
-        <RenderBlocks blocks={blocks} />
+        <>
+          <RenderHero {...page} />
+          <RenderBlocks blocks={page.layout} />
+        </>
       )}
     </article>
   )
@@ -154,10 +154,11 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string[] }) => {
 
   const result = await payload.find({
     collection: 'pages',
+    depth: 2,
     draft,
     limit: 1,
-    pagination: false,
     overrideAccess: draft,
+    pagination: false,
     where,
   })
 

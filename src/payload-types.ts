@@ -71,8 +71,8 @@ export interface Config {
     posts: Post;
     media: Media;
     categories: Category;
-    users: User;
     'page-types': PageType;
+    users: User;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -94,8 +94,8 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
-    users: UsersSelect<false> | UsersSelect<true>;
     'page-types': PageTypesSelect<false> | PageTypesSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -158,7 +158,6 @@ export interface Page {
   id: number;
   title: string;
   pageType: 'standard' | 'services' | 'legal' | 'contact';
-  legacyPageType?: (number | null) | PageType;
   hero?: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     lowImpactVariant?: ('default' | 'rating') | null;
@@ -213,34 +212,54 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | ExpertiseContentBlock)[];
   servicesHero?: {
     type: 'lowImpact' | 'mediumImpact' | 'highImpact';
-    title: string;
     alignment?: ('left' | 'center') | null;
     description?: string | null;
-    icon?: (number | null) | Media;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
-  meta?: {
-    icon?:
-      | (
-          | 'none'
-          | 'cog'
-          | 'code'
-          | 'penTool'
-          | 'shrub'
-          | 'zap'
-          | 'cloud'
-          | 'database'
-          | 'monitor'
-          | 'smartphone'
-          | 'globe'
-          | 'search'
-          | 'mail'
-          | 'layout'
-        )
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  icon?: (number | null) | Media;
+  /**
+   * A short description shown when this page is referenced.
+   */
+  shortDescription?: string | null;
+  expertise?: {
+    variant?: ('inline' | 'sideVarient') | null;
+    size?: ('small' | 'large') | null;
+    title?: string | null;
+    items?:
+      | {
+          icon?: (number | null) | Media;
+          stat?: string | null;
+          title: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
       | null;
+  };
+  relatedServices?: {
+    variant?: ('inline' | 'side') | null;
+    title?: string | null;
+    subTitle?: string | null;
+    services?: (number | Page)[] | null;
+  };
+  meta?: {
     title?: string | null;
     /**
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
@@ -257,21 +276,6 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "page-types".
- */
-export interface PageType {
-  id: number;
-  title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -569,9 +573,7 @@ export interface ContentBlock {
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
-        icon?:
-          | ('none' | 'headset' | 'trending-up' | 'shield-check' | 'zap' | 'message-square' | 'circle-check-big')
-          | null;
+        icon?: (number | null) | Media;
         richText?: {
           root: {
             type: string;
@@ -866,6 +868,42 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ExpertiseContentBlock".
+ */
+export interface ExpertiseContentBlock {
+  variant?: ('inline' | 'sideVarient') | null;
+  size?: ('small' | 'large') | null;
+  title?: string | null;
+  items?:
+    | {
+        icon?: (number | null) | Media;
+        stat?: string | null;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'expertiseContent';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-types".
+ */
+export interface PageType {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1071,12 +1109,12 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
-        relationTo: 'users';
-        value: number | User;
-      } | null)
-    | ({
         relationTo: 'page-types';
         value: number | PageType;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1147,7 +1185,6 @@ export interface PayloadMigration {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   pageType?: T;
-  legacyPageType?: T;
   hero?:
     | T
     | {
@@ -1183,16 +1220,6 @@ export interface PagesSelect<T extends boolean = true> {
             };
         media?: T;
       };
-  servicesHero?:
-    | T
-    | {
-        type?: T;
-        title?: T;
-        alignment?: T;
-        description?: T;
-        icon?: T;
-        media?: T;
-      };
   layout?:
     | T
     | {
@@ -1201,11 +1228,46 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        expertiseContent?: T | ExpertiseContentBlockSelect<T>;
+      };
+  servicesHero?:
+    | T
+    | {
+        type?: T;
+        alignment?: T;
+        description?: T;
+        media?: T;
+      };
+  content?: T;
+  icon?: T;
+  shortDescription?: T;
+  expertise?:
+    | T
+    | {
+        variant?: T;
+        size?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              icon?: T;
+              stat?: T;
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  relatedServices?:
+    | T
+    | {
+        variant?: T;
+        title?: T;
+        subTitle?: T;
+        services?: T;
       };
   meta?:
     | T
     | {
-        icon?: T;
         title?: T;
         image?: T;
         description?: T;
@@ -1317,6 +1379,26 @@ export interface FormBlockSelect<T extends boolean = true> {
               feature?: T;
               id?: T;
             };
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ExpertiseContentBlock_select".
+ */
+export interface ExpertiseContentBlockSelect<T extends boolean = true> {
+  variant?: T;
+  size?: T;
+  title?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        stat?: T;
+        title?: T;
+        description?: T;
+        id?: T;
       };
   id?: T;
   blockName?: T;
@@ -1469,6 +1551,17 @@ export interface CategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-types_select".
+ */
+export interface PageTypesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -1489,17 +1582,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "page-types_select".
- */
-export interface PageTypesSelect<T extends boolean = true> {
-  title?: T;
-  generateSlug?: T;
-  slug?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

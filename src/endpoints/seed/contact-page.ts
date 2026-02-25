@@ -54,6 +54,16 @@ export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pag
         },
       },
     ],
+    content: {
+      root: {
+        type: 'root',
+        children: [],
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        version: 1,
+      },
+    },
     title: 'Contact',
   }
 }

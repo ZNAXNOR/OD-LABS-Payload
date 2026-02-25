@@ -22,7 +22,7 @@ const servicesHeroes = {
 type Props = Partial<Page>
 
 export const RenderHero: React.FC<Props> = (props) => {
-  const { hero, servicesHero, pageType } = props || {}
+  const { hero, servicesHero, pageType, icon } = props || {}
 
   const isServices = pageType === 'services'
   const heroData = isServices ? servicesHero : hero
@@ -36,7 +36,13 @@ export const RenderHero: React.FC<Props> = (props) => {
 
     if (!HeroToRender) return null
 
-    return <HeroToRender {...(heroData as any)} />
+    return (
+      <HeroToRender
+        {...(heroData as any)}
+        title={isServices ? props.title : (heroData as any).title}
+        icon={isServices ? icon : (heroData as any).icon}
+      />
+    )
   }
 
   return null

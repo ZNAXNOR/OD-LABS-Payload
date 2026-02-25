@@ -21,12 +21,6 @@ export const servicesHero: Field = {
       required: true,
     },
     {
-      name: 'title',
-      type: 'text',
-      label: 'Header',
-      required: true,
-    },
-    {
       name: 'alignment',
       type: 'radio',
       defaultValue: 'left',
@@ -46,12 +40,6 @@ export const servicesHero: Field = {
       admin: {
         condition: (_, { type } = {}) => type === 'lowImpact',
       },
-    },
-    {
-      name: 'icon',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Icon / Logo',
     },
     {
       name: 'media',

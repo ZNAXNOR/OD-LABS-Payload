@@ -4,7 +4,7 @@ import type { Media, Page } from '@/payload-types'
 type HomeArgs = {
   heroImage: Media
   metaImage: Media
-  pageType: 'standard' | 'services' | 'legal'
+  pageType: 'standard' | 'services' | 'contact' | 'legal'
   contactDoc: Page
   avatars: Media[]
 }
@@ -690,5 +690,15 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       title: 'Payload Website Template',
     },
     title: 'Home',
+    content: {
+      root: {
+        type: 'root',
+        children: [],
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        version: 1,
+      },
+    },
   }
 }
