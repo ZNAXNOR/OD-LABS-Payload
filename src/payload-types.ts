@@ -212,14 +212,14 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | ExpertiseContentBlock)[];
   servicesHero?: {
     type: 'lowImpact' | 'mediumImpact' | 'highImpact';
     alignment?: ('left' | 'center') | null;
     description?: string | null;
     media?: (number | null) | Media;
   };
-  content: {
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | ExpertiseContentBlock)[];
+  serviceContent?: {
     root: {
       type: string;
       children: {
@@ -233,7 +233,29 @@ export interface Page {
       version: number;
     };
     [k: string]: unknown;
+  } | null;
+  legalHero?: {
+    /**
+     * A short description shown below the page title in the hero.
+     */
+    description?: string | null;
+    lastUpdated?: string | null;
   };
+  legalContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   icon?: (number | null) | Media;
   /**
    * A short description shown when this page is referenced.
@@ -258,6 +280,14 @@ export interface Page {
     title?: string | null;
     subTitle?: string | null;
     services?: (number | Page)[] | null;
+  };
+  companyInfo?: {
+    companyName?: string | null;
+    companyAddress?: string | null;
+    websiteUrl?: string | null;
+    contactEmail?: string | null;
+    contactPage?: (number | null) | Page;
+    contactNumber?: string | null;
   };
   meta?: {
     title?: string | null;
@@ -1220,6 +1250,14 @@ export interface PagesSelect<T extends boolean = true> {
             };
         media?: T;
       };
+  servicesHero?:
+    | T
+    | {
+        type?: T;
+        alignment?: T;
+        description?: T;
+        media?: T;
+      };
   layout?:
     | T
     | {
@@ -1230,15 +1268,14 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         expertiseContent?: T | ExpertiseContentBlockSelect<T>;
       };
-  servicesHero?:
+  serviceContent?: T;
+  legalHero?:
     | T
     | {
-        type?: T;
-        alignment?: T;
         description?: T;
-        media?: T;
+        lastUpdated?: T;
       };
-  content?: T;
+  legalContent?: T;
   icon?: T;
   shortDescription?: T;
   expertise?:
@@ -1264,6 +1301,16 @@ export interface PagesSelect<T extends boolean = true> {
         title?: T;
         subTitle?: T;
         services?: T;
+      };
+  companyInfo?:
+    | T
+    | {
+        companyName?: T;
+        companyAddress?: T;
+        websiteUrl?: T;
+        contactEmail?: T;
+        contactPage?: T;
+        contactNumber?: T;
       };
   meta?:
     | T

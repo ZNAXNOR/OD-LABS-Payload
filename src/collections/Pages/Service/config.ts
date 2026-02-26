@@ -9,10 +9,9 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import { Banner } from '../../blocks/Standard/Banner/config'
-import { Code } from '../../blocks/Standard/Code/config'
-import { MediaBlock } from '../../blocks/Standard/MediaBlock/config'
-import { servicesHero } from '../../heros/ServicesHero/config'
+import { Banner } from '@/blocks/Standard/Banner/config'
+import { Code } from '@/blocks/Standard/Code/config'
+import { MediaBlock } from '@/blocks/Standard/MediaBlock/config'
 
 export const serviceContentTab: Tab = {
   label: 'Content',
@@ -20,15 +19,14 @@ export const serviceContentTab: Tab = {
     condition: (data) => data?.pageType === 'services',
   },
   fields: [
-    servicesHero,
     {
-      name: 'content',
+      name: 'serviceContent',
       type: 'richText',
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
           return [
             ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
             BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
             UnorderedListFeature(),
             OrderedListFeature(),
@@ -39,7 +37,7 @@ export const serviceContentTab: Tab = {
         },
       }),
       label: false,
-      required: true,
+      required: false,
     },
   ],
 }

@@ -1,11 +1,15 @@
 import React from 'react'
 import type { Page } from '@/payload-types'
+
 import { HighImpactHero } from '@/heros/StandardHero/HighImpact'
 import { LowImpactHero } from '@/heros/StandardHero/LowImpact'
 import { MediumImpactHero } from '@/heros/StandardHero/MediumImpact'
+
 import { ServicesHeroLowImpact } from '@/heros/ServicesHero/LowImpact'
 import { ServicesHeroMediumImpact } from '@/heros/ServicesHero/MediumImpact'
 import { ServicesHeroHighImpact } from '@/heros/ServicesHero/HighImpact'
+
+import { LegalHero } from '@/heros/LegalHero'
 
 const heroes = {
   highImpact: HighImpactHero,
@@ -25,6 +29,12 @@ export const RenderHero: React.FC<Props> = (props) => {
   const { hero, servicesHero, pageType, icon } = props || {}
 
   const isServices = pageType === 'services'
+  const isLegal = pageType === 'legal'
+
+  if (isLegal && props.legalHero) {
+    return <LegalHero title={props.title || ''} legalHero={props.legalHero} />
+  }
+
   const heroData = isServices ? servicesHero : hero
   const heroMap = isServices ? servicesHeroes : heroes
 

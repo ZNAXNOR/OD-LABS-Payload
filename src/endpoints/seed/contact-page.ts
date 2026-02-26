@@ -54,7 +54,17 @@ export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pag
         },
       },
     ],
-    content: {
+    serviceContent: {
+      root: {
+        type: 'root',
+        children: [],
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        version: 1,
+      },
+    },
+    legalContent: {
       root: {
         type: 'root',
         children: [],

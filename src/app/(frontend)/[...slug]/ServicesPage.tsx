@@ -18,7 +18,7 @@ export type ServicesPageProps = {
  * positioning and expertise variant rendering.
  */
 export const ServicesPage: React.FC<ServicesPageProps> = ({ page, blocks }) => {
-  const { servicesHero, expertise, content, relatedServices } = page
+  const { servicesHero, expertise, serviceContent, relatedServices } = page
 
   // Layout flags
   const isLowImpactHero = servicesHero?.type === 'lowImpact'
@@ -85,7 +85,14 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ page, blocks }) => {
 
                 {/* 3d. Actual Page Content & Blocks */}
                 <div className={isLowImpactHero ? 'mt-8' : ''}>
-                  {content && <RichText className="mb-8" data={content} enableGutter={false} />}
+                  {serviceContent && (
+                    <RichText
+                      className="mb-8"
+                      data={serviceContent}
+                      enableGutter={false}
+                      payloadData={page}
+                    />
+                  )}
                   <RenderBlocks blocks={blocks} />
                 </div>
 

@@ -8,8 +8,9 @@ import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
-import { standardConfig } from './standardConfig'
-import { serviceContentTab, serviceMetaFields } from './serviceConfig'
+import { standardConfig } from './Standard/config'
+import { serviceContentTab, serviceMetaFields } from './Service/config'
+import { legalContentTab, legalMetaFields } from './Legal/config'
 
 import {
   MetaDescriptionField,
@@ -40,6 +41,7 @@ export const Pages: CollectionConfig<'pages'> = {
     pageType: true,
     icon: true,
     shortDescription: true,
+    companyInfo: true,
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
@@ -107,11 +109,12 @@ export const Pages: CollectionConfig<'pages'> = {
           label: 'Hero',
           fields: [...hero],
           admin: {
-            condition: (data) => data?.pageType === 'standard',
+            condition: (data) => data?.pageType === 'standard' || data?.pageType === 'services',
           },
         },
         standardConfig,
         serviceContentTab,
+        legalContentTab,
         {
           label: 'Meta',
           fields: [
@@ -132,6 +135,7 @@ export const Pages: CollectionConfig<'pages'> = {
               maxLength: 60,
             },
             ...(serviceMetaFields as any),
+            ...(legalMetaFields as any),
           ],
         },
         {

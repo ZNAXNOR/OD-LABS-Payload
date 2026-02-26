@@ -100,29 +100,29 @@ export const seed = async ({
   ] = await Promise.all([
     // Payload Images
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/base-payload/src/endpoints/seed/image-post1.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/devlopment/src/endpoints/seed/images/image-post1.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/base-payload/src/endpoints/seed/image-post2.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/devlopment/src/endpoints/seed/images/image-post2.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/base-payload/src/endpoints/seed/image-post3.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/devlopment/src/endpoints/seed/images/image-post3.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/base-payload/src/endpoints/seed/image-hero1.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/devlopment/src/endpoints/seed/images/image-hero1.webp',
     ),
     // Avatar Images
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar1.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/devlopment/src/endpoints/seed/images/image-avatar1.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar2.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/devlopment/src/endpoints/seed/images/image-avatar2.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar3.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/devlopment/src/endpoints/seed/images/image-avatar3.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/feature/Hero/src/endpoints/seed/images/image-avatar4.webp',
+      'https://raw.githubusercontent.com/ZNAXNOR/OD-LABS-Payload/refs/heads/devlopment/src/endpoints/seed/images/image-avatar4.webp',
     ),
   ])
 

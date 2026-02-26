@@ -13,6 +13,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { ServicesPage } from './ServicesPage'
+import { LegalPage } from './LegalPage'
 import type { Page } from '@/payload-types'
 
 export async function generateStaticParams() {
@@ -90,10 +91,12 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       {pageType === 'services' ? (
         <ServicesPage page={page as Page} blocks={blocks} />
+      ) : pageType === 'legal' ? (
+        <LegalPage page={page as Page} />
       ) : (
         <>
           <RenderHero {...page} />
-          <RenderBlocks blocks={page.layout} />
+          <RenderBlocks blocks={blocks} />
         </>
       )}
     </article>

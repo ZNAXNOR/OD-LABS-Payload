@@ -8,6 +8,7 @@ import {
   UnderlineFeature,
   type LinkFields,
 } from '@payloadcms/richtext-lexical'
+import { DynamicValueFeature } from '@od-labs/payloadcms-dynamic-value-richtext'
 
 export const defaultLexical = lexicalEditor({
   features: [
@@ -15,6 +16,7 @@ export const defaultLexical = lexicalEditor({
     UnderlineFeature(),
     BoldFeature(),
     ItalicFeature(),
+    DynamicValueFeature(),
     LinkFeature({
       enabledCollections: ['pages', 'posts'],
       fields: ({ defaultFields }) => {
