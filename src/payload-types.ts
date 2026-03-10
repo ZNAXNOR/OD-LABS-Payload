@@ -284,9 +284,10 @@ export interface Page {
   companyInfo?: {
     companyName?: string | null;
     companyAddress?: string | null;
+    companyCountry?: string | null;
     websiteUrl?: string | null;
     contactEmail?: string | null;
-    contactPage?: (number | null) | Page;
+    contactPage?: string | null;
     contactNumber?: string | null;
   };
   meta?: {
@@ -1307,6 +1308,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         companyName?: T;
         companyAddress?: T;
+        companyCountry?: T;
         websiteUrl?: T;
         contactEmail?: T;
         contactPage?: T;

@@ -17,23 +17,16 @@ export const LegalPage: React.FC<LegalPageProps> = ({ page }) => {
   const { legalContent } = page
 
   return (
-    <>
+    <div className="max-w-4xl mx-auto">
       {/* Hero section — uses page title as the heading */}
       <RenderHero {...page} />
 
       {/* Rich text legal content */}
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
-          {legalContent && (
-            <RichText
-              className="max-w-3xl mx-auto"
-              data={legalContent}
-              enableGutter={false}
-              payloadData={page}
-            />
-          )}
+          {legalContent && <RichText data={legalContent} enableGutter={false} payloadData={page} />}
         </div>
       </div>
-    </>
+    </div>
   )
 }

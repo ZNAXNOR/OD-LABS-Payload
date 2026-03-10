@@ -35,23 +35,24 @@ export const legalMetaFields: Field[] = [
         label: 'Company Address',
       },
       {
+        name: 'companyCountry',
+        type: 'text',
+        label: 'Company Country',
+      },
+      {
         name: 'websiteUrl',
         type: 'text',
         label: 'Website URL',
       },
       {
         name: 'contactEmail',
-        type: 'text',
+        type: 'email',
         label: 'Contact Email',
       },
       {
         name: 'contactPage',
-        type: 'relationship',
-        relationTo: 'pages',
+        type: 'text',
         label: 'Contact Page',
-        filterOptions: {
-          pageType: { equals: 'contact' },
-        },
       },
       {
         name: 'contactNumber',
