@@ -1,0 +1,499 @@
+/* ======================================================
+   LIGHT MODE
+   ====================================================== */
+
+:root[data-theme='light'] {
+  /* Core palette */
+  --text: #171616;
+  --background: #f4f0f0;
+
+  --primary: #e94135;
+  --primary-strong: #e62719;
+  --primary-soft: #fce9e8;
+
+  /* Neutral hierarchy */
+  --surface-page: #f4f0f0;
+  --surface-section: #ece7e7;
+  --surface-card: #ffffff;
+
+  --border-soft: #e2dada;
+  --border-medium: #d6cccc;
+
+  /* Payload mapping */
+  --theme-elevation-0: var(--surface-page);
+  --theme-elevation-50: var(--surface-section);
+  --theme-elevation-100: var(--surface-card);
+  --theme-elevation-150: #f6f2f2;
+  --theme-elevation-200: var(--border-soft);
+  --theme-elevation-300: var(--border-medium);
+
+  --theme-text: #171616;
+
+  --theme-accent-400: var(--primary);
+  --theme-accent-500: var(--primary-strong);
+  --theme-accent-600: #b81f14;
+
+  --theme-overlay: rgba(17, 9, 9, 0.45);
+
+  /* Input surfaces */
+  --input-bg: #ffffff;
+}
+
+/* ======================================================
+   DARK MODE
+   ====================================================== */
+
+:root[data-theme='dark'] {
+  --text: #e9e8e8;
+  --background: #131111;
+
+  --primary: #ca2216;
+  --primary-strong: #fd2617;
+  --primary-soft: rgba(253, 38, 23, 0.12);
+
+  /* Neutral hierarchy */
+  --surface-page: #131111;
+  --surface-section: #1b1818;
+  --surface-card: #221f1f;
+
+  --border-soft: #2e2a2a;
+  --border-medium: #3e3838;
+
+  --theme-elevation-0: var(--surface-page);
+  --theme-elevation-50: var(--surface-section);
+  --theme-elevation-100: var(--surface-card);
+  --theme-elevation-150: #292525;
+  --theme-elevation-200: var(--border-soft);
+  --theme-elevation-300: var(--border-medium);
+
+  --theme-text: #f3f2f2;
+
+  --theme-accent-400: var(--primary);
+  --theme-accent-500: var(--primary-strong);
+  --theme-accent-600: #fd4235;
+
+  --theme-overlay: rgba(0, 0, 0, 0.65);
+
+  /* Input surfaces */
+  --input-bg: #181515;
+}
+
+/* ======================================================
+   NAVIGATION
+   ====================================================== */
+
+.nav {
+  background-color: var(--theme-elevation-50);
+  border-right: 1px solid var(--theme-elevation-200);
+}
+
+.nav a {
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+  padding-left: 10px;
+}
+
+.nav a:hover {
+  background: var(--theme-elevation-150);
+}
+
+.nav-group__label {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.nav-group__indicator svg .stroke {
+  stroke: var(--theme-text);
+  opacity: 0.7;
+}
+
+/* ======================================================
+   ACTIVE NAV INDICATOR
+   ====================================================== */
+
+/* Ensure nav items have positioning context */
+.nav a,
+.nav-group__toggle {
+  position: relative;
+}
+
+/* Active nav item */
+.nav a.active,
+.nav a[aria-current='page'] {
+  background: var(--theme-elevation-100);
+  font-weight: 600;
+}
+
+/* Accent indicator bar */
+.nav a.active::before,
+.nav a[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--theme-accent-500);
+}
+
+/* Optional: Glow Effect in Dark Mode */
+:root[data-theme='dark'] .nav a.active::before {
+  box-shadow: 0 0 6px rgba(253, 38, 23, 0.4);
+}
+
+/* ======================================================
+   GLASS SIDEBAR (DARK MODE) — Refined
+   ====================================================== */
+
+:root[data-theme='dark'] .nav {
+  background: rgba(24, 17, 17, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-right: 1px solid var(--theme-elevation-200);
+
+  /* Inner separation & Outer shadow */
+  box-shadow:
+    inset -1px 0 0 rgba(255, 255, 255, 0.03),
+    4px 0 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Navigation item polish (Opaque for clarity) */
+:root[data-theme='dark'] .nav a.active,
+:root[data-theme='dark'] .nav a[aria-current='page'] {
+  background: var(--theme-elevation-100);
+  border-radius: 6px;
+}
+
+/* Soften hover states for Glass UI */
+:root[data-theme='dark'] .nav a:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ======================================================
+   DASHBOARD CARDS
+   ====================================================== */
+
+.card {
+  background: var(--theme-elevation-100);
+  border: 1px solid var(--theme-elevation-200);
+
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.04),
+    0 10px 18px rgba(0, 0, 0, 0.04);
+
+  transition: all 0.18s ease;
+}
+
+.card:hover {
+  background: var(--theme-elevation-150);
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+/* ======================================================
+   CARD HEADER GRADIENT POLISH
+   ====================================================== */
+
+/* Soft accent gradient strip */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--theme-accent-400), var(--theme-accent-500));
+  opacity: 0.35;
+  z-index: 10;
+  transition: opacity 0.2s ease;
+}
+
+:root[data-theme='dark'] .card::before {
+  opacity: 0.55;
+}
+
+.card:hover::before {
+  opacity: 0.75;
+}
+
+/* ======================================================
+   BUTTONS
+   ====================================================== */
+
+.btn--style-primary {
+  background: var(--theme-accent-500);
+  color: #ffffff;
+
+  border-radius: 8px;
+  font-weight: 600;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  transition: all 0.18s ease;
+}
+
+.btn--style-primary:hover {
+  background: var(--theme-accent-600);
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+/* ======================================================
+   INPUT FIELDS
+   Always neutral background
+   ====================================================== */
+
+.field-type.text:not(.has-many) input {
+  background: var(--input-bg);
+
+  border: 1px solid var(--theme-elevation-200);
+
+  border-radius: 8px;
+
+  padding: 12px 14px;
+
+  transition:
+    border 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.field-type.text:not(.has-many) input:focus {
+  border-color: var(--theme-accent-500);
+
+  outline: none;
+
+  box-shadow: 0 0 0 2px var(--primary-soft);
+}
+
+/* ======================================================
+   TABLES
+   ====================================================== */
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table thead th {
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  font-size: 12px;
+
+  letter-spacing: 0.05em;
+
+  padding: 16px;
+
+  border-bottom: 2px solid var(--theme-elevation-200);
+}
+
+.table tbody tr:nth-child(odd) {
+  background: var(--theme-elevation-50);
+}
+
+.table tbody tr:hover {
+  background: var(--theme-elevation-100);
+}
+
+.table td {
+  padding: 14px 16px;
+
+  border-bottom: 1px solid var(--theme-elevation-150);
+}
+
+/* ======================================================
+   COLLAPSIBLE SECTIONS
+   ====================================================== */
+
+.collapsible {
+  border-radius: 10px;
+
+  border: 1px solid var(--theme-elevation-200);
+
+  background: var(--theme-elevation-0);
+
+  margin-bottom: 12px;
+}
+
+.collapsible__toggle {
+  background: var(--theme-elevation-50);
+
+  padding: 12px 20px;
+
+  font-weight: 600;
+}
+
+.collapsible__toggle:hover {
+  background: var(--theme-elevation-100);
+}
+
+/* ======================================================
+   HAMBURGER MENU
+   ====================================================== */
+
+.hamburger__wrapper {
+  background: var(--theme-elevation-100);
+
+  border: 1px solid var(--theme-elevation-200);
+
+  border-radius: 6px;
+}
+
+.hamburger:before,
+.hamburger:after {
+  background: var(--theme-text);
+}
+
+/* ======================================================
+   SCROLLBARS
+   ====================================================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--theme-elevation-50);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-elevation-300);
+
+  border-radius: 5px;
+
+  border: 2px solid var(--theme-elevation-50);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-elevation-400);
+}
+
+/* ======================================================
+   TEXT SELECTION
+   ====================================================== */
+
+::selection {
+  background: rgba(232, 18, 2, 0.15);
+
+  color: var(--theme-text);
+}
+
+/* ======================================================
+   TYPOGRAPHY POLISH
+   ====================================================== */
+
+/* Improve global readability */
+body {
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* Sidebar navigation */
+.nav-group__label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Form field labels */
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+
+/* Dashboard card titles */
+.card__title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Table headers */
+.table thead th {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Table body text */
+.table td {
+  font-size: 14px;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ======================================================
+   BLOCK EDITOR POLISH
+   ====================================================== */
+
+.blocks-field__block {
+  border-radius: 10px;
+  border: 1px solid var(--theme-elevation-200);
+  background: var(--theme-elevation-100);
+  margin-bottom: 14px;
+}
+
+.blocks-field__block:hover {
+  border-color: var(--theme-elevation-300);
+}
+
+/* ======================================================
+   BUTTONS
+   ====================================================== */
+
+button {
+  transition: all 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* ======================================================
+   STATUS PILLS
+   ====================================================== */
+
+.pill {
+  border-radius: 999px;
+  font-weight: 600;
+  padding: 4px 10px;
+}
+
+/* ======================================================
+   CONTENT WIDTH
+   ====================================================== */
+
+.template-default__wrap {
+  max-width: 1400px;
+}
+
+/* ======================================================
+   PANEL TRANSITIONS
+   ====================================================== */
+
+main {
+  animation: fadeIn 0.18s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
