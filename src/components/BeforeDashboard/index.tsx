@@ -17,7 +17,7 @@ const BeforeDashboard: React.FC<{ payload: Payload; user: User }> = ({ payload, 
     <div className={baseClass}>
       <div className="hero-background">
         <Image
-          src="/admin/bg_videoframe.png"
+          src="/admin/hero-image.webp"
           alt="Dashboard Background"
           fill
           sizes="100vw"
@@ -28,7 +28,6 @@ const BeforeDashboard: React.FC<{ payload: Payload; user: User }> = ({ payload, 
       </div>
 
       <div className="hero-container">
-
         <h1 className="hero-title">
           Welcome back,
           <span className="user-name-gradient">{displayName}</span>
@@ -37,7 +36,6 @@ const BeforeDashboard: React.FC<{ payload: Payload; user: User }> = ({ payload, 
         <SeedButtonInstructions />
 
         <HeroCTA payload={payload} />
-
       </div>
     </div>
   )
