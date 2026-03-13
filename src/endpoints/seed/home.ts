@@ -47,7 +47,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: 'Payload Website Template',
+                  text: 'OD LABS - The Digital Agency',
                   version: 1,
                 },
               ],
@@ -109,7 +109,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
                   fields: {
                     linkType: 'custom',
                     newTab: true,
-                    url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
+                    url: 'https://github.com/ZNAXNOR/OD-LABS-Payload/tree/whitelabel',
                   },
                   format: '',
                   indent: 0,
@@ -666,9 +666,9 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       },
     ],
     meta: {
-      description: 'An open-source website built with Payload and Next.js.',
+      description: 'We masterfully integrate advanced marketing strategies, digital expertise, and cloud-based IT management to elevate your business with robust, secure, and high-performance digital infrastructure.',
       image: heroImage.id,
-      title: 'Payload Website Template',
+      title: 'OD LABS - The Digital Agency',
     },
     title: 'Home',
   }

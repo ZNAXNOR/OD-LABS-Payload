@@ -29,10 +29,10 @@ const BeforeDashboard: React.FC<{ payload: Payload; user: User }> = ({ payload, 
 
       <div className="hero-container">
 
-        <h2 className="hero-title">
+        <h1 className="hero-title">
           Welcome back,
           <span className="user-name-gradient">{displayName}</span>
-        </h2>
+        </h1>
 
         <SeedButtonInstructions />
 

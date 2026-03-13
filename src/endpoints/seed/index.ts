@@ -76,7 +76,7 @@ export const seed = async ({
     depth: 0,
     where: {
       email: {
-        equals: 'demo-author@example.com',
+        equals: 'send@notifications.odtechlab.com',
       },
     },
   })
@@ -102,8 +102,8 @@ export const seed = async ({
     payload.create({
       collection: 'users',
       data: {
-        name: 'Demo Author',
-        email: 'demo-author@example.com',
+        name: 'OD LABS Team',
+        email: 'send@notifications.odtechlab.com',
         password: 'password',
       },
     }),
@@ -258,15 +258,15 @@ export const seed = async ({
               type: 'custom',
               label: 'Source Code',
               newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
+              url: 'https://github.com/ZNAXNOR/OD-LABS-Payload/tree/whitelabel',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Payload',
+              label: 'OD-LABS',
               newTab: true,
-              url: 'https://payloadcms.com/',
+              url: 'https://odtechlab.com',
             },
           },
         ],
