@@ -1,12 +1,13 @@
 'use client'
 
-import React, { Fragment, useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { toast } from '@payloadcms/ui'
+import { Sprout } from 'lucide-react'
 
 import './index.scss'
 
 const SuccessMessage: React.FC = () => (
-  <div>
+  <div className="seed-success-msg">
     Database seeded! You can now{' '}
     <a target="_blank" href="/">
       visit your website
@@ -38,51 +39,45 @@ export const SeedButton: React.FC = () => {
 
       setLoading(true)
 
-      try {
-        toast.promise(
-          new Promise((resolve, reject) => {
-            try {
-              fetch('/next/seed', { method: 'POST', credentials: 'include' })
-                .then((res) => {
-                  if (res.ok) {
-                    resolve(true)
-                    setSeeded(true)
-                  } else {
-                    reject('An error occurred while seeding.')
-                  }
-                })
-                .catch((error) => {
-                  reject(error)
-                })
-            } catch (error) {
-              reject(error)
-            }
-          }),
-          {
-            loading: 'Seeding with data....',
-            success: <SuccessMessage />,
-            error: 'An error occurred while seeding.',
-          },
-        )
-      } catch (err) {
-        const error = err instanceof Error ? err.message : String(err)
-        setError(error)
-      }
+      const seedPromise = fetch('/next/seed', { method: 'POST', credentials: 'include' })
+        .then((res) => {
+          if (res.ok) {
+            setSeeded(true)
+            return true
+          } else {
+            throw new Error('An error occurred while seeding.')
+          }
+        })
+        .catch((err) => {
+          const message = err instanceof Error ? err.message : String(err)
+          setError(message)
+          throw err
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+
+      toast.promise(seedPromise, {
+        loading: 'Seeding with data....',
+        success: <SuccessMessage />,
+        error: (err) => err?.message || 'An error occurred while seeding.',
+      })
     },
     [loading, seeded, error],
   )
 
-  let message = ''
-  if (loading) message = ' (seeding...)'
-  if (seeded) message = ' (done!)'
-  if (error) message = ` (error: ${error})`
+  let statusText = ''
+  if (loading) statusText = ' (seeding...)'
+  if (seeded) statusText = ' (done!)'
+  if (error) statusText = ` (error: ${error})`
 
   return (
-    <Fragment>
-      <button className="seedButton" onClick={handleClick}>
-        Seed your database
+    <span className="seed-button-wrapper">
+      <button className="seedButton" onClick={handleClick} disabled={loading || seeded}>
+        <Sprout width={16} height={16} />
+        Seed Database
       </button>
-      {message}
-    </Fragment>
+      {statusText && <span className="seed-status">{statusText}</span>}
+    </span>
   )
 }
