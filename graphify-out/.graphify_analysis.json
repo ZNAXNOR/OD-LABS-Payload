@@ -1,0 +1,825 @@
+{
+  "communities": {
+    "0": [
+      "helpers_seeduser_cleanuptestuser",
+      "helpers_seeduser_seedtestuser",
+      "pages_sitemap_xml_route_get",
+      "payload_layout_layout",
+      "posts_sitemap_xml_route_get",
+      "preview_route_get",
+      "segments_page_generatemetadata",
+      "segments_page_page",
+      "src_app_frontend_next_preview_route_ts",
+      "src_app_frontend_posts_page_pagenumber_page_tsx",
+      "src_app_frontend_posts_page_tsx",
+      "src_app_frontend_search_page_tsx",
+      "src_app_frontend_sitemaps_pages_sitemap_xml_route_ts",
+      "src_app_frontend_sitemaps_posts_sitemap_xml_route_ts",
+      "src_app_payload_admin_segments_page_tsx",
+      "src_app_payload_api_graphql_playground_route_ts",
+      "src_app_payload_api_graphql_route_ts",
+      "src_app_payload_api_slug_route_ts",
+      "src_app_payload_layout_tsx",
+      "src_blocks_archiveblock_component_tsx",
+      "src_payload_config_ts",
+      "tests_helpers_seeduser_ts"
+    ],
+    "1": [
+      "seed_home_home",
+      "seed_index_fetchfilebyurl",
+      "seed_index_seed",
+      "seed_post_1_post1",
+      "seed_post_2_post2",
+      "seed_post_3_post3",
+      "seed_route_post",
+      "src_app_frontend_next_seed_route_ts",
+      "src_endpoints_seed_home_ts",
+      "src_endpoints_seed_index_ts",
+      "src_endpoints_seed_post_1_ts",
+      "src_endpoints_seed_post_2_ts",
+      "src_endpoints_seed_post_3_ts"
+    ],
+    "2": [
+      "headertheme_index_headerthemeprovider",
+      "headertheme_index_useheadertheme",
+      "pagenumber_page_client_pageclient",
+      "posts_page_client_pageclient",
+      "search_page_client_pageclient",
+      "slug_page_client_pageclient",
+      "src_app_frontend_posts_page_client_tsx",
+      "src_app_frontend_posts_page_pagenumber_page_client_tsx",
+      "src_app_frontend_posts_slug_page_client_tsx",
+      "src_app_frontend_search_page_client_tsx",
+      "src_app_frontend_slug_page_client_tsx",
+      "src_providers_headertheme_index_tsx"
+    ],
+    "3": [
+      "payloadredirects_index_payloadredirects",
+      "segments_not_found_generatemetadata",
+      "segments_not_found_notfound",
+      "src_app_payload_admin_segments_not_found_tsx",
+      "src_components_payloadredirects_index_tsx",
+      "src_utilities_getdocument_ts",
+      "src_utilities_getredirects_ts",
+      "utilities_getdocument_getcacheddocument",
+      "utilities_getdocument_getdocument",
+      "utilities_getredirects_getcachedredirects",
+      "utilities_getredirects_getredirects"
+    ],
+    "4": [
+      "slug_page_generatemetadata",
+      "slug_page_generatestaticparams",
+      "slug_page_page",
+      "src_app_frontend_posts_slug_page_tsx",
+      "src_app_frontend_slug_page_tsx",
+      "src_utilities_generatemeta_ts",
+      "src_utilities_mergeopengraph_ts",
+      "utilities_generatemeta_generatemeta",
+      "utilities_generatemeta_getimageurl",
+      "utilities_mergeopengraph_mergeopengraph"
+    ],
+    "5": [
+      "plugins_index_generatetitle",
+      "plugins_index_generateurl",
+      "src_plugins_index_ts",
+      "src_utilities_getmeuser_ts",
+      "src_utilities_geturl_ts",
+      "utilities_getmeuser_getmeuser",
+      "utilities_geturl_getclientsideurl",
+      "utilities_geturl_getserversideurl"
+    ],
+    "6": [
+      "fields_link_link",
+      "fields_linkgroup_linkgroup",
+      "src_fields_link_ts",
+      "src_fields_linkgroup_ts",
+      "src_utilities_deepmerge_ts",
+      "utilities_deepmerge_deepmerge",
+      "utilities_deepmerge_isobject"
+    ],
+    "7": [
+      "header_component_header",
+      "src_header_component_tsx",
+      "src_utilities_getglobals_ts",
+      "utilities_getglobals_getcachedglobal",
+      "utilities_getglobals_getglobal"
+    ],
+    "8": [
+      "src_providers_theme_index_tsx",
+      "src_providers_theme_themeselector_index_tsx",
+      "theme_index_themeprovider",
+      "theme_index_usetheme",
+      "themeselector_index_themeselector"
+    ],
+    "9": [
+      "imagemedia_index_imagemedia",
+      "src_components_media_imagemedia_index_tsx",
+      "src_utilities_getmediaurl_ts",
+      "utilities_getmediaurl_getmediaurl"
+    ],
+    "10": [
+      "search_component_search",
+      "src_search_component_tsx",
+      "src_utilities_usedebounce_ts",
+      "utilities_usedebounce_usedebounce"
+    ],
+    "11": [
+      "hooks_revalidatepage_revalidatedelete",
+      "hooks_revalidatepage_revalidatepage",
+      "src_collections_pages_hooks_revalidatepage_ts"
+    ],
+    "12": [
+      "hooks_revalidatepost_revalidatedelete",
+      "hooks_revalidatepost_revalidatepost",
+      "src_collections_posts_hooks_revalidatepost_ts"
+    ],
+    "13": [
+      "seedbutton_index_seedbutton",
+      "seedbutton_index_successmessage",
+      "src_components_beforedashboard_seedbutton_index_tsx"
+    ],
+    "14": [
+      "src_components_ui_pagination_tsx",
+      "ui_pagination_cn",
+      "ui_pagination_pagination"
+    ],
+    "15": [
+      "od_labs_payload_redirects_redirects",
+      "redirects_ts"
+    ],
+    "16": [
+      "access_anyone_anyone",
+      "src_access_anyone_ts"
+    ],
+    "17": [
+      "access_authenticated_authenticated",
+      "src_access_authenticated_ts"
+    ],
+    "18": [
+      "access_authenticatedorpublished_authenticatedorpublished",
+      "src_access_authenticatedorpublished_ts"
+    ],
+    "19": [
+      "frontend_layout_rootlayout",
+      "src_app_frontend_layout_tsx"
+    ],
+    "20": [
+      "frontend_not_found_notfound",
+      "src_app_frontend_not_found_tsx"
+    ],
+    "21": [
+      "exit_preview_route_get",
+      "src_app_frontend_next_exit_preview_route_ts"
+    ],
+    "22": [
+      "blocks_renderblocks_renderblocks",
+      "src_blocks_renderblocks_tsx"
+    ],
+    "23": [
+      "banner_component_bannerblock",
+      "src_blocks_banner_component_tsx"
+    ],
+    "24": [
+      "code_component_codeblock",
+      "src_blocks_code_component_tsx"
+    ],
+    "25": [
+      "code_copybutton_copybutton",
+      "src_blocks_code_copybutton_tsx"
+    ],
+    "26": [
+      "content_component_contentblock",
+      "src_blocks_content_component_tsx"
+    ],
+    "27": [
+      "error_index_error",
+      "src_blocks_form_error_index_tsx"
+    ],
+    "28": [
+      "message_index_message",
+      "src_blocks_form_message_index_tsx"
+    ],
+    "29": [
+      "src_blocks_form_width_index_tsx",
+      "width_index_width"
+    ],
+    "30": [
+      "hooks_populateauthors_populateauthors",
+      "src_collections_posts_hooks_populateauthors_ts"
+    ],
+    "31": [
+      "beforelogin_index_beforelogin",
+      "src_components_beforelogin_index_tsx"
+    ],
+    "32": [
+      "link_index_cmslink",
+      "src_components_link_index_tsx"
+    ],
+    "33": [
+      "livepreviewlistener_index_livepreviewlistener",
+      "src_components_livepreviewlistener_index_tsx"
+    ],
+    "34": [
+      "logo_logo_logo",
+      "src_components_logo_logo_tsx"
+    ],
+    "35": [
+      "media_index_media",
+      "src_components_media_index_tsx"
+    ],
+    "36": [
+      "pagerange_index_pagerange",
+      "src_components_pagerange_index_tsx"
+    ],
+    "37": [
+      "richtext_index_internaldoctohref",
+      "src_components_richtext_index_tsx"
+    ],
+    "38": [
+      "src_components_ui_button_tsx",
+      "ui_button_cn"
+    ],
+    "39": [
+      "src_components_ui_card_tsx",
+      "ui_card_cn"
+    ],
+    "40": [
+      "src_components_ui_checkbox_tsx",
+      "ui_checkbox_checkbox"
+    ],
+    "41": [
+      "src_components_ui_input_tsx",
+      "ui_input_input"
+    ],
+    "42": [
+      "src_components_ui_select_tsx",
+      "ui_select_select"
+    ],
+    "43": [
+      "src_components_ui_textarea_tsx",
+      "ui_textarea_cn"
+    ],
+    "44": [
+      "seed_contact_page_contact",
+      "src_endpoints_seed_contact_page_ts"
+    ],
+    "45": [
+      "footer_rowlabel_rowlabel",
+      "src_footer_rowlabel_tsx"
+    ],
+    "46": [
+      "hooks_revalidatefooter_revalidatefooter",
+      "src_footer_hooks_revalidatefooter_ts"
+    ],
+    "47": [
+      "header_rowlabel_rowlabel",
+      "src_header_rowlabel_tsx"
+    ],
+    "48": [
+      "hooks_revalidateheader_revalidateheader",
+      "src_header_hooks_revalidateheader_ts"
+    ],
+    "49": [
+      "heros_renderhero_renderhero",
+      "src_heros_renderhero_tsx"
+    ],
+    "50": [
+      "hooks_populatepublishedat_populatepublishedat",
+      "src_hooks_populatepublishedat_ts"
+    ],
+    "51": [
+      "hooks_revalidateredirects_revalidateredirects",
+      "src_hooks_revalidateredirects_ts"
+    ],
+    "52": [
+      "providers_index_providers",
+      "src_providers_index_tsx"
+    ],
+    "53": [
+      "src_providers_theme_shared_ts",
+      "theme_shared_getimplicitpreference"
+    ],
+    "54": [
+      "src_providers_theme_types_ts",
+      "theme_types_themeisvalid"
+    ],
+    "55": [
+      "search_beforesync_beforesyncwithsearch",
+      "src_search_beforesync_ts"
+    ],
+    "56": [
+      "src_utilities_formatauthors_ts",
+      "utilities_formatauthors_formatauthors"
+    ],
+    "57": [
+      "src_utilities_formatdatetime_ts",
+      "utilities_formatdatetime_formatdatetime"
+    ],
+    "58": [
+      "src_utilities_generatepreviewpath_ts",
+      "utilities_generatepreviewpath_generatepreviewpath"
+    ],
+    "59": [
+      "src_utilities_tokebabcase_ts",
+      "utilities_tokebabcase_tokebabcase"
+    ],
+    "60": [
+      "src_utilities_ui_ts",
+      "utilities_ui_cn"
+    ],
+    "61": [
+      "src_utilities_useclickablecard_ts",
+      "utilities_useclickablecard_useclickablecard"
+    ],
+    "62": [
+      "helpers_login_login",
+      "tests_helpers_login_ts"
+    ],
+    "63": [
+      "eslint_config_mjs"
+    ],
+    "64": [
+      "next_config_ts"
+    ],
+    "65": [
+      "playwright_config_ts"
+    ],
+    "66": [
+      "postcss_config_js"
+    ],
+    "67": [
+      "tailwind_config_mjs"
+    ],
+    "68": [
+      "vitest_setup_ts"
+    ],
+    "69": [
+      "src_cssvariables_js"
+    ],
+    "70": [
+      "src_environment_d_ts"
+    ],
+    "71": [
+      "src_payload_types_ts"
+    ],
+    "72": [
+      "src_app_frontend_page_tsx"
+    ],
+    "73": [
+      "src_app_payload_admin_importmap_js"
+    ],
+    "74": [
+      "src_blocks_archiveblock_config_ts"
+    ],
+    "75": [
+      "src_blocks_banner_config_ts"
+    ],
+    "76": [
+      "src_blocks_calltoaction_component_tsx"
+    ],
+    "77": [
+      "src_blocks_calltoaction_config_ts"
+    ],
+    "78": [
+      "src_blocks_code_component_client_tsx"
+    ],
+    "79": [
+      "src_blocks_code_config_ts"
+    ],
+    "80": [
+      "src_blocks_content_config_ts"
+    ],
+    "81": [
+      "src_blocks_form_component_tsx"
+    ],
+    "82": [
+      "src_blocks_form_config_ts"
+    ],
+    "83": [
+      "src_blocks_form_fields_tsx"
+    ],
+    "84": [
+      "src_blocks_form_checkbox_index_tsx"
+    ],
+    "85": [
+      "src_blocks_form_country_index_tsx"
+    ],
+    "86": [
+      "src_blocks_form_country_options_ts"
+    ],
+    "87": [
+      "src_blocks_form_email_index_tsx"
+    ],
+    "88": [
+      "src_blocks_form_number_index_tsx"
+    ],
+    "89": [
+      "src_blocks_form_select_index_tsx"
+    ],
+    "90": [
+      "src_blocks_form_state_index_tsx"
+    ],
+    "91": [
+      "src_blocks_form_state_options_ts"
+    ],
+    "92": [
+      "src_blocks_form_text_index_tsx"
+    ],
+    "93": [
+      "src_blocks_form_textarea_index_tsx"
+    ],
+    "94": [
+      "src_blocks_mediablock_component_tsx"
+    ],
+    "95": [
+      "src_blocks_mediablock_config_ts"
+    ],
+    "96": [
+      "src_blocks_relatedposts_component_tsx"
+    ],
+    "97": [
+      "src_collections_categories_ts"
+    ],
+    "98": [
+      "src_collections_media_ts"
+    ],
+    "99": [
+      "src_collections_pages_index_ts"
+    ],
+    "100": [
+      "src_collections_posts_index_ts"
+    ],
+    "101": [
+      "src_collections_users_index_ts"
+    ],
+    "102": [
+      "src_components_adminbar_index_tsx"
+    ],
+    "103": [
+      "src_components_beforedashboard_index_tsx"
+    ],
+    "104": [
+      "src_components_card_index_tsx"
+    ],
+    "105": [
+      "src_components_collectionarchive_index_tsx"
+    ],
+    "106": [
+      "src_components_media_types_ts"
+    ],
+    "107": [
+      "src_components_media_videomedia_index_tsx"
+    ],
+    "108": [
+      "src_components_pagination_index_tsx"
+    ],
+    "109": [
+      "src_components_ui_label_tsx"
+    ],
+    "110": [
+      "src_endpoints_seed_contact_form_ts"
+    ],
+    "111": [
+      "src_endpoints_seed_home_static_ts"
+    ],
+    "112": [
+      "src_endpoints_seed_image_1_ts"
+    ],
+    "113": [
+      "src_endpoints_seed_image_2_ts"
+    ],
+    "114": [
+      "src_endpoints_seed_image_hero_1_ts"
+    ],
+    "115": [
+      "src_fields_defaultlexical_ts"
+    ],
+    "116": [
+      "src_footer_component_tsx"
+    ],
+    "117": [
+      "src_footer_config_ts"
+    ],
+    "118": [
+      "src_header_component_client_tsx"
+    ],
+    "119": [
+      "src_header_config_ts"
+    ],
+    "120": [
+      "src_header_nav_index_tsx"
+    ],
+    "121": [
+      "src_heros_config_ts"
+    ],
+    "122": [
+      "src_heros_highimpact_index_tsx"
+    ],
+    "123": [
+      "src_heros_lowimpact_index_tsx"
+    ],
+    "124": [
+      "src_heros_mediumimpact_index_tsx"
+    ],
+    "125": [
+      "src_heros_posthero_index_tsx"
+    ],
+    "126": [
+      "src_providers_theme_inittheme_index_tsx"
+    ],
+    "127": [
+      "src_providers_theme_themeselector_types_ts"
+    ],
+    "128": [
+      "src_search_fieldoverrides_ts"
+    ],
+    "129": [
+      "src_utilities_canusedom_ts"
+    ],
+    "130": [
+      "tests_e2e_admin_e2e_spec_ts"
+    ],
+    "131": [
+      "tests_e2e_frontend_e2e_spec_ts"
+    ],
+    "132": [
+      "tests_int_api_int_spec_ts"
+    ]
+  },
+  "cohesion": {
+    "0": 0.09,
+    "1": 0.17,
+    "2": 0.17,
+    "3": 0.18,
+    "4": 0.22,
+    "5": 0.25,
+    "6": 0.38,
+    "7": 0.4,
+    "8": 0.4,
+    "9": 0.5,
+    "10": 0.5,
+    "11": 0.67,
+    "12": 0.67,
+    "13": 0.67,
+    "14": 0.67,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 1.0,
+    "49": 1.0,
+    "50": 1.0,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0,
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0,
+    "60": 1.0,
+    "61": 1.0,
+    "62": 1.0,
+    "63": 1.0,
+    "64": 1.0,
+    "65": 1.0,
+    "66": 1.0,
+    "67": 1.0,
+    "68": 1.0,
+    "69": 1.0,
+    "70": 1.0,
+    "71": 1.0,
+    "72": 1.0,
+    "73": 1.0,
+    "74": 1.0,
+    "75": 1.0,
+    "76": 1.0,
+    "77": 1.0,
+    "78": 1.0,
+    "79": 1.0,
+    "80": 1.0,
+    "81": 1.0,
+    "82": 1.0,
+    "83": 1.0,
+    "84": 1.0,
+    "85": 1.0,
+    "86": 1.0,
+    "87": 1.0,
+    "88": 1.0,
+    "89": 1.0,
+    "90": 1.0,
+    "91": 1.0,
+    "92": 1.0,
+    "93": 1.0,
+    "94": 1.0,
+    "95": 1.0,
+    "96": 1.0,
+    "97": 1.0,
+    "98": 1.0,
+    "99": 1.0,
+    "100": 1.0,
+    "101": 1.0,
+    "102": 1.0,
+    "103": 1.0,
+    "104": 1.0,
+    "105": 1.0,
+    "106": 1.0,
+    "107": 1.0,
+    "108": 1.0,
+    "109": 1.0,
+    "110": 1.0,
+    "111": 1.0,
+    "112": 1.0,
+    "113": 1.0,
+    "114": 1.0,
+    "115": 1.0,
+    "116": 1.0,
+    "117": 1.0,
+    "118": 1.0,
+    "119": 1.0,
+    "120": 1.0,
+    "121": 1.0,
+    "122": 1.0,
+    "123": 1.0,
+    "124": 1.0,
+    "125": 1.0,
+    "126": 1.0,
+    "127": 1.0,
+    "128": 1.0,
+    "129": 1.0,
+    "130": 1.0,
+    "131": 1.0,
+    "132": 1.0
+  },
+  "gods": [
+    {
+      "id": "seed_index_seed",
+      "label": "seed()",
+      "degree": 7
+    },
+    {
+      "id": "headertheme_index_useheadertheme",
+      "label": "useHeaderTheme()",
+      "degree": 5
+    },
+    {
+      "id": "payloadredirects_index_payloadredirects",
+      "label": "PayloadRedirects()",
+      "degree": 4
+    },
+    {
+      "id": "utilities_deepmerge_deepmerge",
+      "label": "deepMerge()",
+      "degree": 4
+    },
+    {
+      "id": "utilities_generatemeta_generatemeta",
+      "label": "generateMeta()",
+      "degree": 4
+    },
+    {
+      "id": "slug_page_client_pageclient",
+      "label": "PageClient()",
+      "degree": 3
+    },
+    {
+      "id": "fields_link_link",
+      "label": "link()",
+      "degree": 3
+    },
+    {
+      "id": "fields_linkgroup_linkgroup",
+      "label": "linkGroup()",
+      "degree": 3
+    },
+    {
+      "id": "utilities_generatemeta_getimageurl",
+      "label": "getImageURL()",
+      "degree": 3
+    },
+    {
+      "id": "utilities_geturl_getserversideurl",
+      "label": "getServerSideURL()",
+      "degree": 3
+    }
+  ],
+  "surprises": [
+    {
+      "source": "POST()",
+      "target": "seed()",
+      "source_files": [
+        "src\\app\\(frontend)\\next\\seed\\route.ts",
+        "src\\endpoints\\seed\\index.ts"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `POST()` unexpectedly reaches hub `seed()`"
+    },
+    {
+      "source": "PageClient()",
+      "target": "useHeaderTheme()",
+      "source_files": [
+        "src\\app\\(frontend)\\posts\\page.client.tsx",
+        "src\\providers\\HeaderTheme\\index.tsx"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `PageClient()` unexpectedly reaches hub `useHeaderTheme()`"
+    },
+    {
+      "source": "PageClient()",
+      "target": "useHeaderTheme()",
+      "source_files": [
+        "src\\app\\(frontend)\\posts\\page\\[pageNumber]\\page.client.tsx",
+        "src\\providers\\HeaderTheme\\index.tsx"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `PageClient()` unexpectedly reaches hub `useHeaderTheme()`"
+    },
+    {
+      "source": "PageClient()",
+      "target": "useHeaderTheme()",
+      "source_files": [
+        "src\\app\\(frontend)\\search\\page.client.tsx",
+        "src\\providers\\HeaderTheme\\index.tsx"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `PageClient()` unexpectedly reaches hub `useHeaderTheme()`"
+    },
+    {
+      "source": "seed()",
+      "target": "home()",
+      "source_files": [
+        "src\\endpoints\\seed\\index.ts",
+        "src\\endpoints\\seed\\home.ts"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `home()` unexpectedly reaches hub `seed()`"
+    }
+  ],
+  "questions": [
+    {
+      "type": "verify_inferred",
+      "question": "Are the 5 inferred relationships involving `seed()` (e.g. with `POST()` and `post1()`) actually correct?",
+      "why": "`seed()` has 5 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 4 inferred relationships involving `useHeaderTheme()` (e.g. with `PageClient()` and `PageClient()`) actually correct?",
+      "why": "`useHeaderTheme()` has 4 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 3 inferred relationships involving `PayloadRedirects()` (e.g. with `getCachedRedirects()` and `getCachedDocument()`) actually correct?",
+      "why": "`PayloadRedirects()` has 3 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 2 inferred relationships involving `deepMerge()` (e.g. with `link()` and `linkGroup()`) actually correct?",
+      "why": "`deepMerge()` has 2 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 2 inferred relationships involving `generateMeta()` (e.g. with `generateMetadata()` and `mergeOpenGraph()`) actually correct?",
+      "why": "`generateMeta()` has 2 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.09 - nodes in this community are weakly interconnected."
+    }
+  ]
+}
