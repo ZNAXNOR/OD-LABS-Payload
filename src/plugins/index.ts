@@ -3,6 +3,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
+import { pageTypesPlugin } from '@od-labs/payload-pagetypes'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
@@ -47,12 +48,20 @@ export const plugins: Plugin[] = [
     },
   }),
   nestedDocsPlugin({
-    collections: ['categories'],
+    collections: ['pages', 'categories'],
     generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
   }),
   seoPlugin({
     generateTitle,
     generateURL,
+  }),
+  pageTypesPlugin({
+    collectionSlug: 'pages',
+    pageTypes: [
+      { slug: 'services', label: 'Services', required: true },
+      { slug: 'legal', label: 'Legal', required: true }
+    ],
+    enforceRootSlug: true
   }),
   formBuilderPlugin({
     fields: {

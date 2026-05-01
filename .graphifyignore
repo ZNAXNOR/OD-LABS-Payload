@@ -1,4 +1,9 @@
-AGENTS.md          # graphify install files — don't extract your own instructions as knowledge
+vendor/
+node_modules/
+dist/
+*.generated.py
+
+AGENTS.md
 CLAUDE.md
 GEMINI.md
 .gemini/
