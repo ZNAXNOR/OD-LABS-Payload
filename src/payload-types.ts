@@ -161,6 +161,7 @@ export interface Page {
   title: string;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    variant?: ('default' | 'sidePanel') | null;
     richText?: {
       root: {
         type: string;
@@ -200,6 +201,26 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    availability?: {
+      /**
+       * Will be displayed as "Limited to [number] active projects"
+       */
+      projectLimit?: number | null;
+      status?: ('now' | 'later') | null;
+      availableDate?: string | null;
+    };
+    activeWork?: {
+      includeProject?: boolean | null;
+      projects?:
+        | {
+            name?: string | null;
+            progress?: number | null;
+            description?: string | null;
+            status?: ('MVP Phase' | 'Development Phase' | 'Production Phase') | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
     media?: (number | null) | Media;
   };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
@@ -1077,6 +1098,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
+        variant?: T;
         richText?: T;
         links?:
           | T
@@ -1092,6 +1114,27 @@ export interface PagesSelect<T extends boolean = true> {
                     appearance?: T;
                   };
               id?: T;
+            };
+        availability?:
+          | T
+          | {
+              projectLimit?: T;
+              status?: T;
+              availableDate?: T;
+            };
+        activeWork?:
+          | T
+          | {
+              includeProject?: T;
+              projects?:
+                | T
+                | {
+                    name?: T;
+                    progress?: T;
+                    description?: T;
+                    status?: T;
+                    id?: T;
+                  };
             };
         media?: T;
       };
