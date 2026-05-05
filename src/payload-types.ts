@@ -240,6 +240,47 @@ export interface Page {
         blockType: 'metricsStrip';
       }
     | ProcessBlock
+    | {
+        heading: string;
+        left: {
+          title: string;
+          items?:
+            | {
+                title: string;
+                description: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        right: {
+          title: string;
+          items?:
+            | {
+                title: string;
+                description: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        note?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'comparison';
+      }
   )[];
   meta?: {
     title?: string | null;
@@ -1208,6 +1249,38 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
         process?: T | ProcessBlockSelect<T>;
+        comparison?:
+          | T
+          | {
+              heading?: T;
+              left?:
+                | T
+                | {
+                    title?: T;
+                    items?:
+                      | T
+                      | {
+                          title?: T;
+                          description?: T;
+                          id?: T;
+                        };
+                  };
+              right?:
+                | T
+                | {
+                    title?: T;
+                    items?:
+                      | T
+                      | {
+                          title?: T;
+                          description?: T;
+                          id?: T;
+                        };
+                  };
+              note?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T

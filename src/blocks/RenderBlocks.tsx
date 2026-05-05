@@ -9,6 +9,7 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MetricsStripComponent } from '@/blocks/MetricsStrip/Component'
 import { ProcessBlockComponent } from '@/blocks/ProcessBlock/Component'
+import { ComparisonBlockComponent } from '@/blocks/ComparisonBlock/Component'
 
 
 const blockComponents = {
@@ -19,6 +20,7 @@ const blockComponents = {
   mediaBlock: MediaBlock,
   metricsStrip: MetricsStripComponent,
   process: ProcessBlockComponent,
+  comparison: ComparisonBlockComponent,
 
 }
 
