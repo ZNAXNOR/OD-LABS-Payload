@@ -603,6 +603,9 @@ export interface MediaBlock {
  * via the `definition` "ArchiveBlock".
  */
 export interface ArchiveBlock {
+  variant?: ('default' | 'servicesGrid') | null;
+  heading?: string | null;
+  subheading?: string | null;
   introContent?: {
     root: {
       type: string;
@@ -619,6 +622,7 @@ export interface ArchiveBlock {
     [k: string]: unknown;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
+  populateByServices?: ('collection' | 'selection') | null;
   relationTo?: 'posts' | null;
   categories?: (number | Category)[] | null;
   limit?: number | null;
@@ -626,6 +630,17 @@ export interface ArchiveBlock {
     | {
         relationTo: 'posts';
         value: number | Post;
+      }[]
+    | null;
+  selectedServices?:
+    | {
+        page: number | Page;
+        description?: string | null;
+        tag?: string | null;
+        highlight?: boolean | null;
+        style?: ('default' | 'dark') | null;
+        size?: ('standard' | 'wide') | null;
+        id?: string | null;
       }[]
     | null;
   id?: string | null;
@@ -1264,12 +1279,27 @@ export interface MediaBlockSelect<T extends boolean = true> {
  * via the `definition` "ArchiveBlock_select".
  */
 export interface ArchiveBlockSelect<T extends boolean = true> {
+  variant?: T;
+  heading?: T;
+  subheading?: T;
   introContent?: T;
   populateBy?: T;
+  populateByServices?: T;
   relationTo?: T;
   categories?: T;
   limit?: T;
   selectedDocs?: T;
+  selectedServices?:
+    | T
+    | {
+        page?: T;
+        description?: T;
+        tag?: T;
+        highlight?: T;
+        style?: T;
+        size?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
