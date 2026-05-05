@@ -8,6 +8,7 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MetricsStripComponent } from '@/blocks/MetricsStrip/Component'
+import { ProcessBlockComponent } from '@/blocks/ProcessBlock/Component'
 
 
 const blockComponents = {
@@ -17,6 +18,7 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   metricsStrip: MetricsStripComponent,
+  process: ProcessBlockComponent,
 
 }
 

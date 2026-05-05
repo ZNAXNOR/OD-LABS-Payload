@@ -8,6 +8,7 @@ import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { MetricsStrip } from '../../blocks/MetricsStrip/config'
+import { Process } from '../../blocks/ProcessBlock/config'
 
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
@@ -74,7 +75,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MetricsStrip],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MetricsStrip, Process],
               required: true,
               admin: {
                 initCollapsed: true,

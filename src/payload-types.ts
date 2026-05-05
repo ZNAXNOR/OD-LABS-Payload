@@ -239,6 +239,7 @@ export interface Page {
         blockName?: string | null;
         blockType: 'metricsStrip';
       }
+    | ProcessBlock
   )[];
   meta?: {
     title?: string | null;
@@ -849,6 +850,22 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessBlock".
+ */
+export interface ProcessBlock {
+  title: string;
+  steps: {
+    title: string;
+    description: string;
+    isFinal?: boolean | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'process';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1190,6 +1207,7 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        process?: T | ProcessBlockSelect<T>;
       };
   meta?:
     | T
@@ -1311,6 +1329,23 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessBlock_select".
+ */
+export interface ProcessBlockSelect<T extends boolean = true> {
+  title?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        isFinal?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
