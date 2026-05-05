@@ -281,6 +281,26 @@ export interface Page {
         blockName?: string | null;
         blockType: 'comparison';
       }
+    | {
+        content: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'typography';
+      }
   )[];
   meta?: {
     title?: string | null;
@@ -1278,6 +1298,13 @@ export interface PagesSelect<T extends boolean = true> {
                         };
                   };
               note?: T;
+              id?: T;
+              blockName?: T;
+            };
+        typography?:
+          | T
+          | {
+              content?: T;
               id?: T;
               blockName?: T;
             };

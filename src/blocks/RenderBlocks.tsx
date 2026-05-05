@@ -10,6 +10,7 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MetricsStripComponent } from '@/blocks/MetricsStrip/Component'
 import { ProcessBlockComponent } from '@/blocks/ProcessBlock/Component'
 import { ComparisonBlockComponent } from '@/blocks/ComparisonBlock/Component'
+import { TypographyBlockComponent } from '@/blocks/TypographyBlock/Component'
 
 
 const blockComponents = {
@@ -21,6 +22,7 @@ const blockComponents = {
   metricsStrip: MetricsStripComponent,
   process: ProcessBlockComponent,
   comparison: ComparisonBlockComponent,
+  typography: TypographyBlockComponent,
 
 }
 
