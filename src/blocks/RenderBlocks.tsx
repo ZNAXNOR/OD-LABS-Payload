@@ -3,6 +3,7 @@ import React, { Fragment } from 'react'
 import type { Page } from '@/payload-types'
 
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
+import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
@@ -16,6 +17,7 @@ import { PricingBlockComponent } from '@/blocks/PricingBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
+  banner: BannerBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
@@ -25,7 +27,6 @@ const blockComponents = {
   comparison: ComparisonBlockComponent,
   typography: TypographyBlockComponent,
   pricing: PricingBlockComponent,
-
 }
 
 export const RenderBlocks: React.FC<{

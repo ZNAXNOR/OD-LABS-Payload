@@ -1,25 +1,25 @@
-# Graph Report - .  (2026-04-30)
+# Graph Report - OD-LABS-Payload  (2026-05-06)
 
 ## Corpus Check
-- 178 files · ~80,263 words
+- 195 files · ~125,019 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 279 nodes · 158 edges · 10 communities detected
+- 308 nodes · 163 edges · 10 communities detected
 - Extraction: 85% EXTRACTED · 15% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Seed Operations|Seed Operations]]
-- [[_COMMUNITY_Frontend Client Components|Frontend Client Components]]
-- [[_COMMUNITY_Redirects & Document Loading|Redirects & Document Loading]]
-- [[_COMMUNITY_Metadata & SEO|Metadata & SEO]]
-- [[_COMMUNITY_Plugins & User Utilities|Plugins & User Utilities]]
-- [[_COMMUNITY_Link Fields & Deep Merge|Link Fields & Deep Merge]]
-- [[_COMMUNITY_Header & Global Data|Header & Global Data]]
-- [[_COMMUNITY_Theme Management|Theme Management]]
-- [[_COMMUNITY_Media & Image Utilities|Media & Image Utilities]]
-- [[_COMMUNITY_Search & Debounce|Search & Debounce]]
+- [[_COMMUNITY_Community 1|Community 1]]
+- [[_COMMUNITY_Community 2|Community 2]]
+- [[_COMMUNITY_Community 3|Community 3]]
+- [[_COMMUNITY_Community 4|Community 4]]
+- [[_COMMUNITY_Community 5|Community 5]]
+- [[_COMMUNITY_Community 6|Community 6]]
+- [[_COMMUNITY_Community 7|Community 7]]
+- [[_COMMUNITY_Community 8|Community 8]]
+- [[_COMMUNITY_Community 9|Community 9]]
+- [[_COMMUNITY_Community 10|Community 10]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `seed()` - 7 edges
@@ -42,59 +42,59 @@
   src\app\(frontend)\posts\page\[pageNumber]\page.client.tsx → src\providers\HeaderTheme\index.tsx
 - `PageClient()` --calls--> `useHeaderTheme()`  [INFERRED]
   src\app\(frontend)\search\page.client.tsx → src\providers\HeaderTheme\index.tsx
-- `seed()` --calls--> `home()`  [INFERRED]
-  src\endpoints\seed\index.ts → src\endpoints\seed\home.ts
+- `home()` --calls--> `seed()`  [INFERRED]
+  src\endpoints\seed\home.ts → src\endpoints\seed\index.ts
 
 ## Communities
 
-### Community 1 - "Seed Operations"
+### Community 1 - "Community 1"
 Cohesion: 0.17
 Nodes (7): home(), fetchFileByURL(), seed(), post1(), post2(), post3(), POST()
 
-### Community 2 - "Frontend Client Components"
+### Community 2 - "Community 2"
 Cohesion: 0.17
 Nodes (5): useHeaderTheme(), PageClient(), PageClient(), PageClient(), PageClient()
 
-### Community 3 - "Redirects & Document Loading"
+### Community 3 - "Community 3"
 Cohesion: 0.18
 Nodes (4): PayloadRedirects(), NotFound(), getCachedDocument(), getCachedRedirects()
 
-### Community 4 - "Metadata & SEO"
+### Community 4 - "Community 4"
 Cohesion: 0.22
 Nodes (5): generateMetadata(), generateStaticParams(), generateMeta(), getImageURL(), mergeOpenGraph()
 
-### Community 5 - "Plugins & User Utilities"
+### Community 5 - "Community 5"
 Cohesion: 0.25
 Nodes (4): generateURL(), getMeUser(), getClientSideURL(), getServerSideURL()
 
-### Community 6 - "Link Fields & Deep Merge"
+### Community 6 - "Community 6"
 Cohesion: 0.38
 Nodes (4): link(), linkGroup(), deepMerge(), isObject()
 
-### Community 7 - "Header & Global Data"
-Cohesion: 0.4
-Nodes (2): Header(), getCachedGlobal()
-
-### Community 8 - "Theme Management"
+### Community 7 - "Community 7"
 Cohesion: 0.4
 Nodes (2): useTheme(), ThemeSelector()
 
-### Community 9 - "Media & Image Utilities"
+### Community 8 - "Community 8"
+Cohesion: 0.4
+Nodes (2): Header(), getCachedGlobal()
+
+### Community 9 - "Community 9"
 Cohesion: 0.5
 Nodes (2): ImageMedia(), getMediaUrl()
 
-### Community 10 - "Search & Debounce"
+### Community 10 - "Community 10"
 Cohesion: 0.5
 Nodes (2): Search(), useDebounce()
 
 ## Knowledge Gaps
-- **Thin community `Header & Global Data`** (5 nodes): `Header()`, `Component.tsx`, `getGlobals.ts`, `getCachedGlobal()`, `getGlobal()`
+- **Thin community `Community 7`** (5 nodes): `index.tsx`, `index.tsx`, `ThemeProvider()`, `useTheme()`, `ThemeSelector()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Theme Management`** (5 nodes): `index.tsx`, `index.tsx`, `ThemeProvider()`, `useTheme()`, `ThemeSelector()`
+- **Thin community `Community 8`** (5 nodes): `Header()`, `Component.tsx`, `getGlobals.ts`, `getCachedGlobal()`, `getGlobal()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Media & Image Utilities`** (4 nodes): `ImageMedia()`, `index.tsx`, `getMediaUrl.ts`, `getMediaUrl()`
+- **Thin community `Community 9`** (4 nodes): `ImageMedia()`, `index.tsx`, `getMediaUrl.ts`, `getMediaUrl()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Search & Debounce`** (4 nodes): `Search()`, `Component.tsx`, `useDebounce.ts`, `useDebounce()`
+- **Thin community `Community 10`** (4 nodes): `Search()`, `Component.tsx`, `useDebounce.ts`, `useDebounce()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
@@ -110,5 +110,5 @@ _Questions this graph is uniquely positioned to answer:_
   _`deepMerge()` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 2 inferred relationships involving `generateMeta()` (e.g. with `generateMetadata()` and `mergeOpenGraph()`) actually correct?**
   _`generateMeta()` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **Should `Core App & Payload Config` be split into smaller, more focused modules?**
+- **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.09 - nodes in this community are weakly interconnected._
