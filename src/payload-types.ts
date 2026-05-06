@@ -301,6 +301,31 @@ export interface Page {
         blockName?: string | null;
         blockType: 'typography';
       }
+    | {
+        heading: string;
+        subheading?: string | null;
+        /**
+         * Small uppercase note displayed below the subheading (e.g. delivery timeline)
+         */
+        note?: string | null;
+        plans: {
+          title: string;
+          price: string;
+          description: string;
+          features: {
+            text: string;
+            id?: string | null;
+          }[];
+          /**
+           * Show "Most Popular" badge and bold border on this plan
+           */
+          highlighted?: boolean | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'pricing';
+      }
   )[];
   meta?: {
     title?: string | null;
@@ -1305,6 +1330,30 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               content?: T;
+              id?: T;
+              blockName?: T;
+            };
+        pricing?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              note?: T;
+              plans?:
+                | T
+                | {
+                    title?: T;
+                    price?: T;
+                    description?: T;
+                    features?:
+                      | T
+                      | {
+                          text?: T;
+                          id?: T;
+                        };
+                    highlighted?: T;
+                    id?: T;
+                  };
               id?: T;
               blockName?: T;
             };

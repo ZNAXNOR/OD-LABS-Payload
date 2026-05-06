@@ -11,6 +11,7 @@ import { MetricsStripComponent } from '@/blocks/MetricsStrip/Component'
 import { ProcessBlockComponent } from '@/blocks/ProcessBlock/Component'
 import { ComparisonBlockComponent } from '@/blocks/ComparisonBlock/Component'
 import { TypographyBlockComponent } from '@/blocks/TypographyBlock/Component'
+import { PricingBlockComponent } from '@/blocks/PricingBlock/Component'
 
 
 const blockComponents = {
@@ -23,6 +24,7 @@ const blockComponents = {
   process: ProcessBlockComponent,
   comparison: ComparisonBlockComponent,
   typography: TypographyBlockComponent,
+  pricing: PricingBlockComponent,
 
 }
 
