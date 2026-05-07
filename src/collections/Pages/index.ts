@@ -13,6 +13,8 @@ import { Process } from '../../blocks/ProcessBlock/config'
 import { Comparison } from '../../blocks/ComparisonBlock/config'
 import { Typography } from '../../blocks/TypographyBlock/config'
 import { Pricing } from '../../blocks/PricingBlock/config'
+import { Accordion } from '../../blocks/Accordion/config'
+
 
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
@@ -79,7 +81,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MetricsStrip, Process, Comparison, Typography, Pricing, Banner],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MetricsStrip, Process, Comparison, Typography, Pricing, Banner, Accordion],
               required: true,
               admin: {
                 initCollapsed: true,

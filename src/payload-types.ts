@@ -327,6 +327,7 @@ export interface Page {
         blockType: 'pricing';
       }
     | BannerBlock
+    | AccordionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -987,6 +988,22 @@ export interface BannerBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock".
+ */
+export interface AccordionBlock {
+  heading: string;
+  variant: 'accordion' | 'grid';
+  items: {
+    question: string;
+    answer: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1393,6 +1410,7 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
         banner?: T | BannerBlockSelect<T>;
+        accordion?: T | AccordionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1548,6 +1566,23 @@ export interface BannerBlockSelect<T extends boolean = true> {
     | T
     | {
         text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock_select".
+ */
+export interface AccordionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  variant?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
         id?: T;
       };
   id?: T;

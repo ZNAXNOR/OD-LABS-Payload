@@ -13,6 +13,8 @@ import { ProcessBlockComponent } from '@/blocks/ProcessBlock/Component'
 import { ComparisonBlockComponent } from '@/blocks/ComparisonBlock/Component'
 import { TypographyBlockComponent } from '@/blocks/TypographyBlock/Component'
 import { PricingBlockComponent } from '@/blocks/PricingBlock/Component'
+import { AccordionBlock } from '@/blocks/Accordion/Component'
+
 
 
 const blockComponents = {
@@ -27,6 +29,7 @@ const blockComponents = {
   comparison: ComparisonBlockComponent,
   typography: TypographyBlockComponent,
   pricing: PricingBlockComponent,
+  accordion: AccordionBlock,
 }
 
 export const RenderBlocks: React.FC<{
