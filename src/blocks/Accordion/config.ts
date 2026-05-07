@@ -1,10 +1,4 @@
 import type { Block } from 'payload'
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 
 export const Accordion: Block = {
   slug: 'accordion',
@@ -26,17 +20,7 @@ export const Accordion: Block = {
         },
         {
           name: 'answer',
-          type: 'richText',
-          editor: lexicalEditor({
-            features: ({ rootFeatures }) => {
-              return [
-                ...rootFeatures,
-                HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-                FixedToolbarFeature(),
-                InlineToolbarFeature(),
-              ]
-            },
-          }),
+          type: 'textarea',
           required: true,
         },
       ],

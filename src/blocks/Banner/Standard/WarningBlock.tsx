@@ -13,7 +13,7 @@ export const WarningBlock: React.FC<WarningBlockProps> = ({ title, description, 
   return (
     <Alert
       className={cn(
-        'border-l-4 rounded-r-xl max-w-6xl mx-auto rounded-l-none border-t-0 border-r-0 border-b-0',
+        'border-l-4 rounded-r-xl max-w-7xl mx-auto rounded-l-none border-t-0 border-r-0 border-b-0',
         'border-red-700 bg-red-50/40 text-red-700',
       )}
     >

@@ -992,7 +992,6 @@ export interface BannerBlock {
  */
 export interface AccordionBlock {
   heading: string;
-  variant: 'accordion' | 'grid';
   items: {
     question: string;
     answer: string;
@@ -1577,7 +1576,6 @@ export interface BannerBlockSelect<T extends boolean = true> {
  */
 export interface AccordionBlockSelect<T extends boolean = true> {
   heading?: T;
-  variant?: T;
   items?:
     | T
     | {

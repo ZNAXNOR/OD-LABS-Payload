@@ -1,11 +1,11 @@
-# Graph Report - OD-LABS-Payload  (2026-05-06)
+# Graph Report - OD-LABS-Payload  (2026-05-07)
 
 ## Corpus Check
-- 195 files · ~125,019 words
+- 197 files · ~125,453 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 308 nodes · 163 edges · 10 communities detected
+- 311 nodes · 164 edges · 10 communities detected
 - Extraction: 85% EXTRACTED · 15% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
@@ -73,11 +73,11 @@ Nodes (4): link(), linkGroup(), deepMerge(), isObject()
 
 ### Community 7 - "Community 7"
 Cohesion: 0.4
-Nodes (2): useTheme(), ThemeSelector()
+Nodes (2): Header(), getCachedGlobal()
 
 ### Community 8 - "Community 8"
 Cohesion: 0.4
-Nodes (2): Header(), getCachedGlobal()
+Nodes (2): useTheme(), ThemeSelector()
 
 ### Community 9 - "Community 9"
 Cohesion: 0.5
@@ -88,9 +88,9 @@ Cohesion: 0.5
 Nodes (2): Search(), useDebounce()
 
 ## Knowledge Gaps
-- **Thin community `Community 7`** (5 nodes): `index.tsx`, `index.tsx`, `ThemeProvider()`, `useTheme()`, `ThemeSelector()`
+- **Thin community `Community 7`** (5 nodes): `Header()`, `Component.tsx`, `getGlobals.ts`, `getCachedGlobal()`, `getGlobal()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 8`** (5 nodes): `Header()`, `Component.tsx`, `getGlobals.ts`, `getCachedGlobal()`, `getGlobal()`
+- **Thin community `Community 8`** (5 nodes): `index.tsx`, `index.tsx`, `ThemeProvider()`, `useTheme()`, `ThemeSelector()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 9`** (4 nodes): `ImageMedia()`, `index.tsx`, `getMediaUrl.ts`, `getMediaUrl()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.

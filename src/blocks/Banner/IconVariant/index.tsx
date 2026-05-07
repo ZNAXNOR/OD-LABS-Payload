@@ -14,7 +14,7 @@ export const IconVariant: React.FC<Props> = ({
   content,
 }) => {
   return (
-    <section className={cn('max-w-7xl mx-auto px-8 py-8', className)}>
+    <section className={cn('container mx-auto px-8 py-8', className)}>
       <Card className="bg-black text-white rounded-3xl px-12 py-16 text-center relative overflow-hidden border-none">
         {/* Background Icon */}
         <div className="absolute top-0 right-0 opacity-10 p-8 text-8xl pointer-events-none">
