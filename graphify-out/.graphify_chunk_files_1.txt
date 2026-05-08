@@ -1,6 +1,3 @@
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\posts\page\[pageNumber]\page.tsx
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\posts\[slug]\page.client.tsx
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\posts\[slug]\page.tsx
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\search\page.client.tsx
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\search\page.tsx
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\[slug]\page.client.tsx
@@ -13,13 +10,13 @@ C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(payload)\
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(payload)\api\graphql-playground\route.ts
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(payload)\api\[...slug]\route.ts
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\RenderBlocks.tsx
+C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\Accordion\Component.tsx
+C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\Accordion\config.ts
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\ArchiveBlock\Component.tsx
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\ArchiveBlock\config.ts
+C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\ArchiveBlock\Default\Component.tsx
+C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\ArchiveBlock\ServicesGrid\Component.tsx
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\Banner\Component.tsx
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\Banner\config.ts
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\CallToAction\Component.tsx
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\CallToAction\config.ts
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\Code\Component.client.tsx
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\Code\Component.tsx
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\Code\config.ts
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\Code\CopyButton.tsx
+C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\Banner\IconVariant\index.tsx
+C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\blocks\Banner\Standard\index.tsx

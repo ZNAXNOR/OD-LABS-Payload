@@ -1,12 +1,6 @@
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\eslint.config.mjs
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\next.config.ts
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\playwright.config.ts
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\postcss.config.js
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\redirects.ts
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\tailwind.config.mjs
-C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\vitest.setup.ts
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\cssVariables.js
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\environment.d.ts
+C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\payload-generated-schema.ts
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\payload-types.ts
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\payload.config.ts
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\access\anyone.ts
@@ -23,3 +17,6 @@ C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\posts\page.client.tsx
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\posts\page.tsx
 C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\posts\page\[pageNumber]\page.client.tsx
+C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\posts\page\[pageNumber]\page.tsx
+C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\posts\[slug]\page.client.tsx
+C:\Users\omkar\Desktop\Omkar\VisualStudioCode\OD-LABS-Payload\src\app\(frontend)\posts\[slug]\page.tsx
