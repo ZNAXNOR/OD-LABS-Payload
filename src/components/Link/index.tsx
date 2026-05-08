@@ -3,7 +3,7 @@ import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
 
-import type { Page, Post } from '@/payload-types'
+import type { Media, Page, Post } from '@/payload-types'
 
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
@@ -11,13 +11,17 @@ type CMSLinkType = {
   className?: string
   label?: string | null
   newTab?: boolean | null
-  reference?: {
-    relationTo: 'pages' | 'posts'
-    value: Page | Post | string | number
-  } | null
+  reference?:
+    | {
+        relationTo: 'pages' | 'posts' | 'media'
+        value: Page | Post | Media | string | number
+      }
+    | (Media | string | number)
+    | null
   size?: ButtonProps['size'] | null
   type?: 'custom' | 'reference' | null
   url?: string | null
+  download?: boolean | string
 }
 
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
@@ -31,13 +35,34 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     reference,
     size: sizeFromProps,
     url,
+    download,
   } = props
 
   const href =
-    type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
+    type === 'reference' &&
+    reference &&
+    typeof reference === 'object' &&
+    'relationTo' in reference &&
+    reference.value !== null &&
+    typeof reference.value === 'object' &&
+    'slug' in reference.value &&
+    reference.value.slug
       ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
           reference.value.slug
         }`
+      : type === 'reference' &&
+        reference &&
+        typeof reference === 'object' &&
+        'relationTo' in reference &&
+        reference.value !== null &&
+        typeof reference.value === 'object' &&
+        'url' in reference.value
+      ? reference.value.url
+      : type === 'reference' &&
+        reference &&
+        typeof reference === 'object' &&
+        'url' in reference
+      ? reference.url
       : url
 
   if (!href) return null
@@ -48,7 +73,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
     return (
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
+      <Link className={cn(className)} href={href || url || ''} download={download} {...newTabProps}>
         {label && label}
         {children && children}
       </Link>
@@ -57,7 +82,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   return (
     <Button asChild className={className} size={size} variant={appearance}>
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
+      <Link className={cn(className)} href={href || url || ''} download={download} {...newTabProps}>
         {label && label}
         {children && children}
       </Link>

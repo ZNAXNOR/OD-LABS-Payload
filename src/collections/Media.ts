@@ -42,8 +42,14 @@ export const Media: CollectionConfig = {
   upload: {
     // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
     staticDir: path.resolve(dirname, '../../public/media'),
-    adminThumbnail: 'thumbnail',
+    adminThumbnail: ({ doc }) => {
+      if (doc.mimeType === 'application/pdf') {
+        return 'https://cdn-icons-png.flaticon.com/512/337/337946.png' // PDF icon
+      }
+      return (doc.sizes as any)?.thumbnail?.url || doc.url
+    },
     focalPoint: true,
+    mimeTypes: ['image/*', 'application/pdf'],
     imageSizes: [
       {
         name: 'thumbnail',

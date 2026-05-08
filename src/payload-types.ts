@@ -584,6 +584,7 @@ export interface User {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
+  variant?: ('small' | 'large') | null;
   richText?: {
     root: {
       type: string;
@@ -623,6 +624,12 @@ export interface CallToActionBlock {
         id?: string | null;
       }[]
     | null;
+  availabilityText?: string | null;
+  enableHelperLink?: boolean | null;
+  helperLink?: {
+    reference: number | Media;
+    label: string;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
@@ -1440,6 +1447,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
+  variant?: T;
   richText?: T;
   links?:
     | T
@@ -1455,6 +1463,14 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               appearance?: T;
             };
         id?: T;
+      };
+  availabilityText?: T;
+  enableHelperLink?: T;
+  helperLink?:
+    | T
+    | {
+        reference?: T;
+        label?: T;
       };
   id?: T;
   blockName?: T;
