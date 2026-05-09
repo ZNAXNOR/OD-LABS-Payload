@@ -14,6 +14,7 @@ import { Comparison } from '../../blocks/ComparisonBlock/config'
 import { Typography } from '../../blocks/TypographyBlock/config'
 import { Pricing } from '../../blocks/PricingBlock/config'
 import { Accordion } from '../../blocks/Accordion/config'
+import { FeatureBlock } from '../../blocks/FeatureBlock/config'
 
 
 import { hero } from '@/heros/config'
@@ -81,7 +82,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MetricsStrip, Process, Comparison, Typography, Pricing, Banner, Accordion],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MetricsStrip, Process, Comparison, Typography, Pricing, Banner, Accordion, FeatureBlock],
               required: true,
               admin: {
                 initCollapsed: true,

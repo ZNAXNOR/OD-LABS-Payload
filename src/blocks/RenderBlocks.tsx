@@ -14,6 +14,7 @@ import { ComparisonBlockComponent } from '@/blocks/ComparisonBlock/Component'
 import { TypographyBlockComponent } from '@/blocks/TypographyBlock/Component'
 import { PricingBlockComponent } from '@/blocks/PricingBlock/Component'
 import { AccordionBlock } from '@/blocks/Accordion/Component'
+import { FeatureBlock } from '@/blocks/FeatureBlock/Component'
 
 
 
@@ -30,6 +31,7 @@ const blockComponents = {
   typography: TypographyBlockComponent,
   pricing: PricingBlockComponent,
   accordion: AccordionBlock,
+  featureBlock: FeatureBlock,
 }
 
 export const RenderBlocks: React.FC<{

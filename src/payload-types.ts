@@ -328,6 +328,7 @@ export interface Page {
       }
     | BannerBlock
     | AccordionBlock
+    | FeatureBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1010,6 +1011,22 @@ export interface AccordionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureBlock".
+ */
+export interface FeatureBlock {
+  heading: string;
+  items: {
+    icon: 'Rocket' | 'Settings' | 'Check' | 'Users' | 'Zap' | 'Shield';
+    title: string;
+    description: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1417,6 +1434,7 @@ export interface PagesSelect<T extends boolean = true> {
             };
         banner?: T | BannerBlockSelect<T>;
         accordion?: T | AccordionBlockSelect<T>;
+        featureBlock?: T | FeatureBlockSelect<T>;
       };
   meta?:
     | T
@@ -1597,6 +1615,23 @@ export interface AccordionBlockSelect<T extends boolean = true> {
     | {
         question?: T;
         answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureBlock_select".
+ */
+export interface FeatureBlockSelect<T extends boolean = true> {
+  heading?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
         id?: T;
       };
   id?: T;
