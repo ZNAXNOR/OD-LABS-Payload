@@ -240,47 +240,7 @@ export interface Page {
         blockType: 'metricsStrip';
       }
     | ProcessBlock
-    | {
-        heading: string;
-        left: {
-          title: string;
-          items?:
-            | {
-                title: string;
-                description: string;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        right: {
-          title: string;
-          items?:
-            | {
-                title: string;
-                description: string;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        note?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'comparison';
-      }
+    | ComparisonBlock
     | {
         content: {
           root: {
@@ -962,6 +922,54 @@ export interface ProcessBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ComparisonBlock".
+ */
+export interface ComparisonBlock {
+  variant: 'large' | 'cards';
+  heading: string;
+  eyebrow?: string | null;
+  intro?: string | null;
+  left: {
+    title: string;
+    items?:
+      | {
+          title: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  right: {
+    title: string;
+    items?:
+      | {
+          title: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  note?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'comparison';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "BannerBlock".
  */
 export interface BannerBlock {
@@ -1369,38 +1377,7 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
         process?: T | ProcessBlockSelect<T>;
-        comparison?:
-          | T
-          | {
-              heading?: T;
-              left?:
-                | T
-                | {
-                    title?: T;
-                    items?:
-                      | T
-                      | {
-                          title?: T;
-                          description?: T;
-                          id?: T;
-                        };
-                  };
-              right?:
-                | T
-                | {
-                    title?: T;
-                    items?:
-                      | T
-                      | {
-                          title?: T;
-                          description?: T;
-                          id?: T;
-                        };
-                  };
-              note?: T;
-              id?: T;
-              blockName?: T;
-            };
+        comparison?: T | ComparisonBlockSelect<T>;
         typography?:
           | T
           | {
@@ -1582,6 +1559,43 @@ export interface ProcessBlockSelect<T extends boolean = true> {
         isFinal?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ComparisonBlock_select".
+ */
+export interface ComparisonBlockSelect<T extends boolean = true> {
+  variant?: T;
+  heading?: T;
+  eyebrow?: T;
+  intro?: T;
+  left?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  right?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  note?: T;
   id?: T;
   blockName?: T;
 }

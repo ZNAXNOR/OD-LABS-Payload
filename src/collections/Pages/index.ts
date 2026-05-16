@@ -10,7 +10,7 @@ import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { MetricsStrip } from '../../blocks/MetricsStrip/config'
 import { Process } from '../../blocks/ProcessBlock/config'
-import { Comparison } from '../../blocks/ComparisonBlock/config'
+import { ComparisonBlock } from '../../blocks/Comparison/config'
 import { Typography } from '../../blocks/TypographyBlock/config'
 import { Pricing } from '../../blocks/PricingBlock/config'
 import { Accordion } from '../../blocks/Accordion/config'
@@ -82,7 +82,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MetricsStrip, Process, Comparison, Typography, Pricing, Banner, Accordion, FeatureBlock],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MetricsStrip, Process, ComparisonBlock, Typography, Pricing, Banner, Accordion, FeatureBlock],
               required: true,
               admin: {
                 initCollapsed: true,
