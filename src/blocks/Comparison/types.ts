@@ -1,6 +1,7 @@
 export type ComparisonItem = {
+  icon: 'architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment'
   title: string
-  description: string
+  description?: any
   id?: string | null
 }
 
@@ -11,11 +12,17 @@ export type ComparisonColumn = {
 
 export type ComparisonBlockProps = {
   blockType: 'comparison'
-  variant: 'large' | 'cards'
+
+  variant: 'splitPanel' | 'cards'
+
+  positiveSide: 'left' | 'right'
+
   eyebrow?: string
   heading: string
   intro?: string
+
   left: ComparisonColumn
   right: ComparisonColumn
+
   note?: any
 }

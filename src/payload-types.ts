@@ -925,15 +925,31 @@ export interface ProcessBlock {
  * via the `definition` "ComparisonBlock".
  */
 export interface ComparisonBlock {
-  variant: 'large' | 'cards';
-  heading: string;
+  variant?: ('splitPanel' | 'cards') | null;
+  positiveSide?: ('left' | 'right') | null;
   eyebrow?: string | null;
+  heading: string;
   left: {
     title: string;
     items?:
       | {
+          icon: 'architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment';
           title: string;
-          description?: string | null;
+          description?: {
+            root: {
+              type: string;
+              children: {
+                type: any;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          } | null;
           id?: string | null;
         }[]
       | null;
@@ -942,8 +958,23 @@ export interface ComparisonBlock {
     title: string;
     items?:
       | {
+          icon: 'architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment';
           title: string;
-          description?: string | null;
+          description?: {
+            root: {
+              type: string;
+              children: {
+                type: any;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          } | null;
           id?: string | null;
         }[]
       | null;
@@ -1585,8 +1616,9 @@ export interface ProcessBlockSelect<T extends boolean = true> {
  */
 export interface ComparisonBlockSelect<T extends boolean = true> {
   variant?: T;
-  heading?: T;
+  positiveSide?: T;
   eyebrow?: T;
+  heading?: T;
   left?:
     | T
     | {
@@ -1594,6 +1626,7 @@ export interface ComparisonBlockSelect<T extends boolean = true> {
         items?:
           | T
           | {
+              icon?: T;
               title?: T;
               description?: T;
               id?: T;
@@ -1606,6 +1639,7 @@ export interface ComparisonBlockSelect<T extends boolean = true> {
         items?:
           | T
           | {
+              icon?: T;
               title?: T;
               description?: T;
               id?: T;

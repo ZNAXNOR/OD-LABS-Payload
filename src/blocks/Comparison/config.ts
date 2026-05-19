@@ -1,52 +1,72 @@
 import type { Block } from 'payload'
+
 import {
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+
 import { createComparisonColumn } from './fields/ComparisonColumn'
 
 export const ComparisonBlock: Block = {
   slug: 'comparison',
+
   interfaceName: 'ComparisonBlock',
+
   labels: {
     singular: 'Comparison',
     plural: 'Comparisons',
   },
+
   fields: [
     {
       type: 'row',
+
       fields: [
         {
           name: 'variant',
           type: 'select',
-          defaultValue: 'large',
-          required: true,
+          defaultValue: 'splitPanel',
+
           options: [
             {
-              label: 'Large',
-              value: 'large',
+              label: 'Split Panel',
+              value: 'splitPanel',
             },
             {
               label: 'Cards',
               value: 'cards',
             },
           ],
+
           admin: {
             width: '50%',
           },
         },
+
         {
-          name: 'heading',
-          type: 'text',
-          required: true,
+          name: 'positiveSide',
+          type: 'radio',
+          defaultValue: 'right',
+          options: [
+            {
+              label: 'Left Positive',
+              value: 'left',
+            },
+            {
+              label: 'Right Positive',
+              value: 'right',
+            },
+          ],
           admin: {
             width: '50%',
+            layout: 'horizontal',
           },
         },
       ],
     },
+
     {
       name: 'eyebrow',
       type: 'text',
@@ -54,38 +74,48 @@ export const ComparisonBlock: Block = {
         condition: (_, siblingData) => siblingData.variant === 'cards',
       },
     },
+
     {
-      name: 'intro',
-      type: 'textarea',
-      admin: {
-        condition: (_, siblingData) => siblingData.variant === 'cards',
-      },
+      name: 'heading',
+      type: 'text',
+      required: true,
     },
     {
       type: 'tabs',
+
       tabs: [
         {
           label: 'Left Content',
+
           fields: [createComparisonColumn('left', 'Left Column')],
         },
+
         {
           label: 'Right Content',
+
           fields: [createComparisonColumn('right', 'Right Column')],
         },
       ],
     },
+
     {
       name: 'note',
+
       type: 'richText',
+
+      admin: {
+        condition: (_, siblingData) => siblingData.variant === 'splitPanel',
+      },
+
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
+          HeadingFeature({
+            enabledHeadingSizes: ['h4'],
+          }),
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+        ],
       }),
     },
   ],
