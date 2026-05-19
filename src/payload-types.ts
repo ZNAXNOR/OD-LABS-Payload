@@ -928,7 +928,6 @@ export interface ComparisonBlock {
   variant: 'large' | 'cards';
   heading: string;
   eyebrow?: string | null;
-  intro?: string | null;
   left: {
     title: string;
     items?:
@@ -1022,11 +1021,29 @@ export interface AccordionBlock {
  * via the `definition` "FeatureBlock".
  */
 export interface FeatureBlock {
+  variant?: ('default' | 'stackedList') | null;
+  eyebrow?: string | null;
   heading: string;
+  subheading?: string | null;
+  columns?: ('2' | '3' | '4') | null;
   items: {
     icon: 'Rocket' | 'Settings' | 'Check' | 'Users' | 'Zap' | 'Shield';
     title: string;
-    description: string;
+    description: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
     id?: string | null;
   }[];
   id?: string | null;
@@ -1570,7 +1587,6 @@ export interface ComparisonBlockSelect<T extends boolean = true> {
   variant?: T;
   heading?: T;
   eyebrow?: T;
-  intro?: T;
   left?:
     | T
     | {
@@ -1639,7 +1655,11 @@ export interface AccordionBlockSelect<T extends boolean = true> {
  * via the `definition` "FeatureBlock_select".
  */
 export interface FeatureBlockSelect<T extends boolean = true> {
+  variant?: T;
+  eyebrow?: T;
   heading?: T;
+  subheading?: T;
+  columns?: T;
   items?:
     | T
     | {
