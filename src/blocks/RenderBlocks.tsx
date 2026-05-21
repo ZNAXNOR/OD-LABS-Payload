@@ -2,36 +2,38 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
 
+import { AccordionBlock } from '@/blocks/Accordion/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
+import { ArtifactBlock } from '@/blocks/ArtifactBlock/Component'
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { ComparisonBlockComponent } from '@/blocks/Comparison/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
+import { FeatureBlock } from '@/blocks/FeatureBlock/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MetricsStripComponent } from '@/blocks/MetricsStrip/Component'
-import { ProcessBlockComponent } from '@/blocks/ProcessBlock/Component'
-import { ComparisonBlockComponent } from '@/blocks/Comparison/Component'
-import { TypographyBlockComponent } from '@/blocks/TypographyBlock/Component'
 import { PricingBlockComponent } from '@/blocks/PricingBlock/Component'
-import { AccordionBlock } from '@/blocks/Accordion/Component'
-import { FeatureBlock } from '@/blocks/FeatureBlock/Component'
+import { ProcessBlockComponent } from '@/blocks/ProcessBlock/Component'
+import { TypographyBlockComponent } from '@/blocks/TypographyBlock/Component'
 
 
 
 const blockComponents = {
+  accordion: AccordionBlock,
   archive: ArchiveBlock,
+  artifactBlock: ArtifactBlock,
   banner: BannerBlock,
+  comparison: ComparisonBlockComponent,
   content: ContentBlock,
   cta: CallToActionBlock,
+  featureBlock: FeatureBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   metricsStrip: MetricsStripComponent,
-  process: ProcessBlockComponent,
-  comparison: ComparisonBlockComponent,
-  typography: TypographyBlockComponent,
   pricing: PricingBlockComponent,
-  accordion: AccordionBlock,
-  featureBlock: FeatureBlock,
+  process: ProcessBlockComponent,
+  typography: TypographyBlockComponent,
 }
 
 export const RenderBlocks: React.FC<{

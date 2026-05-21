@@ -2,20 +2,20 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { Accordion } from '../../blocks/Accordion/config'
 import { Archive } from '../../blocks/ArchiveBlock/config'
-import { CallToAction } from '../../blocks/CallToAction/config'
+import { ArtifactBlock } from '../../blocks/ArtifactBlock/config'
 import { Banner } from '../../blocks/Banner/config'
+import { CallToAction } from '../../blocks/CallToAction/config'
+import { ComparisonBlock } from '../../blocks/Comparison/config'
 import { Content } from '../../blocks/Content/config'
+import { FeatureBlock } from '../../blocks/FeatureBlock/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { MetricsStrip } from '../../blocks/MetricsStrip/config'
-import { Process } from '../../blocks/ProcessBlock/config'
-import { ComparisonBlock } from '../../blocks/Comparison/config'
-import { Typography } from '../../blocks/TypographyBlock/config'
 import { Pricing } from '../../blocks/PricingBlock/config'
-import { Accordion } from '../../blocks/Accordion/config'
-import { FeatureBlock } from '../../blocks/FeatureBlock/config'
-
+import { Process } from '../../blocks/ProcessBlock/config'
+import { Typography } from '../../blocks/TypographyBlock/config'
 
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
@@ -82,7 +82,22 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MetricsStrip, Process, ComparisonBlock, Typography, Pricing, Banner, Accordion, FeatureBlock],
+              blocks: [
+                Accordion,
+                Archive,
+                ArtifactBlock,
+                Banner,
+                CallToAction,
+                ComparisonBlock,
+                Content,
+                FeatureBlock,
+                FormBlock,
+                MediaBlock,
+                MetricsStrip,
+                Pricing,
+                Process,
+                Typography,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

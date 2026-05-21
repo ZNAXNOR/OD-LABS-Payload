@@ -203,6 +203,12 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-error: var(--error);
+  --color-inverse-surface: oklch(14.5% 0 0deg);
+  --color-inverse-on-surface: oklch(98.5% 0 0deg);
+  --color-primary-fixed: oklch(98.5% 0 0deg);
+  --color-surface-container-lowest: oklch(98.5% 0 0deg);
+  --color-surface-dim: oklch(75% 0 0deg);
+  --color-outline: oklch(40% 0 0deg);
 }
 
 @layer base {

@@ -224,11 +224,16 @@ export interface Page {
     media?: (number | null) | Media;
   };
   layout: (
-    | CallToActionBlock
-    | ContentBlock
-    | MediaBlock
+    | AccordionBlock
     | ArchiveBlock
+    | ArtifactBlock
+    | BannerBlock
+    | CallToActionBlock
+    | ComparisonBlock
+    | ContentBlock
+    | FeatureBlock
     | FormBlock
+    | MediaBlock
     | {
         items: {
           label: string;
@@ -238,28 +243,6 @@ export interface Page {
         id?: string | null;
         blockName?: string | null;
         blockType: 'metricsStrip';
-      }
-    | ProcessBlock
-    | ComparisonBlock
-    | {
-        content: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'typography';
       }
     | {
         heading: string;
@@ -286,9 +269,27 @@ export interface Page {
         blockName?: string | null;
         blockType: 'pricing';
       }
-    | BannerBlock
-    | AccordionBlock
-    | FeatureBlock
+    | ProcessBlock
+    | {
+        content: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'typography';
+      }
   )[];
   meta?: {
     title?: string | null;
@@ -542,6 +543,162 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock".
+ */
+export interface AccordionBlock {
+  heading: string;
+  items: {
+    question: string;
+    answer: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlock".
+ */
+export interface ArchiveBlock {
+  variant?: ('default' | 'servicesGrid') | null;
+  heading?: string | null;
+  subheading?: string | null;
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  populateBy?: ('collection' | 'selection') | null;
+  populateByServices?: ('collection' | 'selection') | null;
+  relationTo?: 'posts' | null;
+  categories?: (number | Category)[] | null;
+  limit?: number | null;
+  selectedDocs?:
+    | {
+        relationTo: 'posts';
+        value: number | Post;
+      }[]
+    | null;
+  selectedServices?:
+    | {
+        page: number | Page;
+        description?: string | null;
+        tag?: string | null;
+        highlight?: boolean | null;
+        style?: ('default' | 'dark') | null;
+        size?: ('standard' | 'wide') | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'archive';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArtifactBlock".
+ */
+export interface ArtifactBlock {
+  theme?: ('dark' | 'light') | null;
+  eyebrow?: string | null;
+  heading: string;
+  items?:
+    | {
+        icon: 'architecture' | 'mediation' | 'verified';
+        width?: ('oneThird' | 'twoThirds' | 'half' | 'full') | null;
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        artifactType: 'stackList' | 'processFlow' | 'codeSnippet';
+        stackList?: {
+          rows?:
+            | {
+                label: string;
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        processFlow?: {
+          steps?:
+            | {
+                label: string;
+                icon: 'GitCommitHorizontal' | 'FlaskConical' | 'Rocket';
+                highlight?: boolean | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        codeSnippet?: {
+          code: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'artifactBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlock".
+ */
+export interface BannerBlock {
+  blockVariant: 'standard' | 'iconBlock';
+  style?: ('info' | 'warning' | 'error' | 'success') | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  title?: string | null;
+  description?: string | null;
+  items?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'banner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
@@ -597,6 +754,84 @@ export interface CallToActionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ComparisonBlock".
+ */
+export interface ComparisonBlock {
+  variant?: ('splitPanel' | 'cards') | null;
+  positiveSide?: ('left' | 'right') | null;
+  eyebrow?: string | null;
+  heading: string;
+  left: {
+    title: string;
+    items?:
+      | {
+          icon: 'architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment';
+          title: string;
+          description?: {
+            root: {
+              type: string;
+              children: {
+                type: any;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          } | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  right: {
+    title: string;
+    items?:
+      | {
+          icon: 'architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment';
+          title: string;
+          description?: {
+            root: {
+              type: string;
+              children: {
+                type: any;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          } | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  note?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'comparison';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
@@ -647,62 +882,37 @@ export interface ContentBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
+ * via the `definition` "FeatureBlock".
  */
-export interface MediaBlock {
-  media: number | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlock".
- */
-export interface ArchiveBlock {
-  variant?: ('default' | 'servicesGrid') | null;
-  heading?: string | null;
+export interface FeatureBlock {
+  variant?: ('default' | 'stackedList') | null;
+  eyebrow?: string | null;
+  heading: string;
   subheading?: string | null;
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
+  columns?: ('2' | '3' | '4') | null;
+  items: {
+    icon: 'Rocket' | 'Settings' | 'Check' | 'Users' | 'Zap' | 'Shield';
+    title: string;
+    description: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
         version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
+      };
+      [k: string]: unknown;
     };
-    [k: string]: unknown;
-  } | null;
-  populateBy?: ('collection' | 'selection') | null;
-  populateByServices?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
-  categories?: (number | Category)[] | null;
-  limit?: number | null;
-  selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: number | Post;
-      }[]
-    | null;
-  selectedServices?:
-    | {
-        page: number | Page;
-        description?: string | null;
-        tag?: string | null;
-        highlight?: boolean | null;
-        style?: ('default' | 'dark') | null;
-        size?: ('standard' | 'wide') | null;
-        id?: string | null;
-      }[]
-    | null;
+    id?: string | null;
+  }[];
   id?: string | null;
   blockName?: string | null;
-  blockType: 'archive';
+  blockType: 'featureBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -906,6 +1116,16 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProcessBlock".
  */
 export interface ProcessBlock {
@@ -919,167 +1139,6 @@ export interface ProcessBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'process';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ComparisonBlock".
- */
-export interface ComparisonBlock {
-  variant?: ('splitPanel' | 'cards') | null;
-  positiveSide?: ('left' | 'right') | null;
-  eyebrow?: string | null;
-  heading: string;
-  left: {
-    title: string;
-    items?:
-      | {
-          icon: 'architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment';
-          title: string;
-          description?: {
-            root: {
-              type: string;
-              children: {
-                type: any;
-                version: number;
-                [k: string]: unknown;
-              }[];
-              direction: ('ltr' | 'rtl') | null;
-              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-              indent: number;
-              version: number;
-            };
-            [k: string]: unknown;
-          } | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  right: {
-    title: string;
-    items?:
-      | {
-          icon: 'architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment';
-          title: string;
-          description?: {
-            root: {
-              type: string;
-              children: {
-                type: any;
-                version: number;
-                [k: string]: unknown;
-              }[];
-              direction: ('ltr' | 'rtl') | null;
-              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-              indent: number;
-              version: number;
-            };
-            [k: string]: unknown;
-          } | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  note?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'comparison';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlock".
- */
-export interface BannerBlock {
-  blockVariant: 'standard' | 'iconBlock';
-  style?: ('info' | 'warning' | 'error' | 'success') | null;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  title?: string | null;
-  description?: string | null;
-  items?:
-    | {
-        text: string;
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'banner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AccordionBlock".
- */
-export interface AccordionBlock {
-  heading: string;
-  items: {
-    question: string;
-    answer: string;
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'accordion';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FeatureBlock".
- */
-export interface FeatureBlock {
-  variant?: ('default' | 'stackedList') | null;
-  eyebrow?: string | null;
-  heading: string;
-  subheading?: string | null;
-  columns?: ('2' | '3' | '4') | null;
-  items: {
-    icon: 'Rocket' | 'Settings' | 'Check' | 'Users' | 'Zap' | 'Shield';
-    title: string;
-    description: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'featureBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1406,11 +1465,16 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        cta?: T | CallToActionBlockSelect<T>;
-        content?: T | ContentBlockSelect<T>;
-        mediaBlock?: T | MediaBlockSelect<T>;
+        accordion?: T | AccordionBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
+        artifactBlock?: T | ArtifactBlockSelect<T>;
+        banner?: T | BannerBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+        comparison?: T | ComparisonBlockSelect<T>;
+        content?: T | ContentBlockSelect<T>;
+        featureBlock?: T | FeatureBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
         metricsStrip?:
           | T
           | {
@@ -1421,15 +1485,6 @@ export interface PagesSelect<T extends boolean = true> {
                     value?: T;
                     id?: T;
                   };
-              id?: T;
-              blockName?: T;
-            };
-        process?: T | ProcessBlockSelect<T>;
-        comparison?: T | ComparisonBlockSelect<T>;
-        typography?:
-          | T
-          | {
-              content?: T;
               id?: T;
               blockName?: T;
             };
@@ -1457,9 +1512,14 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
-        banner?: T | BannerBlockSelect<T>;
-        accordion?: T | AccordionBlockSelect<T>;
-        featureBlock?: T | FeatureBlockSelect<T>;
+        process?: T | ProcessBlockSelect<T>;
+        typography?:
+          | T
+          | {
+              content?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T
@@ -1487,69 +1547,17 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock_select".
+ * via the `definition` "AccordionBlock_select".
  */
-export interface CallToActionBlockSelect<T extends boolean = true> {
-  variant?: T;
-  richText?: T;
-  links?:
+export interface AccordionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  items?:
     | T
     | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              appearance?: T;
-            };
+        question?: T;
+        answer?: T;
         id?: T;
       };
-  availabilityText?: T;
-  enableHelperLink?: T;
-  helperLink?:
-    | T
-    | {
-        reference?: T;
-        label?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContentBlock_select".
- */
-export interface ContentBlockSelect<T extends boolean = true> {
-  columns?:
-    | T
-    | {
-        size?: T;
-        richText?: T;
-        enableLink?: T;
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              appearance?: T;
-            };
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock_select".
- */
-export interface MediaBlockSelect<T extends boolean = true> {
-  media?: T;
   id?: T;
   blockName?: T;
 }
@@ -1584,28 +1592,101 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock_select".
+ * via the `definition` "ArtifactBlock_select".
  */
-export interface FormBlockSelect<T extends boolean = true> {
-  form?: T;
-  enableIntro?: T;
-  introContent?: T;
+export interface ArtifactBlockSelect<T extends boolean = true> {
+  theme?: T;
+  eyebrow?: T;
+  heading?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        width?: T;
+        title?: T;
+        description?: T;
+        artifactType?: T;
+        stackList?:
+          | T
+          | {
+              rows?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+            };
+        processFlow?:
+          | T
+          | {
+              steps?:
+                | T
+                | {
+                    label?: T;
+                    icon?: T;
+                    highlight?: T;
+                    id?: T;
+                  };
+            };
+        codeSnippet?:
+          | T
+          | {
+              code?: T;
+            };
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProcessBlock_select".
+ * via the `definition` "BannerBlock_select".
  */
-export interface ProcessBlockSelect<T extends boolean = true> {
+export interface BannerBlockSelect<T extends boolean = true> {
+  blockVariant?: T;
+  style?: T;
+  content?: T;
   title?: T;
-  steps?:
+  description?: T;
+  items?:
     | T
     | {
-        title?: T;
-        description?: T;
-        isFinal?: T;
+        text?: T;
         id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock_select".
+ */
+export interface CallToActionBlockSelect<T extends boolean = true> {
+  variant?: T;
+  richText?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  availabilityText?: T;
+  enableHelperLink?: T;
+  helperLink?:
+    | T
+    | {
+        reference?: T;
+        label?: T;
       };
   id?: T;
   blockName?: T;
@@ -1651,34 +1732,25 @@ export interface ComparisonBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlock_select".
+ * via the `definition` "ContentBlock_select".
  */
-export interface BannerBlockSelect<T extends boolean = true> {
-  blockVariant?: T;
-  style?: T;
-  content?: T;
-  title?: T;
-  description?: T;
-  items?:
+export interface ContentBlockSelect<T extends boolean = true> {
+  columns?:
     | T
     | {
-        text?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AccordionBlock_select".
- */
-export interface AccordionBlockSelect<T extends boolean = true> {
-  heading?: T;
-  items?:
-    | T
-    | {
-        question?: T;
-        answer?: T;
+        size?: T;
+        richText?: T;
+        enableLink?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
         id?: T;
       };
   id?: T;
@@ -1700,6 +1772,43 @@ export interface FeatureBlockSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormBlock_select".
+ */
+export interface FormBlockSelect<T extends boolean = true> {
+  form?: T;
+  enableIntro?: T;
+  introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock_select".
+ */
+export interface MediaBlockSelect<T extends boolean = true> {
+  media?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessBlock_select".
+ */
+export interface ProcessBlockSelect<T extends boolean = true> {
+  title?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        isFinal?: T;
         id?: T;
       };
   id?: T;
