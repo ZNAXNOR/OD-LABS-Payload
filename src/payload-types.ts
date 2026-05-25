@@ -616,7 +616,7 @@ export interface ArtifactBlock {
   items?:
     | {
         icon: 'architecture' | 'mediation' | 'verified';
-        width?: ('oneThird' | 'twoThirds' | 'half' | 'full') | null;
+        width?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
         title: string;
         description?: {
           root: {
@@ -633,28 +633,30 @@ export interface ArtifactBlock {
           };
           [k: string]: unknown;
         } | null;
-        artifactType: 'stackList' | 'processFlow' | 'codeSnippet';
-        stackList?: {
-          rows?:
-            | {
-                label: string;
-                value: string;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        processFlow?: {
-          steps?:
-            | {
-                label: string;
-                icon: 'GitCommitHorizontal' | 'FlaskConical' | 'Rocket';
-                highlight?: boolean | null;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        codeSnippet?: {
-          code: string;
+        artifact: {
+          type: 'stackList' | 'processFlow' | 'codeSnippet';
+          stackList?: {
+            rows?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          processFlow?: {
+            steps?:
+              | {
+                  label: string;
+                  icon?: ('none' | 'GitCommitHorizontal' | 'FlaskConical' | 'Rocket') | null;
+                  highlight?: boolean | null;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          codeSnippet?: {
+            code: string;
+          };
         };
         id?: string | null;
       }[]
@@ -1605,34 +1607,38 @@ export interface ArtifactBlockSelect<T extends boolean = true> {
         width?: T;
         title?: T;
         description?: T;
-        artifactType?: T;
-        stackList?:
+        artifact?:
           | T
           | {
-              rows?:
+              type?: T;
+              stackList?:
                 | T
                 | {
-                    label?: T;
-                    value?: T;
-                    id?: T;
+                    rows?:
+                      | T
+                      | {
+                          label?: T;
+                          value?: T;
+                          id?: T;
+                        };
                   };
-            };
-        processFlow?:
-          | T
-          | {
-              steps?:
+              processFlow?:
                 | T
                 | {
-                    label?: T;
-                    icon?: T;
-                    highlight?: T;
-                    id?: T;
+                    steps?:
+                      | T
+                      | {
+                          label?: T;
+                          icon?: T;
+                          highlight?: T;
+                          id?: T;
+                        };
                   };
-            };
-        codeSnippet?:
-          | T
-          | {
-              code?: T;
+              codeSnippet?:
+                | T
+                | {
+                    code?: T;
+                  };
             };
         id?: T;
       };

@@ -10,7 +10,7 @@ import RichText from '@/components/RichText'
 
 import type { ArtifactItem } from '../../types'
 
-import { ArtifactRenderer } from '../ArtifactRenderer'
+import { ArtifactRenderer } from '@/artifacts'
 
 const iconMap = {
   architecture: ListTree,
@@ -70,8 +70,10 @@ export const ArtifactCard: React.FC<Props> = ({
 
       <div className="mt-auto">
         <ArtifactRenderer
-          item={item}
-          dark={dark}
+          artifact={item.artifact}
+          presentation={{
+            theme: dark ? 'dark' : 'light',
+          }}
         />
       </div>
     </div>

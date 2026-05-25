@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { createArtifactField } from '@/artifacts'
+
 import {
   lexicalEditor,
   FixedToolbarFeature,
@@ -103,19 +105,19 @@ export const ArtifactBlock: Block = {
               defaultValue: 'oneThird',
               options: [
                 {
-                  label: '1/3 Width',
+                  label: 'One Third',
                   value: 'oneThird',
                 },
                 {
-                  label: '2/3 Width',
-                  value: 'twoThirds',
-                },
-                {
-                  label: '1/2 Width',
+                  label: 'Half',
                   value: 'half',
                 },
                 {
-                  label: 'Full Width',
+                  label: 'Two Thirds',
+                  value: 'twoThirds',
+                },
+                {
+                  label: 'Full',
                   value: 'full',
                 },
               ],
@@ -143,132 +145,7 @@ export const ArtifactBlock: Block = {
             ],
           }),
         },
-        {
-          name: 'artifactType',
-          type: 'select',
-          required: true,
-          options: [
-            {
-              label: 'Stack List',
-              value: 'stackList',
-            },
-            {
-              label: 'Process Flow',
-              value: 'processFlow',
-            },
-            {
-              label: 'Code Snippet',
-              value: 'codeSnippet',
-            },
-          ],
-        },
-        {
-          name: 'stackList',
-          type: 'group',
-          admin: {
-            condition: (_, siblingData) =>
-              siblingData.artifactType ===
-              'stackList',
-          },
-          fields: [
-            {
-              name: 'rows',
-              type: 'array',
-              fields: [
-                {
-                  name: 'label',
-                  type: 'text',
-                  required: true,
-                },
-                {
-                  name: 'value',
-                  type: 'text',
-                  required: true,
-                },
-              ],
-            },
-          ],
-        },
-        {
-          name: 'processFlow',
-          type: 'group',
-          admin: {
-            condition: (_, siblingData) =>
-              siblingData.artifactType ===
-              'processFlow',
-          },
-          fields: [
-            {
-              name: 'steps',
-              type: 'array',
-              fields: [
-                {
-                  type: 'row',
-                  fields: [
-                    {
-                      name: 'label',
-                      type: 'text',
-                      required: true,
-                      admin: {
-                        width: '50%',
-                      },
-                    },
-                    {
-                      name: 'icon',
-                      type: 'select',
-                      required: true,
-                      dbName: 'icon',
-                      options: [
-                        {
-                          label: 'Git Commit',
-                          value: 'GitCommitHorizontal',
-                        },
-                        {
-                          label: 'Flask Conical',
-                          value: 'FlaskConical',
-                        },
-                        {
-                          label: 'Rocket',
-                          value: 'Rocket',
-                        },
-                      ],
-                      defaultValue: 'GitCommitHorizontal',
-                      admin: {
-                        width: '50%',
-                      },
-                    },
-                  ],
-                },
-                {
-                  name: 'highlight',
-                  type: 'checkbox',
-                  defaultValue: false,
-                  admin: {
-                    components: {
-                      Field: '@/components/ExclusiveCheckbox#ExclusiveCheckbox',
-                    },
-                  },
-                },
-              ],
-            },
-          ],
-        },
-        {
-          name: 'codeSnippet',
-          type: 'group',
-          admin: {
-            condition: (_, siblingData) =>
-              siblingData.artifactType ===
-              'codeSnippet',
-          },
-          fields: [
-            {
-              name: 'code',
-              type: 'code',
-              required: true,
-            },
-          ],
-        },
+        createArtifactField(),
       ],
     },
   ],
