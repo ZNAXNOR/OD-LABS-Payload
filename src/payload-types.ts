@@ -270,6 +270,7 @@ export interface Page {
         blockType: 'pricing';
       }
     | ProcessBlock
+    | ServiceShowcaseBlock
     | {
         content: {
           root: {
@@ -634,7 +635,7 @@ export interface ArtifactBlock {
           [k: string]: unknown;
         } | null;
         artifact: {
-          type: 'stackList' | 'processFlow' | 'codeSnippet';
+          type: 'stackList' | 'processFlow' | 'codeSnippet' | 'ad';
           stackList?: {
             rows?:
               | {
@@ -656,6 +657,34 @@ export interface ArtifactBlock {
           };
           codeSnippet?: {
             code: string;
+          };
+          ad?: {
+            title?: string | null;
+            sections?:
+              | {
+                  layout: 'row' | 'columns' | 'split';
+                  variant?: ('primary' | 'secondary' | 'highlight') | null;
+                  items?:
+                    | {
+                        label: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  left?:
+                    | {
+                        label: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  right?:
+                    | {
+                        label: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
           };
         };
         id?: string | null;
@@ -1144,6 +1173,132 @@ export interface ProcessBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceShowcaseBlock".
+ */
+export interface ServiceShowcaseBlock {
+  items?:
+    | {
+        number?: string | null;
+        tag: {
+          icon?: ('architecture' | 'workflow' | 'systems') | null;
+          text: string;
+        };
+        title: string;
+        timeline: string;
+        deliverables?: string[] | null;
+        cta: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        challenge?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        approach?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        artifact: {
+          type: 'stackList' | 'processFlow' | 'codeSnippet' | 'ad';
+          stackList?: {
+            rows?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          processFlow?: {
+            steps?:
+              | {
+                  label: string;
+                  icon?: ('none' | 'GitCommitHorizontal' | 'FlaskConical' | 'Rocket') | null;
+                  highlight?: boolean | null;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          codeSnippet?: {
+            code: string;
+          };
+          ad?: {
+            title?: string | null;
+            sections?:
+              | {
+                  layout: 'row' | 'columns' | 'split';
+                  variant?: ('primary' | 'secondary' | 'highlight') | null;
+                  items?:
+                    | {
+                        label: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  left?:
+                    | {
+                        label: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  right?:
+                    | {
+                        label: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+        };
+        capabilities?:
+          | {
+              capability: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviceShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1515,6 +1670,7 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
         process?: T | ProcessBlockSelect<T>;
+        serviceShowcase?: T | ServiceShowcaseBlockSelect<T>;
         typography?:
           | T
           | {
@@ -1638,6 +1794,36 @@ export interface ArtifactBlockSelect<T extends boolean = true> {
                 | T
                 | {
                     code?: T;
+                  };
+              ad?:
+                | T
+                | {
+                    title?: T;
+                    sections?:
+                      | T
+                      | {
+                          layout?: T;
+                          variant?: T;
+                          items?:
+                            | T
+                            | {
+                                label?: T;
+                                id?: T;
+                              };
+                          left?:
+                            | T
+                            | {
+                                label?: T;
+                                id?: T;
+                              };
+                          right?:
+                            | T
+                            | {
+                                label?: T;
+                                id?: T;
+                              };
+                          id?: T;
+                        };
                   };
             };
         id?: T;
@@ -1815,6 +2001,109 @@ export interface ProcessBlockSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         isFinal?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceShowcaseBlock_select".
+ */
+export interface ServiceShowcaseBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        number?: T;
+        tag?:
+          | T
+          | {
+              icon?: T;
+              text?: T;
+            };
+        title?: T;
+        timeline?: T;
+        deliverables?: T;
+        cta?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        challenge?: T;
+        approach?: T;
+        artifact?:
+          | T
+          | {
+              type?: T;
+              stackList?:
+                | T
+                | {
+                    rows?:
+                      | T
+                      | {
+                          label?: T;
+                          value?: T;
+                          id?: T;
+                        };
+                  };
+              processFlow?:
+                | T
+                | {
+                    steps?:
+                      | T
+                      | {
+                          label?: T;
+                          icon?: T;
+                          highlight?: T;
+                          id?: T;
+                        };
+                  };
+              codeSnippet?:
+                | T
+                | {
+                    code?: T;
+                  };
+              ad?:
+                | T
+                | {
+                    title?: T;
+                    sections?:
+                      | T
+                      | {
+                          layout?: T;
+                          variant?: T;
+                          items?:
+                            | T
+                            | {
+                                label?: T;
+                                id?: T;
+                              };
+                          left?:
+                            | T
+                            | {
+                                label?: T;
+                                id?: T;
+                              };
+                          right?:
+                            | T
+                            | {
+                                label?: T;
+                                id?: T;
+                              };
+                          id?: T;
+                        };
+                  };
+            };
+        capabilities?:
+          | T
+          | {
+              capability?: T;
+              id?: T;
+            };
         id?: T;
       };
   id?: T;

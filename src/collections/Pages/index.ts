@@ -15,6 +15,7 @@ import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { MetricsStrip } from '../../blocks/MetricsStrip/config'
 import { Pricing } from '../../blocks/PricingBlock/config'
 import { Process } from '../../blocks/ProcessBlock/config'
+import { ServiceShowcaseBlock } from '../../blocks/ServiceShowcaseBlock/config'
 import { Typography } from '../../blocks/TypographyBlock/config'
 
 import { hero } from '@/heros/config'
@@ -96,6 +97,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 MetricsStrip,
                 Pricing,
                 Process,
+                ServiceShowcaseBlock,
                 Typography,
               ],
               required: true,

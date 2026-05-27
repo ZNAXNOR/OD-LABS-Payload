@@ -26,7 +26,7 @@ export const ArtifactRenderer: React.FC<Props> = ({
 
   const Component = registryItem.component
 
-  const data = artifact.data || (artifact as any)[artifact.type]
+  const data = (artifact as any)[artifact.type] ?? artifact.data
 
   return (
     <Component

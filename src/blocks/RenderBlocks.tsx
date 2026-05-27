@@ -15,6 +15,7 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MetricsStripComponent } from '@/blocks/MetricsStrip/Component'
 import { PricingBlockComponent } from '@/blocks/PricingBlock/Component'
 import { ProcessBlockComponent } from '@/blocks/ProcessBlock/Component'
+import { ServiceShowcaseBlock } from '@/blocks/ServiceShowcaseBlock/Component'
 import { TypographyBlockComponent } from '@/blocks/TypographyBlock/Component'
 
 
@@ -33,6 +34,7 @@ const blockComponents = {
   metricsStrip: MetricsStripComponent,
   pricing: PricingBlockComponent,
   process: ProcessBlockComponent,
+  serviceShowcase: ServiceShowcaseBlock,
   typography: TypographyBlockComponent,
 }
 

@@ -11,9 +11,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_pages_blocks_archive_populate_by" AS ENUM('collection', 'selection');
   CREATE TYPE "public"."enum_pages_blocks_archive_populate_by_services" AS ENUM('collection', 'selection');
   CREATE TYPE "public"."enum_pages_blocks_archive_relation_to" AS ENUM('posts');
+  CREATE TYPE "public"."enum_art_pf_steps_icon" AS ENUM('none', 'GitCommitHorizontal', 'FlaskConical', 'Rocket');
+  CREATE TYPE "public"."enum_sect_layout" AS ENUM('row', 'columns', 'split');
+  CREATE TYPE "public"."enum_sect_variant" AS ENUM('default', 'highlight');
   CREATE TYPE "public"."enum_pages_blocks_artifact_block_items_icon" AS ENUM('architecture', 'mediation', 'verified');
-  CREATE TYPE "public"."wd" AS ENUM('oneThird', 'twoThirds', 'half', 'full');
-  CREATE TYPE "public"."enum_pages_blocks_artifact_block_items_artifact_type" AS ENUM('stackList', 'processFlow', 'codeSnippet');
+  CREATE TYPE "public"."wd" AS ENUM('oneThird', 'half', 'twoThirds', 'full');
+  CREATE TYPE "public"."art_sel" AS ENUM('stackList', 'processFlow', 'codeSnippet', 'ad');
   CREATE TYPE "public"."enum_pages_blocks_artifact_block_theme" AS ENUM('dark', 'light');
   CREATE TYPE "public"."enum_pages_blocks_banner_block_variant" AS ENUM('standard', 'iconBlock');
   CREATE TYPE "public"."enum_pages_blocks_banner_style" AS ENUM('info', 'warning', 'error', 'success');
@@ -30,6 +33,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_pages_blocks_feature_block_items_icon" AS ENUM('Rocket', 'Settings', 'Check', 'Users', 'Zap', 'Shield');
   CREATE TYPE "public"."enum_pages_blocks_feature_block_variant" AS ENUM('default', 'stackedList');
   CREATE TYPE "public"."enum_pages_blocks_feature_block_columns" AS ENUM('2', '3', '4');
+  CREATE TYPE "public"."enum_pages_blocks_service_showcase_items_tag_icon" AS ENUM('architecture', 'workflow', 'systems');
+  CREATE TYPE "public"."enum_pages_blocks_service_showcase_items_cta_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_pages_hero_type" AS ENUM('none', 'highImpact', 'mediumImpact', 'lowImpact');
   CREATE TYPE "public"."enum_pages_hero_variant" AS ENUM('default', 'sidePanel');
   CREATE TYPE "public"."enum_pages_hero_availability_status" AS ENUM('now', 'later');
@@ -44,8 +49,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__pages_v_blocks_archive_populate_by" AS ENUM('collection', 'selection');
   CREATE TYPE "public"."enum__pages_v_blocks_archive_populate_by_services" AS ENUM('collection', 'selection');
   CREATE TYPE "public"."enum__pages_v_blocks_archive_relation_to" AS ENUM('posts');
+  CREATE TYPE "public"."enum__art_pf_steps_v_icon" AS ENUM('none', 'GitCommitHorizontal', 'FlaskConical', 'Rocket');
+  CREATE TYPE "public"."enum__sect_v_layout" AS ENUM('row', 'columns', 'split');
+  CREATE TYPE "public"."enum__sect_v_variant" AS ENUM('default', 'highlight');
   CREATE TYPE "public"."enum__pages_v_blocks_artifact_block_items_icon" AS ENUM('architecture', 'mediation', 'verified');
-  CREATE TYPE "public"."enum__pages_v_blocks_artifact_block_items_artifact_type" AS ENUM('stackList', 'processFlow', 'codeSnippet');
   CREATE TYPE "public"."enum__pages_v_blocks_artifact_block_theme" AS ENUM('dark', 'light');
   CREATE TYPE "public"."enum__pages_v_blocks_banner_block_variant" AS ENUM('standard', 'iconBlock');
   CREATE TYPE "public"."enum__pages_v_blocks_banner_style" AS ENUM('info', 'warning', 'error', 'success');
@@ -62,6 +69,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__pages_v_blocks_feature_block_items_icon" AS ENUM('Rocket', 'Settings', 'Check', 'Users', 'Zap', 'Shield');
   CREATE TYPE "public"."enum__pages_v_blocks_feature_block_variant" AS ENUM('default', 'stackedList');
   CREATE TYPE "public"."enum__pages_v_blocks_feature_block_columns" AS ENUM('2', '3', '4');
+  CREATE TYPE "public"."enum__pages_v_blocks_service_showcase_items_tag_icon" AS ENUM('architecture', 'workflow', 'systems');
+  CREATE TYPE "public"."enum__pages_v_blocks_service_showcase_items_cta_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum__pages_v_version_hero_type" AS ENUM('none', 'highImpact', 'mediumImpact', 'lowImpact');
   CREATE TYPE "public"."enum__pages_v_version_hero_variant" AS ENUM('default', 'sidePanel');
   CREATE TYPE "public"."enum__pages_v_version_hero_availability_status" AS ENUM('now', 'later');
@@ -155,7 +164,24 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
+  	"label" varchar,
+  	"icon" "enum_art_pf_steps_icon" DEFAULT 'none',
+  	"highlight" boolean DEFAULT false
+  );
+  
+  CREATE TABLE "sect_items" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" varchar NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
   	"label" varchar
+  );
+  
+  CREATE TABLE "sect" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" varchar NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"layout" "enum_sect_layout",
+  	"variant" "enum_sect_variant" DEFAULT 'default'
   );
   
   CREATE TABLE "pages_blocks_artifact_block_items" (
@@ -166,8 +192,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"width" "wd" DEFAULT 'oneThird',
   	"title" varchar,
   	"description" jsonb,
-  	"artifact_type" "enum_pages_blocks_artifact_block_items_artifact_type",
-  	"artifact_code_snippet_code" varchar
+  	"artifact_type" "art_sel",
+  	"artifact_code_snippet_code" varchar,
+  	"artifact_ad_title" varchar
   );
   
   CREATE TABLE "pages_blocks_artifact_block" (
@@ -385,6 +412,36 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
+  CREATE TABLE "pages_blocks_service_showcase_items" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" varchar NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"number" varchar,
+  	"tag_icon" "enum_pages_blocks_service_showcase_items_tag_icon",
+  	"tag_text" varchar,
+  	"title" varchar,
+  	"timeline" varchar,
+  	"deliverables" jsonb,
+  	"cta_type" "enum_pages_blocks_service_showcase_items_cta_type" DEFAULT 'reference',
+  	"cta_new_tab" boolean,
+  	"cta_url" varchar,
+  	"cta_label" varchar,
+  	"challenge" jsonb,
+  	"approach" jsonb,
+  	"artifact_type" "art_sel",
+  	"artifact_code_snippet_code" varchar,
+  	"artifact_ad_title" varchar,
+  	"capabilities" jsonb
+  );
+  
+  CREATE TABLE "pages_blocks_service_showcase" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"block_name" varchar
+  );
+  
   CREATE TABLE "pages_blocks_typography" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -523,6 +580,25 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
   	"label" varchar,
+  	"icon" "enum__art_pf_steps_v_icon" DEFAULT 'none',
+  	"highlight" boolean DEFAULT false,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE "_sect_v_items" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"label" varchar,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE "_sect_v" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"layout" "enum__sect_v_layout",
+  	"variant" "enum__sect_v_variant" DEFAULT 'default',
   	"_uuid" varchar
   );
   
@@ -534,8 +610,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"width" "wd" DEFAULT 'oneThird',
   	"title" varchar,
   	"description" jsonb,
-  	"artifact_type" "enum__pages_v_blocks_artifact_block_items_artifact_type",
+  	"artifact_type" "art_sel",
   	"artifact_code_snippet_code" varchar,
+  	"artifact_ad_title" varchar,
   	"_uuid" varchar
   );
   
@@ -771,6 +848,38 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_path" text NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "_pages_v_blocks_service_showcase_items" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"number" varchar,
+  	"tag_icon" "enum__pages_v_blocks_service_showcase_items_tag_icon",
+  	"tag_text" varchar,
+  	"title" varchar,
+  	"timeline" varchar,
+  	"deliverables" jsonb,
+  	"cta_type" "enum__pages_v_blocks_service_showcase_items_cta_type" DEFAULT 'reference',
+  	"cta_new_tab" boolean,
+  	"cta_url" varchar,
+  	"cta_label" varchar,
+  	"challenge" jsonb,
+  	"approach" jsonb,
+  	"artifact_type" "art_sel",
+  	"artifact_code_snippet_code" varchar,
+  	"artifact_ad_title" varchar,
+  	"capabilities" jsonb,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE "_pages_v_blocks_service_showcase" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
   	"_uuid" varchar,
   	"block_name" varchar
   );
@@ -1367,8 +1476,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "pages_blocks_archive_selected_services" ADD CONSTRAINT "pages_blocks_archive_selected_services_page_id_pages_id_fk" FOREIGN KEY ("page_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "pages_blocks_archive_selected_services" ADD CONSTRAINT "pages_blocks_archive_selected_services_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_archive"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "pages_blocks_archive" ADD CONSTRAINT "pages_blocks_archive_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "art_sl_rows" ADD CONSTRAINT "art_sl_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_artifact_block_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "art_pf_steps" ADD CONSTRAINT "art_pf_steps_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_artifact_block_items"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "art_sl_rows" ADD CONSTRAINT "art_sl_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_service_showcase_items"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "art_pf_steps" ADD CONSTRAINT "art_pf_steps_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_service_showcase_items"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "sect_items" ADD CONSTRAINT "sect_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."sect"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "sect" ADD CONSTRAINT "sect_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_service_showcase_items"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "pages_blocks_artifact_block_items" ADD CONSTRAINT "pages_blocks_artifact_block_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_artifact_block"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "pages_blocks_artifact_block" ADD CONSTRAINT "pages_blocks_artifact_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "pages_blocks_banner_items" ADD CONSTRAINT "pages_blocks_banner_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_banner"("id") ON DELETE cascade ON UPDATE no action;
@@ -1394,6 +1505,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "pages_blocks_pricing" ADD CONSTRAINT "pages_blocks_pricing_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "pages_blocks_process_steps" ADD CONSTRAINT "pages_blocks_process_steps_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "pages_blocks_process" ADD CONSTRAINT "pages_blocks_process_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "pages_blocks_service_showcase_items" ADD CONSTRAINT "pages_blocks_service_showcase_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_service_showcase"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "pages_blocks_service_showcase" ADD CONSTRAINT "pages_blocks_service_showcase_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "pages_blocks_typography" ADD CONSTRAINT "pages_blocks_typography_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "pages_breadcrumbs" ADD CONSTRAINT "pages_breadcrumbs_doc_id_pages_id_fk" FOREIGN KEY ("doc_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "pages_breadcrumbs" ADD CONSTRAINT "pages_breadcrumbs_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
@@ -1411,8 +1524,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "_pages_v_blocks_archive_selected_services" ADD CONSTRAINT "_pages_v_blocks_archive_selected_services_page_id_pages_id_fk" FOREIGN KEY ("page_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "_pages_v_blocks_archive_selected_services" ADD CONSTRAINT "_pages_v_blocks_archive_selected_services_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_archive"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "_pages_v_blocks_archive" ADD CONSTRAINT "_pages_v_blocks_archive_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_art_sl_rows_v" ADD CONSTRAINT "_art_sl_rows_v_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_artifact_block_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_art_pf_steps_v" ADD CONSTRAINT "_art_pf_steps_v_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_artifact_block_items"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_art_sl_rows_v" ADD CONSTRAINT "_art_sl_rows_v_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_service_showcase_items"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_art_pf_steps_v" ADD CONSTRAINT "_art_pf_steps_v_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_service_showcase_items"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_sect_v_items" ADD CONSTRAINT "_sect_v_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_sect_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_sect_v" ADD CONSTRAINT "_sect_v_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_service_showcase_items"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "_pages_v_blocks_artifact_block_items" ADD CONSTRAINT "_pages_v_blocks_artifact_block_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_artifact_block"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "_pages_v_blocks_artifact_block" ADD CONSTRAINT "_pages_v_blocks_artifact_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "_pages_v_blocks_banner_items" ADD CONSTRAINT "_pages_v_blocks_banner_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_banner"("id") ON DELETE cascade ON UPDATE no action;
@@ -1438,6 +1553,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "_pages_v_blocks_pricing" ADD CONSTRAINT "_pages_v_blocks_pricing_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "_pages_v_blocks_process_steps" ADD CONSTRAINT "_pages_v_blocks_process_steps_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "_pages_v_blocks_process" ADD CONSTRAINT "_pages_v_blocks_process_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_pages_v_blocks_service_showcase_items" ADD CONSTRAINT "_pages_v_blocks_service_showcase_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_service_showcase"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_pages_v_blocks_service_showcase" ADD CONSTRAINT "_pages_v_blocks_service_showcase_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "_pages_v_blocks_typography" ADD CONSTRAINT "_pages_v_blocks_typography_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "_pages_v_version_breadcrumbs" ADD CONSTRAINT "_pages_v_version_breadcrumbs_doc_id_pages_id_fk" FOREIGN KEY ("doc_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "_pages_v_version_breadcrumbs" ADD CONSTRAINT "_pages_v_version_breadcrumbs_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
@@ -1532,6 +1649,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "art_sl_rows_parent_id_idx" ON "art_sl_rows" USING btree ("_parent_id");
   CREATE INDEX "art_pf_steps_order_idx" ON "art_pf_steps" USING btree ("_order");
   CREATE INDEX "art_pf_steps_parent_id_idx" ON "art_pf_steps" USING btree ("_parent_id");
+  CREATE INDEX "sect_items_order_idx" ON "sect_items" USING btree ("_order");
+  CREATE INDEX "sect_items_parent_id_idx" ON "sect_items" USING btree ("_parent_id");
+  CREATE INDEX "sect_order_idx" ON "sect" USING btree ("_order");
+  CREATE INDEX "sect_parent_id_idx" ON "sect" USING btree ("_parent_id");
   CREATE INDEX "pages_blocks_artifact_block_items_order_idx" ON "pages_blocks_artifact_block_items" USING btree ("_order");
   CREATE INDEX "pages_blocks_artifact_block_items_parent_id_idx" ON "pages_blocks_artifact_block_items" USING btree ("_parent_id");
   CREATE INDEX "pages_blocks_artifact_block_order_idx" ON "pages_blocks_artifact_block" USING btree ("_order");
@@ -1590,6 +1711,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "pages_blocks_process_order_idx" ON "pages_blocks_process" USING btree ("_order");
   CREATE INDEX "pages_blocks_process_parent_id_idx" ON "pages_blocks_process" USING btree ("_parent_id");
   CREATE INDEX "pages_blocks_process_path_idx" ON "pages_blocks_process" USING btree ("_path");
+  CREATE INDEX "pages_blocks_service_showcase_items_order_idx" ON "pages_blocks_service_showcase_items" USING btree ("_order");
+  CREATE INDEX "pages_blocks_service_showcase_items_parent_id_idx" ON "pages_blocks_service_showcase_items" USING btree ("_parent_id");
+  CREATE INDEX "pages_blocks_service_showcase_order_idx" ON "pages_blocks_service_showcase" USING btree ("_order");
+  CREATE INDEX "pages_blocks_service_showcase_parent_id_idx" ON "pages_blocks_service_showcase" USING btree ("_parent_id");
+  CREATE INDEX "pages_blocks_service_showcase_path_idx" ON "pages_blocks_service_showcase" USING btree ("_path");
   CREATE INDEX "pages_blocks_typography_order_idx" ON "pages_blocks_typography" USING btree ("_order");
   CREATE INDEX "pages_blocks_typography_parent_id_idx" ON "pages_blocks_typography" USING btree ("_parent_id");
   CREATE INDEX "pages_blocks_typography_path_idx" ON "pages_blocks_typography" USING btree ("_path");
@@ -1628,6 +1754,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_art_sl_rows_v_parent_id_idx" ON "_art_sl_rows_v" USING btree ("_parent_id");
   CREATE INDEX "_art_pf_steps_v_order_idx" ON "_art_pf_steps_v" USING btree ("_order");
   CREATE INDEX "_art_pf_steps_v_parent_id_idx" ON "_art_pf_steps_v" USING btree ("_parent_id");
+  CREATE INDEX "_sect_v_items_order_idx" ON "_sect_v_items" USING btree ("_order");
+  CREATE INDEX "_sect_v_items_parent_id_idx" ON "_sect_v_items" USING btree ("_parent_id");
+  CREATE INDEX "_sect_v_order_idx" ON "_sect_v" USING btree ("_order");
+  CREATE INDEX "_sect_v_parent_id_idx" ON "_sect_v" USING btree ("_parent_id");
   CREATE INDEX "_pages_v_blocks_artifact_block_items_order_idx" ON "_pages_v_blocks_artifact_block_items" USING btree ("_order");
   CREATE INDEX "_pages_v_blocks_artifact_block_items_parent_id_idx" ON "_pages_v_blocks_artifact_block_items" USING btree ("_parent_id");
   CREATE INDEX "_pages_v_blocks_artifact_block_order_idx" ON "_pages_v_blocks_artifact_block" USING btree ("_order");
@@ -1686,6 +1816,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_pages_v_blocks_process_order_idx" ON "_pages_v_blocks_process" USING btree ("_order");
   CREATE INDEX "_pages_v_blocks_process_parent_id_idx" ON "_pages_v_blocks_process" USING btree ("_parent_id");
   CREATE INDEX "_pages_v_blocks_process_path_idx" ON "_pages_v_blocks_process" USING btree ("_path");
+  CREATE INDEX "_pages_v_blocks_service_showcase_items_order_idx" ON "_pages_v_blocks_service_showcase_items" USING btree ("_order");
+  CREATE INDEX "_pages_v_blocks_service_showcase_items_parent_id_idx" ON "_pages_v_blocks_service_showcase_items" USING btree ("_parent_id");
+  CREATE INDEX "_pages_v_blocks_service_showcase_order_idx" ON "_pages_v_blocks_service_showcase" USING btree ("_order");
+  CREATE INDEX "_pages_v_blocks_service_showcase_parent_id_idx" ON "_pages_v_blocks_service_showcase" USING btree ("_parent_id");
+  CREATE INDEX "_pages_v_blocks_service_showcase_path_idx" ON "_pages_v_blocks_service_showcase" USING btree ("_path");
   CREATE INDEX "_pages_v_blocks_typography_order_idx" ON "_pages_v_blocks_typography" USING btree ("_order");
   CREATE INDEX "_pages_v_blocks_typography_parent_id_idx" ON "_pages_v_blocks_typography" USING btree ("_parent_id");
   CREATE INDEX "_pages_v_blocks_typography_path_idx" ON "_pages_v_blocks_typography" USING btree ("_path");
@@ -1891,6 +2026,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "pages_blocks_archive" CASCADE;
   DROP TABLE "art_sl_rows" CASCADE;
   DROP TABLE "art_pf_steps" CASCADE;
+  DROP TABLE "sect_items" CASCADE;
+  DROP TABLE "sect" CASCADE;
   DROP TABLE "pages_blocks_artifact_block_items" CASCADE;
   DROP TABLE "pages_blocks_artifact_block" CASCADE;
   DROP TABLE "pages_blocks_banner_items" CASCADE;
@@ -1913,6 +2050,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "pages_blocks_pricing" CASCADE;
   DROP TABLE "pages_blocks_process_steps" CASCADE;
   DROP TABLE "pages_blocks_process" CASCADE;
+  DROP TABLE "pages_blocks_service_showcase_items" CASCADE;
+  DROP TABLE "pages_blocks_service_showcase" CASCADE;
   DROP TABLE "pages_blocks_typography" CASCADE;
   DROP TABLE "pages_breadcrumbs" CASCADE;
   DROP TABLE "pages" CASCADE;
@@ -1925,6 +2064,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "_pages_v_blocks_archive" CASCADE;
   DROP TABLE "_art_sl_rows_v" CASCADE;
   DROP TABLE "_art_pf_steps_v" CASCADE;
+  DROP TABLE "_sect_v_items" CASCADE;
+  DROP TABLE "_sect_v" CASCADE;
   DROP TABLE "_pages_v_blocks_artifact_block_items" CASCADE;
   DROP TABLE "_pages_v_blocks_artifact_block" CASCADE;
   DROP TABLE "_pages_v_blocks_banner_items" CASCADE;
@@ -1947,6 +2088,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "_pages_v_blocks_pricing" CASCADE;
   DROP TABLE "_pages_v_blocks_process_steps" CASCADE;
   DROP TABLE "_pages_v_blocks_process" CASCADE;
+  DROP TABLE "_pages_v_blocks_service_showcase_items" CASCADE;
+  DROP TABLE "_pages_v_blocks_service_showcase" CASCADE;
   DROP TABLE "_pages_v_blocks_typography" CASCADE;
   DROP TABLE "_pages_v_version_breadcrumbs" CASCADE;
   DROP TABLE "_pages_v" CASCADE;
@@ -2006,9 +2149,12 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_pages_blocks_archive_populate_by";
   DROP TYPE "public"."enum_pages_blocks_archive_populate_by_services";
   DROP TYPE "public"."enum_pages_blocks_archive_relation_to";
+  DROP TYPE "public"."enum_art_pf_steps_icon";
+  DROP TYPE "public"."enum_sect_layout";
+  DROP TYPE "public"."enum_sect_variant";
   DROP TYPE "public"."enum_pages_blocks_artifact_block_items_icon";
   DROP TYPE "public"."wd";
-  DROP TYPE "public"."enum_pages_blocks_artifact_block_items_artifact_type";
+  DROP TYPE "public"."art_sel";
   DROP TYPE "public"."enum_pages_blocks_artifact_block_theme";
   DROP TYPE "public"."enum_pages_blocks_banner_block_variant";
   DROP TYPE "public"."enum_pages_blocks_banner_style";
@@ -2025,6 +2171,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_pages_blocks_feature_block_items_icon";
   DROP TYPE "public"."enum_pages_blocks_feature_block_variant";
   DROP TYPE "public"."enum_pages_blocks_feature_block_columns";
+  DROP TYPE "public"."enum_pages_blocks_service_showcase_items_tag_icon";
+  DROP TYPE "public"."enum_pages_blocks_service_showcase_items_cta_type";
   DROP TYPE "public"."enum_pages_hero_type";
   DROP TYPE "public"."enum_pages_hero_variant";
   DROP TYPE "public"."enum_pages_hero_availability_status";
@@ -2039,8 +2187,10 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum__pages_v_blocks_archive_populate_by";
   DROP TYPE "public"."enum__pages_v_blocks_archive_populate_by_services";
   DROP TYPE "public"."enum__pages_v_blocks_archive_relation_to";
+  DROP TYPE "public"."enum__art_pf_steps_v_icon";
+  DROP TYPE "public"."enum__sect_v_layout";
+  DROP TYPE "public"."enum__sect_v_variant";
   DROP TYPE "public"."enum__pages_v_blocks_artifact_block_items_icon";
-  DROP TYPE "public"."enum__pages_v_blocks_artifact_block_items_artifact_type";
   DROP TYPE "public"."enum__pages_v_blocks_artifact_block_theme";
   DROP TYPE "public"."enum__pages_v_blocks_banner_block_variant";
   DROP TYPE "public"."enum__pages_v_blocks_banner_style";
@@ -2057,6 +2207,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum__pages_v_blocks_feature_block_items_icon";
   DROP TYPE "public"."enum__pages_v_blocks_feature_block_variant";
   DROP TYPE "public"."enum__pages_v_blocks_feature_block_columns";
+  DROP TYPE "public"."enum__pages_v_blocks_service_showcase_items_tag_icon";
+  DROP TYPE "public"."enum__pages_v_blocks_service_showcase_items_cta_type";
   DROP TYPE "public"."enum__pages_v_version_hero_type";
   DROP TYPE "public"."enum__pages_v_version_hero_variant";
   DROP TYPE "public"."enum__pages_v_version_hero_availability_status";

@@ -2,6 +2,7 @@ export type ArtifactType =
   | 'stackList'
   | 'processFlow'
   | 'codeSnippet'
+  | 'ad'
 
 export type ArtifactPresentation = {
   showContainer?: boolean
@@ -36,6 +37,44 @@ export type CodeSnippetArtifactData = {
   code: string
 }
 
+export type ArchitectureDiagramLayout =
+  | 'row'
+  | 'columns'
+  | 'split'
+
+export type ArchitectureDiagramVariant =
+  | 'primary'
+  | 'secondary'
+  | 'highlight'
+
+export type ArchitectureDiagramItem = {
+  label: string
+  id?: string | null
+}
+
+export type ArchitectureDiagramSection = {
+  layout: ArchitectureDiagramLayout
+
+  variant?: ArchitectureDiagramVariant
+
+  /** Items for row / columns layout */
+  items?: ArchitectureDiagramItem[]
+
+  /** Left region items for split layout */
+  left?: ArchitectureDiagramItem[]
+
+  /** Right region items for split layout */
+  right?: ArchitectureDiagramItem[]
+
+  id?: string | null
+}
+
+export type ArchitectureDiagramArtifactData = {
+  title?: string
+
+  sections?: ArchitectureDiagramSection[]
+}
+
 export type Artifact =
   | {
       type: 'stackList'
@@ -48,4 +87,8 @@ export type Artifact =
   | {
       type: 'codeSnippet'
       data: CodeSnippetArtifactData
+    }
+  | {
+      type: 'ad'
+      data: ArchitectureDiagramArtifactData
     }
