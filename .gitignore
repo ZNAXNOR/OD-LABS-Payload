@@ -24,3 +24,5 @@ node_modules/
 # Added
 **/cache/*
 tsconfig.tsbuildinfo
+**/migrations
+.blackbox

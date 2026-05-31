@@ -1,0 +1,1 @@
+import json; from pathlib import Path; from collections import Counter; d = json.loads(Path('graphify-out/.graphify_detect.json').read_text()); all_files = [f for files in d['files'].values() for f in files]; dirs = [str(Path(f).parent) for f in all_files]; top_dirs = Counter(dirs).most_common(5); print(json.dumps(top_dirs))

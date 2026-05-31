@@ -16,10 +16,10 @@ tokens = {'input': extraction.get('input_tokens', 0), 'output': extraction.get('
 gods = god_nodes(G)
 surprises = surprising_connections(G, communities)
 labels = {cid: 'Community ' + str(cid) for cid in communities}
-# Placeholder questions - regenerated with real labels in Step 5
+# Placeholder questions
 questions = suggest_questions(G, communities, labels)
 
-report = generate(G, communities, cohesion, labels, gods, surprises, detection, tokens, '.', suggested_questions=questions)
+report = generate(G, communities, cohesion, labels, gods, surprises, detection, tokens, 'src', suggested_questions=questions)
 Path('graphify-out/GRAPH_REPORT.md').write_text(report)
 to_json(G, communities, 'graphify-out/graph.json')
 
@@ -32,6 +32,6 @@ analysis = {
 }
 Path('graphify-out/.graphify_analysis.json').write_text(json.dumps(analysis, indent=2))
 if G.number_of_nodes() == 0:
-    print('ERROR: Graph is empty - extraction produced no nodes.')
+    print('ERROR: Graph is empty')
     sys.exit(1)
 print(f'Graph: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges, {len(communities)} communities')

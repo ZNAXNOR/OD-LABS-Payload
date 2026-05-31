@@ -12,4 +12,4 @@ communities = {int(k): v for k, v in analysis['communities'].items()}
 labels = {int(k): v for k, v in labels_raw.items()}
 
 to_html(G, communities, 'graphify-out/graph.html', community_labels=labels or None)
-print('graph.html written - open in any browser, no server needed')
+print('graph.html written')

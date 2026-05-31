@@ -1,31 +1,50 @@
-import json
+import sys, json
+from graphify.build import build_from_json
+from graphify.cluster import score_all
+from graphify.analyze import god_nodes, surprising_connections, suggest_questions
+from graphify.report import generate
 from pathlib import Path
-from datetime import datetime, timezone
-from graphify.detect import save_manifest
 
-# Save manifest for --update
-detect = json.loads(Path('graphify-out/.graphify_detect.json').read_text())
-save_manifest(detect['files'])
+extraction = json.loads(Path('graphify-out/.graphify_extract.json').read_text())
+detection  = json.loads(Path('graphify-out/.graphify_detect.json').read_text())
+analysis   = json.loads(Path('graphify-out/.graphify_analysis.json').read_text())
 
-# Update cumulative cost tracker
-extract = json.loads(Path('graphify-out/.graphify_extract.json').read_text())
-input_tok = extract.get('input_tokens', 0)
-output_tok = extract.get('output_tokens', 0)
+G = build_from_json(extraction)
+communities = {int(k): v for k, v in analysis['communities'].items()}
+cohesion = {int(k): v for k, v in analysis['cohesion'].items()}
+tokens = {'input': extraction.get('input_tokens', 0), 'output': extraction.get('output_tokens', 0)}
 
-cost_path = Path('graphify-out/cost.json')
-if cost_path.exists():
-    cost = json.loads(cost_path.read_text())
-else:
-    cost = {'runs': [], 'total_input_tokens': 0, 'total_output_tokens': 0}
+labels = {
+    0: "Next.js Routing & Pages",
+    1: "Form Block System",
+    2: "Database Seeding Logic",
+    3: "Metadata & User Utilities",
+    4: "Header Theme & Client Pages",
+    5: "CMS Blocks (Accordion, Archive, Banner)",
+    6: "Comparison & CTA Blocks",
+    7: "Field Links & Merge Utilities",
+    8: "Artifact Diagram Rendering",
+    9: "Artifact Registry & Configuration",
+    10: "Comparison Block Components",
+    11: "Theme Management System",
+    12: "Payload Admin & Page Loading",
+    13: "Hero Component System",
+    14: "Media & UI Cards",
+    15: "Cached Data Fetching",
+    16: "Metadata & URL Utilities",
+    17: "Header Global Configuration",
+    18: "Grid & Section Styles",
+    19: "Theme Provider & Selector"
+}
 
-cost['runs'].append({
-    'date': datetime.now(timezone.utc).isoformat(),
-    'input_tokens': input_tok,
-    'output_tokens': output_tok,
-    'files': detect.get('total_files', 0),
-})
-cost['total_input_tokens'] += input_tok
-cost['total_output_tokens'] += output_tok
-cost_path.write_text(json.dumps(cost, indent=2))
+# Add default labels for the rest
+for cid in communities:
+    if cid not in labels:
+        labels[cid] = f"Community {cid}"
 
-print('Finalized run data')
+questions = suggest_questions(G, communities, labels)
+
+report = generate(G, communities, cohesion, labels, analysis['gods'], analysis['surprises'], detection, tokens, 'src', suggested_questions=questions)
+Path('graphify-out/GRAPH_REPORT.md').write_text(report)
+Path('graphify-out/.graphify_labels.json').write_text(json.dumps({str(k): v for k, v in labels.items()}))
+print('Report updated with community labels')
