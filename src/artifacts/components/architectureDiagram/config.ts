@@ -8,6 +8,12 @@ const itemFields: Field[] = [
   },
 ]
 
+const variantOptions = [
+  { label: 'Primary', value: 'primary' },
+  { label: 'Secondary', value: 'secondary' },
+  { label: 'Highlight', value: 'highlight' },
+]
+
 export const architectureDiagramFields: Field[] = [
   {
     name: 'title',
@@ -41,12 +47,10 @@ export const architectureDiagramFields: Field[] = [
             type: 'select',
             defaultValue: 'secondary',
             label: 'Hierarchy',
-            options: [
-              { label: 'Primary', value: 'primary' },
-              { label: 'Secondary', value: 'secondary' },
-              { label: 'Highlight', value: 'highlight' },
-            ],
-            admin: { width: '50%' },
+            options: variantOptions,
+            admin: {
+              width: '50%',
+            },
           },
         ],
       },
@@ -55,28 +59,39 @@ export const architectureDiagramFields: Field[] = [
         type: 'array',
         label: 'Items',
         admin: {
-          condition: (_, siblingData) =>
-            siblingData?.layout !== 'split',
+          condition: (_, siblingData) => siblingData?.layout !== 'split',
         },
         fields: itemFields,
       },
       {
         name: 'left',
         type: 'array',
-        label: 'Left Region',
+        label: 'Left Items',
         admin: {
-          condition: (_, siblingData) =>
-            siblingData?.layout === 'split',
+          condition: (_, siblingData) => siblingData?.layout === 'split',
         },
         fields: itemFields,
       },
       {
+        name: 'right_layout',
+        type: 'radio',
+        defaultValue: 'stack',
+        label: 'Right Layout',
+        admin: {
+          condition: (_, siblingData) => siblingData?.layout === 'split',
+          width: '50%',
+        },
+        options: [
+          { label: 'Stack', value: 'stack' },
+          { label: 'Grid', value: 'grid' },
+        ],
+      },
+      {
         name: 'right',
         type: 'array',
-        label: 'Right Region',
+        label: 'Right Items',
         admin: {
-          condition: (_, siblingData) =>
-            siblingData?.layout === 'split',
+          condition: (_, siblingData) => siblingData?.layout === 'split',
         },
         fields: itemFields,
       },

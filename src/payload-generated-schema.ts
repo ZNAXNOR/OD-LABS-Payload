@@ -44,9 +44,29 @@ export const enum_pages_blocks_archive_selected_services_size = pgEnum(
   'enum_pages_blocks_archive_selected_services_size',
   ['standard', 'wide'],
 )
+export const enum_art_pf_steps_icon = pgEnum('enum_art_pf_steps_icon', [
+  'none',
+  'GitCommitHorizontal',
+  'FlaskConical',
+  'Rocket',
+])
+export const enum_sect_layout = pgEnum('enum_sect_layout', ['row', 'columns', 'split'])
+export const enum_sect_variant = pgEnum('enum_sect_variant', ['primary', 'secondary', 'highlight'])
+export const enum_sect_left_variant = pgEnum('enum_sect_left_variant', [
+  'primary',
+  'secondary',
+  'highlight',
+])
+export const enum_sect_right_variant = pgEnum('enum_sect_right_variant', [
+  'primary',
+  'secondary',
+  'highlight',
+])
+export const art_sel = pgEnum('art_sel', ['stackList', 'processFlow', 'codeSnippet', 'ad'])
 export const enum_pages_blocks_archive_variant = pgEnum('enum_pages_blocks_archive_variant', [
   'default',
   'servicesGrid',
+  'artifact',
 ])
 export const enum_pages_blocks_archive_populate_by = pgEnum(
   'enum_pages_blocks_archive_populate_by',
@@ -60,20 +80,15 @@ export const enum_pages_blocks_archive_relation_to = pgEnum(
   'enum_pages_blocks_archive_relation_to',
   ['posts'],
 )
-export const enum_art_pf_steps_icon = pgEnum('enum_art_pf_steps_icon', [
-  'none',
-  'GitCommitHorizontal',
-  'FlaskConical',
-  'Rocket',
-])
-export const enum_sect_layout = pgEnum('enum_sect_layout', ['row', 'columns', 'split'])
-export const enum_sect_variant = pgEnum('enum_sect_variant', ['default', 'highlight'])
+export const enum_pages_blocks_archive_artifact_link_type = pgEnum(
+  'enum_pages_blocks_archive_artifact_link_type',
+  ['reference', 'custom'],
+)
 export const enum_pages_blocks_artifact_block_items_icon = pgEnum(
   'enum_pages_blocks_artifact_block_items_icon',
   ['architecture', 'mediation', 'verified'],
 )
 export const wd = pgEnum('wd', ['oneThird', 'half', 'twoThirds', 'full'])
-export const art_sel = pgEnum('art_sel', ['stackList', 'processFlow', 'codeSnippet', 'ad'])
 export const enum_pages_blocks_artifact_block_theme = pgEnum(
   'enum_pages_blocks_artifact_block_theme',
   ['dark', 'light'],
@@ -181,9 +196,32 @@ export const enum__pages_v_blocks_archive_selected_services_size = pgEnum(
   'enum__pages_v_blocks_archive_selected_services_size',
   ['standard', 'wide'],
 )
+export const enum__art_pf_steps_v_icon = pgEnum('enum__art_pf_steps_v_icon', [
+  'none',
+  'GitCommitHorizontal',
+  'FlaskConical',
+  'Rocket',
+])
+export const enum__sect_v_layout = pgEnum('enum__sect_v_layout', ['row', 'columns', 'split'])
+export const enum__sect_v_variant = pgEnum('enum__sect_v_variant', [
+  'primary',
+  'secondary',
+  'highlight',
+])
+export const enum__sect_v_left_variant = pgEnum('enum__sect_v_left_variant', [
+  'primary',
+  'secondary',
+  'highlight',
+])
+export const enum__sect_v_right_variant = pgEnum('enum__sect_v_right_variant', [
+  'primary',
+  'secondary',
+  'highlight',
+])
 export const enum__pages_v_blocks_archive_variant = pgEnum('enum__pages_v_blocks_archive_variant', [
   'default',
   'servicesGrid',
+  'artifact',
 ])
 export const enum__pages_v_blocks_archive_populate_by = pgEnum(
   'enum__pages_v_blocks_archive_populate_by',
@@ -197,14 +235,10 @@ export const enum__pages_v_blocks_archive_relation_to = pgEnum(
   'enum__pages_v_blocks_archive_relation_to',
   ['posts'],
 )
-export const enum__art_pf_steps_v_icon = pgEnum('enum__art_pf_steps_v_icon', [
-  'none',
-  'GitCommitHorizontal',
-  'FlaskConical',
-  'Rocket',
-])
-export const enum__sect_v_layout = pgEnum('enum__sect_v_layout', ['row', 'columns', 'split'])
-export const enum__sect_v_variant = pgEnum('enum__sect_v_variant', ['default', 'highlight'])
+export const enum__pages_v_blocks_archive_artifact_link_type = pgEnum(
+  'enum__pages_v_blocks_archive_artifact_link_type',
+  ['reference', 'custom'],
+)
 export const enum__pages_v_blocks_artifact_block_items_icon = pgEnum(
   'enum__pages_v_blocks_artifact_block_items_icon',
   ['architecture', 'mediation', 'verified'],
@@ -453,36 +487,6 @@ export const pages_blocks_archive_selected_services = pgTable(
   ],
 )
 
-export const pages_blocks_archive = pgTable(
-  'pages_blocks_archive',
-  {
-    _order: integer('_order').notNull(),
-    _parentID: integer('_parent_id').notNull(),
-    _path: text('_path').notNull(),
-    id: varchar('id').primaryKey(),
-    variant: enum_pages_blocks_archive_variant('variant').default('default'),
-    heading: varchar('heading'),
-    subheading: varchar('subheading'),
-    introContent: jsonb('intro_content'),
-    populateBy: enum_pages_blocks_archive_populate_by('populate_by').default('collection'),
-    populateByServices:
-      enum_pages_blocks_archive_populate_by_services('populate_by_services').default('collection'),
-    relationTo: enum_pages_blocks_archive_relation_to('relation_to').default('posts'),
-    limit: numeric('limit', { mode: 'number' }).default(10),
-    blockName: varchar('block_name'),
-  },
-  (columns) => [
-    index('pages_blocks_archive_order_idx').on(columns._order),
-    index('pages_blocks_archive_parent_id_idx').on(columns._parentID),
-    index('pages_blocks_archive_path_idx').on(columns._path),
-    foreignKey({
-      columns: [columns['_parentID']],
-      foreignColumns: [pages.id],
-      name: 'pages_blocks_archive_parent_id_fk',
-    }).onDelete('cascade'),
-  ],
-)
-
 export const art_sl_rows = pgTable(
   'art_sl_rows',
   {
@@ -543,6 +547,44 @@ export const sect_items = pgTable(
   ],
 )
 
+export const sect_left_items = pgTable(
+  'sect_left_items',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: varchar('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    label: varchar('label'),
+  },
+  (columns) => [
+    index('sect_left_items_order_idx').on(columns._order),
+    index('sect_left_items_parent_id_idx').on(columns._parentID),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [sect.id],
+      name: 'sect_left_items_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const sect_right_items = pgTable(
+  'sect_right_items',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: varchar('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    label: varchar('label'),
+  },
+  (columns) => [
+    index('sect_right_items_order_idx').on(columns._order),
+    index('sect_right_items_parent_id_idx').on(columns._parentID),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [sect.id],
+      name: 'sect_right_items_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
 export const sect = pgTable(
   'sect',
   {
@@ -550,7 +592,9 @@ export const sect = pgTable(
     _parentID: varchar('_parent_id').notNull(),
     id: varchar('id').primaryKey(),
     layout: enum_sect_layout('layout'),
-    variant: enum_sect_variant('variant').default('default'),
+    variant: enum_sect_variant('variant').default('secondary'),
+    left_variant: enum_sect_left_variant('left_variant').default('secondary'),
+    right_variant: enum_sect_right_variant('right_variant').default('secondary'),
   },
   (columns) => [
     index('sect_order_idx').on(columns._order),
@@ -559,6 +603,73 @@ export const sect = pgTable(
       columns: [columns['_parentID']],
       foreignColumns: [pages_blocks_service_showcase_items.id],
       name: 'sect_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const pages_blocks_archive_items = pgTable(
+  'pages_blocks_archive_items',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: varchar('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    archive: integer('archive_id').references(() => posts.id, {
+      onDelete: 'set null',
+    }),
+    tag: varchar('tag'),
+    content: jsonb('content'),
+    artifact_type: art_sel('artifact_type'),
+    artifact_codeSnippet_code: varchar('artifact_code_snippet_code'),
+    artifact_ad_title: varchar('artifact_ad_title'),
+  },
+  (columns) => [
+    index('pages_blocks_archive_items_order_idx').on(columns._order),
+    index('pages_blocks_archive_items_parent_id_idx').on(columns._parentID),
+    index('pages_blocks_archive_items_archive_idx').on(columns.archive),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [pages_blocks_archive.id],
+      name: 'pages_blocks_archive_items_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const pages_blocks_archive = pgTable(
+  'pages_blocks_archive',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    _path: text('_path').notNull(),
+    id: varchar('id').primaryKey(),
+    variant: enum_pages_blocks_archive_variant('variant').default('default'),
+    heading: varchar('heading'),
+    subheading: varchar('subheading'),
+    introContent: jsonb('intro_content'),
+    populateBy: enum_pages_blocks_archive_populate_by('populate_by').default('collection'),
+    populateByServices:
+      enum_pages_blocks_archive_populate_by_services('populate_by_services').default('collection'),
+    relationTo: enum_pages_blocks_archive_relation_to('relation_to').default('posts'),
+    limit: numeric('limit', { mode: 'number' }).default(10),
+    artifactEyebrow: varchar('artifact_eyebrow').default('Operational Evidence'),
+    artifactHeading: varchar('artifact_heading').default(
+      'Engineering Decisions Backed By Real Artifacts',
+    ),
+    artifactIntro: jsonb('artifact_intro'),
+    artifactLink_type:
+      enum_pages_blocks_archive_artifact_link_type('artifact_link_type').default('reference'),
+    artifactLink_newTab: boolean('artifact_link_new_tab'),
+    artifactLink_url: varchar('artifact_link_url'),
+    artifactLink_label: varchar('artifact_link_label').default('View all technical notes'),
+    blockName: varchar('block_name'),
+  },
+  (columns) => [
+    index('pages_blocks_archive_order_idx').on(columns._order),
+    index('pages_blocks_archive_parent_id_idx').on(columns._parentID),
+    index('pages_blocks_archive_path_idx').on(columns._path),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [pages.id],
+      name: 'pages_blocks_archive_parent_id_fk',
     }).onDelete('cascade'),
   ],
 )
@@ -1079,6 +1190,25 @@ export const pages_blocks_process = pgTable(
   ],
 )
 
+export const pages_blocks_service_showcase_items_capabilities = pgTable(
+  'pages_blocks_service_showcase_items_capabilities',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: varchar('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    capability: varchar('capability'),
+  },
+  (columns) => [
+    index('pages_blocks_service_showcase_items_capabilities_order_idx').on(columns._order),
+    index('pages_blocks_service_showcase_items_capabilities_parent_id_idx').on(columns._parentID),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [pages_blocks_service_showcase_items.id],
+      name: 'pages_blocks_service_showcase_items_capabilities_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
 export const pages_blocks_service_showcase_items = pgTable(
   'pages_blocks_service_showcase_items',
   {
@@ -1090,7 +1220,6 @@ export const pages_blocks_service_showcase_items = pgTable(
     tag_text: varchar('tag_text'),
     title: varchar('title'),
     timeline: varchar('timeline'),
-    deliverables: jsonb('deliverables'),
     cta_type: enum_pages_blocks_service_showcase_items_cta_type('cta_type').default('reference'),
     cta_newTab: boolean('cta_new_tab'),
     cta_url: varchar('cta_url'),
@@ -1100,7 +1229,6 @@ export const pages_blocks_service_showcase_items = pgTable(
     artifact_type: art_sel('artifact_type'),
     artifact_codeSnippet_code: varchar('artifact_code_snippet_code'),
     artifact_ad_title: varchar('artifact_ad_title'),
-    capabilities: jsonb('capabilities'),
   },
   (columns) => [
     index('pages_blocks_service_showcase_items_order_idx').on(columns._order),
@@ -1229,6 +1357,25 @@ export const pages = pgTable(
     index('pages_updated_at_idx').on(columns.updatedAt),
     index('pages_created_at_idx').on(columns.createdAt),
     index('pages__status_idx').on(columns._status),
+  ],
+)
+
+export const pages_texts = pgTable(
+  'pages_texts',
+  {
+    id: serial('id').primaryKey(),
+    order: integer('order').notNull(),
+    parent: integer('parent_id').notNull(),
+    path: varchar('path').notNull(),
+    text: varchar('text'),
+  },
+  (columns) => [
+    index('pages_texts_order_parent').on(columns.order, columns.parent),
+    foreignKey({
+      columns: [columns['parent']],
+      foreignColumns: [pages.id],
+      name: 'pages_texts_parent_fk',
+    }).onDelete('cascade'),
   ],
 )
 
@@ -1393,39 +1540,6 @@ export const _pages_v_blocks_archive_selected_services = pgTable(
   ],
 )
 
-export const _pages_v_blocks_archive = pgTable(
-  '_pages_v_blocks_archive',
-  {
-    _order: integer('_order').notNull(),
-    _parentID: integer('_parent_id').notNull(),
-    _path: text('_path').notNull(),
-    id: serial('id').primaryKey(),
-    variant: enum__pages_v_blocks_archive_variant('variant').default('default'),
-    heading: varchar('heading'),
-    subheading: varchar('subheading'),
-    introContent: jsonb('intro_content'),
-    populateBy: enum__pages_v_blocks_archive_populate_by('populate_by').default('collection'),
-    populateByServices:
-      enum__pages_v_blocks_archive_populate_by_services('populate_by_services').default(
-        'collection',
-      ),
-    relationTo: enum__pages_v_blocks_archive_relation_to('relation_to').default('posts'),
-    limit: numeric('limit', { mode: 'number' }).default(10),
-    _uuid: varchar('_uuid'),
-    blockName: varchar('block_name'),
-  },
-  (columns) => [
-    index('_pages_v_blocks_archive_order_idx').on(columns._order),
-    index('_pages_v_blocks_archive_parent_id_idx').on(columns._parentID),
-    index('_pages_v_blocks_archive_path_idx').on(columns._path),
-    foreignKey({
-      columns: [columns['_parentID']],
-      foreignColumns: [_pages_v.id],
-      name: '_pages_v_blocks_archive_parent_id_fk',
-    }).onDelete('cascade'),
-  ],
-)
-
 export const _art_sl_rows_v = pgTable(
   '_art_sl_rows_v',
   {
@@ -1489,6 +1603,46 @@ export const _sect_v_items = pgTable(
   ],
 )
 
+export const _sect_v_left_items = pgTable(
+  '_sect_v_left_items',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    id: serial('id').primaryKey(),
+    label: varchar('label'),
+    _uuid: varchar('_uuid'),
+  },
+  (columns) => [
+    index('_sect_v_left_items_order_idx').on(columns._order),
+    index('_sect_v_left_items_parent_id_idx').on(columns._parentID),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [_sect_v.id],
+      name: '_sect_v_left_items_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const _sect_v_right_items = pgTable(
+  '_sect_v_right_items',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    id: serial('id').primaryKey(),
+    label: varchar('label'),
+    _uuid: varchar('_uuid'),
+  },
+  (columns) => [
+    index('_sect_v_right_items_order_idx').on(columns._order),
+    index('_sect_v_right_items_parent_id_idx').on(columns._parentID),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [_sect_v.id],
+      name: '_sect_v_right_items_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
 export const _sect_v = pgTable(
   '_sect_v',
   {
@@ -1496,7 +1650,9 @@ export const _sect_v = pgTable(
     _parentID: integer('_parent_id').notNull(),
     id: serial('id').primaryKey(),
     layout: enum__sect_v_layout('layout'),
-    variant: enum__sect_v_variant('variant').default('default'),
+    variant: enum__sect_v_variant('variant').default('secondary'),
+    left_variant: enum__sect_v_left_variant('left_variant').default('secondary'),
+    right_variant: enum__sect_v_right_variant('right_variant').default('secondary'),
     _uuid: varchar('_uuid'),
   },
   (columns) => [
@@ -1506,6 +1662,77 @@ export const _sect_v = pgTable(
       columns: [columns['_parentID']],
       foreignColumns: [_pages_v_blocks_service_showcase_items.id],
       name: '_sect_v_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const _pages_v_blocks_archive_items = pgTable(
+  '_pages_v_blocks_archive_items',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    id: serial('id').primaryKey(),
+    archive: integer('archive_id').references(() => posts.id, {
+      onDelete: 'set null',
+    }),
+    tag: varchar('tag'),
+    content: jsonb('content'),
+    artifact_type: art_sel('artifact_type'),
+    artifact_codeSnippet_code: varchar('artifact_code_snippet_code'),
+    artifact_ad_title: varchar('artifact_ad_title'),
+    _uuid: varchar('_uuid'),
+  },
+  (columns) => [
+    index('_pages_v_blocks_archive_items_order_idx').on(columns._order),
+    index('_pages_v_blocks_archive_items_parent_id_idx').on(columns._parentID),
+    index('_pages_v_blocks_archive_items_archive_idx').on(columns.archive),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [_pages_v_blocks_archive.id],
+      name: '_pages_v_blocks_archive_items_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const _pages_v_blocks_archive = pgTable(
+  '_pages_v_blocks_archive',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    _path: text('_path').notNull(),
+    id: serial('id').primaryKey(),
+    variant: enum__pages_v_blocks_archive_variant('variant').default('default'),
+    heading: varchar('heading'),
+    subheading: varchar('subheading'),
+    introContent: jsonb('intro_content'),
+    populateBy: enum__pages_v_blocks_archive_populate_by('populate_by').default('collection'),
+    populateByServices:
+      enum__pages_v_blocks_archive_populate_by_services('populate_by_services').default(
+        'collection',
+      ),
+    relationTo: enum__pages_v_blocks_archive_relation_to('relation_to').default('posts'),
+    limit: numeric('limit', { mode: 'number' }).default(10),
+    artifactEyebrow: varchar('artifact_eyebrow').default('Operational Evidence'),
+    artifactHeading: varchar('artifact_heading').default(
+      'Engineering Decisions Backed By Real Artifacts',
+    ),
+    artifactIntro: jsonb('artifact_intro'),
+    artifactLink_type:
+      enum__pages_v_blocks_archive_artifact_link_type('artifact_link_type').default('reference'),
+    artifactLink_newTab: boolean('artifact_link_new_tab'),
+    artifactLink_url: varchar('artifact_link_url'),
+    artifactLink_label: varchar('artifact_link_label').default('View all technical notes'),
+    _uuid: varchar('_uuid'),
+    blockName: varchar('block_name'),
+  },
+  (columns) => [
+    index('_pages_v_blocks_archive_order_idx').on(columns._order),
+    index('_pages_v_blocks_archive_parent_id_idx').on(columns._parentID),
+    index('_pages_v_blocks_archive_path_idx').on(columns._path),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [_pages_v.id],
+      name: '_pages_v_blocks_archive_parent_id_fk',
     }).onDelete('cascade'),
   ],
 )
@@ -2048,6 +2275,28 @@ export const _pages_v_blocks_process = pgTable(
   ],
 )
 
+export const _pages_v_blocks_service_showcase_items_capabilities = pgTable(
+  '_pages_v_blocks_service_showcase_items_capabilities',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    id: serial('id').primaryKey(),
+    capability: varchar('capability'),
+    _uuid: varchar('_uuid'),
+  },
+  (columns) => [
+    index('_pages_v_blocks_service_showcase_items_capabilities_order_idx').on(columns._order),
+    index('_pages_v_blocks_service_showcase_items_capabilities_parent_id_idx').on(
+      columns._parentID,
+    ),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [_pages_v_blocks_service_showcase_items.id],
+      name: '_pages_v_blocks_service_showcase_items_capabilities_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
 export const _pages_v_blocks_service_showcase_items = pgTable(
   '_pages_v_blocks_service_showcase_items',
   {
@@ -2059,7 +2308,6 @@ export const _pages_v_blocks_service_showcase_items = pgTable(
     tag_text: varchar('tag_text'),
     title: varchar('title'),
     timeline: varchar('timeline'),
-    deliverables: jsonb('deliverables'),
     cta_type: enum__pages_v_blocks_service_showcase_items_cta_type('cta_type').default('reference'),
     cta_newTab: boolean('cta_new_tab'),
     cta_url: varchar('cta_url'),
@@ -2069,7 +2317,6 @@ export const _pages_v_blocks_service_showcase_items = pgTable(
     artifact_type: art_sel('artifact_type'),
     artifact_codeSnippet_code: varchar('artifact_code_snippet_code'),
     artifact_ad_title: varchar('artifact_ad_title'),
-    capabilities: jsonb('capabilities'),
     _uuid: varchar('_uuid'),
   },
   (columns) => [
@@ -2231,6 +2478,25 @@ export const _pages_v = pgTable(
     index('_pages_v_updated_at_idx').on(columns.updatedAt),
     index('_pages_v_latest_idx').on(columns.latest),
     index('_pages_v_autosave_idx').on(columns.autosave),
+  ],
+)
+
+export const _pages_v_texts = pgTable(
+  '_pages_v_texts',
+  {
+    id: serial('id').primaryKey(),
+    order: integer('order').notNull(),
+    parent: integer('parent_id').notNull(),
+    path: varchar('path').notNull(),
+    text: varchar('text'),
+  },
+  (columns) => [
+    index('_pages_v_texts_order_parent').on(columns.order, columns.parent),
+    foreignKey({
+      columns: [columns['parent']],
+      foreignColumns: [_pages_v.id],
+      name: '_pages_v_texts_parent_fk',
+    }).onDelete('cascade'),
   ],
 )
 
@@ -3620,16 +3886,6 @@ export const relations_pages_blocks_archive_selected_services = relations(
     }),
   }),
 )
-export const relations_pages_blocks_archive = relations(pages_blocks_archive, ({ one, many }) => ({
-  _parentID: one(pages, {
-    fields: [pages_blocks_archive._parentID],
-    references: [pages.id],
-    relationName: '_blocks_archive',
-  }),
-  selectedServices: many(pages_blocks_archive_selected_services, {
-    relationName: 'selectedServices',
-  }),
-}))
 export const relations_art_sl_rows = relations(art_sl_rows, ({ one }) => ({
   _parentID: one(pages_blocks_service_showcase_items, {
     fields: [art_sl_rows._parentID],
@@ -3651,6 +3907,20 @@ export const relations_sect_items = relations(sect_items, ({ one }) => ({
     relationName: 'items',
   }),
 }))
+export const relations_sect_left_items = relations(sect_left_items, ({ one }) => ({
+  _parentID: one(sect, {
+    fields: [sect_left_items._parentID],
+    references: [sect.id],
+    relationName: 'left_items',
+  }),
+}))
+export const relations_sect_right_items = relations(sect_right_items, ({ one }) => ({
+  _parentID: one(sect, {
+    fields: [sect_right_items._parentID],
+    references: [sect.id],
+    relationName: 'right_items',
+  }),
+}))
 export const relations_sect = relations(sect, ({ one, many }) => ({
   _parentID: one(pages_blocks_service_showcase_items, {
     fields: [sect._parentID],
@@ -3658,6 +3928,49 @@ export const relations_sect = relations(sect, ({ one, many }) => ({
     relationName: 'artifact_ad_sections',
   }),
   items: many(sect_items, {
+    relationName: 'items',
+  }),
+  left_items: many(sect_left_items, {
+    relationName: 'left_items',
+  }),
+  right_items: many(sect_right_items, {
+    relationName: 'right_items',
+  }),
+}))
+export const relations_pages_blocks_archive_items = relations(
+  pages_blocks_archive_items,
+  ({ one, many }) => ({
+    _parentID: one(pages_blocks_archive, {
+      fields: [pages_blocks_archive_items._parentID],
+      references: [pages_blocks_archive.id],
+      relationName: 'items',
+    }),
+    archive: one(posts, {
+      fields: [pages_blocks_archive_items.archive],
+      references: [posts.id],
+      relationName: 'archive',
+    }),
+    artifact_stackList_rows: many(art_sl_rows, {
+      relationName: 'artifact_stackList_rows',
+    }),
+    artifact_processFlow_steps: many(art_pf_steps, {
+      relationName: 'artifact_processFlow_steps',
+    }),
+    artifact_ad_sections: many(sect, {
+      relationName: 'artifact_ad_sections',
+    }),
+  }),
+)
+export const relations_pages_blocks_archive = relations(pages_blocks_archive, ({ one, many }) => ({
+  _parentID: one(pages, {
+    fields: [pages_blocks_archive._parentID],
+    references: [pages.id],
+    relationName: '_blocks_archive',
+  }),
+  selectedServices: many(pages_blocks_archive_selected_services, {
+    relationName: 'selectedServices',
+  }),
+  items: many(pages_blocks_archive_items, {
     relationName: 'items',
   }),
 }))
@@ -3917,6 +4230,16 @@ export const relations_pages_blocks_process = relations(pages_blocks_process, ({
     relationName: 'steps',
   }),
 }))
+export const relations_pages_blocks_service_showcase_items_capabilities = relations(
+  pages_blocks_service_showcase_items_capabilities,
+  ({ one }) => ({
+    _parentID: one(pages_blocks_service_showcase_items, {
+      fields: [pages_blocks_service_showcase_items_capabilities._parentID],
+      references: [pages_blocks_service_showcase_items.id],
+      relationName: 'capabilities',
+    }),
+  }),
+)
 export const relations_pages_blocks_service_showcase_items = relations(
   pages_blocks_service_showcase_items,
   ({ one, many }) => ({
@@ -3933,6 +4256,9 @@ export const relations_pages_blocks_service_showcase_items = relations(
     }),
     artifact_ad_sections: many(sect, {
       relationName: 'artifact_ad_sections',
+    }),
+    capabilities: many(pages_blocks_service_showcase_items_capabilities, {
+      relationName: 'capabilities',
     }),
   }),
 )
@@ -3966,6 +4292,13 @@ export const relations_pages_breadcrumbs = relations(pages_breadcrumbs, ({ one }
     fields: [pages_breadcrumbs.doc],
     references: [pages.id],
     relationName: 'doc',
+  }),
+}))
+export const relations_pages_texts = relations(pages_texts, ({ one }) => ({
+  parent: one(pages, {
+    fields: [pages_texts.parent],
+    references: [pages.id],
+    relationName: '_texts',
   }),
 }))
 export const relations_pages_rels = relations(pages_rels, ({ one }) => ({
@@ -4060,6 +4393,9 @@ export const relations_pages = relations(pages, ({ one, many }) => ({
     references: [pages.id],
     relationName: 'parent',
   }),
+  _texts: many(pages_texts, {
+    relationName: '_texts',
+  }),
   _rels: many(pages_rels, {
     relationName: '_rels',
   }),
@@ -4122,19 +4458,6 @@ export const relations__pages_v_blocks_archive_selected_services = relations(
     }),
   }),
 )
-export const relations__pages_v_blocks_archive = relations(
-  _pages_v_blocks_archive,
-  ({ one, many }) => ({
-    _parentID: one(_pages_v, {
-      fields: [_pages_v_blocks_archive._parentID],
-      references: [_pages_v.id],
-      relationName: '_blocks_archive',
-    }),
-    selectedServices: many(_pages_v_blocks_archive_selected_services, {
-      relationName: 'selectedServices',
-    }),
-  }),
-)
 export const relations__art_sl_rows_v = relations(_art_sl_rows_v, ({ one }) => ({
   _parentID: one(_pages_v_blocks_service_showcase_items, {
     fields: [_art_sl_rows_v._parentID],
@@ -4156,6 +4479,20 @@ export const relations__sect_v_items = relations(_sect_v_items, ({ one }) => ({
     relationName: 'items',
   }),
 }))
+export const relations__sect_v_left_items = relations(_sect_v_left_items, ({ one }) => ({
+  _parentID: one(_sect_v, {
+    fields: [_sect_v_left_items._parentID],
+    references: [_sect_v.id],
+    relationName: 'left_items',
+  }),
+}))
+export const relations__sect_v_right_items = relations(_sect_v_right_items, ({ one }) => ({
+  _parentID: one(_sect_v, {
+    fields: [_sect_v_right_items._parentID],
+    references: [_sect_v.id],
+    relationName: 'right_items',
+  }),
+}))
 export const relations__sect_v = relations(_sect_v, ({ one, many }) => ({
   _parentID: one(_pages_v_blocks_service_showcase_items, {
     fields: [_sect_v._parentID],
@@ -4165,7 +4502,53 @@ export const relations__sect_v = relations(_sect_v, ({ one, many }) => ({
   items: many(_sect_v_items, {
     relationName: 'items',
   }),
+  left_items: many(_sect_v_left_items, {
+    relationName: 'left_items',
+  }),
+  right_items: many(_sect_v_right_items, {
+    relationName: 'right_items',
+  }),
 }))
+export const relations__pages_v_blocks_archive_items = relations(
+  _pages_v_blocks_archive_items,
+  ({ one, many }) => ({
+    _parentID: one(_pages_v_blocks_archive, {
+      fields: [_pages_v_blocks_archive_items._parentID],
+      references: [_pages_v_blocks_archive.id],
+      relationName: 'items',
+    }),
+    archive: one(posts, {
+      fields: [_pages_v_blocks_archive_items.archive],
+      references: [posts.id],
+      relationName: 'archive',
+    }),
+    artifact_stackList_rows: many(_art_sl_rows_v, {
+      relationName: 'artifact_stackList_rows',
+    }),
+    artifact_processFlow_steps: many(_art_pf_steps_v, {
+      relationName: 'artifact_processFlow_steps',
+    }),
+    artifact_ad_sections: many(_sect_v, {
+      relationName: 'artifact_ad_sections',
+    }),
+  }),
+)
+export const relations__pages_v_blocks_archive = relations(
+  _pages_v_blocks_archive,
+  ({ one, many }) => ({
+    _parentID: one(_pages_v, {
+      fields: [_pages_v_blocks_archive._parentID],
+      references: [_pages_v.id],
+      relationName: '_blocks_archive',
+    }),
+    selectedServices: many(_pages_v_blocks_archive_selected_services, {
+      relationName: 'selectedServices',
+    }),
+    items: many(_pages_v_blocks_archive_items, {
+      relationName: 'items',
+    }),
+  }),
+)
 export const relations__pages_v_blocks_artifact_block_items = relations(
   _pages_v_blocks_artifact_block_items,
   ({ one, many }) => ({
@@ -4440,6 +4823,16 @@ export const relations__pages_v_blocks_process = relations(
     }),
   }),
 )
+export const relations__pages_v_blocks_service_showcase_items_capabilities = relations(
+  _pages_v_blocks_service_showcase_items_capabilities,
+  ({ one }) => ({
+    _parentID: one(_pages_v_blocks_service_showcase_items, {
+      fields: [_pages_v_blocks_service_showcase_items_capabilities._parentID],
+      references: [_pages_v_blocks_service_showcase_items.id],
+      relationName: 'capabilities',
+    }),
+  }),
+)
 export const relations__pages_v_blocks_service_showcase_items = relations(
   _pages_v_blocks_service_showcase_items,
   ({ one, many }) => ({
@@ -4456,6 +4849,9 @@ export const relations__pages_v_blocks_service_showcase_items = relations(
     }),
     artifact_ad_sections: many(_sect_v, {
       relationName: 'artifact_ad_sections',
+    }),
+    capabilities: many(_pages_v_blocks_service_showcase_items_capabilities, {
+      relationName: 'capabilities',
     }),
   }),
 )
@@ -4497,6 +4893,13 @@ export const relations__pages_v_version_breadcrumbs = relations(
     }),
   }),
 )
+export const relations__pages_v_texts = relations(_pages_v_texts, ({ one }) => ({
+  parent: one(_pages_v, {
+    fields: [_pages_v_texts.parent],
+    references: [_pages_v.id],
+    relationName: '_texts',
+  }),
+}))
 export const relations__pages_v_rels = relations(_pages_v_rels, ({ one }) => ({
   parent: one(_pages_v, {
     fields: [_pages_v_rels.parent],
@@ -4593,6 +4996,9 @@ export const relations__pages_v = relations(_pages_v, ({ one, many }) => ({
     fields: [_pages_v.version_parent],
     references: [pages.id],
     relationName: 'version_parent',
+  }),
+  _texts: many(_pages_v_texts, {
+    relationName: '_texts',
   }),
   _rels: many(_pages_v_rels, {
     relationName: '_rels',
@@ -5123,16 +5529,19 @@ type DatabaseSchema = {
   enum_pages_hero_active_work_projects_status: typeof enum_pages_hero_active_work_projects_status
   enum_pages_blocks_archive_selected_services_style: typeof enum_pages_blocks_archive_selected_services_style
   enum_pages_blocks_archive_selected_services_size: typeof enum_pages_blocks_archive_selected_services_size
+  enum_art_pf_steps_icon: typeof enum_art_pf_steps_icon
+  enum_sect_layout: typeof enum_sect_layout
+  enum_sect_variant: typeof enum_sect_variant
+  enum_sect_left_variant: typeof enum_sect_left_variant
+  enum_sect_right_variant: typeof enum_sect_right_variant
+  art_sel: typeof art_sel
   enum_pages_blocks_archive_variant: typeof enum_pages_blocks_archive_variant
   enum_pages_blocks_archive_populate_by: typeof enum_pages_blocks_archive_populate_by
   enum_pages_blocks_archive_populate_by_services: typeof enum_pages_blocks_archive_populate_by_services
   enum_pages_blocks_archive_relation_to: typeof enum_pages_blocks_archive_relation_to
-  enum_art_pf_steps_icon: typeof enum_art_pf_steps_icon
-  enum_sect_layout: typeof enum_sect_layout
-  enum_sect_variant: typeof enum_sect_variant
+  enum_pages_blocks_archive_artifact_link_type: typeof enum_pages_blocks_archive_artifact_link_type
   enum_pages_blocks_artifact_block_items_icon: typeof enum_pages_blocks_artifact_block_items_icon
   wd: typeof wd
-  art_sel: typeof art_sel
   enum_pages_blocks_artifact_block_theme: typeof enum_pages_blocks_artifact_block_theme
   enum_pages_blocks_banner_block_variant: typeof enum_pages_blocks_banner_block_variant
   enum_pages_blocks_banner_style: typeof enum_pages_blocks_banner_style
@@ -5161,13 +5570,16 @@ type DatabaseSchema = {
   enum__pages_v_version_hero_active_work_projects_status: typeof enum__pages_v_version_hero_active_work_projects_status
   enum__pages_v_blocks_archive_selected_services_style: typeof enum__pages_v_blocks_archive_selected_services_style
   enum__pages_v_blocks_archive_selected_services_size: typeof enum__pages_v_blocks_archive_selected_services_size
+  enum__art_pf_steps_v_icon: typeof enum__art_pf_steps_v_icon
+  enum__sect_v_layout: typeof enum__sect_v_layout
+  enum__sect_v_variant: typeof enum__sect_v_variant
+  enum__sect_v_left_variant: typeof enum__sect_v_left_variant
+  enum__sect_v_right_variant: typeof enum__sect_v_right_variant
   enum__pages_v_blocks_archive_variant: typeof enum__pages_v_blocks_archive_variant
   enum__pages_v_blocks_archive_populate_by: typeof enum__pages_v_blocks_archive_populate_by
   enum__pages_v_blocks_archive_populate_by_services: typeof enum__pages_v_blocks_archive_populate_by_services
   enum__pages_v_blocks_archive_relation_to: typeof enum__pages_v_blocks_archive_relation_to
-  enum__art_pf_steps_v_icon: typeof enum__art_pf_steps_v_icon
-  enum__sect_v_layout: typeof enum__sect_v_layout
-  enum__sect_v_variant: typeof enum__sect_v_variant
+  enum__pages_v_blocks_archive_artifact_link_type: typeof enum__pages_v_blocks_archive_artifact_link_type
   enum__pages_v_blocks_artifact_block_items_icon: typeof enum__pages_v_blocks_artifact_block_items_icon
   enum__pages_v_blocks_artifact_block_theme: typeof enum__pages_v_blocks_artifact_block_theme
   enum__pages_v_blocks_banner_block_variant: typeof enum__pages_v_blocks_banner_block_variant
@@ -5207,11 +5619,14 @@ type DatabaseSchema = {
   pages_blocks_accordion_items: typeof pages_blocks_accordion_items
   pages_blocks_accordion: typeof pages_blocks_accordion
   pages_blocks_archive_selected_services: typeof pages_blocks_archive_selected_services
-  pages_blocks_archive: typeof pages_blocks_archive
   art_sl_rows: typeof art_sl_rows
   art_pf_steps: typeof art_pf_steps
   sect_items: typeof sect_items
+  sect_left_items: typeof sect_left_items
+  sect_right_items: typeof sect_right_items
   sect: typeof sect
+  pages_blocks_archive_items: typeof pages_blocks_archive_items
+  pages_blocks_archive: typeof pages_blocks_archive
   pages_blocks_artifact_block_items: typeof pages_blocks_artifact_block_items
   pages_blocks_artifact_block: typeof pages_blocks_artifact_block
   pages_blocks_banner_items: typeof pages_blocks_banner_items
@@ -5234,22 +5649,27 @@ type DatabaseSchema = {
   pages_blocks_pricing: typeof pages_blocks_pricing
   pages_blocks_process_steps: typeof pages_blocks_process_steps
   pages_blocks_process: typeof pages_blocks_process
+  pages_blocks_service_showcase_items_capabilities: typeof pages_blocks_service_showcase_items_capabilities
   pages_blocks_service_showcase_items: typeof pages_blocks_service_showcase_items
   pages_blocks_service_showcase: typeof pages_blocks_service_showcase
   pages_blocks_typography: typeof pages_blocks_typography
   pages_breadcrumbs: typeof pages_breadcrumbs
   pages: typeof pages
+  pages_texts: typeof pages_texts
   pages_rels: typeof pages_rels
   _pages_v_version_hero_links: typeof _pages_v_version_hero_links
   _pages_v_version_hero_active_work_projects: typeof _pages_v_version_hero_active_work_projects
   _pages_v_blocks_accordion_items: typeof _pages_v_blocks_accordion_items
   _pages_v_blocks_accordion: typeof _pages_v_blocks_accordion
   _pages_v_blocks_archive_selected_services: typeof _pages_v_blocks_archive_selected_services
-  _pages_v_blocks_archive: typeof _pages_v_blocks_archive
   _art_sl_rows_v: typeof _art_sl_rows_v
   _art_pf_steps_v: typeof _art_pf_steps_v
   _sect_v_items: typeof _sect_v_items
+  _sect_v_left_items: typeof _sect_v_left_items
+  _sect_v_right_items: typeof _sect_v_right_items
   _sect_v: typeof _sect_v
+  _pages_v_blocks_archive_items: typeof _pages_v_blocks_archive_items
+  _pages_v_blocks_archive: typeof _pages_v_blocks_archive
   _pages_v_blocks_artifact_block_items: typeof _pages_v_blocks_artifact_block_items
   _pages_v_blocks_artifact_block: typeof _pages_v_blocks_artifact_block
   _pages_v_blocks_banner_items: typeof _pages_v_blocks_banner_items
@@ -5272,11 +5692,13 @@ type DatabaseSchema = {
   _pages_v_blocks_pricing: typeof _pages_v_blocks_pricing
   _pages_v_blocks_process_steps: typeof _pages_v_blocks_process_steps
   _pages_v_blocks_process: typeof _pages_v_blocks_process
+  _pages_v_blocks_service_showcase_items_capabilities: typeof _pages_v_blocks_service_showcase_items_capabilities
   _pages_v_blocks_service_showcase_items: typeof _pages_v_blocks_service_showcase_items
   _pages_v_blocks_service_showcase: typeof _pages_v_blocks_service_showcase
   _pages_v_blocks_typography: typeof _pages_v_blocks_typography
   _pages_v_version_breadcrumbs: typeof _pages_v_version_breadcrumbs
   _pages_v: typeof _pages_v
+  _pages_v_texts: typeof _pages_v_texts
   _pages_v_rels: typeof _pages_v_rels
   posts_populated_authors: typeof posts_populated_authors
   posts: typeof posts
@@ -5329,11 +5751,14 @@ type DatabaseSchema = {
   relations_pages_blocks_accordion_items: typeof relations_pages_blocks_accordion_items
   relations_pages_blocks_accordion: typeof relations_pages_blocks_accordion
   relations_pages_blocks_archive_selected_services: typeof relations_pages_blocks_archive_selected_services
-  relations_pages_blocks_archive: typeof relations_pages_blocks_archive
   relations_art_sl_rows: typeof relations_art_sl_rows
   relations_art_pf_steps: typeof relations_art_pf_steps
   relations_sect_items: typeof relations_sect_items
+  relations_sect_left_items: typeof relations_sect_left_items
+  relations_sect_right_items: typeof relations_sect_right_items
   relations_sect: typeof relations_sect
+  relations_pages_blocks_archive_items: typeof relations_pages_blocks_archive_items
+  relations_pages_blocks_archive: typeof relations_pages_blocks_archive
   relations_pages_blocks_artifact_block_items: typeof relations_pages_blocks_artifact_block_items
   relations_pages_blocks_artifact_block: typeof relations_pages_blocks_artifact_block
   relations_pages_blocks_banner_items: typeof relations_pages_blocks_banner_items
@@ -5356,10 +5781,12 @@ type DatabaseSchema = {
   relations_pages_blocks_pricing: typeof relations_pages_blocks_pricing
   relations_pages_blocks_process_steps: typeof relations_pages_blocks_process_steps
   relations_pages_blocks_process: typeof relations_pages_blocks_process
+  relations_pages_blocks_service_showcase_items_capabilities: typeof relations_pages_blocks_service_showcase_items_capabilities
   relations_pages_blocks_service_showcase_items: typeof relations_pages_blocks_service_showcase_items
   relations_pages_blocks_service_showcase: typeof relations_pages_blocks_service_showcase
   relations_pages_blocks_typography: typeof relations_pages_blocks_typography
   relations_pages_breadcrumbs: typeof relations_pages_breadcrumbs
+  relations_pages_texts: typeof relations_pages_texts
   relations_pages_rels: typeof relations_pages_rels
   relations_pages: typeof relations_pages
   relations__pages_v_version_hero_links: typeof relations__pages_v_version_hero_links
@@ -5367,11 +5794,14 @@ type DatabaseSchema = {
   relations__pages_v_blocks_accordion_items: typeof relations__pages_v_blocks_accordion_items
   relations__pages_v_blocks_accordion: typeof relations__pages_v_blocks_accordion
   relations__pages_v_blocks_archive_selected_services: typeof relations__pages_v_blocks_archive_selected_services
-  relations__pages_v_blocks_archive: typeof relations__pages_v_blocks_archive
   relations__art_sl_rows_v: typeof relations__art_sl_rows_v
   relations__art_pf_steps_v: typeof relations__art_pf_steps_v
   relations__sect_v_items: typeof relations__sect_v_items
+  relations__sect_v_left_items: typeof relations__sect_v_left_items
+  relations__sect_v_right_items: typeof relations__sect_v_right_items
   relations__sect_v: typeof relations__sect_v
+  relations__pages_v_blocks_archive_items: typeof relations__pages_v_blocks_archive_items
+  relations__pages_v_blocks_archive: typeof relations__pages_v_blocks_archive
   relations__pages_v_blocks_artifact_block_items: typeof relations__pages_v_blocks_artifact_block_items
   relations__pages_v_blocks_artifact_block: typeof relations__pages_v_blocks_artifact_block
   relations__pages_v_blocks_banner_items: typeof relations__pages_v_blocks_banner_items
@@ -5394,10 +5824,12 @@ type DatabaseSchema = {
   relations__pages_v_blocks_pricing: typeof relations__pages_v_blocks_pricing
   relations__pages_v_blocks_process_steps: typeof relations__pages_v_blocks_process_steps
   relations__pages_v_blocks_process: typeof relations__pages_v_blocks_process
+  relations__pages_v_blocks_service_showcase_items_capabilities: typeof relations__pages_v_blocks_service_showcase_items_capabilities
   relations__pages_v_blocks_service_showcase_items: typeof relations__pages_v_blocks_service_showcase_items
   relations__pages_v_blocks_service_showcase: typeof relations__pages_v_blocks_service_showcase
   relations__pages_v_blocks_typography: typeof relations__pages_v_blocks_typography
   relations__pages_v_version_breadcrumbs: typeof relations__pages_v_version_breadcrumbs
+  relations__pages_v_texts: typeof relations__pages_v_texts
   relations__pages_v_rels: typeof relations__pages_v_rels
   relations__pages_v: typeof relations__pages_v
   relations_posts_populated_authors: typeof relations_posts_populated_authors

@@ -19,9 +19,13 @@ type LinkType = (options?: {
   appearances?: LinkAppearances[] | false
   disableLabel?: boolean
   overrides?: Partial<GroupField>
+  labelOptions?: {
+    defaultValue?: string
+    readOnly?: boolean
+  }
 }) => Field
 
-export const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
+export const link: LinkType = ({ appearances, disableLabel = false, overrides = {}, labelOptions } = {}) => {
   const linkResult: GroupField = {
     name: 'link',
     type: 'group',
@@ -105,8 +109,11 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
         {
           name: 'label',
           type: 'text',
+          defaultValue: labelOptions?.defaultValue,
           admin: {
             width: '50%',
+            readOnly: labelOptions?.readOnly,
+            style: labelOptions?.readOnly ? { opacity: 0.7 } : undefined,
           },
           label: 'Label',
           required: true,

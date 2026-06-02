@@ -1,8 +1,4 @@
-export type ArtifactType =
-  | 'stackList'
-  | 'processFlow'
-  | 'codeSnippet'
-  | 'ad'
+export type ArtifactType = 'stackList' | 'processFlow' | 'codeSnippet' | 'ad'
 
 export type ArtifactPresentation = {
   showContainer?: boolean
@@ -37,37 +33,46 @@ export type CodeSnippetArtifactData = {
   code: string
 }
 
-export type ArchitectureDiagramLayout =
-  | 'row'
-  | 'columns'
-  | 'split'
+export type ArchitectureDiagramLayout = 'row' | 'columns' | 'split'
 
-export type ArchitectureDiagramVariant =
-  | 'primary'
-  | 'secondary'
-  | 'highlight'
+export type ArchitectureDiagramVariant = 'primary' | 'secondary' | 'highlight'
 
 export type ArchitectureDiagramItem = {
   label: string
   id?: string | null
 }
 
-export type ArchitectureDiagramSection = {
-  layout: ArchitectureDiagramLayout
-
-  variant?: ArchitectureDiagramVariant
-
-  /** Items for row / columns layout */
-  items?: ArchitectureDiagramItem[]
-
-  /** Left region items for split layout */
-  left?: ArchitectureDiagramItem[]
-
-  /** Right region items for split layout */
-  right?: ArchitectureDiagramItem[]
-
+export type ArchitectureDiagramRowSection = {
   id?: string | null
+  layout: 'row'
+  variant: ArchitectureDiagramVariant
+  items: ArchitectureDiagramItem[]
 }
+
+export type ArchitectureDiagramColumnsSection = {
+  id?: string | null
+  layout: 'columns'
+  variant: ArchitectureDiagramVariant
+  items: ArchitectureDiagramItem[]
+}
+
+export type ArchitectureDiagramSplitSection = {
+  id?: string | null
+  layout: 'split'
+  /** Left items array */
+  left: ArchitectureDiagramItem[]
+  /** Variant for the left side — shares the `variant` column with row/columns via conditional */
+  variant: ArchitectureDiagramVariant
+  /** Right items array */
+  right: ArchitectureDiagramItem[]
+  /** Whether right side renders as a stack or a 2-column grid */
+  right_layout: 'stack' | 'grid'
+}
+
+export type ArchitectureDiagramSection =
+  | ArchitectureDiagramRowSection
+  | ArchitectureDiagramColumnsSection
+  | ArchitectureDiagramSplitSection
 
 export type ArchitectureDiagramArtifactData = {
   title?: string

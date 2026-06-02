@@ -2,34 +2,11 @@ import React from 'react'
 
 import { ArrowDown } from 'lucide-react'
 
-import { getSectionStyles } from './variants'
-import { renderRow } from './fields/renderRow'
-import { renderColumns } from './fields/renderColumns'
-import { renderSplit } from './fields/renderSplit'
+import { RowRenderer } from './renderers/RowRenderer'
+import { ColumnsRenderer } from './renderers/ColumnsRenderer'
+import { SplitRenderer } from './renderers/SplitRenderer'
 
-import type {
-  ArtifactPresentation,
-  ArchitectureDiagramArtifactData,
-  ArchitectureDiagramSection,
-  ArchitectureDiagramLayout,
-} from '../../types'
-
-/* ------------------------------------------------------------------ */
-/*  Layout dispatch                                                    */
-/* ------------------------------------------------------------------ */
-
-const layoutRenderers: Record<
-  ArchitectureDiagramLayout,
-  (section: ArchitectureDiagramSection, styles: { item: string }) => React.ReactNode
-> = {
-  row: renderRow,
-  columns: renderColumns,
-  split: renderSplit,
-}
-
-/* ------------------------------------------------------------------ */
-/*  Main component                                                     */
-/* ------------------------------------------------------------------ */
+import type { ArtifactPresentation, ArchitectureDiagramArtifactData } from '../../types'
 
 type Props = {
   data: ArchitectureDiagramArtifactData
@@ -38,35 +15,42 @@ type Props = {
 }
 
 export const ArchitectureDiagramArtifact: React.FC<Props> = ({ data, presentation }) => {
-  const { showContainer = true, showTitle = true, theme = 'dark' } = presentation || {}
+  const { showTitle = true, theme = 'dark' } = presentation || {}
 
   const isDark = theme === 'dark'
 
-  const content = (
-    <div className="space-y-6">
+  return (
+    <div className="bg-surface-container-lowest border border-outline-variant rounded-lg shadow-md p-6 relative z-10 font-mono text-sm">
       {showTitle && data.title && (
-        <div className="flex items-center gap-3 pb-4 border-b border-current/10">
-          <span className="font-mono text-xs uppercase tracking-widest font-bold">
-            {data.title}
-          </span>
+        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-surface-container">
+          <span className="font-bold uppercase tracking-widest text-xs">{data.title}</span>
         </div>
       )}
 
       <div className="space-y-6">
         {data.sections?.map((section, sectionIndex) => {
-          const layout = section.layout
-          const variant = section.variant ?? 'secondary'
+          let rendered: React.ReactNode = null
 
-          const styles = getSectionStyles(layout, variant, isDark)
-
-          const renderer = layoutRenderers[layout]
+          switch (section.layout) {
+            case 'row':
+              rendered = <RowRenderer section={section} isDark={isDark} />
+              break
+            case 'columns':
+              rendered = <ColumnsRenderer section={section} isDark={isDark} />
+              break
+            case 'split':
+              rendered = <SplitRenderer section={section} isDark={isDark} />
+              break
+            default:
+              break
+          }
 
           return (
             <React.Fragment key={section.id || sectionIndex}>
-              {renderer(section, styles)}
+              {rendered}
 
               {sectionIndex < (data.sections?.length || 0) - 1 && (
-                <div className="flex justify-center py-2 opacity-50">
+                <div className="flex justify-center py-2">
                   <ArrowDown className="w-6 h-6 font-black" />
                 </div>
               )}
@@ -74,24 +58,6 @@ export const ArchitectureDiagramArtifact: React.FC<Props> = ({ data, presentatio
           )
         })}
       </div>
-    </div>
-  )
-
-  if (!showContainer) {
-    return content
-  }
-
-  return (
-    <div
-      className={[
-        'rounded border p-8',
-
-        isDark
-          ? 'bg-[#111111] border-[#2f3131] text-white'
-          : 'bg-background border-border text-foreground',
-      ].join(' ')}
-    >
-      {content}
     </div>
   )
 }

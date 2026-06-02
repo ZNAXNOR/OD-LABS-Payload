@@ -4,8 +4,14 @@ import {
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
+  BoldFeature,
+  ItalicFeature,
+  UnorderedListFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+
+import { createArtifactItemFields } from './Artifact/config'
+import { link } from '@/fields/link'
 
 export const Archive: Block = {
   slug: 'archive',
@@ -18,6 +24,7 @@ export const Archive: Block = {
       options: [
         { label: 'Default', value: 'default' },
         { label: 'Services Grid', value: 'servicesGrid' },
+        { label: 'Artifact', value: 'artifact' },
       ],
     },
     {
@@ -187,6 +194,63 @@ export const Archive: Block = {
           defaultValue: 'standard',
         },
       ],
+    },
+    {
+      name: 'artifactEyebrow',
+      type: 'text',
+      admin: {
+        condition: (_, siblingData) => siblingData.variant === 'artifact',
+      },
+      label: 'Eyebrow',
+      defaultValue: 'Operational Evidence',
+    },
+    {
+      name: 'artifactHeading',
+      type: 'text',
+      admin: {
+        condition: (_, siblingData) => siblingData.variant === 'artifact',
+      },
+      label: 'Heading',
+      defaultValue: 'Engineering Decisions Backed By Real Artifacts',
+    },
+    {
+      name: 'artifactIntro',
+      type: 'richText',
+      admin: {
+        condition: (_, siblingData) => siblingData.variant === 'artifact',
+      },
+      editor: lexicalEditor({
+        features: () => [
+          BoldFeature(),
+          ItalicFeature(),
+          UnorderedListFeature(),
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+        ],
+      }),
+      label: 'Intro',
+    },
+    link({
+      appearances: false,
+      labelOptions: {
+        defaultValue: 'View all technical notes',
+        readOnly: true,
+      },
+      overrides: {
+        name: 'artifactLink',
+        label: 'View All Link',
+        admin: {
+          condition: (_, siblingData) => siblingData.variant === 'artifact',
+        },
+      },
+    }),
+    {
+      name: 'items',
+      type: 'array',
+      admin: {
+        condition: (_, siblingData) => siblingData.variant === 'artifact',
+      },
+      fields: createArtifactItemFields(),
     },
   ],
   labels: {

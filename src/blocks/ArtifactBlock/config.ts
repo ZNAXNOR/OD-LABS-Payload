@@ -145,7 +145,7 @@ export const ArtifactBlock: Block = {
             ],
           }),
         },
-        createArtifactField(),
+        createArtifactField({ dbNamePrefix: 'ab' }),
       ],
     },
   ],

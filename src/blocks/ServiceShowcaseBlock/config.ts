@@ -144,6 +144,7 @@ export const ServiceShowcaseBlock: Block = {
                           }),
                         },
                         createArtifactField({
+                          dbNamePrefix: 'ss',
                           allowedArtifacts: ['stackList', 'processFlow', 'codeSnippet', 'ad'],
                         }),
                       ],

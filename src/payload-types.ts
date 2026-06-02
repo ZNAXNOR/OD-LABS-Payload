@@ -562,7 +562,7 @@ export interface AccordionBlock {
  * via the `definition` "ArchiveBlock".
  */
 export interface ArchiveBlock {
-  variant?: ('default' | 'servicesGrid') | null;
+  variant?: ('default' | 'servicesGrid' | 'artifact') | null;
   heading?: string | null;
   subheading?: string | null;
   introContent?: {
@@ -599,6 +599,123 @@ export interface ArchiveBlock {
         highlight?: boolean | null;
         style?: ('default' | 'dark') | null;
         size?: ('standard' | 'wide') | null;
+        id?: string | null;
+      }[]
+    | null;
+  artifactEyebrow?: string | null;
+  artifactHeading?: string | null;
+  artifactIntro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  artifactLink?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  items?:
+    | {
+        /**
+         * The narrative anchor — the long-form trust destination
+         */
+        archive: number | Post;
+        /**
+         * Lightweight categorization (e.g. Architecture, Decision Records)
+         */
+        tag?: string | null;
+        /**
+         * Trust framing — explains why the artifact matters
+         */
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        artifact: {
+          type: 'stackList' | 'processFlow' | 'codeSnippet' | 'ad';
+          stackList?: {
+            rows?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          processFlow?: {
+            steps?:
+              | {
+                  label: string;
+                  icon?: ('none' | 'GitCommitHorizontal' | 'FlaskConical' | 'Rocket') | null;
+                  highlight?: boolean | null;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+          codeSnippet?: {
+            code: string;
+          };
+          ad?: {
+            title?: string | null;
+            sections?:
+              | {
+                  layout: 'row' | 'columns' | 'split';
+                  variant?: ('primary' | 'secondary' | 'highlight') | null;
+                  items?:
+                    | {
+                        label: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  left?:
+                    | {
+                        label: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  right_layout?: ('stack' | 'grid') | null;
+                  right?:
+                    | {
+                        label: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+          };
+        };
         id?: string | null;
       }[]
     | null;
@@ -676,6 +793,7 @@ export interface ArtifactBlock {
                         id?: string | null;
                       }[]
                     | null;
+                  right_layout?: ('stack' | 'grid') | null;
                   right?:
                     | {
                         label: string;
@@ -1273,6 +1391,7 @@ export interface ServiceShowcaseBlock {
                         id?: string | null;
                       }[]
                     | null;
+                  right_layout?: ('stack' | 'grid') | null;
                   right?:
                     | {
                         label: string;
@@ -1745,6 +1864,90 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
         size?: T;
         id?: T;
       };
+  artifactEyebrow?: T;
+  artifactHeading?: T;
+  artifactIntro?: T;
+  artifactLink?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
+  items?:
+    | T
+    | {
+        archive?: T;
+        tag?: T;
+        content?: T;
+        artifact?:
+          | T
+          | {
+              type?: T;
+              stackList?:
+                | T
+                | {
+                    rows?:
+                      | T
+                      | {
+                          label?: T;
+                          value?: T;
+                          id?: T;
+                        };
+                  };
+              processFlow?:
+                | T
+                | {
+                    steps?:
+                      | T
+                      | {
+                          label?: T;
+                          icon?: T;
+                          highlight?: T;
+                          id?: T;
+                        };
+                  };
+              codeSnippet?:
+                | T
+                | {
+                    code?: T;
+                  };
+              ad?:
+                | T
+                | {
+                    title?: T;
+                    sections?:
+                      | T
+                      | {
+                          layout?: T;
+                          variant?: T;
+                          items?:
+                            | T
+                            | {
+                                label?: T;
+                                id?: T;
+                              };
+                          left?:
+                            | T
+                            | {
+                                label?: T;
+                                id?: T;
+                              };
+                          right_layout?: T;
+                          right?:
+                            | T
+                            | {
+                                label?: T;
+                                id?: T;
+                              };
+                          id?: T;
+                        };
+                  };
+            };
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1816,6 +2019,7 @@ export interface ArtifactBlockSelect<T extends boolean = true> {
                                 label?: T;
                                 id?: T;
                               };
+                          right_layout?: T;
                           right?:
                             | T
                             | {
@@ -2088,6 +2292,7 @@ export interface ServiceShowcaseBlockSelect<T extends boolean = true> {
                                 label?: T;
                                 id?: T;
                               };
+                          right_layout?: T;
                           right?:
                             | T
                             | {

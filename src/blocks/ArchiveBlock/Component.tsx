@@ -3,6 +3,7 @@ import React from 'react'
 
 import { DefaultArchiveBlock } from './Default/Component'
 import { ServicesGridArchiveBlock } from './ServicesGrid/Component'
+import { ArtifactArchiveBlock } from './Artifact/Component'
 
 export const ArchiveBlock: React.FC<
   ArchiveBlockProps & {
@@ -13,6 +14,10 @@ export const ArchiveBlock: React.FC<
 
   if (variant === 'servicesGrid') {
     return <ServicesGridArchiveBlock {...props} />
+  }
+
+  if (variant === 'artifact') {
+    return <ArtifactArchiveBlock {...props} />
   }
 
   return <DefaultArchiveBlock {...props} />
