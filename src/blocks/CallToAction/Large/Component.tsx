@@ -10,10 +10,11 @@ export const LargeCTA: React.FC<CTABlockProps> = ({
   availabilityText,
   enableHelperLink,
   helperLink,
+  showBackground,
 }) => {
   return (
     <section className="max-w-7xl mx-auto px-8 py-24">
-      <div className="bg-gray-100 rounded-3xl py-24 px-8 text-center">
+      <div className={`${showBackground !== false ? 'bg-gray-100' : ''} rounded-3xl py-24 px-8 text-center`}>
         {richText && (
           <div className="max-w-2xl mx-auto mb-12">
             <RichText

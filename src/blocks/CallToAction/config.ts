@@ -42,6 +42,15 @@ export const CallToAction: Block = {
       }),
       label: false,
     },
+    {
+      name: 'showBackground',
+      type: 'checkbox',
+      label: 'Show Background',
+      defaultValue: true,
+      admin: {
+        condition: (_, siblingData) => siblingData.variant === 'large',
+      },
+    },
     linkGroup({
       appearances: ['default', 'outline'],
       overrides: {

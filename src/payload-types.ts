@@ -867,6 +867,7 @@ export interface CallToActionBlock {
     };
     [k: string]: unknown;
   } | null;
+  showBackground?: boolean | null;
   links?:
     | {
         link: {
@@ -2078,6 +2079,7 @@ export interface BannerBlockSelect<T extends boolean = true> {
 export interface CallToActionBlockSelect<T extends boolean = true> {
   variant?: T;
   richText?: T;
+  showBackground?: T;
   links?:
     | T
     | {
