@@ -1278,11 +1278,28 @@ export interface MediaBlock {
  * via the `definition` "ProcessBlock".
  */
 export interface ProcessBlock {
-  title: string;
+  blockVariant: 'journey' | 'numberedPanels';
+  eyebrow?: string | null;
+  heading?: string | null;
+  stepShape?: ('circle' | 'rectangle') | null;
   steps: {
     title: string;
-    description: string;
-    isFinal?: boolean | null;
+    description: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    isHighlighted?: boolean | null;
     id?: string | null;
   }[];
   id?: string | null;
@@ -2198,13 +2215,16 @@ export interface MediaBlockSelect<T extends boolean = true> {
  * via the `definition` "ProcessBlock_select".
  */
 export interface ProcessBlockSelect<T extends boolean = true> {
-  title?: T;
+  blockVariant?: T;
+  eyebrow?: T;
+  heading?: T;
+  stepShape?: T;
   steps?:
     | T
     | {
         title?: T;
         description?: T;
-        isFinal?: T;
+        isHighlighted?: T;
         id?: T;
       };
   id?: T;

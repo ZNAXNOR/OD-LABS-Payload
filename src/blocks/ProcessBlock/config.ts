@@ -1,4 +1,9 @@
 import type { Block } from 'payload'
+import {
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 
 export const Process: Block = {
   slug: 'process',
@@ -9,10 +14,48 @@ export const Process: Block = {
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
+      name: 'blockVariant',
+      type: 'radio',
+      defaultValue: 'journey',
+      options: [
+        { label: 'Journey', value: 'journey' },
+        { label: 'Numbered Panels', value: 'numberedPanels' },
+      ],
       required: true,
     },
+
+    {
+      name: 'eyebrow',
+      type: 'text',
+      admin: {
+        condition: (_, siblingData) =>
+          siblingData?.blockVariant === 'numberedPanels' || siblingData?.blockVariant === 'journey',
+      },
+    },
+
+    {
+      name: 'heading',
+      type: 'text',
+      admin: {
+        condition: (_, siblingData) =>
+          siblingData?.blockVariant === 'numberedPanels' || siblingData?.blockVariant === 'journey',
+      },
+    },
+
+    {
+      name: 'stepShape',
+      type: 'radio',
+      defaultValue: 'circle',
+      options: [
+        { label: 'Circle', value: 'circle' },
+        { label: 'Rectangle', value: 'rectangle' },
+      ],
+      admin: {
+        condition: (_, siblingData) =>
+          siblingData?.blockVariant === 'journey',
+      },
+    },
+
     {
       name: 'steps',
       type: 'array',
@@ -27,13 +70,29 @@ export const Process: Block = {
         },
         {
           name: 'description',
-          type: 'text',
+          type: 'richText',
           required: true,
+          editor: lexicalEditor({
+            features: ({ rootFeatures }) => [
+              ...rootFeatures,
+              FixedToolbarFeature(),
+              InlineToolbarFeature(),
+            ],
+          }),
         },
         {
-          name: 'isFinal',
+          name: 'isHighlighted',
           type: 'checkbox',
           defaultValue: false,
+          admin: {
+            condition: (data: unknown, siblingData: unknown, { blockData }: any) => {
+              if (!blockData) return true
+              return blockData.blockVariant === 'journey'
+            },
+            components: {
+              Field: '/components/ExclusiveCheckbox#ExclusiveCheckbox',
+            },
+          },
         },
       ],
     },
