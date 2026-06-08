@@ -1,23 +1,15 @@
 'use client'
-import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
+
+import type { FormFieldBlock } from '@payloadcms/plugin-form-builder/types'
 
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
-import RichText from '@/components/RichText'
-import { Button } from '@/components/ui/button'
-import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
+import { useForm } from 'react-hook-form'
 
-import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
-
-export type FormBlockType = {
-  blockName?: string
-  blockType?: 'formBlock'
-  enableIntro: boolean
-  form: FormType
-  introContent?: DefaultTypedEditorState
-}
+import { ContactForm } from './variants/ContactForm'
+import { DefaultForm } from './variants/DefaultForm'
+import type { FormBlockType } from './variants/types'
 
 export const FormBlock: React.FC<
   {
@@ -27,19 +19,15 @@ export const FormBlock: React.FC<
   const {
     enableIntro,
     form: formFromProps,
-    form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
+    form: { id: formID, confirmationType, redirect } = {},
     introContent,
+    variant = 'default',
+    trustPanel,
   } = props
 
   const formMethods = useForm({
     defaultValues: formFromProps.fields,
   })
-  const {
-    control,
-    formState: { errors },
-    handleSubmit,
-    register,
-  } = formMethods
 
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
@@ -113,51 +101,27 @@ export const FormBlock: React.FC<
     [router, formID, redirect, confirmationType],
   )
 
-  return (
-    <div className="container lg:max-w-[48rem]">
-      {enableIntro && introContent && !hasSubmitted && (
-        <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
-      )}
-      <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
-        <FormProvider {...formMethods}>
-          {!isLoading && hasSubmitted && confirmationType === 'message' && (
-            <RichText data={confirmationMessage} />
-          )}
-          {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
-          {!hasSubmitted && (
-            <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4 last:mb-0">
-                {formFromProps &&
-                  formFromProps.fields &&
-                  formFromProps.fields?.map((field, index) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
-                    if (Field) {
-                      return (
-                        <div className="mb-6 last:mb-0" key={index}>
-                          <Field
-                            form={formFromProps}
-                            {...field}
-                            {...formMethods}
-                            control={control}
-                            errors={errors}
-                            register={register}
-                          />
-                        </div>
-                      )
-                    }
-                    return null
-                  })}
-              </div>
+  const sharedProps = {
+    form: formFromProps,
+    formID,
+    formMethods,
+    isLoading,
+    hasSubmitted,
+    error,
+    onSubmit,
+  }
 
-              <Button form={formID} type="submit" variant="default">
-                {submitButtonLabel}
-              </Button>
-            </form>
-          )}
-        </FormProvider>
-      </div>
-    </div>
-  )
+  switch (variant) {
+    case 'contact':
+      return <ContactForm {...sharedProps} trustPanel={trustPanel} />
+
+    default:
+      return (
+        <DefaultForm
+          {...sharedProps}
+          enableIntro={enableIntro}
+          introContent={introContent}
+        />
+      )
+  }
 }
