@@ -9,9 +9,7 @@ import {
 
 export const FeatureBlock: Block = {
   slug: 'featureBlock',
-
   interfaceName: 'FeatureBlock',
-
   fields: [
     {
       name: 'variant',
@@ -28,23 +26,19 @@ export const FeatureBlock: Block = {
         },
       ],
     },
-
     {
       name: 'eyebrow',
       type: 'text',
     },
-
     {
       name: 'heading',
       type: 'text',
       required: true,
     },
-
     {
       name: 'subheading',
       type: 'textarea',
     },
-
     {
       name: 'columns',
       type: 'select',
@@ -64,20 +58,16 @@ export const FeatureBlock: Block = {
         },
       ],
     },
-
     {
       name: 'items',
       type: 'array',
       required: true,
       minRows: 1,
       maxRows: 12,
-
       fields: [
         {
           name: 'icon',
           type: 'select',
-          required: true,
-
           options: [
             {
               label: 'Rocket',
@@ -104,16 +94,13 @@ export const FeatureBlock: Block = {
               value: 'Shield',
             },
           ],
-
           defaultValue: 'Rocket',
         },
-
         {
           name: 'title',
           type: 'text',
           required: true,
         },
-
         {
           name: 'description',
           type: 'richText',
@@ -131,7 +118,6 @@ export const FeatureBlock: Block = {
       ],
     },
   ],
-
   labels: {
     plural: 'Feature Blocks',
     singular: 'Feature Block',

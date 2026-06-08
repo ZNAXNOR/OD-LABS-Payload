@@ -909,13 +909,14 @@ export interface CallToActionBlock {
 export interface ComparisonBlock {
   variant?: ('splitPanel' | 'cards') | null;
   positiveSide?: ('left' | 'right') | null;
+  itemStyle?: ('icon' | 'bulletPoints') | null;
   eyebrow?: string | null;
   heading: string;
   left: {
     title: string;
     items?:
       | {
-          icon: 'architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment';
+          icon?: ('architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment') | null;
           title: string;
           description?: {
             root: {
@@ -940,7 +941,7 @@ export interface ComparisonBlock {
     title: string;
     items?:
       | {
-          icon: 'architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment';
+          icon?: ('architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment') | null;
           title: string;
           description?: {
             root: {
@@ -1041,7 +1042,7 @@ export interface FeatureBlock {
   subheading?: string | null;
   columns?: ('2' | '3' | '4') | null;
   items: {
-    icon: 'Rocket' | 'Settings' | 'Check' | 'Users' | 'Zap' | 'Shield';
+    icon?: ('Rocket' | 'Settings' | 'Check' | 'Users' | 'Zap' | 'Shield') | null;
     title: string;
     description: {
       root: {
@@ -1069,6 +1070,7 @@ export interface FeatureBlock {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
+  variant?: ('default' | 'contact') | null;
   form: number | Form;
   enableIntro?: boolean | null;
   introContent?: {
@@ -1086,6 +1088,18 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  trustPanel?: {
+    heading?: string | null;
+    items?:
+      | {
+          icon?: string | null;
+          title?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    email?: string | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -2113,6 +2127,7 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
 export interface ComparisonBlockSelect<T extends boolean = true> {
   variant?: T;
   positiveSide?: T;
+  itemStyle?: T;
   eyebrow?: T;
   heading?: T;
   left?:
@@ -2197,9 +2212,24 @@ export interface FeatureBlockSelect<T extends boolean = true> {
  * via the `definition` "FormBlock_select".
  */
 export interface FormBlockSelect<T extends boolean = true> {
+  variant?: T;
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  trustPanel?:
+    | T
+    | {
+        heading?: T;
+        items?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+        email?: T;
+      };
   id?: T;
   blockName?: T;
 }

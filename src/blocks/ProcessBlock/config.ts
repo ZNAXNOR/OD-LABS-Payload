@@ -60,7 +60,7 @@ export const Process: Block = {
       name: 'steps',
       type: 'array',
       required: true,
-      minRows: 1,
+      minRows: 2,
       maxRows: 4,
       fields: [
         {

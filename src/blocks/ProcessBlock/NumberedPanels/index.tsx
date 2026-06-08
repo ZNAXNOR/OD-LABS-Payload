@@ -12,9 +12,11 @@ type Props = {
 
 export const NumberedPanels: React.FC<Props> = ({ eyebrow, heading, steps }) => {
   const stepsArray = steps || []
+  const itemCount = Math.min(Math.max(stepsArray.length, 2), 4)
+  const gridCols = `md:grid-cols-${itemCount}`
 
   return (
-    <section className="py-40 border-b border-border">
+    <section className="py-10">
       <div className="max-w-7xl mx-auto px-8">
         {/* Header */}
         <div className="mb-20">
@@ -30,7 +32,7 @@ export const NumberedPanels: React.FC<Props> = ({ eyebrow, heading, steps }) => 
         </div>
 
         {/* Numbered Panels Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-0 border border-border rounded-md overflow-hidden shadow-sm">
+        <div className={['grid grid-cols-1', gridCols, 'gap-0 border border-border rounded-md overflow-hidden shadow-sm'].join(' ')}>
           {stepsArray.map((step, index) => (
             <div
               key={step.id || index}
