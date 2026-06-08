@@ -17,6 +17,7 @@ export const SplitPanelComparison: React.FC<
     right,
     note,
     positiveSide,
+    itemStyle,
   } = props
 
   const leftPositive = positiveSide === 'left'
@@ -50,6 +51,7 @@ export const SplitPanelComparison: React.FC<
             <ComparisonColumn
               column={left}
               compact
+              useBulletPoints={itemStyle === 'bulletPoints'}
               itemIconClassName={
                 leftPositive
                   ? 'text-white'
@@ -92,6 +94,7 @@ export const SplitPanelComparison: React.FC<
             <ComparisonColumn
               column={right}
               compact
+              useBulletPoints={itemStyle === 'bulletPoints'}
               itemIconClassName={
                 rightPositive
                   ? 'text-white'

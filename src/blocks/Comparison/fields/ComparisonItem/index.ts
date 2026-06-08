@@ -12,11 +12,8 @@ import {
 export const comparisonItemFields: Field[] = [
   {
     name: 'icon',
-
     type: 'select',
-
-    required: true,
-
+    required: false,
     options: [
       {
         label: 'Architecture',
@@ -45,6 +42,12 @@ export const comparisonItemFields: Field[] = [
     ],
 
     defaultValue: 'architecture',
+
+    admin: {
+      condition: (_, __, { blockData }) => {
+        return blockData?.itemStyle !== 'bulletPoints'
+      },
+    },
   },
 
   {

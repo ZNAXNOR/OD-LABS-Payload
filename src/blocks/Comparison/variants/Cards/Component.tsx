@@ -17,6 +17,7 @@ export const CardsComparison: React.FC<ComparisonBlockProps> = (
     right,
     note,
     positiveSide,
+    itemStyle,
   } = props
   const leftPositive = positiveSide === 'left'
   const rightPositive = positiveSide === 'right'
@@ -71,6 +72,7 @@ export const CardsComparison: React.FC<ComparisonBlockProps> = (
             column={left}
             compact
             showDescription={false}
+            useBulletPoints={itemStyle === 'bulletPoints'}
             itemIconClassName={
               leftPositive
                 ? 'text-primary'
@@ -106,6 +108,7 @@ export const CardsComparison: React.FC<ComparisonBlockProps> = (
             column={right}
             compact
             showDescription={false}
+            useBulletPoints={itemStyle === 'bulletPoints'}
             itemIconClassName={
               rightPositive
                 ? 'text-primary'

@@ -45,26 +45,45 @@ export const ComparisonBlock: Block = {
           },
         },
 
-        {
-          name: 'positiveSide',
-          type: 'radio',
-          defaultValue: 'right',
-          options: [
-            {
-              label: 'Left Positive',
-              value: 'left',
-            },
-            {
-              label: 'Right Positive',
-              value: 'right',
-            },
-          ],
-          admin: {
-            width: '50%',
-            layout: 'horizontal',
+      {
+        name: 'positiveSide',
+        type: 'radio',
+        defaultValue: 'right',
+        options: [
+          {
+            label: 'Left Positive',
+            value: 'left',
           },
+          {
+            label: 'Right Positive',
+            value: 'right',
+          },
+        ],
+        admin: {
+          width: '50%',
+          layout: 'horizontal',
         },
-      ],
+      },
+
+      {
+        name: 'itemStyle',
+        type: 'select',
+        defaultValue: 'icon',
+        options: [
+          {
+            label: 'Icons',
+            value: 'icon',
+          },
+          {
+            label: 'Bullet Points',
+            value: 'bulletPoints',
+          },
+        ],
+        admin: {
+          width: '50%',
+        },
+      },
+    ],
     },
 
     {

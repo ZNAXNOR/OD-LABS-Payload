@@ -1,5 +1,5 @@
 export type ComparisonItem = {
-  icon: 'architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment'
+  icon?: 'architecture' | 'foundation' | 'communication' | 'speed' | 'groups' | 'experiment'
   title: string
   description?: any
   id?: string | null
@@ -16,6 +16,8 @@ export type ComparisonBlockProps = {
   variant: 'splitPanel' | 'cards'
 
   positiveSide: 'left' | 'right'
+
+  itemStyle?: 'icon' | 'bulletPoints'
 
   eyebrow?: string
   heading: string
