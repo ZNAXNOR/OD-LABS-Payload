@@ -26,7 +26,7 @@ jobs:
     name: Create Neon Branch
     outputs:
       db_url: ${{ steps.create_neon_branch.outputs.db_url }}
-      db_url_with_pooler: ${{ steps.create_neon_branch.outputs.db_url_with_pooler }}
+      db_url_with_pooler: ${{ steps.create_neon_branch.outputs.db_url_pooled }}
     needs: setup
     if: |
       github.event_name == 'pull_request' && (
@@ -37,7 +37,8 @@ jobs:
     steps:
       - name: Get branch expiration date as an env variable (2 weeks from now)
         id: get_expiration_date
-        run: echo "EXPIRES_AT=$(date -u --date '+14 days' +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_ENV"        
+        run: echo "EXPIRES_AT=$(date -u --date '+14 days' +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+        
       - name: Create Neon Branch
         id: create_neon_branch
         uses: neondatabase/create-branch-action@v6
@@ -45,7 +46,25 @@ jobs:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
           api_key: ${{ secrets.NEON_API_KEY }}
-          expires_at: ${{ env.EXPIRES_AT }}
+          expires_at: ${{ steps.get_expiration_date.outputs.EXPIRES_AT }}
+          
+      - name: Trigger Dokploy Deployment
+        run: |
+          curl -X POST "${{ vars.DOKPLOY_WEBHOOK_MAIN_STAGING_URL }}"
+      
+      - name: Comment PR with Neon Branch Info
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const dbUrl = "${{ steps.create_neon_branch.outputs.db_url_pooled }}";
+            const prNum = context.issue.number;
+            
+            github.rest.issues.createComment({
+              issue_number: prNum,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `### 🚀 Preview Database Ready!\n\n**Neon Pooled DB URL:** \`${dbUrl}\``
+            });
 
 # The step above creates a new Neon branch.
 # You may want to do something with the new branch, such as run migrations, run tests
