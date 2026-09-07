@@ -1,0 +1,54 @@
+name: Deploy PR Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete Neon Branch on Close
+        if: github.event.action == 'closed'
+        uses: neondatabase/delete-branch-action@v3
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+          branch_name: pr-${{ github.event.number }}
+
+      - name: Create Neon DB Branch
+        if: github.event.action != 'closed'
+        id: create-branch
+        uses: neondatabase/create-branch-action@v5
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+          branch_name: pr-${{ github.event.number }}
+
+      - name: Trigger Dokploy Deployment
+        if: github.event.action != 'closed'
+        run: |
+          # Webhook request to Dokploy passing the branch and DATABASE_URL
+          curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "branch": "${{ github.head_ref }}",
+              "env": {
+                "DATABASE_URL": "${{ steps.create-branch.outputs.db_url }}"
+              }
+            }'
+
+      - name: Post PR Comment with Links
+        if: github.event.action != 'closed'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNum = context.issue.number;
+            const previewUrl = `https://pr-${prNum}.odtechlab.com`; // Your Dokploy preview URL scheme
+            
+            github.rest.issues.createComment({
+              issue_number: prNum,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `### 🚀 PR Preview Environment Ready!\n\n- **Preview App**: ${previewUrl}\n- **Neon DB Branch**: \`pr-${prNum}\``
+            });
