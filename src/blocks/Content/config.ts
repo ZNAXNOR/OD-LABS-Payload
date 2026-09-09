@@ -16,6 +16,10 @@ const columnFields: Field[] = [
     defaultValue: 'oneThird',
     options: [
       {
+        label: 'Zero',
+        value: 'zero',
+      },
+      {
         label: 'One Third',
         value: 'oneThird',
       },
@@ -32,6 +36,11 @@ const columnFields: Field[] = [
         value: 'full',
       },
     ],
+    admin: {
+      components: {
+        Field: '@/components/SizeSlider',
+      },
+    },
   },
   {
     name: 'richText',
