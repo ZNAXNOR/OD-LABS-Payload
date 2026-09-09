@@ -52,15 +52,16 @@ jobs:
           api_key: ${{ secrets.NEON_API_KEY }}
           expires_at: ${{ steps.get_expiration_date.outputs.EXPIRES_AT }}
           
-      # - name: Trigger Dokploy Deployment
-      #   run: |
-      #     curl -X POST "${{ vars.DOKPLOY_WEBHOOK_MAIN_STAGING_URL }}" \
-      #     -H "Content-Type: application/json" \
-      #     -d '{
-      #       "env": {
-      #       "DATABASE_URL": "${{ steps.create_neon_branch.outputs.db_url_pooled }}"
-      #       }
-      #     }'
+      - name: Trigger Dokploy Preview Deployment
+        run: |
+          curl -X POST "${{ secrets.DOKPLOY_PREVIEW_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "branch": "${{ needs.setup.outputs.branch }}",
+              "env": {
+                "DATABASE_URL": "${{ steps.create_neon_branch.outputs.db_url_pooled }}"
+              }
+            }'
       
       - name: Comment PR with Neon Branch Info
         uses: actions/github-script@v7
