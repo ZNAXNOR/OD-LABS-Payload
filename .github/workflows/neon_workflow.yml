@@ -50,7 +50,13 @@ jobs:
           
       - name: Trigger Dokploy Deployment
         run: |
-          curl -X POST "${{ vars.DOKPLOY_WEBHOOK_MAIN_STAGING_URL }}"
+          curl -X POST "${{ vars.DOKPLOY_WEBHOOK_MAIN_STAGING_URL }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "env": {
+            "DATABASE_URL": "${{ steps.create_neon_branch.outputs.db_url_pooled }}"
+            }
+          }'
       
       - name: Comment PR with Neon Branch Info
         uses: actions/github-script@v7
