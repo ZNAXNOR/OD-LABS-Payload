@@ -1,5 +1,9 @@
 name: Create/Delete Branch for Pull Request
 
+permissions:
+  pull-requests: write
+  contents: read
+
 on:
   pull_request:
     types:
