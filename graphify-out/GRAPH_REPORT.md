@@ -1,11 +1,11 @@
-# Graph Report - OD-LABS-Payload  (2026-09-08)
+# Graph Report - OD-LABS-Payload  (2026-09-11)
 
 ## Corpus Check
-- 177 files · ~93,726 words
+- 179 files · ~100,532 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 289 nodes · 164 edges · 11 communities detected
+- 293 nodes · 166 edges · 11 communities detected
 - Extraction: 84% EXTRACTED · 16% INFERRED · 0% AMBIGUOUS · INFERRED: 26 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 

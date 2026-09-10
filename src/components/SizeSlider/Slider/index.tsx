@@ -19,6 +19,7 @@ export const SizeSlider: React.FC<SizeSliderProps> = ({
   onKeyDown,
 }) => {
   const currentCols = currentValueKey ? CANONICAL_POINTS[currentValueKey].cols : 0
+  const fillPercent = (currentCols / 12) * 100
 
   if (visiblePoints.length === 0) {
     return (
@@ -37,6 +38,11 @@ export const SizeSlider: React.FC<SizeSliderProps> = ({
     }
   }
 
+  // Dynamic gradient: filled portion is white, unfilled is the track color
+  const trackStyle: React.CSSProperties = {
+    background: `linear-gradient(to right, var(--theme-text, #ffffff) 0%, var(--theme-text, #ffffff) ${fillPercent}%, var(--theme-elevation-300, #cbd5e1) ${fillPercent}%, var(--theme-elevation-300, #cbd5e1) 100%)`,
+  }
+
   return (
     <div className="size-slider-field__slider-container">
       <input
@@ -49,6 +55,7 @@ export const SizeSlider: React.FC<SizeSliderProps> = ({
         value={currentCols}
         onChange={handleSliderChange}
         onKeyDown={onKeyDown}
+        style={trackStyle}
         aria-label="Column width slider"
         aria-valuemin={0}
         aria-valuemax={12}

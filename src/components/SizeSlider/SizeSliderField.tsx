@@ -22,7 +22,13 @@ type CustomClientProps = SelectFieldClientProps & {
 }
 
 export const SizeSliderField: React.FC<CustomClientProps> = (props) => {
-  const { path, field, fieldProps } = props
+  const { path, field } = props
+  const fieldProps: ContentColumnSizeConfig =
+    props.fieldProps ||
+    (field?.admin as Record<string, any>)?.custom ||
+    (field?.admin as Record<string, any>)?.componentsProps ||
+    (field?.admin as Record<string, any>) ||
+    {}
   const { value, setValue } = useField<ContentColumnSize>({ path: path || field.name })
   const fieldId = useId()
 
@@ -108,7 +114,9 @@ export const SizeSliderField: React.FC<CustomClientProps> = (props) => {
       </div>
 
       {/* Visual Layout Preview Component */}
-      <SizeSliderPreview currentValueKey={currentValueKey} currentLabel={currentLabel} />
+      {fieldProps?.showPreview && (
+        <SizeSliderPreview currentValueKey={currentValueKey} currentLabel={currentLabel} />
+      )}
 
       {/* Range Slider Component (Real 0-12 spatial coordinates with discrete snapping) */}
       <SizeSlider

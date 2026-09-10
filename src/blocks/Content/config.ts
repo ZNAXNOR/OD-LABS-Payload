@@ -40,6 +40,11 @@ const columnFields: Field[] = [
       components: {
         Field: '@/components/SizeSlider',
       },
+      custom: {
+        showPreview: true,
+        min: 'oneThird',
+        max: 'full'
+      },
     },
   },
   {

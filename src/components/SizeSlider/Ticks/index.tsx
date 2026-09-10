@@ -14,6 +14,8 @@ export const SizeSliderTicks: React.FC<SizeSliderTicksProps> = ({
   labelsMap,
   onSelectPoint,
 }) => {
+  if (!visiblePoints || visiblePoints.length === 0) return null
+
   return (
     <div className="size-slider-field__ticks">
       {visiblePoints.map((pointKey) => {

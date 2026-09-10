@@ -4,6 +4,7 @@ export interface ContentColumnSizeConfig {
   snapPoints?: ContentColumnSize[]
   min?: ContentColumnSize
   max?: ContentColumnSize
+  showPreview?: boolean
 }
 
 export const CANONICAL_POINTS: Record<ContentColumnSize, { cols: number; percent: number }> = {
@@ -24,7 +25,7 @@ export const ALL_CANONICAL_KEYS: ContentColumnSize[] = [
 
 export function getVisiblePoints(config?: ContentColumnSizeConfig): ContentColumnSize[] {
   const snapPointsConfig = config?.snapPoints ?? ALL_CANONICAL_KEYS
-  const minConfig = config?.min ?? 'oneThird'
+  const minConfig = config?.min ?? 'zero'
   const maxConfig = config?.max ?? 'full'
 
   const minCols = CANONICAL_POINTS[minConfig]?.cols ?? 0
