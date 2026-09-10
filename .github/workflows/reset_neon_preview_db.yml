@@ -1,0 +1,30 @@
+name: Reset Preview Database
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+concurrency:
+  group: preview-database
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  reset-preview-database:
+    name: Reset Neon Preview Branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Reset preview from staging
+        uses: neondatabase/reset-branch-action@v1
+        with:
+          project_id: ${{ vars.NEON_PROJECT_ID }}
+          branch: preview
+          parent: true
+          api_key: ${{ secrets.NEON_API_KEY }}
