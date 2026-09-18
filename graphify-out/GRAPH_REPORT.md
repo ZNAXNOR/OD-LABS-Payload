@@ -1,12 +1,12 @@
 # Graph Report - OD-LABS-Payload  (2026-09-18)
 
 ## Corpus Check
-- 171 files · ~94,384 words
+- 171 files · ~94,422 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 282 nodes · 161 edges · 10 communities detected
-- Extraction: 84% EXTRACTED · 16% INFERRED · 0% AMBIGUOUS · INFERRED: 25 edges (avg confidence: 0.8)
+- 282 nodes · 162 edges · 10 communities detected
+- Extraction: 84% EXTRACTED · 16% INFERRED · 0% AMBIGUOUS · INFERRED: 26 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -27,11 +27,11 @@
 3. `PayloadRedirects()` - 4 edges
 4. `deepMerge()` - 4 edges
 5. `generateMeta()` - 4 edges
-6. `PageClient()` - 3 edges
-7. `link()` - 3 edges
-8. `linkGroup()` - 3 edges
-9. `getImageURL()` - 3 edges
-10. `getServerSideURL()` - 3 edges
+6. `getServerSideURL()` - 4 edges
+7. `PageClient()` - 3 edges
+8. `link()` - 3 edges
+9. `linkGroup()` - 3 edges
+10. `getImageURL()` - 3 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `POST()` --calls--> `seed()`  [INFERRED]
@@ -60,12 +60,12 @@ Cohesion: 0.18
 Nodes (4): PayloadRedirects(), NotFound(), getCachedDocument(), getCachedRedirects()
 
 ### Community 4 - "Community 4"
-Cohesion: 0.22
-Nodes (5): generateMetadata(), generateStaticParams(), generateMeta(), getImageURL(), mergeOpenGraph()
+Cohesion: 0.2
+Nodes (5): RootLayout(), generateURL(), getMeUser(), getClientSideURL(), getServerSideURL()
 
 ### Community 5 - "Community 5"
-Cohesion: 0.25
-Nodes (4): generateURL(), getMeUser(), getClientSideURL(), getServerSideURL()
+Cohesion: 0.22
+Nodes (5): generateMetadata(), generateStaticParams(), generateMeta(), getImageURL(), mergeOpenGraph()
 
 ### Community 6 - "Community 6"
 Cohesion: 0.38

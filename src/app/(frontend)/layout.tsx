@@ -34,9 +34,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
 
-          <Header />
-          {children}
-          <Footer />
+          <div className="mx-auto w-full max-w-380 grid grid-cols-1 lg:grid-cols-[64px_minmax(0,1fr)_64px]">
+            {/* Left rail */}
+            <div className="hidden lg:block border-r border-[#4B525F]" aria-hidden="true" />
+
+            {/* Main Site */}
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              {children}
+              <Footer />
+            </div>
+
+            {/* Right rail */}
+            <div className="hidden lg:block border-l border-[#4B525F]" aria-hidden="true" />
+          </div>
         </Providers>
       </body>
     </html>
