@@ -8,6 +8,8 @@ import React from 'react'
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
+import { RightRail } from '@/Rail/Right'
+import { LeftRail } from '@/Rail/Left'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -36,7 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
           <div className="mx-auto w-full max-w-380 grid grid-cols-1 lg:grid-cols-[64px_minmax(0,1fr)_64px]">
             {/* Left rail */}
-            <div className="hidden lg:block border-r border-[#4B525F]" aria-hidden="true" />
+            <LeftRail />
 
             {/* Main Site */}
             <div className="flex flex-col min-h-screen">
@@ -46,7 +48,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </div>
 
             {/* Right rail */}
-            <div className="hidden lg:block border-l border-[#4B525F]" aria-hidden="true" />
+            <RightRail />
           </div>
         </Providers>
       </body>
