@@ -9,11 +9,12 @@ import { CMSLink } from '../../components/Link'
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   const { columns } = props
 
-  const colsSpanClasses = {
-    full: '12',
-    half: '6',
-    oneThird: '4',
-    twoThirds: '8',
+  const colsSpanClasses: Record<string, string> = {
+    zero: 'hidden lg:hidden',
+    full: 'lg:col-span-12',
+    half: 'lg:col-span-6',
+    oneThird: 'lg:col-span-4',
+    twoThirds: 'lg:col-span-8',
   }
 
   return (
@@ -24,11 +25,17 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
           columns.map((col, index) => {
             const { enableLink, link, richText, size } = col
 
+            if (size === 'zero') return null
+
             return (
               <div
-                className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size!]}`, {
-                  'md:col-span-2': size !== 'full',
-                })}
+                className={cn(
+                  'col-span-4',
+                  colsSpanClasses[size || 'oneThird'],
+                  {
+                    'md:col-span-2': size !== 'full',
+                  },
+                )}
                 key={index}
               >
                 {richText && <RichText data={richText} enableGutter={false} />}

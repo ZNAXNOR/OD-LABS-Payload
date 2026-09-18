@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Graph Report - OD-LABS-Payload  (2026-09-18)
 
 ## Corpus Check
@@ -6,6 +7,16 @@
 
 ## Summary
 - 282 nodes · 162 edges · 10 communities detected
+=======
+# Graph Report - OD-LABS-Payload  (2026-09-11)
+
+## Corpus Check
+- 179 files · ~100,532 words
+- Verdict: corpus is large enough that graph structure adds value.
+
+## Summary
+- 293 nodes · 166 edges · 11 communities detected
+>>>>>>> 5b48b3dba96993b7b5668e0d8b934e057e67990e
 - Extraction: 84% EXTRACTED · 16% INFERRED · 0% AMBIGUOUS · INFERRED: 26 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
@@ -20,6 +31,7 @@
 - [[_COMMUNITY_Community 8|Community 8]]
 - [[_COMMUNITY_Community 9|Community 9]]
 - [[_COMMUNITY_Community 10|Community 10]]
+<<<<<<< HEAD
 
 ## God Nodes (most connected - your core abstractions)
 1. `seed()` - 7 edges
@@ -32,6 +44,21 @@
 8. `link()` - 3 edges
 9. `linkGroup()` - 3 edges
 10. `getImageURL()` - 3 edges
+=======
+- [[_COMMUNITY_Community 11|Community 11]]
+
+## God Nodes (most connected - your core abstractions)
+1. `seed()` - 7 edges
+2. `useHeaderTheme()` - 5 edges
+3. `PayloadRedirects()` - 4 edges
+4. `deepMerge()` - 4 edges
+5. `generateMeta()` - 4 edges
+6. `PageClient()` - 3 edges
+7. `SizeSliderField()` - 3 edges
+8. `normalizeValue()` - 3 edges
+9. `link()` - 3 edges
+10. `linkGroup()` - 3 edges
+>>>>>>> 5b48b3dba96993b7b5668e0d8b934e057e67990e
 
 ## Surprising Connections (you probably didn't know these)
 - `POST()` --calls--> `seed()`  [INFERRED]
@@ -48,18 +75,28 @@
 ## Communities
 
 ### Community 1 - "Community 1"
+<<<<<<< HEAD
 Cohesion: 0.14
 Nodes (6): HeaderClient(), useHeaderTheme(), PageClient(), PageClient(), PageClient(), PageClient()
 
 ### Community 2 - "Community 2"
 Cohesion: 0.17
 Nodes (7): home(), fetchFileByURL(), seed(), post1(), post2(), post3(), POST()
+=======
+Cohesion: 0.17
+Nodes (7): home(), fetchFileByURL(), seed(), post1(), post2(), post3(), POST()
+
+### Community 2 - "Community 2"
+Cohesion: 0.17
+Nodes (5): useHeaderTheme(), PageClient(), PageClient(), PageClient(), PageClient()
+>>>>>>> 5b48b3dba96993b7b5668e0d8b934e057e67990e
 
 ### Community 3 - "Community 3"
 Cohesion: 0.18
 Nodes (4): PayloadRedirects(), NotFound(), getCachedDocument(), getCachedRedirects()
 
 ### Community 4 - "Community 4"
+<<<<<<< HEAD
 Cohesion: 0.2
 Nodes (5): RootLayout(), generateURL(), getMeUser(), getClientSideURL(), getServerSideURL()
 
@@ -67,11 +104,21 @@ Nodes (5): RootLayout(), generateURL(), getMeUser(), getClientSideURL(), getServ
 Cohesion: 0.22
 Nodes (5): generateMetadata(), generateStaticParams(), generateMeta(), getImageURL(), mergeOpenGraph()
 
+=======
+Cohesion: 0.22
+Nodes (5): generateMetadata(), generateStaticParams(), generateMeta(), getImageURL(), mergeOpenGraph()
+
+### Community 5 - "Community 5"
+Cohesion: 0.25
+Nodes (4): generateURL(), getMeUser(), getClientSideURL(), getServerSideURL()
+
+>>>>>>> 5b48b3dba96993b7b5668e0d8b934e057e67990e
 ### Community 6 - "Community 6"
 Cohesion: 0.38
 Nodes (4): link(), linkGroup(), deepMerge(), isObject()
 
 ### Community 7 - "Community 7"
+<<<<<<< HEAD
 Cohesion: 0.4
 Nodes (2): Header(), getCachedGlobal()
 
@@ -84,10 +131,29 @@ Cohesion: 0.5
 Nodes (2): Search(), useDebounce()
 
 ### Community 10 - "Community 10"
+=======
+Cohesion: 0.47
+Nodes (4): SizeSliderField(), findNearestVisiblePoint(), getVisiblePoints(), normalizeValue()
+
+### Community 8 - "Community 8"
+Cohesion: 0.4
+Nodes (2): Header(), getCachedGlobal()
+
+### Community 9 - "Community 9"
+Cohesion: 0.4
+Nodes (2): useTheme(), ThemeSelector()
+
+### Community 10 - "Community 10"
+Cohesion: 0.5
+Nodes (2): Search(), useDebounce()
+
+### Community 11 - "Community 11"
+>>>>>>> 5b48b3dba96993b7b5668e0d8b934e057e67990e
 Cohesion: 0.5
 Nodes (2): ImageMedia(), getMediaUrl()
 
 ## Knowledge Gaps
+<<<<<<< HEAD
 - **Thin community `Community 7`** (5 nodes): `Header()`, `Component.tsx`, `getGlobals.ts`, `getCachedGlobal()`, `getGlobal()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 8`** (5 nodes): `index.tsx`, `index.tsx`, `ThemeProvider()`, `useTheme()`, `ThemeSelector()`
@@ -95,6 +161,15 @@ Nodes (2): ImageMedia(), getMediaUrl()
 - **Thin community `Community 9`** (4 nodes): `Search()`, `Component.tsx`, `useDebounce.ts`, `useDebounce()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 10`** (4 nodes): `ImageMedia()`, `index.tsx`, `getMediaUrl.ts`, `getMediaUrl()`
+=======
+- **Thin community `Community 8`** (5 nodes): `Header()`, `Component.tsx`, `getGlobals.ts`, `getCachedGlobal()`, `getGlobal()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 9`** (5 nodes): `index.tsx`, `index.tsx`, `ThemeProvider()`, `useTheme()`, `ThemeSelector()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 10`** (4 nodes): `Search()`, `Component.tsx`, `useDebounce.ts`, `useDebounce()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 11`** (4 nodes): `ImageMedia()`, `index.tsx`, `getMediaUrl.ts`, `getMediaUrl()`
+>>>>>>> 5b48b3dba96993b7b5668e0d8b934e057e67990e
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
@@ -102,8 +177,13 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Are the 5 inferred relationships involving `seed()` (e.g. with `POST()` and `post1()`) actually correct?**
   _`seed()` has 5 INFERRED edges - model-reasoned connections that need verification._
+<<<<<<< HEAD
 - **Are the 5 inferred relationships involving `useHeaderTheme()` (e.g. with `PageClient()` and `PageClient()`) actually correct?**
   _`useHeaderTheme()` has 5 INFERRED edges - model-reasoned connections that need verification._
+=======
+- **Are the 4 inferred relationships involving `useHeaderTheme()` (e.g. with `PageClient()` and `PageClient()`) actually correct?**
+  _`useHeaderTheme()` has 4 INFERRED edges - model-reasoned connections that need verification._
+>>>>>>> 5b48b3dba96993b7b5668e0d8b934e057e67990e
 - **Are the 3 inferred relationships involving `PayloadRedirects()` (e.g. with `getCachedRedirects()` and `getCachedDocument()`) actually correct?**
   _`PayloadRedirects()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 2 inferred relationships involving `deepMerge()` (e.g. with `link()` and `linkGroup()`) actually correct?**
@@ -111,6 +191,10 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 2 inferred relationships involving `generateMeta()` (e.g. with `generateMetadata()` and `mergeOpenGraph()`) actually correct?**
   _`generateMeta()` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **Should `Community 0` be split into smaller, more focused modules?**
+<<<<<<< HEAD
   _Cohesion score 0.09 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.14 - nodes in this community are weakly interconnected._
+=======
+  _Cohesion score 0.09 - nodes in this community are weakly interconnected._
+>>>>>>> 5b48b3dba96993b7b5668e0d8b934e057e67990e
