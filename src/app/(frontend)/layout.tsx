@@ -8,7 +8,6 @@ import React from 'react'
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
-import { RightRail } from '@/Rail/Right'
 import { LeftRail } from '@/Rail/Left'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
@@ -17,6 +16,7 @@ import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import { LayoutClient } from './LayoutClient'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
@@ -36,25 +36,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
 
-          <div className="mx-auto w-full max-w-380 grid grid-cols-1 lg:grid-cols-[64px_minmax(0,1fr)_64px]">
-            {/* Left rail */}
-            <LeftRail />
-
-            {/* Main Site */}
-            <div className="flex flex-col min-h-screen">
-              <Header />
-              {children}
-              <Footer />
-            </div>
-
-            {/* Right rail */}
-            <RightRail />
-          </div>
+          <LayoutClient
+            header={<Header />}
+            footer={<Footer />}
+            leftRail={<LeftRail />}
+          >
+            {children}
+          </LayoutClient>
         </Providers>
       </body>
     </html>
   )
 }
+
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
