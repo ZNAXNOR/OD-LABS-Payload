@@ -1,8 +1,9 @@
 'use client'
 
-import { MegaMenuHeader } from './header'
-import { MegaMenuFooter } from './footer'
+import { MegaMenuHeader } from './Nav/header'
+import { MegaMenuFooter } from './Nav/footer'
 import { useEffect } from 'react'
+import { MegaMenuMain } from './main'
 
 interface MegaMenuProps {
   open: boolean
@@ -50,7 +51,7 @@ export const MegaMenu = ({ open, onClose }: MegaMenuProps) => {
     >
       <MegaMenuHeader onClose={onClose} />
 
-      <main className="flex-1 min-h-0 overflow-auto">{/* Mega menu content */}</main>
+      <MegaMenuMain />
 
       <MegaMenuFooter />
     </div>

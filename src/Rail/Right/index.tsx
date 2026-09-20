@@ -12,11 +12,11 @@ export const RightRail = ({ onMenuOpen }: RightRailProps) => {
     >
       <button
         onClick={onMenuOpen}
-        className="group flex flex-col items-center p-1.5 sticky top-6 text-zinc-400 hover:text-[#FF3B30] transition-colors focus:outline-none cursor-pointer"
+        className="group flex flex-col items-center p-1.5 sticky top-6 text-zinc-400 focus:outline-none cursor-pointer"
         aria-label="Explore Site"
       >
-        <MenuIcon />
-        <span className="font-mono text-sm uppercase tracking-wide [writing-mode:vertical-rl] rotate-180 pb-2">
+        <MenuIcon className="group-hover:text-[#FF3B30] transition-colors duration-200" />
+        <span className="font-mono text-sm uppercase tracking-wide [writing-mode:vertical-rl] rotate-180 pb-2 group-hover:text-white transition-colors duration-300">
           Explore Site
         </span>
       </button>
