@@ -85,7 +85,7 @@ export const MegaMenu_PageIndex = ({
               <span
                 className={[
                   'text-xs font-mono font-normal',
-                  'transition-colors duration-300 pr-15',
+                  'transition-colors duration-300 sm:pr-15',
                   isCurrent || isHovered ? 'text-[#FF3B30]' : 'text-zinc-500',
                 ].join(' ')}
               >

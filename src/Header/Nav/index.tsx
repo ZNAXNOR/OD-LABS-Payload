@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
 import React from 'react'
 
 import type { Header as HeaderType } from '@/payload-types'
@@ -8,24 +10,28 @@ import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
 import { SearchIcon } from 'lucide-react'
 
+const Time_Zone = 'Asia/Kolkata'
+const Locale = 'en-IN'
+
+const formatTime = (date: Date) => {
+  return new Intl.DateTimeFormat(Locale, {
+    timeZone: Time_Zone,
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  }).format(date)
+}
+
 export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   const navItems = data?.navItems || []
+  const [now, setNow] = useState<Date | null>(null)
 
-  const [istTime, setIstTime] = React.useState<string>('')
-
-  React.useEffect(() => {
-    const updateTime = () => {
-      const now = new Date()
-      const timeString = now.toLocaleTimeString('en-US', {
-        timeZone: 'Asia/Kolkata',
-        hour12: true,
-        hour: 'numeric',
-        minute: '2-digit',
-      })
-      setIstTime(`${timeString} IST`)
-    }
+  useEffect(() => {
+    const updateTime = () => setNow(new Date())
     updateTime()
-    const interval = setInterval(updateTime, 60000)
+
+    const interval = setInterval(updateTime, 1000)
+
     return () => clearInterval(interval)
   }, [])
 
@@ -64,11 +70,14 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
 
       <span className="text-zinc-800 select-none">|</span>
 
-      <div
-        className="text-md font-mono tracking-wide text-zinc-400 hover:text-white select-none"
-        title="India Standard Time · UTC+5:30"
-      >
-        <data value={`${istTime}`}>{istTime}</data>
+      <div className="text-zinc-400 hover:text-white">
+        <div
+          className="text-md font-mono tracking-wide select-none"
+          title="India Standard Time · UTC+5:30"
+        >
+          {now ? formatTime(now) : '--:-- --'}
+          <span> IST</span>
+        </div>
       </div>
     </nav>
   )
