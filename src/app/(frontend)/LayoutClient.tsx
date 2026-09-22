@@ -3,17 +3,20 @@
 import React, { useState } from 'react'
 import { RightRail } from '@/Rail/Right'
 import { MegaMenu } from '@/MegaMenu'
+import type { MegaMenuPage } from '@/MegaMenu/Sections/pageData'
 
-export const LayoutClient = ({ 
+export const LayoutClient = ({
   children,
   header,
   footer,
-  leftRail
-}: { 
-  children: React.ReactNode;
-  header: React.ReactNode;
-  footer: React.ReactNode;
-  leftRail: React.ReactNode;
+  leftRail,
+  megaMenuData,
+}: {
+  children: React.ReactNode
+  header: React.ReactNode
+  footer: React.ReactNode
+  leftRail: React.ReactNode
+  megaMenuData?: MegaMenuPage[]
 }) => {
   const [MegaMenuOpen, setMegaMenuOpen] = useState(false)
 
@@ -35,8 +38,11 @@ export const LayoutClient = ({
       </div>
 
       {/* Mega menu */}
-      <MegaMenu open={MegaMenuOpen} onClose={() => setMegaMenuOpen(false)} />
+      <MegaMenu
+        open={MegaMenuOpen}
+        onClose={() => setMegaMenuOpen(false)}
+        pages={megaMenuData ?? []}
+      />
     </>
   )
 }
-

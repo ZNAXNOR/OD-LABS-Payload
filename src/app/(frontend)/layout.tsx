@@ -17,9 +17,17 @@ import { draftMode } from 'next/headers'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { LayoutClient } from './LayoutClient'
+import { getMegaMenuData } from '@/MegaMenu/getMegaMenuData'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
+
+  let megaMenuData
+  try {
+    megaMenuData = await getMegaMenuData()
+  } catch (error) {
+    console.error('Failed to fetch mega menu data:', error)
+  }
 
   return (
     <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
@@ -40,6 +48,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             header={<Header />}
             footer={<Footer />}
             leftRail={<LeftRail />}
+            megaMenuData={megaMenuData}
           >
             {children}
           </LayoutClient>
@@ -48,7 +57,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     </html>
   )
 }
-
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),

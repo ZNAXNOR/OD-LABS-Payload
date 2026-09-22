@@ -1,11 +1,41 @@
-export const MegaMenu_ContextDefault = () => {
-  const time = new Date().toLocaleTimeString('en-IN', {
-    timeZone: 'Asia/Kolkata',
+'use client'
+
+import { useEffect, useState } from 'react'
+
+const Time_Zone = 'Asia/Kolkata'
+const Locale = 'en-IN'
+
+const formatTime = (date: Date) => {
+  return new Intl.DateTimeFormat(Locale, {
+    timeZone: Time_Zone,
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
     hour12: true,
-  })
+  }).format(date)
+}
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat(Locale, {
+    timeZone: Time_Zone,
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+  }).format(date)
+}
+
+export const MegaMenu_ContextDefault = () => {
+  const [now, setNow] = useState<Date | null>(null)
+
+  useEffect(() => {
+    const updateTime = () => setNow(new Date())
+    updateTime()
+
+    const interval = setInterval(updateTime, 1000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <aside className="flex flex-col justify-between pt-8 lg:pt-0">
@@ -16,11 +46,19 @@ export const MegaMenu_ContextDefault = () => {
             Local time
           </div>
 
-          <div className="font-mono text-3xl sm:text-4xl font-semibold text-white tracking-tight">
-            {time}
+          <div
+            className="font-mono text-3xl sm:text-4xl font-semibold text-white tracking-tight tabular-nums"
+            aria-live="off"
+          >
+            {now ? formatTime(now) : '--:--:-- --'}
+            <span className="text-white"> IST</span>
           </div>
 
-          <div className="text-xs font-mono text-zinc-400">Asia / Kolkata (UTC +05:30)</div>
+          <div className="font-mono text-xs text-zinc-300 tracking-wide" aria-live="off">
+            {now ? formatDate(now) : 'Loading date...'}
+          </div>
+
+          <div className="text-xs font-mono text-zinc-500">Asia / Kolkata (UTC +05:30)</div>
         </section>
 
         {/* Availability */}
@@ -41,9 +79,12 @@ export const MegaMenu_ContextDefault = () => {
         {/* Contact & Dorect Inquiries */}
         <a
           href="mailto:omkar@odtechlab.com"
-          className="text-xs font-mono text-zinc-400 transition-colors flex items-center gap-2"
+          className="group text-xs font-mono text-zinc-400 hover:text-white transition-colors flex items-center gap-2"
         >
-          <span className="group w-1 h-1 bg-red-500 inline-block" />
+          <span
+            aria-hidden="true"
+            className="group w-1 h-1 bg-red-500 inline-block transition-transform duration-200 group-hover:scale-150"
+          />
           <span> omkar@odtechlab.com </span>
         </a>
       </div>

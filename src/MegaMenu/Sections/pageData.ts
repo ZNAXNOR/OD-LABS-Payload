@@ -1,5 +1,7 @@
 export interface MegaMenuPage {
   title: string
+  slug: string
+  href: string
   description: string
   sections: {
     label: string
@@ -10,6 +12,8 @@ export interface MegaMenuPage {
 export const megaMenuPages: MegaMenuPage[] = [
   {
     title: 'Home',
+    slug: 'home',
+    href: '/',
     description:
       'Independent engineering practice by Omkar. Specialized in performant systems, data reconciliation, and edge architecture.',
     sections: [
@@ -29,6 +33,8 @@ export const megaMenuPages: MegaMenuPage[] = [
   },
   {
     title: 'Posts',
+    slug: 'posts',
+    href: '/posts',
     description:
       'Technical writing, experiments, notes, and practical explorations across web, data, automation, and engineering.',
     sections: [
@@ -44,6 +50,8 @@ export const megaMenuPages: MegaMenuPage[] = [
   },
   {
     title: 'Contact',
+    slug: 'contact',
+    href: '/contact',
     description:
       'Have a project, technical problem, or idea that needs engineering support? Get in touch.',
     sections: [

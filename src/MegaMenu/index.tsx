@@ -4,13 +4,21 @@ import { MegaMenuHeader } from './Nav/header'
 import { MegaMenuFooter } from './Nav/footer'
 import { useEffect } from 'react'
 import { MegaMenuMain } from './main'
+import { usePathname } from 'next/navigation'
+
+import type { MegaMenuPage } from './Sections/pageData'
 
 interface MegaMenuProps {
   open: boolean
   onClose: () => void
+  pages: MegaMenuPage[]
 }
 
-export const MegaMenu = ({ open, onClose }: MegaMenuProps) => {
+export const MegaMenu = ({ open, onClose, pages }: MegaMenuProps) => {
+  const pathname = usePathname()
+  const currentSlug = pathname === '/' ? 'home' : pathname.split('/')[1] || 'home'
+  const currentPage = pages.find((page) => page.slug === currentSlug) || null
+
   useEffect(() => {
     if (!open) return
 
@@ -51,7 +59,7 @@ export const MegaMenu = ({ open, onClose }: MegaMenuProps) => {
     >
       <MegaMenuHeader onClose={onClose} />
 
-      <MegaMenuMain />
+      <MegaMenuMain pages={pages} currentPage={currentPage} />
 
       <MegaMenuFooter />
     </div>
