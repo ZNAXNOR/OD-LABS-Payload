@@ -15,21 +15,21 @@ export const MegaMenuHeader = ({ onClose }: MegaMenuHeaderProps) => {
           OD LABS
         </span>
 
-        <span className="text-zinc-600 select-none">//</span>
+        <span className="text-zinc-600 select-none hidden sm:inline">//</span>
 
-        <span className="text-zinc-400 font-mono text-md">Megamenu</span>
+        <span className="text-zinc-400 font-mono text-md hidden sm:inline">Megamenu</span>
       </Link>
 
       <button
         type="button"
         onClick={onClose}
-        className="group text-zinc-400 hover:text-white flex cursor-pointer -mr-8"
+        className="group text-zinc-400 hover:text-white flex cursor-pointer lg:-mr-8 md:-mr-6 sm:-mr-8"
       >
         <span className="text-red-500 text-2xl pr-1 font-bold mr-1 opacity-0 group-hover:opacity-100 transition-opacity duration-100">
           {'['}
         </span>
         <span className="font-mono text-md mr-1 mt-1">Close</span>
-        <X className='mt-1'/>
+        <X className="mt-1" />
         <span className="text-red-500 text-2xl pl-1 font-bold mr-1 opacity-0 group-hover:opacity-100 transition-opacity duration-100">
           {']'}
         </span>

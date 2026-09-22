@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { RightRail } from '@/Rail/Right'
 import { MegaMenu } from '@/MegaMenu'
 import type { MegaMenuPage } from '@/MegaMenu/Sections/pageData'
+import { MegaMenuProvider, useMegaMenu } from '@/providers/MegaMenu'
 
-export const LayoutClient = ({
+const LayoutClientContent = ({
   children,
   header,
   footer,
@@ -18,7 +19,7 @@ export const LayoutClient = ({
   leftRail: React.ReactNode
   megaMenuData?: MegaMenuPage[]
 }) => {
-  const [MegaMenuOpen, setMegaMenuOpen] = useState(false)
+  const { isOpen, openMenu, closeMenu } = useMegaMenu()
 
   return (
     <>
@@ -34,15 +35,29 @@ export const LayoutClient = ({
         </div>
 
         {/* Right rail */}
-        <RightRail onMenuOpen={() => setMegaMenuOpen(true)} />
+        <RightRail onMenuOpen={openMenu} />
       </div>
 
       {/* Mega menu */}
       <MegaMenu
-        open={MegaMenuOpen}
-        onClose={() => setMegaMenuOpen(false)}
+        open={isOpen}
+        onClose={closeMenu}
         pages={megaMenuData ?? []}
       />
     </>
+  )
+}
+
+export const LayoutClient = (props: {
+  children: React.ReactNode
+  header: React.ReactNode
+  footer: React.ReactNode
+  leftRail: React.ReactNode
+  megaMenuData?: MegaMenuPage[]
+}) => {
+  return (
+    <MegaMenuProvider>
+      <LayoutClientContent {...props} />
+    </MegaMenuProvider>
   )
 }

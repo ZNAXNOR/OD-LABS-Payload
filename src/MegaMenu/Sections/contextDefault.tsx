@@ -51,7 +51,7 @@ export const MegaMenu_ContextDefault = () => {
             aria-live="off"
           >
             {now ? formatTime(now) : '--:--:-- --'}
-            <span className="text-white"> IST</span>
+            <span className="text-white hidden sm:inline"> IST</span>
           </div>
 
           <div className="font-mono text-xs text-zinc-300 tracking-wide" aria-live="off">
