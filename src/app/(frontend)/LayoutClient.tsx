@@ -3,47 +3,46 @@
 import React from 'react'
 import { RightRail } from '@/Rail/Right'
 import { MegaMenu } from '@/MegaMenu'
-import type { MegaMenuPage } from '@/MegaMenu/Sections/pageData'
+import type { PagesData } from '@/getPagesData'
 import { MegaMenuProvider, useMegaMenu } from '@/providers/MegaMenu'
+import { usePathname } from 'next/navigation'
 
 const LayoutClientContent = ({
   children,
   header,
   footer,
   leftRail,
-  megaMenuData,
+  pagesData,
 }: {
   children: React.ReactNode
   header: React.ReactNode
   footer: React.ReactNode
   leftRail: React.ReactNode
-  megaMenuData?: MegaMenuPage[]
+  pagesData?: PagesData[]
 }) => {
   const { isOpen, openMenu, closeMenu } = useMegaMenu()
+  const pathname = usePathname()
+  const currentPage = pagesData?.find((page) => page.href === pathname)
 
   return (
     <>
-      <div className="mx-auto w-full max-w-380 grid grid-cols-1 lg:grid-cols-[64px_minmax(0,1fr)_64px]">
+      <div className="mx-auto grid w-full max-w-380 grid-cols-1 lg:grid-cols-[72px_minmax(0,1fr)_72px]">
         {/* Left rail */}
         {leftRail}
 
         {/* Main Site */}
-        <div className="flex flex-col min-h-screen">
+        <div className="flex min-h-screen flex-col">
           {header}
           {children}
           {footer}
         </div>
 
         {/* Right rail */}
-        <RightRail onMenuOpen={openMenu} />
+        <RightRail onMenuOpen={openMenu} sections={currentPage?.sections ?? []} />
       </div>
 
       {/* Mega menu */}
-      <MegaMenu
-        open={isOpen}
-        onClose={closeMenu}
-        pages={megaMenuData ?? []}
-      />
+      <MegaMenu open={isOpen} onClose={closeMenu} pages={pagesData ?? []} />
     </>
   )
 }
@@ -53,7 +52,7 @@ export const LayoutClient = (props: {
   header: React.ReactNode
   footer: React.ReactNode
   leftRail: React.ReactNode
-  megaMenuData?: MegaMenuPage[]
+  pagesData?: PagesData[]
 }) => {
   return (
     <MegaMenuProvider>

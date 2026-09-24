@@ -1,13 +1,23 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
-import type { MegaMenuPage } from './Sections/pageData'
+export interface PagesData {
+  title: string
+  slug: string
+  href: string
+  description: string
+  sections: {
+    id: string
+    label: string
+    href: string
+  }[]
+}
 
 const getPageHref = (slug: string) => {
   return slug === 'home' ? '/' : `/${slug}`
 }
 
-export const getMegaMenuData = async (): Promise<MegaMenuPage[]> => {
+export const getPagesData = async (): Promise<PagesData[]> => {
   const payload = await getPayload({
     config: configPromise,
   })
@@ -32,7 +42,16 @@ export const getMegaMenuData = async (): Promise<MegaMenuPage[]> => {
     .map((page) => {
       const pageHref = getPageHref(page.slug)
 
-      const sections: MegaMenuPage['sections'] = [{ label: 'Hero', href: `${pageHref}#hero` }]
+      const sections: PagesData['sections'] = []
+
+      // Hero
+      if (page.hero?.type !== 'none') {
+        sections.push({
+          id: 'hero',
+          label: 'Hero',
+          href: `${pageHref}#hero`,
+        })
+      }
 
       // Layout blocks
       for (const block of page.layout ?? []) {
@@ -41,6 +60,7 @@ export const getMegaMenuData = async (): Promise<MegaMenuPage[]> => {
         if (!label || !block.id) continue
 
         sections.push({
+          id: block.id,
           label,
           href: `${pageHref}#${block.id}`,
         })

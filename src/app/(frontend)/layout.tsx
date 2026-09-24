@@ -17,16 +17,17 @@ import { draftMode } from 'next/headers'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { LayoutClient } from './LayoutClient'
-import { getMegaMenuData } from '@/MegaMenu/getMegaMenuData'
+import { getPagesData } from '@/getPagesData'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
-  let megaMenuData
+  let pagesData
+
   try {
-    megaMenuData = await getMegaMenuData()
+    pagesData = await getPagesData()
   } catch (error) {
-    console.error('Failed to fetch mega menu data:', error)
+    console.error('Failed to fetch pages data:', error)
   }
 
   return (
@@ -48,7 +49,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             header={<Header />}
             footer={<Footer />}
             leftRail={<LeftRail />}
-            megaMenuData={megaMenuData}
+            pagesData={pagesData}
           >
             {children}
           </LayoutClient>

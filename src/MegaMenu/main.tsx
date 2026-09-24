@@ -6,15 +6,15 @@ import { MegaMenu_CurrentPage } from './Sections/currentPage'
 import { MegaMenu_PageIndex } from './Sections/pageIndex'
 import { MegaMenu_ContextPreview } from './Sections/contextPreview'
 
-import type { MegaMenuPage } from './Sections/pageData'
+import type { PagesData } from '../getPagesData'
 
 interface MegaMenuMainProps {
-  pages: MegaMenuPage[]
-  currentPage: MegaMenuPage | null
+  pages: PagesData[]
+  currentPage: PagesData | null
 }
 
 export const MegaMenuMain = ({ pages, currentPage }: MegaMenuMainProps) => {
-  const [hoveredPage, setHoveredPage] = useState<MegaMenuPage | null>(null)
+  const [hoveredPage, setHoveredPage] = useState<PagesData | null>(null)
 
   return (
     <main className="flex-1 min-h-0 overflow-y-auto">

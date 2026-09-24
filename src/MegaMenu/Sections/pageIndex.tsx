@@ -1,10 +1,10 @@
-import type { MegaMenuPage } from './pageData'
+import type { PagesData } from '../../getPagesData'
 
 interface MegaMenu_PageIndexProps {
-  pages: MegaMenuPage[]
-  activePage: MegaMenuPage | null
-  hoveredPage: MegaMenuPage | null
-  onPageHover: (page: MegaMenuPage) => void
+  pages: PagesData[]
+  activePage: PagesData | null
+  hoveredPage: PagesData | null
+  onPageHover: (page: PagesData) => void
   onPageLeave: () => void
 }
 
