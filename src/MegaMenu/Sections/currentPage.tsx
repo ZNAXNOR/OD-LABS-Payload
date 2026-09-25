@@ -1,7 +1,7 @@
-import type { MegaMenuPage } from './pageData'
+import type { PagesData } from '../../getPagesData'
 
 interface MegaMenu_CurrentPageProps {
-  page: MegaMenuPage | null
+  page: PagesData | null
 }
 
 export const MegaMenu_CurrentPage = ({ page }: MegaMenu_CurrentPageProps) => {

@@ -1,8 +1,8 @@
-import { MegaMenuPage } from './pageData'
+import { PagesData } from '../../getPagesData'
 import { MegaMenu_ContextDefault } from './contextDefault'
 
 interface MegaMenu_ContextPreviewProps {
-  page: MegaMenuPage | null
+  page: PagesData | null
 }
 
 export const MegaMenu_ContextPreview = ({ page }: MegaMenu_ContextPreviewProps) => {

@@ -6,12 +6,12 @@ import { useEffect } from 'react'
 import { MegaMenuMain } from './main'
 import { usePathname } from 'next/navigation'
 
-import type { MegaMenuPage } from './Sections/pageData'
+import type { PagesData } from '../getPagesData'
 
 interface MegaMenuProps {
   open: boolean
   onClose: () => void
-  pages: MegaMenuPage[]
+  pages: PagesData[]
 }
 
 export const MegaMenu = ({ open, onClose, pages }: MegaMenuProps) => {
