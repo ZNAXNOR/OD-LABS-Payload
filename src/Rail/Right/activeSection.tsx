@@ -4,10 +4,15 @@ import type { PagesData } from '@/getPagesData'
 const ACTIVE_OFFSET = 80
 
 export const useActiveSection = (sections: PagesData['sections']) => {
-  const [activeSection, setActiveSection] = useState<string | null>(sections[0].id ?? null)
+  const [activeSection, setActiveSection] = useState<string | null>(sections[0]?.id ?? null)
 
   useEffect(() => {
-    if (!sections.length) return
+    if (!sections.length) {
+      setActiveSection(null)
+      return
+    }
+
+    setActiveSection(sections[0].id)
 
     const handleScroll = () => {
       let currentSection = sections[0]
