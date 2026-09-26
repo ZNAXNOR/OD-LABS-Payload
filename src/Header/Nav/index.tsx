@@ -36,7 +36,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   }, [])
 
   return (
-    <nav className="flex gap-6 items-center text-md font-mono tracking-wide">
+    <nav className="text-md flex items-center gap-6 font-mono tracking-wide">
       {navItems.map(({ link }, i) => {
         return (
           <React.Fragment key={i}>
@@ -47,13 +47,13 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
               {...link}
               label={null}
             >
-              <span className="text-red-500 text-2xl font-bold mr-1 opacity-0 group-hover:opacity-100 transition-opacity duration-100">
+              <span className="mr-1 text-2xl font-bold text-red-500 opacity-0 transition-opacity duration-100 group-hover:opacity-100">
                 {'['}
               </span>
 
               <span>{link.label}</span>
 
-              <span className="text-red-500 text-2xl font-bold ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-100">
+              <span className="ml-1 text-2xl font-bold text-red-500 opacity-0 transition-opacity duration-100 group-hover:opacity-100">
                 {']'}
               </span>
             </CMSLink>
@@ -64,7 +64,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       <span className="text-zinc-800 select-none">|</span>
 
       <Link href="/search">
-        <span className="sr-only ">Search</span>
+        <span className="sr-only">Search</span>
         <SearchIcon className="w-5 text-zinc-400 hover:text-white" />
       </Link>
 

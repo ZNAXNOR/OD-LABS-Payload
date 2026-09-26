@@ -19,7 +19,11 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { LayoutClient } from './LayoutClient'
 import { getPagesData } from '@/getPagesData'
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const { isEnabled } = await draftMode()
 
   let pagesData
@@ -31,7 +35,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
 
   return (
-    <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html
+      className={cn(GeistSans.variable, GeistMono.variable)}
+      lang="en"
+      suppressHydrationWarning
+    >
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
@@ -47,7 +55,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
           <LayoutClient
             header={<Header />}
-            footer={<Footer />}
+            footer={<Footer pagesData={pagesData} />}
             leftRail={<LeftRail />}
             pagesData={pagesData}
           >
