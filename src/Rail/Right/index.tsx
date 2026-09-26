@@ -16,7 +16,7 @@ export const RightRail = ({ onMenuOpen, sections }: RightRailProps) => {
 
   return (
     <aside
-      className="sticky top-0 z-40 hidden h-screen w-[72px] flex-col items-center border-l border-zinc-600 lg:flex"
+      className="sticky top-0 z-40 hidden h-screen w-18 flex-col items-center border-l border-zinc-600 lg:flex"
       aria-label="Site navigation"
     >
       {/* MegaMenu */}
@@ -42,7 +42,7 @@ export const RightRail = ({ onMenuOpen, sections }: RightRailProps) => {
                 aria-label={`Go to ${section.label}`}
                 className="group flex items-center justify-center p-1.5"
               >
-                <span className="pointer-events-none absolute right-full mr-3 -translate-x-1 border border-zinc-700 bg-zinc-900 px-2 py-1 font-mono text-[12px] tracking-widest whitespace-nowrap text-zinc-300 uppercase opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100">
+                <span className="mr-0 -translate-x-1 pointer-events-none absolute right-full border border-zinc-700 bg-zinc-900 px-2 py-1 font-mono text-xs tracking-widest whitespace-nowrap text-zinc-300 uppercase opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100">
                   {String(index + 1).padStart(2, '0')} / {section.label}
                 </span>
 
