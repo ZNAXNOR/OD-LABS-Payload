@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -14,6 +15,9 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+
+import { TestDocuments } from './collections/AI_Knowledgebase/TestDocments'
+import { vectorIntegration } from './vectorize/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -61,8 +65,10 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    extensions: ['vector'],
+    afterSchemaInit: [vectorIntegration.afterSchemaInitHook],
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Users, TestDocuments],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,
