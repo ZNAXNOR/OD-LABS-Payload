@@ -222,6 +222,10 @@ export interface Page {
      */
     image?: (number | null) | Media;
     description?: string | null;
+    /**
+     * Exclude this page from search engines and the OD LABS AI knowledgebase
+     */
+    excludeFromIndex?: boolean | null;
   };
   publishedAt?: string | null;
   /**
@@ -1053,6 +1057,10 @@ export interface OdlabsKnowledge {
    * The version of the embedding model used
    */
   embeddingVersion?: string | null;
+  pageTitle?: string | null;
+  pageSlug?: string | null;
+  section?: string | null;
+  blockType?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1330,6 +1338,7 @@ export interface PagesSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        excludeFromIndex?: T;
       };
   publishedAt?: T;
   generateSlug?: T;
@@ -1858,6 +1867,10 @@ export interface OdlabsKnowledgeSelect<T extends boolean = true> {
   chunkIndex?: T;
   chunkText?: T;
   embeddingVersion?: T;
+  pageTitle?: T;
+  pageSlug?: T;
+  section?: T;
+  blockType?: T;
   updatedAt?: T;
   createdAt?: T;
 }

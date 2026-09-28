@@ -24,6 +24,7 @@ import payloadVectorize from 'payloadcms-vectorize'
 
 import { ToKnowledgePoolFn } from 'payloadcms-vectorize'
 import { vectorIntegration } from '@/vectorize/config'
+import { pagesToKnowledgePool } from '@/vectorize/pagesToKnowledgePool'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | OD LABS` : 'OD LABS'
@@ -90,6 +91,20 @@ export const plugins: Plugin[] = [
   seoPlugin({
     generateTitle,
     generateURL,
+
+    fields: ({ defaultFields }) => [
+      ...defaultFields,
+      {
+        name: 'excludeFromIndex',
+        type: 'checkbox',
+        label: 'Exclude from Index',
+        defaultValue: false,
+        admin: {
+          description:
+            'Exclude this page from search engines and the OD LABS AI knowledgebase',
+        },
+      },
+    ],
   }),
   formBuilderPlugin({
     fields: {
@@ -134,9 +149,36 @@ export const plugins: Plugin[] = [
 
     knowledgePools: {
       odlabs_knowledge: {
+        extensionFields: [
+          {
+            name: 'pageTitle',
+            type: 'text',
+          },
+          {
+            name: 'pageSlug',
+            type: 'text',
+          },
+          {
+            name: 'section',
+            type: 'text',
+          },
+          {
+            name: 'blockType',
+            type: 'text',
+          },
+        ],
+
         collections: {
           'test-documents': {
             toKnowledgePool: testDocumentsToKnowledgePool,
+          },
+
+          pages: {
+            toKnowledgePool: pagesToKnowledgePool,
+
+            shouldEmbedFn: async (doc) => {
+              return doc._status === 'published' && !doc.meta?.excludeFromIndex
+            },
           },
         },
 

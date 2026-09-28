@@ -96,8 +96,17 @@ export const Pages: CollectionConfig<'pages'> = {
             MetaImageField({
               relationTo: 'media',
             }),
-
             MetaDescriptionField({}),
+            {
+              name: 'excludeFromIndex',
+              type: 'checkbox',
+              label: 'Exclude from Index',
+              defaultValue: false,
+              admin: {
+                description:
+                  'Exclude this page from search engines and the OD LABS AI knowledgebase',
+              },
+            },
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,

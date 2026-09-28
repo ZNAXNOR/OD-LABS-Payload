@@ -6,3 +6,15 @@ export const vectorIntegration = createPostgresVectorIntegration({
     ivfflatLists: 100,
   },
 })
+
+const originalHook = vectorIntegration.afterSchemaInitHook
+
+vectorIntegration.afterSchemaInitHook = async (args) => {
+  console.log('[VECTORIZE] afterSchemaInitHook RUNNING')
+
+  const result = await originalHook(args)
+
+  console.log('[VECTORIZE] afterSchemaInitHook COMPLETE')
+
+  return result
+}
