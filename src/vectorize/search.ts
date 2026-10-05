@@ -1,7 +1,7 @@
 import { getPayload } from 'payload'
 import { getVectorizedPayload } from 'payloadcms-vectorize'
 
-import config from '@/payload.config'
+import configPromise from '@/payload.config'
 
 export type KnowledgeSource = {
   id: string
@@ -22,25 +22,25 @@ export async function searchKnowledge(
   query: string,
   limit = 5,
 ): Promise<KnowledgeResult[]> {
-  // console.log('[VECTORIZE] Creating Payload Instance')
+  console.log('[VECTORIZE] Creating Payload Instance')
 
   const payload = await getPayload({
-    config,
-    cron: true,
+    config: configPromise,
   })
 
-  // console.log('[VECTORIZE] Payload Instance Created')
-  // console.log(
-  //   '[VECTORIZE] Config custom keys:',
-  //   Object.keys(payload.config.custom ?? {}),
-  // )
+  console.log('[VECTORIZE] Payload Instance Created')
+
+  console.log(
+    '[VECTORIZE] Config custom keys:',
+    Object.keys(payload.config.custom ?? {}),
+  )
 
   const vectorizedPayload = getVectorizedPayload(payload)
 
-  // console.log(
-  //   '[VECTORIZE] Vectorized Payload:',
-  //   vectorizedPayload ? 'AVAILABLE' : 'MISSING',
-  // )
+  console.log(
+    '[VECTORIZE] Vectorized Payload:',
+    vectorizedPayload ? 'AVAILABLE' : 'MISSING',
+  )
 
   if (!vectorizedPayload) {
     throw new Error("Payload's vectorize plugin is not configuted")

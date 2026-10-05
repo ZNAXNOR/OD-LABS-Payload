@@ -47,13 +47,13 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
               {...link}
               label={null}
             >
-              <span className="mr-1 text-2xl font-bold text-red-500 opacity-0 transition-opacity duration-100 group-hover:opacity-100">
+              <span className="mr-1 text-2xl font-bold text-odl opacity-0 transition-opacity duration-100 group-hover:opacity-100">
                 {'['}
               </span>
 
               <span>{link.label}</span>
 
-              <span className="ml-1 text-2xl font-bold text-red-500 opacity-0 transition-opacity duration-100 group-hover:opacity-100">
+              <span className="ml-1 text-2xl font-bold text-odl opacity-0 transition-opacity duration-100 group-hover:opacity-100">
                 {']'}
               </span>
             </CMSLink>

@@ -1,4 +1,5 @@
-import { streamText } from 'ai'
+import { convertToModelMessages, streamText, type UIMessage } from 'ai'
+
 import { openai } from '@ai-sdk/openai'
 import { NextRequest } from 'next/server'
 
@@ -6,8 +7,7 @@ import { searchKnowledge } from '@/vectorize/search'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const messages = Array.isArray(body.messages) ? body.messages : []
+    const { messages }: { messages: UIMessage[] } = await request.json()
 
     const lastMessage = messages[messages.length - 1]
 
@@ -17,8 +17,11 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    const query =
-      typeof lastMessage.content === 'string' ? lastMessage.content.trim() : ''
+    const query = lastMessage.parts
+      .filter((part) => part.type === 'text')
+      .map((part) => part.text)
+      .join('')
+      .trim()
 
     if (!query) {
       return new Response('A user message is required.', {
@@ -42,6 +45,7 @@ export async function POST(request: NextRequest) {
 
     const result = streamText({
       model: openai('gpt-5-mini'),
+
       system: `
       You are the AI assistant for OD LABS.
 
@@ -59,10 +63,11 @@ export async function POST(request: NextRequest) {
       Knowledge Context:
       ${context}
     `,
-      prompt: query,
+
+      messages: await convertToModelMessages(messages),
     })
 
-    return result.toTextStreamResponse()
+    return result.toUIMessageStreamResponse()
   } catch (error) {
     console.error('AI Chat Error', error)
 

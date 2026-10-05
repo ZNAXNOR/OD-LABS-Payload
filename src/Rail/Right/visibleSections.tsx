@@ -40,7 +40,8 @@ export const getVisibleSections = (
       section,
       index: actualIndex,
       isCompressed:
-        (actualIndex === start && start > 0) || (actualIndex === end && end < sections.length - 1),
+        (actualIndex === start && start > 0) ||
+        (actualIndex === end && end < sections.length - 1),
     }
   })
 }

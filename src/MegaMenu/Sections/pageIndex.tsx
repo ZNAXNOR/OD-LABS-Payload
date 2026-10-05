@@ -35,7 +35,7 @@ export const MegaMenu_PageIndex = ({
               className={[
                 'flex w-full items-center justify-between',
                 'min-h-16 pb-5',
-                'font-mono text-2xl sm:text-3xl lg:text-4xl font-semibold',
+                'font-mono text-2xl font-semibold sm:text-3xl lg:text-4xl',
               ].join(' ')}
             >
               {/* Page Title Link */}
@@ -50,7 +50,7 @@ export const MegaMenu_PageIndex = ({
                 <span
                   aria-hidden="true"
                   className={[
-                    'text-[#FF3B30] mr-1.5',
+                    'mr-1.5 text-odl',
                     'transition-opacity duration-150',
                     isCurrent || isHovered ? 'opacity-100' : 'opacity-0',
                   ].join(' ')}
@@ -62,7 +62,7 @@ export const MegaMenu_PageIndex = ({
                 <span
                   className={[
                     'transition-colors duration-300',
-                    isHovered ? 'text-[#FF3B30]' : 'text-white',
+                    isHovered ? 'text-odl' : 'text-white',
                   ].join(' ')}
                 >
                   {page.title}
@@ -72,7 +72,7 @@ export const MegaMenu_PageIndex = ({
                 <span
                   aria-hidden="true"
                   className={[
-                    'text-[#FF3B30] ml-1.5',
+                    'ml-1.5 text-odl',
                     'transition-opacity duration-150',
                     isCurrent || isHovered ? 'opacity-100' : 'opacity-0',
                   ].join(' ')}
@@ -84,9 +84,9 @@ export const MegaMenu_PageIndex = ({
               {/* Page Index */}
               <span
                 className={[
-                  'text-xs font-mono font-normal',
+                  'font-mono text-xs font-normal',
                   'transition-colors duration-300 sm:pr-15',
-                  isCurrent || isHovered ? 'text-[#FF3B30]' : 'text-zinc-500',
+                  isCurrent || isHovered ? 'text-odl' : 'text-zinc-500',
                 ].join(' ')}
               >
                 {String(index + 1).padStart(2, '0')}

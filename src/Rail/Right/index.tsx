@@ -25,7 +25,7 @@ export const RightRail = ({ onMenuOpen, sections }: RightRailProps) => {
         className="group sticky top-6 mt-6 flex cursor-pointer flex-col items-center p-1.5 text-zinc-400 focus:outline-none"
         aria-label="Explore Site"
       >
-        <MenuIcon className="transition-colors duration-200 group-hover:text-[#FF3B30]" />
+        <MenuIcon className="transition-colors duration-200 group-hover:text-odl" />
         <span className="rotate-180 pb-2 font-mono text-sm tracking-wide uppercase transition-colors duration-300 [writing-mode:vertical-rl] group-hover:text-white">
           Explore Site
         </span>
@@ -42,7 +42,7 @@ export const RightRail = ({ onMenuOpen, sections }: RightRailProps) => {
                 aria-label={`Go to ${section.label}`}
                 className="group flex items-center justify-center p-1.5"
               >
-                <span className="mr-0 -translate-x-1 pointer-events-none absolute right-full border border-zinc-700 bg-zinc-900 px-2 py-1 font-mono text-xs tracking-widest whitespace-nowrap text-zinc-300 uppercase opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100">
+                <span className="pointer-events-none absolute right-full mr-0 -translate-x-1 border border-zinc-700 bg-zinc-900 px-2 py-1 font-mono text-xs tracking-widest whitespace-nowrap text-zinc-300 uppercase opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100">
                   {String(index + 1).padStart(2, '0')} / {section.label}
                 </span>
 
