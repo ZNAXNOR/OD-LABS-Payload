@@ -1,18 +1,28 @@
 'use client'
 
-import { CheckIcon, CopyIcon, CircleXIcon } from 'lucide-react'
+import { CheckIcon, CopyIcon, RefreshCcwIcon, CircleXIcon } from 'lucide-react'
+
 import { useState } from 'react'
+
 import type { ChatStatus, UIMessage } from 'ai'
 
 import {
-  Conversation,
-  ConversationContent,
-} from '@/components/ai-elements/conversation'
-import {
   Message,
+  MessageAction,
+  MessageActions,
   MessageContent,
   MessageResponse,
 } from '@/components/ai-elements/message'
+
+import {
+  Source,
+  Sources,
+  SourcesContent,
+  SourcesTrigger,
+} from '@/components/ai-elements/sources'
+
+import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion'
+import { postSuggestions } from '../suggestions'
 
 const LoadingState = () => (
   <span
@@ -27,26 +37,34 @@ const LoadingState = () => (
 
 const ErrorState = () => (
   <div
-    className="flex items-center gap-2 rounded-md border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-400"
+    className="flex items-center gap-2 border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-400"
     role="alert"
     aria-live="polite"
   >
     <CircleXIcon className="size-4 font-bold" />
-    <strong>AI Error:</strong> Something went wrong while generating the
-    response. Please try again.
+
+    <strong>AI Error:</strong>
+    <span>
+      Something went wrong while generating the response. Please try again.
+    </span>
   </div>
 )
 
 export const Active = ({
   messages,
   status,
+  regenerate,
+  submitSuggestion,
 }: {
   messages: UIMessage[]
   status: ChatStatus
+  regenerate: () => Promise<void>
+  submitSuggestion: (text: string) => void
 }) => {
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null)
 
   const isStreaming = status === 'streaming'
+  const isGenerating = status === 'submitted' || isStreaming
 
   const copyMessage = async (message: UIMessage) => {
     const text = message.parts
@@ -54,8 +72,11 @@ export const Active = ({
       .map((part) => part.text)
       .join('')
 
+    if (!text) return
+
     try {
       await navigator.clipboard.writeText(text)
+
       setCopiedMessageId(message.id)
 
       window.setTimeout(() => {
@@ -69,93 +90,139 @@ export const Active = ({
   }
 
   return (
-    <Conversation className="h-full w-full">
-      <ConversationContent className="mx-auto w-full max-w-5xl gap-5 px-6 py-20 sm:px-8 lg:px-12">
-        {messages.map((message, index) => {
-          const isUser = message.role === 'user'
-          const isFirstMessage = index === 0
-          const isLastMessage = index === messages.length - 1
-          const isCopied = copiedMessageId === message.id
+    <div
+      id="conversation-transcript"
+      className="mx-auto w-full max-w-5xl gap-5 px-6 pt-4 pb-12 sm:px-8 lg:px-12"
+      role="log"
+      aria-live="polite"
+      aria-busy={isStreaming}
+    >
+      {messages.map((message, index) => {
+        const isUser = message.role === 'user'
 
-          const text = message.parts
-            ?.filter((part) => part.type === 'text')
-            .map((part) => part.text)
-            .join('')
+        const isLastMessage = index === messages.length - 1
 
-          return (
-            <Message
-              key={message.id}
-              from={message.role}
-              className={[
-                'max-w-none gap-2',
-                isUser && !isFirstMessage ? 'pt-6' : '',
-                isUser ? 'group/user' : 'group/assistant',
-              ].join(' ')}
+        const isCopied = copiedMessageId === message.id
+
+        const text = message.parts
+          .filter((part) => part.type === 'text')
+          .map((part) => part.text)
+          .join('')
+
+        const sources = message.parts.filter(
+          (part) => part.type === 'source-url',
+        )
+
+        if (!text) return null
+
+        return (
+          <Message
+            id={`message-${message.id}`}
+            key={message.id}
+            from={message.role}
+            className={[
+              'max-w-none gap-2',
+              isUser && !isLastMessage ? 'pt-6' : '',
+              isUser ? 'group/user' : 'group/assistant',
+            ].join(' ')}
+          >
+            <MessageContent
+              className={
+                isUser
+                  ? [
+                      'ml-auto max-w-2xl rounded-none',
+                      'border-odl border',
+                      'bg-odl',
+                      'px-5 py-3',
+                      'text-base leading-7 text-zinc-200',
+                    ].join(' ')
+                  : [
+                      'max-w-4xl',
+                      'bg-transparent p-0',
+                      'text-lg leading-8 text-white',
+                    ].join(' ')
+              }
             >
-              <MessageContent
+              {isUser ? (
+                <span>{text}</span>
+              ) : (
+                <MessageResponse isAnimating={isStreaming && isLastMessage}>
+                  {text}
+                </MessageResponse>
+              )}
+            </MessageContent>
+
+            {!isGenerating && !isUser && sources.length > 0 && (
+              <Sources>
+                <SourcesTrigger count={sources.length} />
+
+                <SourcesContent>
+                  {sources.map((source) => (
+                    <Source
+                      key={source.sourceId}
+                      href={source.url}
+                      title={source.title ?? source.url}
+                    />
+                  ))}
+                </SourcesContent>
+              </Sources>
+            )}
+
+            {!isGenerating && (
+              <MessageActions
                 className={
                   isUser
                     ? [
-                        'ml-auto max-w-2xl rounded-none',
-                        'border-odl border',
-                        'bg-odl/70',
-                        'px-5 py-3',
-                        'text-base leading-7 text-zinc-200',
+                        'justify-end',
+                        'opacity-0 transition-opacity',
+                        'group-hover/user:opacity-100',
+                        'group-focus-within/user:opacity-100',
                       ].join(' ')
-                    : [
-                        '-pt-2 max-w-4xl bg-transparent p-0',
-                        'text-lg leading-8 text-white',
-                      ].join(' ')
+                    : 'justify-start'
                 }
               >
-                {text &&
-                  (isUser ? (
-                    <span>{text}</span>
-                  ) : (
-                    <MessageResponse isAnimating={isStreaming && isLastMessage}>
-                      {text}
-                    </MessageResponse>
-                  ))}
-              </MessageContent>
-
-              {!isUser && isStreaming && isLastMessage ? null : (
-                <div
-                  className={
-                    isUser
-                      ? [
-                          'flex w-full items-center justify-end',
-                          'invisible opacity-0',
-                          'transition-opacity',
-                          'group-hover/user:visible',
-                          'group-hover/user:opacity-100',
-                          'group-focus-within/user:visible',
-                          'group-focus-within/user:opacity-100',
-                        ].join(' ')
-                      : 'flex w-full items-center justify-start'
-                  }
+                <MessageAction
+                  label={isCopied ? 'Copied' : 'Copy message'}
+                  tooltip={isCopied ? 'Copied' : 'Copy message'}
+                  onClick={() => void copyMessage(message)}
                 >
-                  <button
-                    type="button"
-                    onClick={() => void copyMessage(message)}
-                    aria-label={isCopied ? 'Copied' : 'Copy message'}
-                    className="pt-1 font-mono text-xs text-zinc-500 transition-colors select-none hover:cursor-pointer hover:text-zinc-200"
+                  {isCopied ? (
+                    <CheckIcon className="size-5" />
+                  ) : (
+                    <CopyIcon className="size-5" />
+                  )}
+                </MessageAction>
+
+                {!isUser && isLastMessage && (
+                  <MessageAction
+                    label="Regenerate response"
+                    tooltip="Regenerate response"
+                    onClick={() => void regenerate()}
                   >
-                    {isCopied ? (
-                      <CheckIcon className="size-5" />
-                    ) : (
-                      <CopyIcon className="size-5" />
-                    )}
-                  </button>
-                </div>
-              )}
-            </Message>
-          )
-        })}
+                    <RefreshCcwIcon className="size-5" />
+                  </MessageAction>
+                )}
+              </MessageActions>
+            )}
 
-        {status === 'submitted' && <LoadingState />}
+            {!isGenerating && !isUser && isLastMessage && (
+              <Suggestions className="pt-2">
+                {postSuggestions.map((suggestion) => (
+                  <Suggestion
+                    key={suggestion}
+                    suggestion={suggestion}
+                    onClick={submitSuggestion}
+                  />
+                ))}
+              </Suggestions>
+            )}
+          </Message>
+        )
+      })}
 
-        {status === 'error' && <ErrorState />}
-      </ConversationContent>
-    </Conversation>
+      {status === 'submitted' && <LoadingState />}
+
+      {status === 'error' && <ErrorState />}
+    </div>
   )
 }

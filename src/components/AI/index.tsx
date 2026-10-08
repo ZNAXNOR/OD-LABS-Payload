@@ -1,26 +1,32 @@
 'use client'
 
 import { useState } from 'react'
+
 import { useAIInterface } from './useAIInterface'
 
 import { Header } from './Header/Component'
 import { Initial } from './ConversationContainer/Initial'
 import { Active } from './ConversationContainer/Active'
 import { Composer } from './Composer/Component'
-import { suggestedPrompts } from './prompts'
+
+import { suggestions } from './suggestions'
+import { ConversationNavigator } from './ConversationContainer/ConversationNavigator/Component'
 
 type AIMode = 'initial' | 'conversation'
 
 export const AIInterface = () => {
-  const [mode, setMode] = useState<AIMode>('initial')
   const [input, setInput] = useState('')
+  const [mode, setMode] = useState<AIMode>('initial')
 
-  const { messages, sendMessage, status, setMessages, stop } = useAIInterface()
+  const { messages, sendMessage, status, setMessages, stop, regenerate } =
+    useAIInterface()
 
-  const startConversation = (text: string) => {
+  const isGenerating = status === 'submitted' || status === 'streaming'
+
+  const submitMessage = (text: string) => {
     const prompt = text.trim()
 
-    if (!prompt || status === 'submitted' || status === 'streaming') {
+    if (!prompt || isGenerating) {
       return
     }
 
@@ -34,11 +40,11 @@ export const AIInterface = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    startConversation(input)
+    submitMessage(input)
   }
 
   const newConversation = () => {
-    if (status === 'submitted' || status === 'streaming') {
+    if (isGenerating) {
       stop()
     }
 
@@ -49,9 +55,9 @@ export const AIInterface = () => {
 
   return (
     <section
-      className={
-        mode === 'conversation' ? 'flex h-svh flex-col' : 'flex flex-col'
-      }
+      className={['flex flex-col', mode === 'initial' ? 'min-h-svh' : ''].join(
+        ' ',
+      )}
     >
       {/* HERO */}
       <div
@@ -67,6 +73,7 @@ export const AIInterface = () => {
             <div className="space-y-4 lg:col-span-8">
               <div className="text-odl mb-2 flex items-center font-mono text-xs tracking-wider uppercase">
                 <span>OD LABS // AI ASSISTANT</span>
+
                 <span className="bg-odl/40 inline-block h-px w-8" />
               </div>
 
@@ -93,45 +100,45 @@ export const AIInterface = () => {
         </div>
       </div>
 
-      {/* Workspace */}
+      {/* AI Interface */}
       <div
         className={[
-          'relative flex flex-col overflow-hidden',
+          'relative flex w-full flex-col',
           'border border-zinc-600 bg-black',
           'transition-[border-radius,border-color,width,margin,max-width]',
           'duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
 
           mode === 'conversation'
             ? [
-                'h-svh',
-                'min-h-0',
-                'shrink-0',
-                'w-full max-w-none',
                 'm-0',
+                'w-full max-w-none',
+                'min-h-svh',
                 'rounded-none',
                 'border-x-0',
               ].join(' ')
-            : [
-                'mx-auto mb-20',
-                'w-full max-w-6xl',
-                'min-h-[calc(100svh-10rem)]',
-                'rounded-[2px]',
-              ].join(' '),
+            : ['mx-auto mb-24', 'w-full max-w-6xl', 'rounded-[2px]'].join(' '),
         ].join(' ')}
       >
         {/* Header */}
         <Header mode={mode} newConversation={newConversation} />
 
-        <div className="min-h-0 flex-1 bg-linear-to-b from-zinc-900 via-zinc-950 to-black">
-          {/* Rest State */}
-          {mode === 'initial' ? (
-            <Initial
-              suggestedPrompts={suggestedPrompts}
-              submit={startConversation}
-            />
-          ) : (
-            // Conversation State
-            <Active messages={messages} status={status} />
+        {/* Workspace Body */}
+        <div className="relative flex-1">
+          <div className="bg-linear-to-b from-zinc-900 via-zinc-950 to-black">
+            {mode === 'initial' ? (
+              <Initial suggestedPrompts={suggestions} submit={submitMessage} />
+            ) : (
+              <Active
+                messages={messages}
+                status={status}
+                regenerate={regenerate}
+                submitSuggestion={submitMessage}
+              />
+            )}
+          </div>
+          {/* Conversation Navigator */}
+          {mode === 'conversation' && (
+            <ConversationNavigator messages={messages} />
           )}
         </div>
 
@@ -142,6 +149,7 @@ export const AIInterface = () => {
           onSubmit={handleSubmit}
           status={status}
           stop={stop}
+          sticky={mode === 'conversation'}
         />
       </div>
     </section>

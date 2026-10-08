@@ -16,11 +16,13 @@ export const Header = ({
   return (
     <div
       className={[
-        'sticky top-0 z-30',
-        'flex items-center justify-between gap-4',
+        'z-30 flex items-center justify-between gap-4',
         'border-b border-zinc-700',
         'bg-zinc-950 px-6 py-3.5 sm:px-6',
-      ].join(' ')}
+        mode === 'conversation' ? 'sticky top-0' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
     >
       <div className="flex items-center gap-2 font-mono text-xs select-none">
         <span className="bg-odl size-1.5 rounded-none" />
@@ -41,7 +43,7 @@ export const Header = ({
             onClick={newConversation}
             aria-label="New conversation"
             title="New conversation"
-            className="group flex items-center gap-1 text-zinc-400 transition-colors hover:cursor-pointer hover:text-white"
+            className="group flex items-center gap-1 text-zinc-300 transition-colors hover:cursor-pointer hover:text-white"
           >
             New Conversation{' '}
             <PlusIcon className="group-hover:text-odl size-3.5 transition-colors" />
