@@ -25,10 +25,11 @@ export const Composer = ({
 }) => {
   return (
     <div
+      id="ai-chat-composer"
       className={[
-        'relative shrink-0 bg-black',
+        'relative pb-4 shrink-0 bg-black',
         'shadow-[0_-25px_40px_-10px_rgba(0,0,0,0.8),0_-15px_30px_-5px_rgba(0,0,0,0.6)]',
-        sticky && ['sticky bottom-4 z-30'],
+        sticky && ['sticky bottom-0 z-30'],
       ].join(' ')}
     >
       <div className="mx-auto w-full max-w-5xl px-6 pt-3 pb-4 sm:px-8 lg:px-12">

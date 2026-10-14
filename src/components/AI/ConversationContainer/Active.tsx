@@ -21,6 +21,12 @@ import {
   SourcesTrigger,
 } from '@/components/ai-elements/sources'
 
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+} from '@/components/ai-elements/conversation'
+
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion'
 import { postSuggestions } from '../suggestions'
 
@@ -66,6 +72,10 @@ export const Active = ({
   const isStreaming = status === 'streaming'
   const isGenerating = status === 'submitted' || isStreaming
 
+  const lastMessage = messages.at(-1)
+
+  const awaitingAssistant = isGenerating && lastMessage?.role === 'user'
+
   const copyMessage = async (message: UIMessage) => {
     const text = message.parts
       .filter((part) => part.type === 'text')
@@ -90,139 +100,170 @@ export const Active = ({
   }
 
   return (
-    <div
-      id="conversation-transcript"
-      className="mx-auto w-full max-w-5xl gap-5 px-6 pt-4 pb-12 sm:px-8 lg:px-12"
-      role="log"
-      aria-live="polite"
-      aria-busy={isStreaming}
-    >
-      {messages.map((message, index) => {
-        const isUser = message.role === 'user'
+    <Conversation className="relative w-full" initial="smooth" resize="smooth">
+      <ConversationContent
+        id="conversation-transcript"
+        className="mx-auto w-full max-w-5xl gap-5 px-6 pt-4 pb-12 sm:px-8 lg:px-12"
+        role="log"
+        aria-live="polite"
+        aria-busy={isStreaming}
+      >
+        {messages.map((message, index) => {
+          const isUser = message.role === 'user'
 
-        const isLastMessage = index === messages.length - 1
+          const isLastMessage = index === messages.length - 1
 
-        const isCopied = copiedMessageId === message.id
+          const isCopied = copiedMessageId === message.id
 
-        const text = message.parts
-          .filter((part) => part.type === 'text')
-          .map((part) => part.text)
-          .join('')
+          const isStreamingMessage = isStreaming && isLastMessage && !isUser
 
-        const sources = message.parts.filter(
-          (part) => part.type === 'source-url',
-        )
+          const showActions = !isStreamingMessage
 
-        if (!text) return null
+          const text = message.parts
+            .filter((part) => part.type === 'text')
+            .map((part) => part.text)
+            .join('')
 
-        return (
-          <Message
-            id={`message-${message.id}`}
-            key={message.id}
-            from={message.role}
-            className={[
-              'max-w-none gap-2',
-              isUser && !isLastMessage ? 'pt-6' : '',
-              isUser ? 'group/user' : 'group/assistant',
-            ].join(' ')}
-          >
-            <MessageContent
-              className={
-                isUser
-                  ? [
-                      'ml-auto max-w-2xl rounded-none',
-                      'border-odl border',
-                      'bg-odl',
-                      'px-5 py-3',
-                      'text-base leading-7 text-zinc-200',
-                    ].join(' ')
-                  : [
-                      'max-w-4xl',
-                      'bg-transparent p-0',
-                      'text-lg leading-8 text-white',
-                    ].join(' ')
-              }
+          const hasText = Boolean(text)
+
+          const sources = message.parts.filter(
+            (part) => part.type === 'source-url',
+          )
+
+          if (!hasText && !isStreamingMessage) {
+            return null
+          }
+
+          return (
+            <Message
+              id={`message-${message.id}`}
+              key={message.id}
+              from={message.role}
+              className={[
+                'max-w-none gap-2',
+                isUser ? 'pt-6' : '',
+                isUser ? 'group/user' : 'group/assistant',
+              ].join(' ')}
             >
-              {isUser ? (
-                <span>{text}</span>
-              ) : (
-                <MessageResponse isAnimating={isStreaming && isLastMessage}>
-                  {text}
-                </MessageResponse>
-              )}
-            </MessageContent>
-
-            {!isGenerating && !isUser && sources.length > 0 && (
-              <Sources>
-                <SourcesTrigger count={sources.length} />
-
-                <SourcesContent>
-                  {sources.map((source) => (
-                    <Source
-                      key={source.sourceId}
-                      href={source.url}
-                      title={source.title ?? source.url}
-                    />
-                  ))}
-                </SourcesContent>
-              </Sources>
-            )}
-
-            {!isGenerating && (
-              <MessageActions
+              <MessageContent
                 className={
                   isUser
                     ? [
-                        'justify-end',
-                        'opacity-0 transition-opacity',
-                        'group-hover/user:opacity-100',
-                        'group-focus-within/user:opacity-100',
+                        'ml-auto max-w-2xl rounded-none',
+                        'border-odl border',
+                        'bg-odl',
+                        'px-5 py-3',
+                        'text-base leading-7 text-zinc-200',
                       ].join(' ')
-                    : 'justify-start'
+                    : [
+                        'max-w-4xl',
+                        'bg-transparent p-0',
+                        'text-lg leading-8 text-white',
+                      ].join(' ')
                 }
               >
-                <MessageAction
-                  label={isCopied ? 'Copied' : 'Copy message'}
-                  tooltip={isCopied ? 'Copied' : 'Copy message'}
-                  onClick={() => void copyMessage(message)}
-                >
-                  {isCopied ? (
-                    <CheckIcon className="size-5" />
-                  ) : (
-                    <CopyIcon className="size-5" />
-                  )}
-                </MessageAction>
-
-                {!isUser && isLastMessage && (
-                  <MessageAction
-                    label="Regenerate response"
-                    tooltip="Regenerate response"
-                    onClick={() => void regenerate()}
+                {isUser ? (
+                  <span>{text}</span>
+                ) : hasText ? (
+                  <MessageResponse
+                    isAnimating={isStreamingMessage}
+                    caret="circle"
                   >
-                    <RefreshCcwIcon className="size-5" />
-                  </MessageAction>
+                    {text}
+                  </MessageResponse>
+                ) : isStreamingMessage ? (
+                  <LoadingState />
+                ) : (
+                  <ErrorState />
                 )}
-              </MessageActions>
-            )}
+              </MessageContent>
 
-            {!isGenerating && !isUser && isLastMessage && (
-              <Suggestions className="pt-2">
-                {postSuggestions.map((suggestion) => (
-                  <Suggestion
-                    key={suggestion}
-                    suggestion={suggestion}
-                    onClick={submitSuggestion}
-                  />
-                ))}
-              </Suggestions>
-            )}
+              {!isGenerating && !isUser && sources.length > 0 && (
+                <Sources>
+                  <SourcesTrigger count={sources.length} />
+
+                  <SourcesContent>
+                    {sources.map((source) => (
+                      <Source
+                        key={source.sourceId}
+                        href={source.url}
+                        title={source.title ?? source.url}
+                      />
+                    ))}
+                  </SourcesContent>
+                </Sources>
+              )}
+
+              {showActions && (
+                <MessageActions
+                  className={
+                    isUser
+                      ? [
+                          'justify-end',
+                          'opacity-0 transition-opacity',
+                          'group-hover/user:opacity-100',
+                          'group-focus-within/user:opacity-100',
+                        ].join(' ')
+                      : 'justify-start'
+                  }
+                >
+                  <MessageAction
+                    label={isCopied ? 'Copied' : 'Copy message'}
+                    tooltip={isCopied ? 'Copied' : 'Copy message'}
+                    onClick={() => void copyMessage(message)}
+                  >
+                    {isCopied ? (
+                      <CheckIcon className="size-5" />
+                    ) : (
+                      <CopyIcon className="size-5" />
+                    )}
+                  </MessageAction>
+
+                  {!isUser && isLastMessage && (
+                    <MessageAction
+                      label="Regenerate response"
+                      tooltip="Regenerate response"
+                      onClick={() => void regenerate()}
+                    >
+                      <RefreshCcwIcon className="size-5" />
+                    </MessageAction>
+                  )}
+                </MessageActions>
+              )}
+
+              {!isStreamingMessage && !isUser && isLastMessage && (
+                <Suggestions className="pt-2">
+                  {postSuggestions.map((suggestion) => (
+                    <Suggestion
+                      key={suggestion}
+                      suggestion={suggestion}
+                      onClick={submitSuggestion}
+                    />
+                  ))}
+                </Suggestions>
+              )}
+            </Message>
+          )
+        })}
+
+        {awaitingAssistant && (
+          <Message from="assistant" className="max-w-none gap-2">
+            <MessageContent
+              className={[
+                'max-w-4xl',
+                'bg-transparent p-0',
+                'text-lg leading-8 text-white',
+              ].join(' ')}
+            >
+              <LoadingState />
+            </MessageContent>
           </Message>
-        )
-      })}
+        )}
 
-      {status === 'submitted' && <LoadingState />}
+        {status === 'error' && <ErrorState />}
+      </ConversationContent>
 
-      {status === 'error' && <ErrorState />}
-    </div>
+      <ConversationScrollButton />
+    </Conversation>
   )
 }

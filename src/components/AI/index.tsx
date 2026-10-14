@@ -31,6 +31,14 @@ export const AIInterface = () => {
     }
 
     setMode('conversation')
+
+    requestAnimationFrame(() => {
+      document.getElementById('ai-chat-workspace')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    })
+
     setInput('')
 
     void sendMessage({
@@ -102,12 +110,12 @@ export const AIInterface = () => {
 
       {/* AI Interface */}
       <div
+        id="ai-chat-workspace"
         className={[
           'relative flex w-full flex-col',
           'border border-zinc-600 bg-black',
           'transition-[border-radius,border-color,width,margin,max-width]',
           'duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
-
           mode === 'conversation'
             ? [
                 'm-0',
@@ -116,14 +124,19 @@ export const AIInterface = () => {
                 'rounded-none',
                 'border-x-0',
               ].join(' ')
-            : ['mx-auto mb-24', 'w-full max-w-6xl', 'rounded-[2px]'].join(' '),
+            : [
+                'mx-auto mb-24',
+                'w-full max-w-6xl',
+                'flex-1',
+                'rounded-[2px]',
+              ].join(' '),
         ].join(' ')}
       >
         {/* Header */}
         <Header mode={mode} newConversation={newConversation} />
 
         {/* Workspace Body */}
-        <div className="relative flex-1">
+        <div className="relative min-h-0 flex-1">
           <div className="bg-linear-to-b from-zinc-900 via-zinc-950 to-black">
             {mode === 'initial' ? (
               <Initial suggestedPrompts={suggestions} submit={submitMessage} />
