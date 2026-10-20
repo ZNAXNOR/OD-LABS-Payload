@@ -7,7 +7,7 @@ export const useShowLogo = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 80) {
+      if (window.scrollY > 68) {
         setShowLogo(true)
       } else {
         setShowLogo(false)

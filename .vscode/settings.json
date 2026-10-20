@@ -40,4 +40,7 @@
   },
   "editor.formatOnPaste": true,
   "editor.cursorBlinking": "smooth",
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  }
 }

@@ -72,10 +72,15 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    'test-documents': TestDocument;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
     search: Search;
+    'vector-bulk-embeddings-runs': VectorBulkEmbeddingsRun;
+    'vector-bulk-embedding-input-metadata': VectorBulkEmbeddingInputMetadatum;
+    'vector-bulk-embeddings-batches': VectorBulkEmbeddingsBatch;
+    odlabs_knowledge: OdlabsKnowledge;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-folders': FolderInterface;
@@ -94,10 +99,15 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'test-documents': TestDocumentsSelect<false> | TestDocumentsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
+    'vector-bulk-embeddings-runs': VectorBulkEmbeddingsRunsSelect<false> | VectorBulkEmbeddingsRunsSelect<true>;
+    'vector-bulk-embedding-input-metadata': VectorBulkEmbeddingInputMetadataSelect<false> | VectorBulkEmbeddingInputMetadataSelect<true>;
+    'vector-bulk-embeddings-batches': VectorBulkEmbeddingsBatchesSelect<false> | VectorBulkEmbeddingsBatchesSelect<true>;
+    odlabs_knowledge: OdlabsKnowledgeSelect<false> | OdlabsKnowledgeSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -124,6 +134,9 @@ export interface Config {
   user: User;
   jobs: {
     tasks: {
+      'payloadcms-vectorize:vectorize': TaskPayloadcmsVectorizeVectorize;
+      'payloadcms-vectorize:prepare-bulk-embedding': TaskPayloadcmsVectorizePrepareBulkEmbedding;
+      'payloadcms-vectorize:poll-or-complete-single-batch': TaskPayloadcmsVectorizePollOrCompleteSingleBatch;
       schedulePublish: TaskSchedulePublish;
       inline: {
         input: unknown;
@@ -209,6 +222,10 @@ export interface Page {
      */
     image?: (number | null) | Media;
     description?: string | null;
+    /**
+     * Exclude this page from search engines and the OD LABS AI knowledgebase
+     */
+    excludeFromIndex?: boolean | null;
   };
   publishedAt?: string | null;
   /**
@@ -774,6 +791,17 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "test-documents".
+ */
+export interface TestDocument {
+  id: number;
+  title: string;
+  content: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -847,6 +875,196 @@ export interface Search {
   createdAt: string;
 }
 /**
+ * Bulk embedding run records. Created automatically when the Embed all action is triggered.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embeddings-runs".
+ */
+export interface VectorBulkEmbeddingsRun {
+  id: number;
+  /**
+   * Knowledge pool slug
+   */
+  pool: string;
+  /**
+   * Embedding version at submission time
+   */
+  embeddingVersion: string;
+  status: 'queued' | 'running' | 'succeeded' | 'failed' | 'canceled';
+  /**
+   * Total number of batches in this run
+   */
+  totalBatches?: number | null;
+  inputs?: number | null;
+  succeeded?: number | null;
+  failed?: number | null;
+  /**
+   * Timestamp when the batch was submitted
+   */
+  submittedAt?: string | null;
+  /**
+   * Timestamp when the batch finished
+   */
+  completedAt?: string | null;
+  /**
+   * Failure reason if the run ended in error
+   */
+  error?: string | null;
+  /**
+   * Data about chunks that failed during completion (collection, documentId, chunkIndex)
+   */
+  failedChunkData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Stores per-input metadata for bulk embedding runs.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embedding-input-metadata".
+ */
+export interface VectorBulkEmbeddingInputMetadatum {
+  id: number;
+  /**
+   * Bulk run this input belongs to
+   */
+  run: number | VectorBulkEmbeddingsRun;
+  /**
+   * Batch this input belongs to
+   */
+  batch: number | VectorBulkEmbeddingsBatch;
+  inputId: string;
+  /**
+   * Original chunk text
+   */
+  text: string;
+  sourceCollection: string;
+  docId: string;
+  chunkIndex: number;
+  embeddingVersion: string;
+  /**
+   * Extension field values for this chunk
+   */
+  extensionFields?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Individual batches within a bulk embedding run. Created when input count exceeds file limits.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embeddings-batches".
+ */
+export interface VectorBulkEmbeddingsBatch {
+  id: number;
+  /**
+   * Parent bulk embedding run
+   */
+  run: number | VectorBulkEmbeddingsRun;
+  /**
+   * Zero-based index of this batch within the run
+   */
+  batchIndex: number;
+  /**
+   * Provider-specific batch identifier
+   */
+  providerBatchId: string;
+  status: 'queued' | 'running' | 'succeeded' | 'failed' | 'canceled' | 'retried';
+  /**
+   * Number of inputs in this batch
+   */
+  inputCount: number;
+  /**
+   * Number of successful embeddings
+   */
+  succeededCount?: number | null;
+  /**
+   * Number of failed embeddings
+   */
+  failedCount?: number | null;
+  /**
+   * Timestamp when the batch was submitted to provider
+   */
+  submittedAt?: string | null;
+  /**
+   * Timestamp when the batch finished
+   */
+  completedAt?: string | null;
+  /**
+   * Error message if the batch failed
+   */
+  error?: string | null;
+  /**
+   * Collection, documentId and chunkIndex for each chunk that failed in this batch
+   */
+  failedChunkData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * The new batch created when this batch was retried
+   */
+  retriedBatch?: (number | null) | VectorBulkEmbeddingsBatch;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Vector embeddings for search and similarity queries. Created by the payloadcms-vectorize plugin. Embeddings cannot be added or modified, only deleted, through the admin panel. No other restrictions enforced.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "odlabs_knowledge".
+ */
+export interface OdlabsKnowledge {
+  id: number;
+  /**
+   * The collection that this embedding belongs to
+   */
+  sourceCollection: string;
+  /**
+   * The ID of the source document
+   */
+  docId: string;
+  /**
+   * The index of this chunk
+   */
+  chunkIndex: number;
+  /**
+   * The original text that was vectorized
+   */
+  chunkText?: string | null;
+  /**
+   * The version of the embedding model used
+   */
+  embeddingVersion?: string | null;
+  pageTitle?: string | null;
+  pageSlug?: string | null;
+  section?: string | null;
+  blockType?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -915,7 +1133,12 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'schedulePublish';
+        taskSlug:
+          | 'inline'
+          | 'payloadcms-vectorize:vectorize'
+          | 'payloadcms-vectorize:prepare-bulk-embedding'
+          | 'payloadcms-vectorize:poll-or-complete-single-batch'
+          | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -948,7 +1171,15 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'schedulePublish') | null;
+  taskSlug?:
+    | (
+        | 'inline'
+        | 'payloadcms-vectorize:vectorize'
+        | 'payloadcms-vectorize:prepare-bulk-embedding'
+        | 'payloadcms-vectorize:poll-or-complete-single-batch'
+        | 'schedulePublish'
+      )
+    | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -983,6 +1214,10 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'test-documents';
+        value: number | TestDocument;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -997,6 +1232,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'search';
         value: number | Search;
+      } | null)
+    | ({
+        relationTo: 'vector-bulk-embeddings-runs';
+        value: number | VectorBulkEmbeddingsRun;
+      } | null)
+    | ({
+        relationTo: 'vector-bulk-embedding-input-metadata';
+        value: number | VectorBulkEmbeddingInputMetadatum;
+      } | null)
+    | ({
+        relationTo: 'vector-bulk-embeddings-batches';
+        value: number | VectorBulkEmbeddingsBatch;
+      } | null)
+    | ({
+        relationTo: 'odlabs_knowledge';
+        value: number | OdlabsKnowledge;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -1087,6 +1338,7 @@ export interface PagesSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        excludeFromIndex?: T;
       };
   publishedAt?: T;
   generateSlug?: T;
@@ -1349,6 +1601,16 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "test-documents_select".
+ */
+export interface TestDocumentsSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -1536,6 +1798,79 @@ export interface SearchSelect<T extends boolean = true> {
         title?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embeddings-runs_select".
+ */
+export interface VectorBulkEmbeddingsRunsSelect<T extends boolean = true> {
+  pool?: T;
+  embeddingVersion?: T;
+  status?: T;
+  totalBatches?: T;
+  inputs?: T;
+  succeeded?: T;
+  failed?: T;
+  submittedAt?: T;
+  completedAt?: T;
+  error?: T;
+  failedChunkData?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embedding-input-metadata_select".
+ */
+export interface VectorBulkEmbeddingInputMetadataSelect<T extends boolean = true> {
+  run?: T;
+  batch?: T;
+  inputId?: T;
+  text?: T;
+  sourceCollection?: T;
+  docId?: T;
+  chunkIndex?: T;
+  embeddingVersion?: T;
+  extensionFields?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embeddings-batches_select".
+ */
+export interface VectorBulkEmbeddingsBatchesSelect<T extends boolean = true> {
+  run?: T;
+  batchIndex?: T;
+  providerBatchId?: T;
+  status?: T;
+  inputCount?: T;
+  succeededCount?: T;
+  failedCount?: T;
+  submittedAt?: T;
+  completedAt?: T;
+  error?: T;
+  failedChunkData?: T;
+  retriedBatch?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "odlabs_knowledge_select".
+ */
+export interface OdlabsKnowledgeSelect<T extends boolean = true> {
+  sourceCollection?: T;
+  docId?: T;
+  chunkIndex?: T;
+  chunkText?: T;
+  embeddingVersion?: T;
+  pageTitle?: T;
+  pageSlug?: T;
+  section?: T;
+  blockType?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1735,6 +2070,30 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskPayloadcms-vectorize:vectorize".
+ */
+export interface TaskPayloadcmsVectorizeVectorize {
+  input?: unknown;
+  output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskPayloadcms-vectorize:prepare-bulk-embedding".
+ */
+export interface TaskPayloadcmsVectorizePrepareBulkEmbedding {
+  input?: unknown;
+  output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskPayloadcms-vectorize:poll-or-complete-single-batch".
+ */
+export interface TaskPayloadcmsVectorizePollOrCompleteSingleBatch {
+  input?: unknown;
+  output?: unknown;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

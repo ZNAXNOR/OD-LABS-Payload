@@ -12,7 +12,7 @@ export const MegaMenu_ContextPreview = ({ page }: MegaMenu_ContextPreviewProps) 
       <div
         className={[
           'absolute inset-0 transition-opacity duration-300 ease-out',
-          page ? 'opacity-0 pointer-events-none' : 'opacity-100',
+          page ? 'pointer-events-none opacity-0' : 'opacity-100',
         ].join(' ')}
       >
         <MegaMenu_ContextDefault />
@@ -22,30 +22,30 @@ export const MegaMenu_ContextPreview = ({ page }: MegaMenu_ContextPreviewProps) 
       <div
         className={[
           'absolute inset-0 transition-opacity duration-200 ease-out',
-          page ? 'opacity-100' : 'opacity-0 pointer-events-none',
+          page ? 'opacity-100' : 'pointer-events-none opacity-0',
         ].join(' ')}
       >
         {page && (
-          <aside className="flex flex-col justify-between pt-8 lg:pt-0 h-full">
+          <aside className="flex h-full flex-col justify-between pt-8 lg:pt-0">
             <div className="space-y-8">
               {/* Page Content Preview */}
               <section className="space-y-3">
-                <div className="font-mono text-[11px] tracking-widest uppercase text-[#FF3B30]">
+                <div className="font-mono text-[11px] tracking-widest text-odl uppercase">
                   OD LABS //
                 </div>
 
-                <div className="font-mono text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                <div className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">
                   {page.title}
                 </div>
 
-                <div className="text-xs sm:text-sm font-sans leading-relaxed text-zinc-400">
+                <div className="font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">
                   {page.description}
                 </div>
               </section>
 
               {/* Page Sections */}
-              <section className="space-y-2 flex-1 pt-4 ">
-                <div className="font-mono text-[11px] text-zinc-500 tracking-widest uppercase border-b border-zinc-700/60 pb-2">
+              <section className="flex-1 space-y-2 pt-4">
+                <div className="border-b border-zinc-700/60 pb-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase">
                   On This Page
                 </div>
 
@@ -53,9 +53,9 @@ export const MegaMenu_ContextPreview = ({ page }: MegaMenu_ContextPreviewProps) 
                   {page.sections.map((section, index) => (
                     <div
                       key={section.href ?? section.label}
-                      className="flex p-2 h-9 bg-zinc-900 border border-zinc-700 text-white"
+                      className="flex h-9 border border-zinc-700 bg-zinc-900 p-2 text-white"
                     >
-                      <span className="text-[#FF3B30] mr-2 select-none">
+                      <span className="mr-2 text-odl select-none">
                         {String(index + 1).padStart(2, '0')}
                       </span>
 

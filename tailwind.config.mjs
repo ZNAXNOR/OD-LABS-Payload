@@ -1,7 +1,11 @@
 /** @type {import('tailwindcss').Config} */
+
 const config = {
   theme: {
     extend: {
+      colors: {
+        odl: '#E94235',
+      },
       typography: {
         DEFAULT: {
           css: [
@@ -10,6 +14,7 @@ const config = {
               '--tw-prose-headings': 'var(--text)',
               h1: {
                 fontWeight: 'normal',
+
                 marginBottom: '0.25em',
               },
             },

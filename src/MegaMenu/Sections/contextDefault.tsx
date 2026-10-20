@@ -42,48 +42,53 @@ export const MegaMenu_ContextDefault = () => {
       <div className="space-y-8">
         {/* Local Time */}
         <section className="space-y-4">
-          <div className="font-mono text-xs tracking-widest uppercase text-zinc-400">
+          <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
             Local time
           </div>
 
           <div
-            className="font-mono text-3xl sm:text-4xl font-semibold text-white tracking-tight tabular-nums"
+            className="font-mono text-3xl font-semibold tracking-tight text-white tabular-nums sm:text-4xl"
             aria-live="off"
           >
             {now ? formatTime(now) : '--:--:-- --'}
-            <span className="text-white hidden sm:inline"> IST</span>
+            <span className="hidden text-white sm:inline"> IST</span>
           </div>
 
-          <div className="font-mono text-xs text-zinc-300 tracking-wide" aria-live="off">
+          <div
+            className="font-mono text-xs tracking-wide text-zinc-300"
+            aria-live="off"
+          >
             {now ? formatDate(now) : 'Loading date...'}
           </div>
 
-          <div className="text-xs font-mono text-zinc-500">Asia / Kolkata (UTC +05:30)</div>
+          <div className="font-mono text-xs text-zinc-500">
+            Asia / Kolkata (UTC +05:30)
+          </div>
         </section>
 
         {/* Availability */}
-        <section className="space-y-3 pt-6 border-t border-zinc-600/60">
-          <div className="font-mono text-[11px] text-zinc-400 tracking-widest uppercase">
+        <section className="space-y-3 border-t border-zinc-600/60 pt-6">
+          <div className="font-mono text-[11px] tracking-widest text-zinc-400 uppercase">
             Availability
           </div>
-          <div className="font-mono text-xs text-white tracking-wide flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse uppercase"></span>
+          <div className="flex items-center gap-2 font-mono text-xs tracking-wide text-white">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-green-500 uppercase"></span>
             Open for Projects
           </div>
-          <p className="text-xs font-sans text-zinc-400 leading-relaxed pt-1">
-            I’m currently available for freelance and contract work. If you’d like to collaborate,
-            say hi.
+          <p className="pt-1 font-sans text-xs leading-relaxed text-zinc-400">
+            I’m currently available for freelance and contract work. If you’d
+            like to collaborate, say hi.
           </p>
         </section>
 
         {/* Contact & Dorect Inquiries */}
         <a
           href="mailto:omkar@odtechlab.com"
-          className="group text-xs font-mono text-zinc-400 hover:text-white transition-colors flex items-center gap-2"
+          className="group flex items-center gap-2 font-mono text-xs text-zinc-400 transition-colors hover:text-white"
         >
           <span
             aria-hidden="true"
-            className="group w-1 h-1 bg-red-500 inline-block transition-transform duration-200 group-hover:scale-150"
+            className="group inline-block h-1 w-1 bg-odl transition-transform duration-200 group-hover:scale-150"
           />
           <span> omkar@odtechlab.com </span>
         </a>
