@@ -23,7 +23,7 @@ export const SectionPanel = ({
   onSelect,
 }: SectionPanelProps) => {
   return (
-    <div className="fixed inset-0 isolate z-[60]">
+    <div className="fixed inset-0 isolate z-60">
       {/* Smoky Backdrop */}
       <button
         type="button"
