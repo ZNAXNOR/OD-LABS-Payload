@@ -12,12 +12,12 @@ import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
-import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 
 import { TestDocuments } from './collections/AI_Knowledgebase/TestDocments'
 import { vectorIntegration } from './vectorize/config'
+import { plugins } from './plugins'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -71,7 +71,7 @@ export default buildConfig({
   collections: [Pages, Posts, Media, Categories, Users, TestDocuments],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
-  plugins,
+  plugins: [...plugins],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
