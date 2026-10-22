@@ -9,32 +9,26 @@ import {
 
 import { link } from '@/fields/link'
 
+const contentEditor = lexicalEditor({
+  features: ({ rootFeatures }) => [
+    ...rootFeatures,
+    HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+    FixedToolbarFeature(),
+    InlineToolbarFeature(),
+  ],
+})
+
 const columnFields: Field[] = [
   {
     name: 'size',
     type: 'select',
     defaultValue: 'oneThird',
     options: [
-      {
-        label: 'Zero',
-        value: 'zero',
-      },
-      {
-        label: 'One Third',
-        value: 'oneThird',
-      },
-      {
-        label: 'Half',
-        value: 'half',
-      },
-      {
-        label: 'Two Thirds',
-        value: 'twoThirds',
-      },
-      {
-        label: 'Full',
-        value: 'full',
-      },
+      { label: 'Zero', value: 'zero' },
+      { label: 'One Third', value: 'oneThird' },
+      { label: 'Half', value: 'half' },
+      { label: 'Two Thirds', value: 'twoThirds' },
+      { label: 'Full', value: 'full' },
     ],
     admin: {
       components: {
@@ -43,23 +37,14 @@ const columnFields: Field[] = [
       custom: {
         showPreview: true,
         min: 'oneThird',
-        max: 'full'
+        max: 'full',
       },
     },
   },
   {
     name: 'richText',
     type: 'richText',
-    editor: lexicalEditor({
-      features: ({ rootFeatures }) => {
-        return [
-          ...rootFeatures,
-          HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-          FixedToolbarFeature(),
-          InlineToolbarFeature(),
-        ]
-      },
-    }),
+    editor: contentEditor,
     label: false,
   },
   {
@@ -69,12 +54,77 @@ const columnFields: Field[] = [
   link({
     overrides: {
       admin: {
-        condition: (_data, siblingData) => {
-          return Boolean(siblingData?.enableLink)
-        },
+        condition: (_data, siblingData) => Boolean(siblingData?.enableLink),
       },
     },
   }),
+]
+
+const capabilitiesFields: Field[] = [
+  {
+    name: 'richText',
+    type: 'richText',
+    label: 'Heading and description',
+    editor: contentEditor,
+    admin: {
+      description:
+        'Use a heading block for the main statement and regular paragraph blocks for the supporting description. Style text using the editor toolbar.',
+    },
+  },
+  {
+    name: 'linkGroup',
+    type: 'array',
+    label: 'Link group',
+    admin: {
+      initCollapsed: true,
+    },
+    fields: [
+      {
+        name: 'label',
+        type: 'text',
+        required: true,
+      },
+      link({
+        overrides: {
+          name: 'link',
+          admin: { hideGutter: true },
+        },
+      }),
+    ],
+  },
+  {
+    name: 'items',
+    type: 'array',
+    label: 'Capabilities',
+    minRows: 1,
+    admin: {
+      initCollapsed: true,
+    },
+    fields: [
+      {
+        name: 'title',
+        type: 'text',
+        required: true,
+      },
+      {
+        name: 'description',
+        type: 'textarea',
+        required: true,
+      },
+      {
+        name: 'enableLink',
+        type: 'checkbox',
+        defaultValue: false,
+      },
+      link({
+        overrides: {
+          admin: {
+            condition: (_data, siblingData) => Boolean(siblingData?.enableLink),
+          },
+        },
+      }),
+    ],
+  },
 ]
 
 export const Content: Block = {
@@ -82,12 +132,36 @@ export const Content: Block = {
   interfaceName: 'ContentBlock',
   fields: [
     {
-      name: 'columns',
-      type: 'array',
-      admin: {
-        initCollapsed: true,
-      },
-      fields: columnFields,
+      name: 'layout',
+      type: 'select',
+      defaultValue: 'default',
+      options: [
+        { label: 'Default', value: 'default' },
+        { label: 'Capabilities', value: 'capabilities' },
+      ],
+      required: true,
+    },
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Default',
+          fields: [
+            {
+              name: 'columns',
+              type: 'array',
+              admin: {
+                initCollapsed: true,
+              },
+              fields: columnFields,
+            },
+          ],
+        },
+        {
+          label: 'Capabilities',
+          fields: capabilitiesFields,
+        },
+      ],
     },
   ],
 }
