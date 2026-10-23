@@ -3,6 +3,7 @@ import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
+import { ArrowRight } from 'lucide-react'
 
 type LexicalNode = {
   type?: string
@@ -26,7 +27,10 @@ function getNodeText(node: LexicalNode): string {
   return (node.children ?? []).map(getNodeText).join('')
 }
 
-function getCapabilityText(data: unknown): { title: string; description: string } {
+function getCapabilityText(data: unknown): {
+  title: string
+  description: string
+} {
   const state = data as LexicalState | null | undefined
   const nodes = state?.root?.children ?? []
   const headingIndex = nodes.findIndex(isHeadingNode)
@@ -56,16 +60,58 @@ function getCapabilityText(data: unknown): { title: string; description: string 
   }
 }
 
-export const Capabilities_ContentBlock: React.FC<ContentBlockProps> = (props) => {
-  const { richText, linkGroup, columns } = props
+type Props = ContentBlockProps & {
+  blockIndex?: number
+}
+
+export const Capabilities_ContentBlock: React.FC<Props> = (props) => {
+  const { eyebrow, richText, linkGroup, columns, blockIndex = 0 } = props
+  const blockNumber = String(blockIndex + 2).padStart(2, '0')
+
+  const eyebrowPhrases = (
+    Array.isArray(eyebrow)
+      ? eyebrow
+      : typeof eyebrow === 'string'
+        ? [eyebrow]
+        : []
+  ).filter((phrase): phrase is string => Boolean(phrase && phrase.trim()))
 
   return (
-    <section className="border-r border-[#262D3D] px-6 py-20 lg:px-12 lg:py-28">
-      <div className="mb-14 flex items-center justify-between border-b border-[#232a3b] pb-4">
-        <span className="font-mono text-xs uppercase tracking-wider text-[#687182]">
-          03 — Capabilities
-        </span>
-      </div>
+    <section className="border-b border-zinc-800 px-6 py-10 lg:px-12 lg:py-14">
+      {eyebrowPhrases.length > 0 && (
+        <div className="mb-8">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs font-medium tracking-[0.18em] text-white/45 uppercase">
+            <span className="bg-odl size-2 shrink-0" aria-hidden="true" />
+
+            {eyebrowPhrases.map((phrase, index) => {
+              const displayPhrase =
+                index === 0
+                  ? /^\d{2}\s*—\s*/.test(phrase)
+                    ? phrase
+                    : `${blockNumber} — ${phrase}`
+                  : phrase
+
+              return (
+                <React.Fragment key={`${phrase}-${index}`}>
+                  {index > 1 && (
+                    <span className="text-odl" aria-hidden="true">
+                      •
+                    </span>
+                  )}
+
+                  <span className={index === 0 ? 'text-odl' : 'text-white/60'}>
+                    {index === 0
+                      ? eyebrowPhrases.length > 1
+                        ? `${displayPhrase} //`
+                        : displayPhrase
+                      : displayPhrase}
+                  </span>
+                </React.Fragment>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="space-y-6 lg:col-span-5">
@@ -73,33 +119,39 @@ export const Capabilities_ContentBlock: React.FC<ContentBlockProps> = (props) =>
             <RichText
               data={richText}
               enableGutter={false}
-              className="[&_h2]:text-3xl [&_h2]:font-normal [&_h2]:leading-[1.15] [&_h2]:tracking-tight [&_h2]:text-[#F4F4F0] sm:[&_h2]:text-4xl lg:[&_h2]:text-5xl [&_h3]:text-3xl [&_h3]:font-normal [&_h3]:leading-[1.15] [&_h3]:tracking-tight [&_h3]:text-[#F4F4F0] sm:[&_h3]:text-4xl lg:[&_h3]:text-5xl [&_h4]:text-3xl [&_h4]:font-normal [&_h4]:leading-[1.15] [&_h4]:tracking-tight [&_h4]:text-[#F4F4F0] [&_p]:font-sans [&_p]:text-base [&_p]:leading-relaxed [&_p]:text-[#A6ABB8]"
+              className={[
+                '[&_h2]:mb-3 [&_h2]:text-3xl [&_h2]:leading-[1.15] [&_h2]:font-normal [&_h2]:tracking-tight [&_h2]:text-zinc-200 sm:[&_h2]:text-4xl lg:[&_h2]:text-5xl',
+                '_h3]:text-2xl [&_h3]:mb-3 [&_h3]:leading-snug [&_h3]:font-normal [&_h3]:tracking-tight [&_h3]:text-zinc-200 sm:[&_h3]:text-3xl',
+                '[&_h4]:mb-3 [&_h4]:text-xl [&_h4]:leading-snug [&_h4]:font-normal [&_h4]:tracking-tight [&_h4]:text-zinc-200',
+                '[&_p]:font-sans [&_p]:text-base [&_p]:leading-relaxed [&_p]:text-zinc-400',
+                '[&_a]:text-odl [&_a:hover]:text-odl/60',
+              ].join(' ')}
             />
           )}
 
           {linkGroup?.length ? (
-            <div className="flex flex-wrap gap-x-6 gap-y-3 pt-2">
+            <div className="group flex flex-wrap gap-x-6 gap-y-3 pt-2">
               {linkGroup.map((entry, index) => (
                 <CMSLink
                   key={entry.id ?? index}
                   {...entry.link}
-                  label={entry.label}
+                  label={entry.link.label}
                   appearance="inline"
-                  className="group inline-flex items-center gap-2 font-mono text-xs text-[#F4F4F0] transition-colors hover:text-[#FF3B30]"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-zinc-300 underline decoration-white/30 underline-offset-8 transition-colors group-hover:text-white"
                 >
-                  <span
+                  <ArrowRight
+                    size={18}
+                    strokeWidth={1.5}
                     aria-hidden="true"
-                    className="text-[#FF3B30] transition-transform group-hover:translate-x-1"
-                  >
-                    →
-                  </span>
+                    className="group-hover:text-odl shrink-0 transition-transform duration-200 text-shadow-zinc-300 group-hover:translate-x-1"
+                  />
                 </CMSLink>
               ))}
             </div>
           ) : null}
         </div>
 
-        <div className="divide-y divide-[#232a3b] lg:col-span-7">
+        <div className="divide-y divide-zinc-800 lg:col-span-7">
           {columns?.map((column, index) => {
             const { title, description } = getCapabilityText(column.richText)
             if (!title) return null
@@ -107,15 +159,15 @@ export const Capabilities_ContentBlock: React.FC<ContentBlockProps> = (props) =>
             const number = String(index + 1).padStart(2, '0')
             const content = (
               <>
-                <span className="shrink-0 font-mono text-2xl font-bold text-[#FF3B30] sm:text-3xl">
+                <span className="text-odl shrink-0 font-mono text-2xl font-bold sm:text-3xl">
                   {number}
                 </span>
-                <span className="min-w-0 flex-1 space-y-2.5">
-                  <span className="block font-mono text-xl font-semibold uppercase tracking-tight text-[#F4F4F0] transition-colors sm:text-2xl">
+                <span className="group min-w-0 flex-1 space-y-2.5">
+                  <span className="group-hover:text-odl block font-mono text-xl font-semibold tracking-tight text-zinc-200 uppercase transition-colors sm:text-2xl">
                     {title}
                   </span>
                   {description ? (
-                    <span className="block font-sans text-base leading-relaxed text-[#A6ABB8]">
+                    <span className="block font-sans text-base leading-relaxed text-zinc-400 transition-colors group-hover:text-white">
                       {description}
                     </span>
                   ) : null}
@@ -124,19 +176,23 @@ export const Capabilities_ContentBlock: React.FC<ContentBlockProps> = (props) =>
             )
 
             return (
-              <div key={column.id ?? index} className="py-7 first:pt-0 last:pb-0">
-                {column.enableLink && column.link ? (
-                  <CMSLink
-                    {...column.link}
-                    label={undefined}
-                    appearance="inline"
-                    className="group flex items-baseline gap-6 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF3B30] [&:hover_span:nth-child(2)>span:first-child]:text-[#FF3B30]"
-                  >
-                    {content}
-                  </CMSLink>
-                ) : (
-                  <div className="flex items-baseline gap-6">{content}</div>
-                )}
+              <div className="divide-y divide-zinc-800 lg:col-span-7">
+                <div key={column.id ?? index}>
+                  {column.enableLink && column.link ? (
+                    <CMSLink
+                      {...column.link}
+                      label={undefined}
+                      appearance="inline"
+                      className="group focus-visible:outline-odl flex items-baseline gap-6 py-7 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+                    >
+                      {content}
+                    </CMSLink>
+                  ) : (
+                    <div className="group flex items-baseline gap-6 py-7">
+                      {content}
+                    </div>
+                  )}
+                </div>
               </div>
             )
           })}

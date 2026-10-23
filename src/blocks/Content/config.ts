@@ -39,7 +39,8 @@ const columnFields: Field[] = [
         min: 'oneThird',
         max: 'full',
       },
-      condition: (_data, _siblingData, { blockData }) => blockData?.layout !== 'capabilities',
+      condition: (_data, _siblingData, { blockData }) =>
+        blockData?.layout !== 'capabilities',
     },
   },
   {
@@ -82,13 +83,20 @@ export const Content: Block = {
     },
     {
       type: 'tabs',
-      admin: {
-        condition: (_data, siblingData) => siblingData?.layout === 'capabilities',
-      },
       tabs: [
         {
           label: 'Text',
           fields: [
+            {
+              name: 'eyebrow',
+              type: 'text',
+              label: 'Eyebrow',
+              hasMany: true,
+              admin: {
+                description:
+                  'Eyebrow tags. The block position prefix (e.g. "02 —") is automatically prepended to the first tag. Multiple tags are separated by "•".',
+              },
+            },
             {
               name: 'richText',
               type: 'richText',
@@ -107,11 +115,6 @@ export const Content: Block = {
                 initCollapsed: true,
               },
               fields: [
-                {
-                  name: 'label',
-                  type: 'text',
-                  required: true,
-                },
                 link({
                   overrides: {
                     name: 'link',
@@ -123,20 +126,34 @@ export const Content: Block = {
           ],
         },
         {
-          label: 'Capabilities',
-          description: 'Capability rows are managed in the Columns field below.',
-          fields: [],
+          label: ({ blockData }: any) =>
+            blockData?.layout === 'capabilities' ? 'Capabilities' : 'Columns',
+          fields: [
+            {
+              name: 'columns',
+              type: 'array',
+              label: ({ blockData }: any) =>
+                blockData?.layout === 'capabilities'
+                  ? 'Capability items'
+                  : 'Columns',
+              labels: {
+                singular: ({ blockData }: any) =>
+                  blockData?.layout === 'capabilities'
+                    ? 'Capability item'
+                    : 'Column',
+                plural: ({ blockData }: any) =>
+                  blockData?.layout === 'capabilities'
+                    ? 'Capability items'
+                    : 'Columns',
+              },
+              admin: {
+                initCollapsed: true,
+              },
+              fields: columnFields,
+            },
+          ],
         },
       ],
-    },
-    {
-      name: 'columns',
-      type: 'array',
-      label: 'Columns / capability items',
-      admin: {
-        initCollapsed: true,
-      },
-      fields: columnFields,
     },
   ],
 }

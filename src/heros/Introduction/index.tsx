@@ -121,7 +121,7 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
                 aria-hidden="true"
                 className="group-hover:text-odl shrink-0 text-xl text-white/60 transition-transform group-hover:translate-x-1"
               >
-                →
+                <ArrowRight size={30} />
               </span>
             </a>
           )}
