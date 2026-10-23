@@ -18,52 +18,30 @@ const contentEditor = lexicalEditor({
   ],
 })
 
-const sizeField: Field = {
-  name: 'size',
-  type: 'select',
-  defaultValue: 'oneThird',
-  options: [
-    { label: 'Zero', value: 'zero' },
-    { label: 'One Third', value: 'oneThird' },
-    { label: 'Half', value: 'half' },
-    { label: 'Two Thirds', value: 'twoThirds' },
-    { label: 'Full', value: 'full' },
-  ],
-  admin: {
-    components: {
-      Field: '@/components/SizeSlider',
-    },
-    custom: {
-      showPreview: true,
-      min: 'oneThird',
-      max: 'full',
-    },
-    condition: (data) => data?.layout !== 'capabilities',
-  },
-}
-
 const columnFields: Field[] = [
-  sizeField,
   {
-    name: 'richText',
-    type: 'richText',
-    editor: contentEditor,
-    label: false,
-  },
-  {
-    name: 'enableLink',
-    type: 'checkbox',
-  },
-  link({
-    overrides: {
-      admin: {
-        condition: (_data, siblingData) => Boolean(siblingData?.enableLink),
+    name: 'size',
+    type: 'select',
+    defaultValue: 'oneThird',
+    options: [
+      { label: 'Zero', value: 'zero' },
+      { label: 'One Third', value: 'oneThird' },
+      { label: 'Half', value: 'half' },
+      { label: 'Two Thirds', value: 'twoThirds' },
+      { label: 'Full', value: 'full' },
+    ],
+    admin: {
+      components: {
+        Field: '@/components/SizeSlider',
       },
+      custom: {
+        showPreview: true,
+        min: 'oneThird',
+        max: 'full',
+      },
+      condition: (_data, _siblingData, { blockData }) => blockData?.layout !== 'capabilities',
     },
-  }),
-]
-
-const capabilitiesColumnFields: Field[] = [
+  },
   {
     name: 'richText',
     type: 'richText',
@@ -71,7 +49,7 @@ const capabilitiesColumnFields: Field[] = [
     label: false,
     admin: {
       description:
-        'Use the first heading as the capability title, followed by paragraph blocks for its description.',
+        'For Capabilities, use the first heading as the item title, followed by paragraph blocks for its description.',
     },
   },
   {
@@ -103,18 +81,9 @@ export const Content: Block = {
       required: true,
     },
     {
-      name: 'columns',
-      type: 'array',
-      admin: {
-        initCollapsed: true,
-        condition: (_, siblingData) => siblingData?.layout === 'default',
-      },
-      fields: columnFields,
-    },
-    {
       type: 'tabs',
       admin: {
-        condition: (_, siblingData) => siblingData?.layout === 'capabilities',
+        condition: (_data, siblingData) => siblingData?.layout === 'capabilities',
       },
       tabs: [
         {
@@ -155,18 +124,19 @@ export const Content: Block = {
         },
         {
           label: 'Capabilities',
-          fields: [
-            {
-              name: 'columns',
-              type: 'array',
-              admin: {
-                initCollapsed: true,
-              },
-              fields: capabilitiesColumnFields,
-            },
-          ],
+          description: 'Capability rows are managed in the Columns field below.',
+          fields: [],
         },
       ],
+    },
+    {
+      name: 'columns',
+      type: 'array',
+      label: 'Columns / capability items',
+      admin: {
+        initCollapsed: true,
+      },
+      fields: columnFields,
     },
   ],
 }
