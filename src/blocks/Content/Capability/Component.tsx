@@ -6,6 +6,7 @@ import RichText from '@/components/RichText'
 
 type LexicalNode = {
   type?: string
+  tag?: string
   text?: string
   children?: LexicalNode[]
 }
@@ -16,6 +17,10 @@ type LexicalState = {
   }
 }
 
+function isHeadingNode(node: LexicalNode): boolean {
+  return node.type === 'heading' || /^h[1-6]$/.test(node.type ?? '')
+}
+
 function getNodeText(node: LexicalNode): string {
   if (typeof node.text === 'string') return node.text
   return (node.children ?? []).map(getNodeText).join('')
@@ -24,7 +29,7 @@ function getNodeText(node: LexicalNode): string {
 function getCapabilityText(data: unknown): { title: string; description: string } {
   const state = data as LexicalState | null | undefined
   const nodes = state?.root?.children ?? []
-  const headingIndex = nodes.findIndex((node) => /^h[1-6]$/.test(node.type ?? ''))
+  const headingIndex = nodes.findIndex(isHeadingNode)
 
   if (headingIndex >= 0) {
     return {
@@ -40,7 +45,7 @@ function getCapabilityText(data: unknown): { title: string; description: string 
   }
 
   const textBlocks = nodes
-    .filter((node) => node.type === 'paragraph' || /^h[1-6]$/.test(node.type ?? ''))
+    .filter((node) => node.type === 'paragraph' || isHeadingNode(node))
     .map(getNodeText)
     .map((text) => text.trim())
     .filter(Boolean)
