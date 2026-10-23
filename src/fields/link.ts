@@ -2,16 +2,23 @@ import type { Field, GroupField } from 'payload'
 
 import deepMerge from '@/utilities/deepMerge'
 
-export type LinkAppearances = 'default' | 'outline'
+export type LinkAppearances = 'default' | 'outline' | 'underline'
 
-export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
+export const appearanceOptions: Record<
+  LinkAppearances,
+  { label: string; value: string }
+> = {
   default: {
-    label: 'Default',
+    label: 'Fill',
     value: 'default',
   },
   outline: {
     label: 'Outline',
     value: 'outline',
+  },
+  underline: {
+    label: 'Underline',
+    value: 'underline',
   },
 }
 
@@ -21,7 +28,11 @@ type LinkType = (options?: {
   overrides?: Partial<GroupField>
 }) => Field
 
-export const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
+export const link: LinkType = ({
+  appearances,
+  disableLabel = false,
+  overrides = {},
+} = {}) => {
   const linkResult: GroupField = {
     name: 'link',
     type: 'group',
@@ -118,10 +129,16 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
   }
 
   if (appearances !== false) {
-    let appearanceOptionsToUse = [appearanceOptions.default, appearanceOptions.outline]
+    let appearanceOptionsToUse = [
+      appearanceOptions.underline,
+      appearanceOptions.default,
+      appearanceOptions.outline,
+    ]
 
     if (appearances) {
-      appearanceOptionsToUse = appearances.map((appearance) => appearanceOptions[appearance])
+      appearanceOptionsToUse = appearances.map(
+        (appearance) => appearanceOptions[appearance],
+      )
     }
 
     linkResult.fields.push({
@@ -130,7 +147,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       admin: {
         description: 'Choose how the link should be rendered.',
       },
-      defaultValue: 'default',
+      defaultValue: 'underline',
       options: appearanceOptionsToUse,
     })
   }

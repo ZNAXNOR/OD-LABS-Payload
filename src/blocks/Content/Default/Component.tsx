@@ -91,16 +91,7 @@ export const Default_ContentBlock: React.FC<Props> = (props) => {
                   key={entry.id ?? index}
                   {...entry.link}
                   label={entry.link.label}
-                  appearance="inline"
-                  className="group inline-flex items-center gap-2 font-mono text-xs text-zinc-300 transition-colors hover:text-white"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="text-odl transition-transform group-hover:translate-x-1"
-                  >
-                    <ArrowRight size={16} />
-                  </span>
-                </CMSLink>
+                />
               ))}
             </div>
           ) : null}

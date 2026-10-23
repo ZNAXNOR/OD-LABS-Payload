@@ -126,21 +126,10 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
             </a>
           )}
           {Array.isArray(props.links) && props.links.length > 0 && (
-            <ul className="group mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <ul className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
               {props.links.map(({ link }, index) => (
                 <li key={index}>
-                  <CMSLink
-                    {...link}
-                    appearance="inline"
-                    className="inline-flex items-center gap-2 text-sm font-medium text-zinc-300 underline decoration-white/30 underline-offset-8 transition-colors group-hover:text-white"
-                  >
-                    <ArrowRight
-                      size={18}
-                      strokeWidth={1.5}
-                      aria-hidden="true"
-                      className="group-hover:text-odl shrink-0 transition-transform duration-200 text-shadow-zinc-300 group-hover:translate-x-1"
-                    />
-                  </CMSLink>
+                  <CMSLink {...link} />
                 </li>
               ))}
             </ul>

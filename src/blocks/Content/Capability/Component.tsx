@@ -130,22 +130,13 @@ export const Capabilities_ContentBlock: React.FC<Props> = (props) => {
           )}
 
           {linkGroup?.length ? (
-            <div className="group flex flex-wrap gap-x-6 gap-y-3 pt-2">
+            <div className="flex flex-wrap gap-x-6 gap-y-3 pt-2">
               {linkGroup.map((entry, index) => (
                 <CMSLink
                   key={entry.id ?? index}
                   {...entry.link}
                   label={entry.link.label}
-                  appearance="inline"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-zinc-300 underline decoration-white/30 underline-offset-8 transition-colors group-hover:text-white"
-                >
-                  <ArrowRight
-                    size={18}
-                    strokeWidth={1.5}
-                    aria-hidden="true"
-                    className="group-hover:text-odl shrink-0 transition-transform duration-200 text-shadow-zinc-300 group-hover:translate-x-1"
-                  />
-                </CMSLink>
+                />
               ))}
             </div>
           ) : null}
