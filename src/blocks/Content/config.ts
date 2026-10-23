@@ -18,29 +18,32 @@ const contentEditor = lexicalEditor({
   ],
 })
 
-const columnFields: Field[] = [
-  {
-    name: 'size',
-    type: 'select',
-    defaultValue: 'oneThird',
-    options: [
-      { label: 'Zero', value: 'zero' },
-      { label: 'One Third', value: 'oneThird' },
-      { label: 'Half', value: 'half' },
-      { label: 'Two Thirds', value: 'twoThirds' },
-      { label: 'Full', value: 'full' },
-    ],
-    admin: {
-      components: {
-        Field: '@/components/SizeSlider',
-      },
-      custom: {
-        showPreview: true,
-        min: 'oneThird',
-        max: 'full',
-      },
+const sizeField: Field = {
+  name: 'size',
+  type: 'select',
+  defaultValue: 'oneThird',
+  options: [
+    { label: 'Zero', value: 'zero' },
+    { label: 'One Third', value: 'oneThird' },
+    { label: 'Half', value: 'half' },
+    { label: 'Two Thirds', value: 'twoThirds' },
+    { label: 'Full', value: 'full' },
+  ],
+  admin: {
+    components: {
+      Field: '@/components/SizeSlider',
     },
+    custom: {
+      showPreview: true,
+      min: 'oneThird',
+      max: 'full',
+    },
+    condition: (data) => data?.layout !== 'capabilities',
   },
+}
+
+const columnFields: Field[] = [
+  sizeField,
   {
     name: 'richText',
     type: 'richText',
@@ -60,71 +63,29 @@ const columnFields: Field[] = [
   }),
 ]
 
-const capabilitiesFields: Field[] = [
+const capabilitiesColumnFields: Field[] = [
   {
     name: 'richText',
     type: 'richText',
-    label: 'Heading and description',
     editor: contentEditor,
+    label: false,
     admin: {
       description:
-        'Use a heading block for the main statement and regular paragraph blocks for the supporting description. Style text using the editor toolbar.',
+        'Use the first heading as the capability title, followed by paragraph blocks for its description.',
     },
   },
   {
-    name: 'linkGroup',
-    type: 'array',
-    label: 'Link group',
-    admin: {
-      initCollapsed: true,
-    },
-    fields: [
-      {
-        name: 'label',
-        type: 'text',
-        required: true,
-      },
-      link({
-        overrides: {
-          name: 'link',
-          admin: { hideGutter: true },
-        },
-      }),
-    ],
+    name: 'enableLink',
+    type: 'checkbox',
+    defaultValue: false,
   },
-  {
-    name: 'items',
-    type: 'array',
-    label: 'Capabilities',
-    minRows: 1,
-    admin: {
-      initCollapsed: true,
+  link({
+    overrides: {
+      admin: {
+        condition: (_data, siblingData) => Boolean(siblingData?.enableLink),
+      },
     },
-    fields: [
-      {
-        name: 'title',
-        type: 'text',
-        required: true,
-      },
-      {
-        name: 'description',
-        type: 'textarea',
-        required: true,
-      },
-      {
-        name: 'enableLink',
-        type: 'checkbox',
-        defaultValue: false,
-      },
-      link({
-        overrides: {
-          admin: {
-            condition: (_data, siblingData) => Boolean(siblingData?.enableLink),
-          },
-        },
-      }),
-    ],
-  },
+  }),
 ]
 
 export const Content: Block = {
@@ -142,13 +103,58 @@ export const Content: Block = {
       required: true,
     },
     {
+      name: 'columns',
+      type: 'array',
+      admin: {
+        initCollapsed: true,
+        condition: (_, siblingData) => siblingData?.layout === 'default',
+      },
+      fields: columnFields,
+    },
+    {
       type: 'tabs',
+      admin: {
+        condition: (_, siblingData) => siblingData?.layout === 'capabilities',
+      },
       tabs: [
         {
           label: 'Text',
-          admin: {
-            condition: (_, siblingData) => siblingData?.layout === 'default',
-          },
+          fields: [
+            {
+              name: 'richText',
+              type: 'richText',
+              label: 'Heading and description',
+              editor: contentEditor,
+              admin: {
+                description:
+                  'Use a heading block for the main statement and paragraph blocks for supporting text.',
+              },
+            },
+            {
+              name: 'linkGroup',
+              type: 'array',
+              label: 'Link group',
+              admin: {
+                initCollapsed: true,
+              },
+              fields: [
+                {
+                  name: 'label',
+                  type: 'text',
+                  required: true,
+                },
+                link({
+                  overrides: {
+                    name: 'link',
+                    admin: { hideGutter: true },
+                  },
+                }),
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Capabilities',
           fields: [
             {
               name: 'columns',
@@ -156,16 +162,9 @@ export const Content: Block = {
               admin: {
                 initCollapsed: true,
               },
-              fields: columnFields,
+              fields: capabilitiesColumnFields,
             },
           ],
-        },
-        {
-          label: 'Capabilities',
-          admin: {
-            condition: (_, siblingData) => siblingData?.layout === 'capabilities',
-          },
-          fields: capabilitiesFields,
         },
       ],
     },
