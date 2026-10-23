@@ -4,8 +4,55 @@ import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
 
+type LexicalNode = {
+  type?: string
+  text?: string
+  children?: LexicalNode[]
+}
+
+type LexicalState = {
+  root?: {
+    children?: LexicalNode[]
+  }
+}
+
+function getNodeText(node: LexicalNode): string {
+  if (typeof node.text === 'string') return node.text
+  return (node.children ?? []).map(getNodeText).join('')
+}
+
+function getCapabilityText(data: unknown): { title: string; description: string } {
+  const state = data as LexicalState | null | undefined
+  const nodes = state?.root?.children ?? []
+  const headingIndex = nodes.findIndex((node) => /^h[1-6]$/.test(node.type ?? ''))
+
+  if (headingIndex >= 0) {
+    return {
+      title: getNodeText(nodes[headingIndex]).trim(),
+      description: nodes
+        .slice(headingIndex + 1)
+        .filter((node) => node.type === 'paragraph')
+        .map(getNodeText)
+        .map((text) => text.trim())
+        .filter(Boolean)
+        .join(' '),
+    }
+  }
+
+  const textBlocks = nodes
+    .filter((node) => node.type === 'paragraph' || /^h[1-6]$/.test(node.type ?? ''))
+    .map(getNodeText)
+    .map((text) => text.trim())
+    .filter(Boolean)
+
+  return {
+    title: textBlocks[0] ?? '',
+    description: textBlocks.slice(1).join(' '),
+  }
+}
+
 export const Capabilities_ContentBlock: React.FC<ContentBlockProps> = (props) => {
-  const { richText, linkGroup, items } = props
+  const { richText, linkGroup, columns } = props
 
   return (
     <section className="border-r border-[#262D3D] px-6 py-20 lg:px-12 lg:py-28">
@@ -31,6 +78,7 @@ export const Capabilities_ContentBlock: React.FC<ContentBlockProps> = (props) =>
                 <CMSLink
                   key={entry.id ?? index}
                   {...entry.link}
+                  label={entry.label}
                   appearance="inline"
                   className="group inline-flex items-center gap-2 font-mono text-xs text-[#F4F4F0] transition-colors hover:text-[#FF3B30]"
                 >
@@ -47,7 +95,10 @@ export const Capabilities_ContentBlock: React.FC<ContentBlockProps> = (props) =>
         </div>
 
         <div className="divide-y divide-[#232a3b] lg:col-span-7">
-          {items?.map((item, index) => {
+          {columns?.map((column, index) => {
+            const { title, description } = getCapabilityText(column.richText)
+            if (!title) return null
+
             const number = String(index + 1).padStart(2, '0')
             const content = (
               <>
@@ -56,22 +107,25 @@ export const Capabilities_ContentBlock: React.FC<ContentBlockProps> = (props) =>
                 </span>
                 <span className="min-w-0 flex-1 space-y-2.5">
                   <span className="block font-mono text-xl font-semibold uppercase tracking-tight text-[#F4F4F0] transition-colors sm:text-2xl">
-                    {item.title}
+                    {title}
                   </span>
-                  <span className="block font-sans text-base leading-relaxed text-[#A6ABB8]">
-                    {item.description}
-                  </span>
+                  {description ? (
+                    <span className="block font-sans text-base leading-relaxed text-[#A6ABB8]">
+                      {description}
+                    </span>
+                  ) : null}
                 </span>
               </>
             )
 
             return (
-              <div key={item.id ?? index} className="py-7 first:pt-0 last:pb-0">
-                {item.enableLink && item.link ? (
+              <div key={column.id ?? index} className="py-7 first:pt-0 last:pb-0">
+                {column.enableLink && column.link ? (
                   <CMSLink
-                    {...item.link}
+                    {...column.link}
+                    label={undefined}
                     appearance="inline"
-                    className="group flex items-baseline gap-6 transition-colors hover:text-[#FF3B30] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF3B30]"
+                    className="group flex items-baseline gap-6 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF3B30] [&:hover_span:nth-child(2)>span:first-child]:text-[#FF3B30]"
                   >
                     {content}
                   </CMSLink>
