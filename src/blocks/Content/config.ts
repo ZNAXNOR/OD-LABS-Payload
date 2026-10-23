@@ -145,7 +145,10 @@ export const Content: Block = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Default',
+          label: 'Text',
+          admin: {
+            condition: (_, siblingData) => siblingData?.layout === 'default',
+          },
           fields: [
             {
               name: 'columns',
@@ -159,6 +162,9 @@ export const Content: Block = {
         },
         {
           label: 'Capabilities',
+          admin: {
+            condition: (_, siblingData) => siblingData?.layout === 'capabilities',
+          },
           fields: capabilitiesFields,
         },
       ],
