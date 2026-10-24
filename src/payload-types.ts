@@ -579,9 +579,6 @@ export interface ContentBlock {
   columns?:
     | {
         size?: ('zero' | 'oneThird' | 'half' | 'twoThirds' | 'full') | null;
-        /**
-         * For Capabilities, use the first heading as the item title, followed by paragraph blocks for its description.
-         */
         richText?: {
           root: {
             type: string;
@@ -597,11 +594,14 @@ export interface ContentBlock {
           };
           [k: string]: unknown;
         } | null;
-        enableLink?: boolean | null;
         clientName?: string | null;
         clientPosition?: string | null;
         clientCompany?: string | null;
+        /**
+         * Optional. If omitted, the testimonial displays without a photo.
+         */
         clientMedia?: (number | null) | Media;
+        enableLink?: boolean | null;
         link?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
@@ -1491,6 +1491,10 @@ export interface ContentBlockSelect<T extends boolean = true> {
     | {
         size?: T;
         richText?: T;
+        clientName?: T;
+        clientPosition?: T;
+        clientCompany?: T;
+        clientMedia?: T;
         enableLink?: T;
         link?:
           | T

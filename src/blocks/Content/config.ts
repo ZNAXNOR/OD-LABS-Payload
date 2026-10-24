@@ -164,11 +164,6 @@ export const Content: Block = {
                       ? 'Testimonials'
                       : 'Columns',
               },
-              admin: {
-                condition: (_data, _siblingData, { blockData }) =>
-                  blockData?.layout !== 'testimonial',
-                initCollapsed: true,
-              },
               fields: columnFields,
             },
           ],
