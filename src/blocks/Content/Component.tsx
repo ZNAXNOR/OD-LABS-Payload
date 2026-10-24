@@ -1,8 +1,8 @@
 import React from 'react'
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
-import { Default_ContentBlock } from './Default/Component'
-import { Capabilities_ContentBlock } from './Capability/Component'
+import { Default_ContentBlock } from './Varients/Default/Component'
+import { Capabilities_ContentBlock } from './Varients/Capability/Component'
 
 type Props = ContentBlockProps & {
   blockIndex?: number
