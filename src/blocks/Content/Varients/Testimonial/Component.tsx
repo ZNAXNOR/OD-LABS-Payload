@@ -9,7 +9,12 @@ import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 
-type TestimonialEntry = NonNullable<ContentBlockProps['testimonials']>[number]
+type TestimonialEntry = NonNullable<ContentBlockProps['columns']>[number] & {
+  clientName?: string | null
+  clientPosition?: string | null
+  clientCompany?: string | null
+  clientMedia?: number | MediaProps | null
+}
 
 type Props = ContentBlockProps & {
   blockIndex?: number
@@ -23,11 +28,11 @@ export const Testimonial_ContentBlock: React.FC<Props> = ({
   eyebrow,
   richText,
   linkGroup,
-  testimonials,
+  columns,
   blockIndex = 0,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0)
-  const items = testimonials ?? []
+  const items = (columns ?? []) as TestimonialEntry[]
   const hasMultiple = items.length > 1
 
   if (!items.length) {
@@ -63,9 +68,11 @@ export const Testimonial_ContentBlock: React.FC<Props> = ({
               “
             </div>
 
-            <div className="max-w-3xl text-xl leading-relaxed text-zinc-200 sm:text-2xl">
-              <RichText data={active.quote} enableGutter={false} />
-            </div>
+            {active.richText && (
+              <div className="max-w-3xl text-xl leading-relaxed text-zinc-200 sm:text-2xl">
+                <RichText data={active.richText} enableGutter={false} />
+              </div>
+            )}
 
             <div className="mt-8 flex items-center gap-4 border-t border-zinc-800 pt-6">
               {photo ? (
@@ -81,9 +88,11 @@ export const Testimonial_ContentBlock: React.FC<Props> = ({
               ) : null}
 
               <div className="min-w-0">
-                <p className="font-mono text-sm font-semibold uppercase tracking-wide text-zinc-100">
-                  {active.clientName}
-                </p>
+                {active.clientName ? (
+                  <p className="font-mono text-sm font-semibold uppercase tracking-wide text-zinc-100">
+                    {active.clientName}
+                  </p>
+                ) : null}
                 {(active.clientPosition || active.clientCompany) && (
                   <p className="mt-1 text-sm text-zinc-400">
                     {[active.clientPosition, active.clientCompany].filter(Boolean).join(' · ')}

@@ -1,17 +1,17 @@
 import type { Field } from 'payload'
 
 /**
- * Fields shared by testimonial entries.
- * Kept separate so the main ContentBlock config stays readable.
+ * Optional metadata fields for each item in the shared ContentBlock array.
+ * These are only shown when the block uses the testimonial layout.
  */
 export const testimonialFields: Field[] = [
   {
     name: 'clientName',
     type: 'text',
     label: 'Client name',
-    required: true,
     admin: {
-      width: '100%',
+      condition: (_data, _siblingData, { blockData }) =>
+        blockData?.layout === 'testimonial',
     },
   },
   {
@@ -20,6 +20,8 @@ export const testimonialFields: Field[] = [
     label: 'Position',
     admin: {
       width: '50%',
+      condition: (_data, _siblingData, { blockData }) =>
+        blockData?.layout === 'testimonial',
     },
   },
   {
@@ -28,6 +30,8 @@ export const testimonialFields: Field[] = [
     label: 'Company',
     admin: {
       width: '50%',
+      condition: (_data, _siblingData, { blockData }) =>
+        blockData?.layout === 'testimonial',
     },
   },
   {
@@ -37,6 +41,8 @@ export const testimonialFields: Field[] = [
     label: 'Client photo',
     required: false,
     admin: {
+      condition: (_data, _siblingData, { blockData }) =>
+        blockData?.layout === 'testimonial',
       description: 'Optional. If omitted, the testimonial displays without a photo.',
     },
   },

@@ -57,48 +57,7 @@ const columnFields: Field[] = [
           : 'For Capabilities, use the first heading as the item title, followed by paragraph blocks for its description.',
     },
   },
-  {
-    name: 'clientName',
-    type: 'text',
-    label: 'Client name',
-    required: true,
-    admin: {
-      condition: (_data, _siblingData, { blockData }) =>
-        blockData?.layout === 'testimonial',
-    },
-  },
-  {
-    name: 'clientPosition',
-    type: 'text',
-    label: 'Position',
-    admin: {
-      width: '50%',
-      condition: (_data, _siblingData, { blockData }) =>
-        blockData?.layout === 'testimonial',
-    },
-  },
-  {
-    name: 'clientCompany',
-    type: 'text',
-    label: 'Company',
-    admin: {
-      width: '50%',
-      condition: (_data, _siblingData, { blockData }) =>
-        blockData?.layout === 'testimonial',
-    },
-  },
-  {
-    name: 'clientMedia',
-    type: 'upload',
-    relationTo: 'media',
-    label: 'Client photo',
-    required: false,
-    admin: {
-      condition: (_data, _siblingData, { blockData }) =>
-        blockData?.layout === 'testimonial',
-      description: 'Optional. If omitted, the testimonial displays without a photo.',
-    },
-  },
+  ...testimonialFields,
   {
     name: 'enableLink',
     type: 'checkbox',
@@ -186,12 +145,24 @@ export const Content: Block = {
               name: 'columns',
               type: 'array',
               label: ({ blockData }: any) =>
-                blockData?.layout === 'capabilities' ? 'Capability items' : 'Columns',
+                blockData?.layout === 'capabilities'
+                  ? 'Capability items'
+                  : blockData?.layout === 'testimonial'
+                    ? 'Testimonials'
+                    : 'Columns',
               labels: {
                 singular: ({ blockData }: any) =>
-                  blockData?.layout === 'capabilities' ? 'Capability item' : 'Column',
+                  blockData?.layout === 'capabilities'
+                    ? 'Capability item'
+                    : blockData?.layout === 'testimonial'
+                      ? 'Testimonial'
+                      : 'Column',
                 plural: ({ blockData }: any) =>
-                  blockData?.layout === 'capabilities' ? 'Capability items' : 'Columns',
+                  blockData?.layout === 'capabilities'
+                    ? 'Capability items'
+                    : blockData?.layout === 'testimonial'
+                      ? 'Testimonials'
+                      : 'Columns',
               },
               admin: {
                 condition: (_data, _siblingData, { blockData }) =>
@@ -199,30 +170,6 @@ export const Content: Block = {
                 initCollapsed: true,
               },
               fields: columnFields,
-            },
-            {
-              name: 'testimonials',
-              type: 'array',
-              label: 'Testimonials',
-              labels: {
-                singular: 'Testimonial',
-                plural: 'Testimonials',
-              },
-              admin: {
-                condition: (_data, _siblingData, { blockData }) =>
-                  blockData?.layout === 'testimonial',
-                initCollapsed: true,
-              },
-              fields: [
-                {
-                  name: 'quote',
-                  type: 'richText',
-                  label: 'Quote',
-                  editor: contentEditor,
-                  required: true,
-                },
-                ...testimonialFields,
-              ],
             },
           ],
         },
