@@ -529,7 +529,7 @@ export interface CallToActionBlock {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
-  layout: 'default' | 'capabilities';
+  layout: 'default' | 'capabilities' | 'testimonial';
   /**
    * Eyebrow tags. The block position prefix (e.g. "02 —") is automatically prepended to the first tag. Multiple tags are separated by "•".
    */
@@ -598,6 +598,10 @@ export interface ContentBlock {
           [k: string]: unknown;
         } | null;
         enableLink?: boolean | null;
+        clientName?: string | null;
+        clientPosition?: string | null;
+        clientCompany?: string | null;
+        clientMedia?: (number | null) | Media;
         link?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
