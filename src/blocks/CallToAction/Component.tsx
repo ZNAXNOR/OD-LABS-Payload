@@ -4,7 +4,6 @@ import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
 
 import RichText from '@/components/RichText'
 import { cn } from '@/utilities/ui'
-import { CMSLink } from '@/components/Link'
 import Eyebrow from '@/components/Eyebrow'
 
 export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) => {
@@ -45,11 +44,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
             {links?.length ? (
               <div className="flex flex-col gap-8 pt-2 sm:flex-row sm:items-center">
                 {links.map(({ link }, index) => (
-                  <CMSLink
-                    key={link?.url ?? link?.label ?? index}
-                    {...link}
-                    size="lg"
-                  />
+                  <CMSLink key={link?.url ?? link?.label ?? index} size="lg" {...link} />
                 ))}
               </div>
             ) : null}
