@@ -4,10 +4,12 @@ import {
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
+  TextStateFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
 import { linkGroup } from '../../fields/linkGroup'
+import { textStateConfig } from '@/fields/textStateConfig'
 
 export const CallToAction: Block = {
   slug: 'cta',
@@ -21,6 +23,7 @@ export const CallToAction: Block = {
           return [
             ...rootFeatures,
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            TextStateFeature({ state: textStateConfig }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
           ]
