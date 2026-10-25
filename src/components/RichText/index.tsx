@@ -42,11 +42,18 @@ type TextNodeWithState = {
   $?: Record<string, string>
 }
 
+type TextStyleConfig = {
+  [stateKey: string]: {
+    [stateValue: string]: {
+      css: Record<string, string>
+    }
+  }
+}
+
 const hyphenToCamel = (property: string) =>
   property.replace(/-([a-z])/g, (_, letter: string) => letter.toUpperCase())
 
-const stateValues: Record<string, Record<string, { css: Record<string, string> }>> =
-  textStateConfig
+const stateValues = textStateConfig as TextStyleConfig
 
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
@@ -65,9 +72,12 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
     for (const [stateKey, stateValue] of Object.entries(state)) {
       const css = stateValues[stateKey]?.[stateValue]?.css
       if (css) {
-        for (const [property, value] of Object.entries(css)) {
-          ;(styles as Record<string, string>)[hyphenToCamel(property)] = value
-        }
+        Object.assign(
+          styles,
+          Object.fromEntries(
+            Object.entries(css).map(([property, value]) => [hyphenToCamel(property), value]),
+          ),
+        )
       }
     }
 
