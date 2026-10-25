@@ -78,15 +78,11 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   // The CMS "Fill" appearance maps to the tailored editorial button style.
   const buttonVariant = appearance === 'default' ? 'fill' : appearance
-  const renderedLabel =
-    appearance === 'default' && label
-      ? `[ ${label.replace(/^\[\s*|\s*\]$/g, '')} ]`
-      : label
 
   return (
     <Button asChild className={className} size={size} variant={buttonVariant}>
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {renderedLabel && renderedLabel}
+        {label && label}
         {children && children}
       </Link>
     </Button>
