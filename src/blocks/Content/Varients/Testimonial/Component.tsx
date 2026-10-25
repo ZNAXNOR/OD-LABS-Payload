@@ -7,7 +7,8 @@ import type {
 } from '@/payload-types'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 
-import { Header, Eyebrow } from '@/blocks/Content/Varients/Header'
+import { Header } from '@/blocks/Content/Varients/Header'
+import Eyebrow from '@/components/Eyebrow'
 import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
