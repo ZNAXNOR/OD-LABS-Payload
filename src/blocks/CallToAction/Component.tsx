@@ -3,6 +3,7 @@ import React from 'react'
 import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
 
 import RichText from '@/components/RichText'
+import { cn } from '@/utilities/ui'
 import { CMSLink } from '@/components/Link'
 import Eyebrow from '@/components/Eyebrow'
 
