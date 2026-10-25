@@ -5,6 +5,7 @@ import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
 import RichText from '@/components/RichText'
 import { CMSLink } from '@/components/Link'
 import { cn } from '@/utilities/ui'
+import Eyebrow from '@/components/Eyebrow'
 
 export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) => {
   return (
@@ -17,16 +18,13 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
         <div className="hidden border-r border-[#262D3D] lg:block" aria-hidden="true" />
 
         <div className="border-r border-[#262D3D] px-6 py-20 lg:px-12 lg:py-28">
-          <div className="mb-8 font-mono text-xs tracking-wider text-[#687182] uppercase">
-            <span className="text-[#FF3B30]">04 — </span>
-            START A PROJECT
-          </div>
+          <Eyebrow eyebrow="START A PROJECT" blockIndex={2} />
 
           <div className="relative space-y-8 border border-[#232a3b] p-8 sm:p-14 lg:p-16">
             <span aria-hidden="true" className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-[#687182]" />
             <span aria-hidden="true" className="pointer-events-none absolute right-0 top-0 h-3 w-3 border-r border-t border-[#687182]" />
-            <span aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 h-3 w-3 border-b border-l border-[#687182]" />
-            <span aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b border-r border-[#687182]" />
+            <span aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 z-10 h-3 w-3 translate-y-px border-b border-l border-[#687182]" />
+            <span aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0 z-10 h-3 w-3 translate-y-px border-b border-r border-[#687182]" />
 
             {richText && (
               <RichText
@@ -46,22 +44,13 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
 
             {links?.length ? (
               <div className="flex flex-col gap-8 pt-2 sm:flex-row sm:items-center">
-                {links.map(({ link }, index) => {
-                  const isSecondaryTextLink = link?.appearance === 'underline'
-
-                  return (
-                    <CMSLink
-                      key={`${link?.label ?? 'cta-link'}-${index}`}
-                      {...link}
-                      appearance={isSecondaryTextLink ? 'inline' : (link?.appearance ?? 'underline')}
-                      size="lg"
-                      className={cn(
-                        isSecondaryTextLink &&
-                          'inline-flex items-center gap-2 font-mono text-xs text-[#A6ABB8] underline decoration-[#232a3b] underline-offset-4 transition-colors hover:text-[#F4F4F0] hover:decoration-[#A6ABB8]',
-                      )}
-                    />
-                  )
-                })}
+                {links.map(({ link }, index) => (
+                  <CMSLink
+                    key={link?.url ?? link?.label ?? index}
+                    {...link}
+                    size="lg"
+                  />
+                ))}
               </div>
             ) : null}
           </div>
