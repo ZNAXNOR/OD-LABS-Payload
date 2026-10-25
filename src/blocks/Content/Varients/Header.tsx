@@ -51,4 +51,4 @@ export const Header: React.FC<HeaderProps> = ({
 }
 
 export default Header
-export { Eyebrow } from './Eyebrow'
+export { Eyebrow } from '@/components/Eyebrow'
