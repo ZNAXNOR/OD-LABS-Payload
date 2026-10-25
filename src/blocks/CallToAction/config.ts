@@ -16,6 +16,16 @@ export const CallToAction: Block = {
   interfaceName: 'CallToActionBlock',
   fields: [
     {
+      name: 'eyebrow',
+      type: 'text',
+      label: 'Eyebrow',
+      hasMany: true,
+      admin: {
+        description:
+          'Eyebrow tags. The block position prefix (e.g. "02 —") is automatically prepended to the first tag. Multiple tags are separated by "•".',
+      },
+    },
+    {
       name: 'richText',
       type: 'richText',
       editor: lexicalEditor({

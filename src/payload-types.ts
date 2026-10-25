@@ -481,6 +481,13 @@ export interface User {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
+  /**
+   * Eyebrow tags. The block position prefix (e.g. "02 —") is automatically prepended to the first tag. Multiple tags are separated by "•".
+   */
+  eyebrow?: string[] | null;
+  /**
+   * CTA heading and supporting copy. Use a heading block followed by a paragraph.
+   */
   richText?: {
     root: {
       type: string;
@@ -496,6 +503,9 @@ export interface CallToActionBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Add the primary action and optional secondary links. Use Fill for the primary action and Underline for secondary links.
+   */
   links?:
     | {
         link: {
@@ -1444,6 +1454,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   richText?: T;
   links?:
     | T
