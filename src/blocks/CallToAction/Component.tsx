@@ -53,7 +53,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
                     <CMSLink
                       key={`${link?.label ?? 'cta-link'}-${index}`}
                       {...link}
-                      appearance={isSecondaryTextLink ? 'inline' : link?.appearance}
+                      appearance={isSecondaryTextLink ? 'inline' : (link?.appearance ?? 'underline')}
                       size="lg"
                       className={cn(
                         isSecondaryTextLink &&
