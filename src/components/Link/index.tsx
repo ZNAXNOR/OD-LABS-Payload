@@ -36,9 +36,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   const href =
     type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
-      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
-          reference.value.slug
-        }`
+      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${reference.value.slug}`
       : url
 
   if (!href) return null
@@ -78,8 +76,11 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     )
   }
 
+  // The CMS "Fill" appearance maps to the tailored editorial button style.
+  const buttonVariant = appearance === 'default' ? 'fill' : appearance
+
   return (
-    <Button asChild className={className} size={size} variant={appearance}>
+    <Button asChild className={className} size={size} variant={buttonVariant}>
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}
         {children && children}
