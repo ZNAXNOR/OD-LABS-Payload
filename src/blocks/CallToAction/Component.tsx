@@ -6,7 +6,9 @@ import RichText from '@/components/RichText'
 import { cn } from '@/utilities/ui'
 import Eyebrow from '@/components/Eyebrow'
 
-export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) => {
+type Props = CTABlockProps & { blockIndex?: number }
+
+export const CallToActionBlock: React.FC<Props> = ({ links, richText, blockIndex = 0 }) => {
   return (
     <section
       id="contact"
@@ -17,13 +19,13 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
         <div className="hidden border-r border-[#262D3D] lg:block" aria-hidden="true" />
 
         <div className="border-r border-[#262D3D] px-6 py-20 lg:px-12 lg:py-28">
-          <Eyebrow eyebrow="START A PROJECT" blockIndex={2} />
+          <Eyebrow eyebrow="START A PROJECT" blockIndex={blockIndex} />
 
           <div className="relative space-y-8 border border-[#232a3b] p-8 sm:p-14 lg:p-16">
             <span aria-hidden="true" className="pointer-events-none absolute left-0 top-0 z-10 h-3 w-3 border-l border-t border-[#687182]" />
             <span aria-hidden="true" className="pointer-events-none absolute right-0 top-0 z-10 h-3 w-3 border-r border-t border-[#687182]" />
-            <span aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 z-10 h-3 w-3 border-b border-l border-[#687182]" />
-            <span aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0 z-10 h-3 w-3 border-b border-r border-[#687182]" />
+            <span aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 z-10 h-3 w-3 translate-y-px border-b border-l border-[#687182]" />
+            <span aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0 z-10 h-3 w-3 translate-y-px border-b border-r border-[#687182]" />
 
             {richText && (
               <RichText
