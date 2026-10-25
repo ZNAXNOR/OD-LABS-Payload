@@ -13,7 +13,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
       data-purpose="conversational-cta"
       className="relative"
     >
-      <div className="studio-grid w-full">
+      <div className="grid w-full grid-cols-1 lg:grid-cols-[72px_minmax(0,1fr)_72px]">
         <div className="hidden border-r border-[#262D3D] lg:block" aria-hidden="true" />
 
         <div className="border-r border-[#262D3D] px-6 py-20 lg:px-12 lg:py-28">
@@ -46,19 +46,22 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
 
             {links?.length ? (
               <div className="flex flex-col gap-8 pt-2 sm:flex-row sm:items-center">
-                {links.map(({ link }, index) => (
-                  <CMSLink
-                    key={link?.url ?? link?.label ?? index}
-                    {...link}
-                    size="lg"
-                    className={cn(
-                      link?.appearance === 'default' &&
-                        'h-auto rounded-none px-8 py-4 font-mono text-xs font-semibold tracking-wider text-white uppercase',
-                      link?.appearance === 'underline' &&
-                        'font-mono text-xs text-[#A6ABB8] decoration-[#232a3b] hover:text-[#F4F4F0] hover:decoration-[#A6ABB8]',
-                    )}
-                  />
-                ))}
+                {links.map(({ link }, index) => {
+                  const isSecondaryTextLink = link?.appearance === 'underline'
+
+                  return (
+                    <CMSLink
+                      key={`${link?.label ?? 'cta-link'}-${index}`}
+                      {...link}
+                      appearance={isSecondaryTextLink ? 'inline' : link?.appearance}
+                      size="lg"
+                      className={cn(
+                        isSecondaryTextLink &&
+                          'inline-flex items-center gap-2 font-mono text-xs text-[#A6ABB8] underline decoration-[#232a3b] underline-offset-4 transition-colors hover:text-[#F4F4F0] hover:decoration-[#A6ABB8]',
+                      )}
+                    />
+                  )
+                })}
               </div>
             ) : null}
           </div>
