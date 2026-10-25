@@ -4,7 +4,6 @@ import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
 
 import RichText from '@/components/RichText'
 import { CMSLink } from '@/components/Link'
-import { cn } from '@/utilities/ui'
 import Eyebrow from '@/components/Eyebrow'
 
 export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) => {
