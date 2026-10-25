@@ -23,8 +23,6 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
           <div className="relative space-y-8 border border-[#232a3b] p-8 sm:p-14 lg:p-16">
             <span aria-hidden="true" className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-[#687182]" />
             <span aria-hidden="true" className="pointer-events-none absolute right-0 top-0 h-3 w-3 border-r border-t border-[#687182]" />
-            <span aria-hidden="true" className="pointer-events-none absolute left-0 top-full z-10 h-3 w-3 -translate-y-full border-b border-l border-[#687182]" />
-            <span aria-hidden="true" className="pointer-events-none absolute right-0 top-full z-10 h-3 w-3 -translate-y-full border-b border-r border-[#687182]" />
 
             {richText && (
               <RichText
