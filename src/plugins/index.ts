@@ -26,6 +26,7 @@ import { ToKnowledgePoolFn } from 'payloadcms-vectorize'
 import { vectorIntegration } from '@/vectorize/config'
 import { pagesToKnowledgePool } from '@/vectorize/pagesToKnowledgePool'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { wrapEmailHtml } from '@/email/template'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | OD LABS` : 'OD LABS'
@@ -111,6 +112,35 @@ export const plugins: Plugin[] = [
     fields: {
       payment: false,
     },
+    beforeEmail: (emailsToSend, { doc }: any) =>
+      emailsToSend.map((email) => {
+        let bodyHtml = email.html || ''
+
+        // Resolve Form Submission ID
+        const submissionID = String(doc.id || '')
+
+        // Resolve Form ID safely
+        const formID = String(
+          typeof doc.form === 'object' && doc.form !== null
+            ? doc.form.id
+            : doc.form || '',
+        )
+
+        // Perform replacements
+        if (bodyHtml) {
+          bodyHtml = bodyHtml
+            // Handles {{formSubmissionID}}
+            .replace(/{{formSubmissionID}}/g, submissionID)
+        }
+
+        return {
+          ...email,
+          html: wrapEmailHtml({
+            title: email.subject,
+            bodyHtml,
+          }),
+        }
+      }),
     formOverrides: {
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {

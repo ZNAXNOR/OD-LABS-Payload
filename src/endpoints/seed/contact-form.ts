@@ -35,7 +35,7 @@ export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
   createdAt: '2023-01-12T21:47:41.374Z',
   emails: [
     {
-      emailFrom: '"Payload" \u003Cdemo@payloadcms.com\u003E',
+      emailFrom: '"Omkar Dalvi" <omkar@notifications.odtechlab.com>',
       emailTo: '{{email}}',
       message: {
         root: {
@@ -68,6 +68,41 @@ export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
         },
       },
       subject: "You've received a new message.",
+    },
+    {
+      emailFrom: '"Omkar Dalvi" <omkar@notifications.odtechlab.com>',
+      emailTo: 'omkar@odtechlab.com',
+      message: {
+        root: {
+          type: 'root',
+          children: [
+            {
+              type: 'paragraph',
+              children: [
+                {
+                  type: 'text',
+                  detail: 0,
+                  format: 0,
+                  mode: 'normal',
+                  style: '',
+                  text: 'A new message has been submitted through the OD LABS contact form. Review the submission in Payload Admin.',
+                  version: 1,
+                },
+              ],
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              textFormat: 0,
+              version: 1,
+            },
+          ],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          version: 1,
+        },
+      },
+      subject: 'New OD LABS contact form submission',
     },
   ],
   fields: [
