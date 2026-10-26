@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react'
 
-type CalNamespace = {
-  (...args: unknown[]): void
-  q?: IArguments[]
+type CalCall = (...args: unknown[]) => void
+
+type CalNamespace = CalCall & {
+  q?: unknown[][]
 }
 
-type CalFunction = {
-  (...args: unknown[]): void
+type CalFunction = CalCall & {
   loaded?: boolean
   ns?: Record<string, CalNamespace>
   q?: unknown[][]
@@ -37,95 +37,76 @@ const eventTypes = {
 
 type EventDuration = keyof typeof eventTypes
 
-function initializeCalEmbed(
-  namespace: string,
-  calLink: string,
-  elementId: string,
-) {
-  const cal = window.Cal
+function loadCalEmbed() {
+  if (window.Cal) return window.Cal
 
-  if (!cal) return
+  // Cal.com's documented embed bootstrap.
+  const queue = (target: { q?: unknown[][] }, args: unknown[]) => {
+    target.q = target.q || []
+    target.q.push(args)
+  }
 
-  cal('init', namespace, { origin: 'https://app.cal.com' })
+  const cal = ((...args: unknown[]) => {
+    const current = window.Cal!
+    if (!current.loaded) {
+      current.ns = {}
+      current.q = []
+      const script = document.createElement('script')
+      script.src = 'https://app.cal.com/embed/embed.js'
+      script.async = true
+      document.head.appendChild(script)
+      current.loaded = true
+    }
 
-  const namespaceApi = cal.ns?.[namespace]
-  if (!namespaceApi) return
+    if (args[0] === 'init') {
+      const namespace = args[1]
+      if (typeof namespace === 'string') {
+        const api =
+          current.ns![namespace] ||
+          (((...apiArgs: unknown[]) => queue(api, apiArgs)) as CalNamespace)
+        api.q = api.q || []
+        current.ns![namespace] = api
+        queue(api, args)
+        queue(current, ['initNamespace', namespace])
+      } else {
+        queue(current, args)
+      }
+      return
+    }
 
-  namespaceApi('inline', {
-    elementOrSelector: `#${elementId}`,
-    calLink,
-    config: {
-      layout: 'month_view',
-      useSlotsViewOnSmallScreen: 'true',
-    },
-  })
+    queue(current, args)
+  }) as CalFunction
 
-  namespaceApi('ui', {
-    hideEventTypeDetails: false,
-    layout: 'month_view',
-  })
+  window.Cal = cal
+  return cal
 }
 
 export default function CalBooking() {
   const [duration, setDuration] = useState<EventDuration>('30min')
 
   useEffect(() => {
-    const selectedEvent = eventTypes[duration]
+    const event = eventTypes[duration]
     const elementId = `cal-inline-${duration}`
+    const cal = loadCalEmbed()
 
-    const setup = () => {
-      initializeCalEmbed(
-        selectedEvent.namespace,
-        selectedEvent.calLink,
-        elementId,
-      )
-    }
+    cal('init', event.namespace, { origin: 'https://app.cal.com' })
 
-    if (window.Cal?.loaded) {
-      setup()
-      return
-    }
+    const namespaceApi = cal.ns?.[event.namespace]
+    if (!namespaceApi) return
 
-    // This is Cal.com's documented embed bootstrap, adapted to load once
-    // from a client-side Next.js component.
-    const cal = ((...args: unknown[]) => {
-      const current = window.Cal as CalFunction
-      const enqueue = (target: { q?: unknown[][] }, call: unknown[]) => {
-        target.q = target.q || []
-        target.q.push(call)
-      }
+    namespaceApi('inline', {
+      elementOrSelector: `#${elementId}`,
+      calLink: event.calLink,
+      config: {
+        layout: 'month_view',
+        useSlotsViewOnSmallScreen: 'true',
+      },
+    })
 
-      if (!current.loaded) {
-        current.ns = {}
-        current.q = current.q || []
-        const script = document.createElement('script')
-        script.src = 'https://app.cal.com/embed/embed.js'
-        script.async = true
-        document.head.appendChild(script)
-        current.loaded = true
-      }
-
-      if (args[0] === 'init') {
-        const namespace = args[1]
-        if (typeof namespace === 'string') {
-          const api = current.ns?.[namespace] || ((...apiArgs: unknown[]) => {
-            enqueue(api as { q?: unknown[][] }, apiArgs)
-          }) as CalNamespace
-          api.q = api.q || []
-          if (current.ns) current.ns[namespace] = api
-          enqueue(api, args)
-          enqueue(current as { q?: unknown[][] }, ['initNamespace', namespace])
-        } else {
-          enqueue(current as { q?: unknown[][] }, args)
-        }
-        return
-      }
-
-      enqueue(current as { q?: unknown[][] }, args)
-    }) as CalFunction
-
-    window.Cal = cal
-    setup()
+    namespaceApi('ui', {
+      hideEventTypeDetails: false,
+      layout: 'month_view',
+    })
   }, [duration])
 
   const selectedEvent = eventTypes[duration]
@@ -185,19 +166,18 @@ export default function CalBooking() {
         />
       </div>
 
-      <noscript>
-        <p className="mt-4 text-sm text-zinc-500">
-          JavaScript is required to book online. You can also book directly:
-          {' '}
-          <a
-            className="underline underline-offset-4"
-            href={`https://cal.com/${selectedEvent.calLink}`}
-          >
-            open the Cal.com booking page
-          </a>
-          .
-        </p>
-      </noscript>
+      <p className="mt-4 text-sm text-zinc-500">
+        Prefer a separate booking page?{' '}
+        <a
+          className="underline underline-offset-4"
+          href={`https://cal.com/${selectedEvent.calLink}`}
+          rel="noreferrer"
+          target="_blank"
+        >
+          Open Cal.com directly
+        </a>
+        .
+      </p>
     </section>
   )
 }
