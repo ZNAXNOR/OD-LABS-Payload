@@ -61,9 +61,10 @@ function loadCalEmbed() {
     if (args[0] === 'init') {
       const namespace = args[1]
       if (typeof namespace === 'string') {
-        const api =
-          current.ns![namespace] ||
-          (((...apiArgs: unknown[]) => queue(api, apiArgs)) as CalNamespace)
+        let api = current.ns![namespace]
+        if (!api) {
+          api = ((...apiArgs: unknown[]) => queue(api!, apiArgs)) as CalNamespace
+        }
         api.q = api.q || []
         current.ns![namespace] = api
         queue(api, args)
