@@ -20,13 +20,15 @@ export const Users: CollectionConfig = {
   auth: {
     forgotPassword: {
       generateEmailSubject: () => 'Reset your OD LABS password',
-      generateEmailHTML: ({ token, user }) => {
+      generateEmailHTML: (args) => {
+        const token = args?.token ?? ''
+        const user = args?.user
         const resetURL = `${getServerSideURL()}/admin/reset/${encodeURIComponent(token)}`
 
         return wrapEmailHtml({
           title: 'Reset your password',
           bodyHtml: `
-            <p style="margin:0 0 16px;">Hello ${escapeHtml(user.email)},</p>
+            <p style="margin:0 0 16px;">Hello ${escapeHtml(user?.email || 'there')},</p>
             <p style="margin:0 0 16px;">We received a request to reset the password for your OD LABS account.</p>
             <p style="margin:24px 0;">
               <a href="${escapeHtml(resetURL)}" style="display:inline-block;padding:11px 18px;background-color:#171717;color:#ffffff;text-decoration:none;font-weight:700;">Reset password</a>

@@ -112,14 +112,35 @@ export const plugins: Plugin[] = [
     fields: {
       payment: false,
     },
-    beforeEmail: (emailsToSend) =>
-      emailsToSend.map((email) => ({
-        ...email,
-        html: wrapEmailHtml({
-          title: email.subject,
-          bodyHtml: email.html,
-        }),
-      })),
+    beforeEmail: (emailsToSend, { doc }: any) =>
+      emailsToSend.map((email) => {
+        let bodyHtml = email.html || ''
+
+        // Resolve Form Submission ID
+        const submissionID = String(doc.id || '')
+
+        // Resolve Form ID safely
+        const formID = String(
+          typeof doc.form === 'object' && doc.form !== null
+            ? doc.form.id
+            : doc.form || '',
+        )
+
+        // Perform replacements
+        if (bodyHtml) {
+          bodyHtml = bodyHtml
+            // Handles {{formSubmissionID}}
+            .replace(/{{formSubmissionID}}/g, submissionID)
+        }
+
+        return {
+          ...email,
+          html: wrapEmailHtml({
+            title: email.subject,
+            bodyHtml,
+          }),
+        }
+      }),
     formOverrides: {
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
