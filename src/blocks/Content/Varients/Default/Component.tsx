@@ -6,7 +6,8 @@ import { ArrowRight } from 'lucide-react'
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
-import { Header, Eyebrow } from '@/blocks/Content/Varients/Header'
+import { Header } from '@/blocks/Content/Varients/Header'
+import Eyebrow from '@/components/Eyebrow'
 
 type Props = ContentBlockProps & {
   blockIndex?: number
