@@ -147,7 +147,7 @@ export const link: LinkType = ({
       admin: {
         description: 'Choose how the link should be rendered.',
       },
-      defaultValue: 'underline',
+      defaultValue: 'default',
       options: appearanceOptionsToUse,
     })
   }
