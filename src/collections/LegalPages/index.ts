@@ -43,14 +43,14 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
       url: ({ data, req }) =>
         generatePreviewPath({
           slug: data?.slug,
-          collection: 'pages',
+          collection: 'legal-pages',
           req,
         }),
     },
     preview: (data, { req }) =>
       generatePreviewPath({
         slug: data?.slug as string,
-        collection: 'pages',
+        collection: 'legal-pages',
         req,
       }),
     useAsTitle: 'title',
