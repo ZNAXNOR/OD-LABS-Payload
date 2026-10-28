@@ -66,7 +66,6 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Content',
           fields: [
             {
               name: 'contentMode',
@@ -140,6 +139,9 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
                       name: 'name',
                       type: 'text',
                       required: true,
+                      admin: {
+                        width: '50%',
+                      },
                       validate: (value) =>
                         value && /^(data-[a-z0-9_-]+|async|defer|type|crossorigin)$/i.test(value)
                           ? true
@@ -149,6 +151,7 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
                       name: 'value',
                       type: 'text',
                       admin: {
+                        width: '50%',
                         description: 'For boolean attributes such as async, use true.',
                       },
                     },
@@ -170,6 +173,7 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
               ],
             },
           ],
+          label: 'Content',
         },
         {
           name: 'meta',
@@ -193,6 +197,16 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
       ],
     },
     slugField(),
+    {
+      name: 'scriptPreview',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '@/components/LegalScriptPreview',
+        },
+      },
+    },
   ],
   hooks: {
     afterChange: [revalidateLegalPage],
