@@ -24,7 +24,7 @@ export default function BookPage() {
         </p>
       </section>
 
-      <div className="mt-10 border-y border-zinc-800">
+      <div className="mt-10 border-t border-zinc-800">
         <CalBooking />
       </div>
     </article>
