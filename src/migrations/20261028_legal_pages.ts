@@ -30,7 +30,13 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
 
   await db.execute(sql`
     CREATE UNIQUE INDEX IF NOT EXISTS "legal_pages_slug_idx" ON "legal_pages" USING btree ("slug");
+  `)
+
+  await db.execute(sql`
     CREATE INDEX IF NOT EXISTS "legal_pages_embed_script_attributes_order_idx" ON "legal_pages_embed_script_attributes" USING btree ("_order");
+  `)
+
+  await db.execute(sql`
     CREATE INDEX IF NOT EXISTS "legal_pages_embed_script_attributes_parent_id_idx" ON "legal_pages_embed_script_attributes" USING btree ("_parent_id");
   `)
 }
