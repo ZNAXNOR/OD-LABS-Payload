@@ -17,26 +17,35 @@ import { ExternalEmbed } from '@/components/ExternalEmbed'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
-  const pages = await payload.find({
-    collection: 'pages',
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-    pagination: false,
-    select: {
-      slug: true,
-    },
-  })
+  const [pages, legalPages] = await Promise.all([
+    payload.find({
+      collection: 'pages',
+      draft: false,
+      limit: 1000,
+      overrideAccess: false,
+      pagination: false,
+      select: {
+        slug: true,
+      },
+    }),
+    payload.find({
+      collection: 'legal-pages',
+      draft: false,
+      limit: 1000,
+      overrideAccess: false,
+      pagination: false,
+      select: {
+        slug: true,
+      },
+    }),
+  ])
 
-  const params = pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
-    })
-    .map(({ slug }) => {
-      return { slug }
-    })
-
-  return params
+  return [
+    ...pages.docs
+      .filter((doc) => doc.slug !== 'home')
+      .map(({ slug }) => ({ slug })),
+    ...legalPages.docs.map(({ slug }) => ({ slug })),
+  ]
 }
 
 type Args = {
@@ -71,6 +80,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       <article className="pt-16 pb-24">
         <PageClient />
         <PayloadRedirects disableNotFound url={url} />
+        {draft && <LivePreviewListener />}
         <div className="container">
           <h1 className="mb-8 text-4xl font-medium tracking-tight">{legalPage.title}</h1>
           {legalPage.contentMode === 'externalEmbed' && legalPage.embed?.scriptURL ? (
@@ -120,8 +130,8 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const legalPage = await queryLegalPageBySlug({ slug: decodedSlug })
 
   return {
-    title: legalPage?.title,
-    description: legalPage?.description || undefined,
+    title: legalPage?.meta?.title || legalPage?.title,
+    description: legalPage?.meta?.description || undefined,
   }
 }
 
@@ -146,13 +156,15 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
 })
 
 const queryLegalPageBySlug = cache(async ({ slug }: { slug: string }) => {
+  const { isEnabled: draft } = await draftMode()
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
-    collection: 'legal-pages' as any,
+    collection: 'legal-pages',
+    draft,
     limit: 1,
     pagination: false,
-    overrideAccess: true,
+    overrideAccess: draft,
     where: {
       slug: {
         equals: slug,
@@ -160,5 +172,5 @@ const queryLegalPageBySlug = cache(async ({ slug }: { slug: string }) => {
     },
   })
 
-  return (result.docs?.[0] as any) || null
+  return result.docs?.[0] || null
 })
