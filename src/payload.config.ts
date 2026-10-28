@@ -7,6 +7,7 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
+import { LegalPages } from './collections/LegalPages'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
@@ -74,7 +75,7 @@ export default buildConfig({
     extensions: ['vector'],
     afterSchemaInit: [vectorIntegration.afterSchemaInitHook],
   }),
-  collections: [Pages, Posts, Media, Categories, Users, TestDocuments],
+  collections: [Pages, Posts, LegalPages, Media, Categories, Users, TestDocuments],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [...plugins],
@@ -93,8 +94,7 @@ export default buildConfig({
         if (!secret) return false
 
         // If there is no logged in user, then check
-        // for the Vercel Cron secret to be present as an
-        // Authorization header:
+        // for the Vercel Cron secret to be present in the Authorization header:
         const authHeader = req.headers.get('authorization')
         return authHeader === `Bearer ${secret}`
       },
