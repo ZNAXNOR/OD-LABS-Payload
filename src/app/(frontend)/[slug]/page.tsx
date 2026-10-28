@@ -12,6 +12,8 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import RichText from '@/components/RichText'
+import { ExternalEmbed } from '@/components/ExternalEmbed'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -46,22 +48,51 @@ type Args = {
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = 'home' } = await paramsPromise
-  // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
   const url = '/' + decodedSlug
-  let page: RequiredDataFromCollectionSlug<'pages'> | null
 
-  page = await queryPageBySlug({
+  let page: RequiredDataFromCollectionSlug<'pages'> | null = await queryPageBySlug({
     slug: decodedSlug,
   })
 
-  // Remove this code once your website is seeded
+  // Remove this fallback once your website is seeded.
   if (!page && slug === 'home') {
     page = homeStatic
   }
 
   if (!page) {
-    return <PayloadRedirects url={url} />
+    const legalPage = await queryLegalPageBySlug({ slug: decodedSlug })
+
+    if (!legalPage) {
+      return <PayloadRedirects url={url} />
+    }
+
+    return (
+      <article className="pt-16 pb-24">
+        <PageClient />
+        <PayloadRedirects disableNotFound url={url} />
+        <div className="container">
+          <h1 className="mb-8 text-4xl font-medium tracking-tight">{legalPage.title}</h1>
+          {legalPage.contentMode === 'externalEmbed' && legalPage.embed?.scriptURL ? (
+            <ExternalEmbed
+              scriptURL={legalPage.embed.scriptURL}
+              scriptID={legalPage.embed.scriptID}
+              scriptAttributes={legalPage.embed.scriptAttributes}
+              containerID={legalPage.embed.containerID}
+              containerClass={legalPage.embed.containerClass}
+            />
+          ) : (
+            legalPage.content && (
+              <RichText
+                className="mx-auto max-w-[48rem]"
+                data={legalPage.content}
+                enableGutter={false}
+              />
+            )
+          )}
+        </div>
+      </article>
+    )
   }
 
   const { hero, layout } = page
@@ -69,11 +100,8 @@ export default async function Page({ params: paramsPromise }: Args) {
   return (
     <article className="pt-16 pb-24">
       <PageClient />
-      {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
-
       {draft && <LivePreviewListener />}
-
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
     </article>
@@ -82,18 +110,23 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = 'home' } = await paramsPromise
-  // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
-  const page = await queryPageBySlug({
-    slug: decodedSlug,
-  })
+  const page = await queryPageBySlug({ slug: decodedSlug })
 
-  return generateMeta({ doc: page })
+  if (page) {
+    return generateMeta({ doc: page })
+  }
+
+  const legalPage = await queryLegalPageBySlug({ slug: decodedSlug })
+
+  return {
+    title: legalPage?.title,
+    description: legalPage?.description || undefined,
+  }
 }
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
-
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
@@ -110,4 +143,22 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
   })
 
   return result.docs?.[0] || null
+})
+
+const queryLegalPageBySlug = cache(async ({ slug }: { slug: string }) => {
+  const payload = await getPayload({ config: configPromise })
+
+  const result = await payload.find({
+    collection: 'legal-pages' as any,
+    limit: 1,
+    pagination: false,
+    overrideAccess: true,
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+  })
+
+  return (result.docs?.[0] as any) || null
 })
