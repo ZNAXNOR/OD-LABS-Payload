@@ -1,0 +1,89 @@
+/* Legal pages share the site's dark, editorial presentation. */
+.legal-page {
+  padding-block: 4rem 6rem;
+
+  &__header {
+    margin-bottom: 2.5rem;
+  }
+
+  &__eyebrow {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #e94235;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0;
+    color: #f4f4f5;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+  }
+
+  &__description {
+    max-width: 48rem;
+    margin-top: 1.25rem;
+    color: #a1a1aa;
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  &__content {
+    min-width: 0;
+  }
+
+  &__rich-text {
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+
+  &__embed {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .uc-privacy-policy {
+    color: #e4e4e7;
+    line-height: 1.7;
+
+    /* Usercentrics renders this policy into the regular document DOM. */
+    .privacy-title {
+      color: #f4f4f5 !important;
+    }
+
+    :where(p, li, dd, dt, td, th, blockquote, label) {
+      color: #e4e4e7 !important;
+    }
+
+    :where(h1, h2, h3, h4, h5, h6) {
+      color: #f4f4f5 !important;
+    }
+
+    a {
+      color: #e94235 !important;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .legal-page {
+    padding-block: 3rem 4rem;
+
+    &__header {
+      margin-bottom: 2rem;
+    }
+
+    &__description {
+      font-size: 0.9375rem;
+    }
+  }
+}
