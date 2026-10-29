@@ -14,6 +14,7 @@ import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import RichText from '@/components/RichText'
 import { ExternalEmbed } from '@/components/ExternalEmbed'
+import './legal-page.scss'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -77,23 +78,34 @@ export default async function Page({ params: paramsPromise }: Args) {
     }
 
     return (
-      <article className="pt-16 pb-24">
+      <article className="legal-page">
         <PageClient />
         <PayloadRedirects disableNotFound url={url} />
         {draft && <LivePreviewListener />}
         <div className="container">
-          <h1 className="mb-8 text-4xl font-medium tracking-tight">{legalPage.title}</h1>
-          {legalPage.contentMode === 'externalEmbed' && legalPage.embed ? (
-            <ExternalEmbed embed={legalPage.embed} />
-          ) : (
-            legalPage.content && (
-              <RichText
-                className="mx-auto max-w-[48rem]"
-                data={legalPage.content}
-                enableGutter={false}
-              />
-            )
-          )}
+          <header className="legal-page__header">
+            <span className="legal-page__eyebrow">Legal</span>
+            <h1 className="legal-page__title">{legalPage.title}</h1>
+            {legalPage.meta?.description && (
+              <p className="legal-page__description">{legalPage.meta.description}</p>
+            )}
+          </header>
+
+          <div className="legal-page__content">
+            {legalPage.contentMode === 'externalEmbed' && legalPage.embed ? (
+              <div className="legal-page__embed">
+                <ExternalEmbed embed={legalPage.embed} />
+              </div>
+            ) : (
+              legalPage.content && (
+                <RichText
+                  className="legal-page__rich-text"
+                  data={legalPage.content}
+                  enableGutter={false}
+                />
+              )
+            )}
+          </div>
         </div>
       </article>
     )
