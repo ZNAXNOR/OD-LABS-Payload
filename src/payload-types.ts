@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    'legal-pages': LegalPage;
     media: Media;
     categories: Category;
     users: User;
@@ -96,6 +97,7 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    'legal-pages': LegalPagesSelect<false> | LegalPagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -875,6 +877,89 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal-pages".
+ */
+export interface LegalPage {
+  id: number;
+  title: string;
+  contentMode: 'richText' | 'externalEmbed';
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  embed?: {
+    preset?: ('cookiebot' | 'usercentrics' | 'custom') | null;
+    /**
+     * e.g. a6dbdbc7-4e29-4581-8033-e195c7bb3d0b
+     */
+    cookiebotDomainGroupID?: string | null;
+    cookiebotBlockingMode?: ('auto' | 'manual') | null;
+    /**
+     * e.g. bb7dc8b9-fa9a-4ce5-8af5-646cff58b79a
+     */
+    usercentricsPrivacyPolicyID?: string | null;
+    /**
+     * e.g. en, de, fr
+     */
+    usercentricsLanguage?: string | null;
+    scripts?:
+      | {
+          src: string;
+          /**
+           * Optional HTML id attribute for the script tag.
+           */
+          id?: string | null;
+          /**
+           * Key-value attributes (e.g. data-cbid, privacy-policy-id, async, type).
+           */
+          attributes?:
+            | {
+                name: string;
+                /**
+                 * Value for attribute, or "true" / blank for boolean flags.
+                 */
+                value?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+        }[]
+      | null;
+    containerID?: string | null;
+    /**
+     * For example: uc-privacy-policy
+     */
+    containerClass?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "test-documents".
  */
 export interface TestDocument {
@@ -1286,6 +1371,10 @@ export interface PayloadLockedDocument {
         value: number | Post;
       } | null)
     | ({
+        relationTo: 'legal-pages';
+        value: number | LegalPage;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -1580,6 +1669,51 @@ export interface PostsSelect<T extends boolean = true> {
     | {
         id?: T;
         name?: T;
+      };
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal-pages_select".
+ */
+export interface LegalPagesSelect<T extends boolean = true> {
+  title?: T;
+  contentMode?: T;
+  content?: T;
+  embed?:
+    | T
+    | {
+        preset?: T;
+        cookiebotDomainGroupID?: T;
+        cookiebotBlockingMode?: T;
+        usercentricsPrivacyPolicyID?: T;
+        usercentricsLanguage?: T;
+        scripts?:
+          | T
+          | {
+              src?: T;
+              id?: T;
+              attributes?:
+                | T
+                | {
+                    name?: T;
+                    value?: T;
+                    id?: T;
+                  };
+            };
+        containerID?: T;
+        containerClass?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
       };
   generateSlug?: T;
   slug?: T;
@@ -2236,6 +2370,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'legal-pages';
+          value: number | LegalPage;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

@@ -83,14 +83,8 @@ export default async function Page({ params: paramsPromise }: Args) {
         {draft && <LivePreviewListener />}
         <div className="container">
           <h1 className="mb-8 text-4xl font-medium tracking-tight">{legalPage.title}</h1>
-          {legalPage.contentMode === 'externalEmbed' && legalPage.embed?.scriptURL ? (
-            <ExternalEmbed
-              scriptURL={legalPage.embed.scriptURL}
-              scriptID={legalPage.embed.scriptID}
-              scriptAttributes={legalPage.embed.scriptAttributes}
-              containerID={legalPage.embed.containerID}
-              containerClass={legalPage.embed.containerClass}
-            />
+          {legalPage.contentMode === 'externalEmbed' && legalPage.embed ? (
+            <ExternalEmbed embed={legalPage.embed} />
           ) : (
             legalPage.content && (
               <RichText

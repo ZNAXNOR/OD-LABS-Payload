@@ -104,56 +104,135 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
               },
               fields: [
                 {
-                  name: 'scriptURL',
-                  label: 'Script URL',
-                  type: 'text',
-                  required: true,
-                  validate: (value) => {
-                    if (!value) return 'A script URL is required.'
-                    try {
-                      const url = new URL(value)
-                      return url.protocol === 'https:' || 'Use an HTTPS script URL.'
-                    } catch {
-                      return 'Enter a valid script URL.'
-                    }
-                  },
+                  name: 'preset',
+                  label: 'Embed Preset',
+                  type: 'select',
+                  defaultValue: 'custom',
+                  options: [
+                    { label: 'Cookiebot (UC + Declaration)', value: 'cookiebot' },
+                    { label: 'Usercentrics Privacy Policy', value: 'usercentrics' },
+                    { label: 'Custom Scripts & Container', value: 'custom' },
+                  ],
                 },
+                // Cookiebot Preset Fields
                 {
-                  name: 'scriptID',
-                  label: 'Script ID',
+                  name: 'cookiebotDomainGroupID',
+                  label: 'Cookiebot Domain Group ID (CBID)',
                   type: 'text',
                   admin: {
-                    description: 'Optional HTML id for the script element.',
+                    condition: (_, siblingData) => siblingData?.preset === 'cookiebot',
+                    description: 'e.g. a6dbdbc7-4e29-4581-8033-e195c7bb3d0b',
                   },
                 },
                 {
-                  name: 'scriptAttributes',
+                  name: 'cookiebotBlockingMode',
+                  label: 'Blocking Mode',
+                  type: 'select',
+                  defaultValue: 'auto',
+                  options: [
+                    { label: 'Auto', value: 'auto' },
+                    { label: 'Manual', value: 'manual' },
+                  ],
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.preset === 'cookiebot',
+                  },
+                },
+                // Usercentrics Preset Fields
+                {
+                  name: 'usercentricsPrivacyPolicyID',
+                  label: 'Privacy Policy ID',
+                  type: 'text',
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.preset === 'usercentrics',
+                    description: 'e.g. bb7dc8b9-fa9a-4ce5-8af5-646cff58b79a',
+                  },
+                },
+                {
+                  name: 'usercentricsLanguage',
+                  label: 'Language',
+                  type: 'text',
+                  defaultValue: 'en',
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.preset === 'usercentrics',
+                    description: 'e.g. en, de, fr',
+                  },
+                },
+                // Custom Embed Fields
+                {
+                  name: 'scripts',
+                  label: 'Scripts',
                   type: 'array',
+                  labels: {
+                    singular: 'Script',
+                    plural: 'Scripts',
+                  },
                   admin: {
-                    description:
-                      'Optional script attributes. Use data-* attributes, async, defer, type, or crossorigin. Do not include src or event-handler attributes.',
-                    initCollapsed: true,
+                    condition: (_, siblingData) => siblingData?.preset === 'custom',
+                    initCollapsed: false,
                   },
                   fields: [
                     {
-                      name: 'name',
+                      name: 'src',
+                      label: 'Script URL (src)',
                       type: 'text',
                       required: true,
-                      admin: {
-                        width: '50%',
+                      validate: (value: any) => {
+                        if (!value) return 'A script URL is required.'
+                        try {
+                          const url = new URL(value)
+                          return url.protocol === 'https:' || 'Use an HTTPS script URL.'
+                        } catch {
+                          return 'Enter a valid script URL.'
+                        }
                       },
-                      validate: (value) =>
-                        value && /^(data-[a-z0-9_-]+|async|defer|type|crossorigin)$/i.test(value)
-                          ? true
-                          : 'Use a data-* attribute, async, defer, type, or crossorigin.',
                     },
                     {
-                      name: 'value',
+                      name: 'id',
+                      label: 'Script ID',
                       type: 'text',
                       admin: {
-                        width: '50%',
-                        description: 'For boolean attributes such as async, use true.',
+                        description: 'Optional HTML id attribute for the script tag.',
                       },
+                    },
+                    {
+                      name: 'attributes',
+                      label: 'Script Attributes',
+                      type: 'array',
+                      admin: {
+                        description: 'Key-value attributes (e.g. data-cbid, privacy-policy-id, async, type).',
+                        initCollapsed: true,
+                      },
+                      fields: [
+                        {
+                          name: 'name',
+                          label: 'Attribute Name',
+                          type: 'text',
+                          required: true,
+                          admin: {
+                            width: '50%',
+                          },
+                          validate: (value: any) => {
+                            if (!value) return 'Attribute name is required.'
+                            const trimmed = value.trim()
+                            if (/^on[a-z]+/i.test(trimmed)) {
+                              return 'Event handler attributes (on*) are not allowed for security.'
+                            }
+                            if (!/^[a-zA-Z0-9_\-:]+$/i.test(trimmed)) {
+                              return 'Enter a valid HTML attribute name.'
+                            }
+                            return true
+                          },
+                        },
+                        {
+                          name: 'value',
+                          label: 'Attribute Value',
+                          type: 'text',
+                          admin: {
+                            width: '50%',
+                            description: 'Value for attribute, or "true" / blank for boolean flags.',
+                          },
+                        },
+                      ],
                     },
                   ],
                 },
@@ -161,12 +240,16 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
                   name: 'containerID',
                   label: 'Container ID',
                   type: 'text',
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.preset === 'custom',
+                  },
                 },
                 {
                   name: 'containerClass',
                   label: 'Container CSS Class',
                   type: 'text',
                   admin: {
+                    condition: (_, siblingData) => siblingData?.preset === 'custom',
                     description: 'For example: uc-privacy-policy',
                   },
                 },
