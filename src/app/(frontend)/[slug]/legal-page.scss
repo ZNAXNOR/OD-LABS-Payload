@@ -57,6 +57,11 @@
       color: #f4f4f5 !important;
     }
 
+    .privacy-text,
+    .privacy-meta-text {
+      color: #e4e4e7 !important;
+    }
+
     :where(p, li, dd, dt, td, th, blockquote, label) {
       color: #e4e4e7 !important;
     }
