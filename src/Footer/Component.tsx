@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 import { Logo } from '@/components/Logo/Logo'
 import { LegalPageLinks } from '@/components/LegalPageLinks'
+import { ServiceStatus } from '@/components/ServiceStatus'
 import type { LegalPagesData } from '@/getLegalPagesData'
 import { ScrollToTop } from './ScrollToTop'
 import { FooterNav } from './Nav'
@@ -40,7 +41,6 @@ export async function Footer({ pagesData, legalPagesData = [] }: FooterProps) {
             <div className="font-mono text-[11px] tracking-widest text-zinc-600 uppercase">
               Pages
             </div>
-
             <div className="mt-4">
               <FooterNav pagesData={pagesData} />
             </div>
@@ -56,10 +56,10 @@ export async function Footer({ pagesData, legalPagesData = [] }: FooterProps) {
           <div className="h-px flex-1 bg-zinc-600" />
         </div>
 
-        {/* Meta */}
-        <div className="flex flex-col items-center justify-between gap-4 pt-2 font-mono text-xs text-zinc-400 sm:flex-row">
+        {/* Copyright, live service status, and utility action */}
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-zinc-900 pt-5 font-mono text-xs text-zinc-400 sm:flex-row">
           <div>© {new Date().getFullYear()} OD LABS. All rights reserved.</div>
-
+          <ServiceStatus variant="compact" />
           <ScrollToTop />
         </div>
 
