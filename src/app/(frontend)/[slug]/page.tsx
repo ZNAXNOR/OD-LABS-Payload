@@ -112,6 +112,12 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   return {
     title: legalPage?.meta?.title || legalPage?.title,
     description: legalPage?.meta?.description || undefined,
+    robots: legalPage?.meta?.excludeFromIndex
+      ? {
+          index: false,
+          follow: false,
+        }
+      : undefined,
   }
 }
 

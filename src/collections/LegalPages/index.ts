@@ -272,6 +272,16 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
             MetaTitleField({ hasGenerateFn: true }),
             MetaImageField({ relationTo: 'media' }),
             MetaDescriptionField({}),
+            {
+              name: 'excludeFromIndex',
+              type: 'checkbox',
+              label: 'Exclude from Index',
+              defaultValue: true,
+              admin: {
+                description:
+                  'Exclude this page from search engines and the OD LABS AI knowledgebase',
+              },
+            },
             PreviewField({
               hasGenerateFn: true,
               titlePath: 'meta.title',

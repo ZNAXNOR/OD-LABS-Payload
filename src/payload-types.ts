@@ -948,6 +948,10 @@ export interface LegalPage {
      */
     image?: (number | null) | Media;
     description?: string | null;
+    /**
+     * Exclude this page from search engines and the OD LABS AI knowledgebase
+     */
+    excludeFromIndex?: boolean | null;
   };
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -1714,6 +1718,7 @@ export interface LegalPagesSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        excludeFromIndex?: T;
       };
   generateSlug?: T;
   slug?: T;

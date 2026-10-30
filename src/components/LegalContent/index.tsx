@@ -54,29 +54,24 @@ export const LegalContent: React.FC<Props> = ({ legalPage }) => {
 
   return (
     <article className="legal-page">
-      {isExternalEmbed ? (
-        <>
-          <div className="container">
-            <LegalHeader legalPage={legalPage} />
-          </div>
-          <div className="legal-page__embed">
-            <ExternalEmbed embed={legalPage.embed} />
-          </div>
-        </>
-      ) : (
-        <div className="container">
-          <LegalHeader legalPage={legalPage} showEffectiveDate />
-          <div className="legal-page__content">
-            {legalPage.content && (
+      <div className="container">
+        <LegalHeader legalPage={legalPage} showEffectiveDate={!isExternalEmbed} />
+        <div className="legal-page__content">
+          {isExternalEmbed && legalPage.embed ? (
+            <div className="legal-page__embed">
+              <ExternalEmbed embed={legalPage.embed} />
+            </div>
+          ) : (
+            legalPage.content && (
               <RichText
                 className="legal-page__rich-text"
                 data={legalPage.content}
                 enableGutter={false}
               />
-            )}
-          </div>
+            )
+          )}
         </div>
-      )}
+      </div>
     </article>
   )
 }
