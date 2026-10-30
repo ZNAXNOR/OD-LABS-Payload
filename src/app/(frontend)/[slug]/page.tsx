@@ -12,9 +12,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import RichText from '@/components/RichText'
-import { ExternalEmbed } from '@/components/ExternalEmbed'
-import './legal-page.scss'
+import { LegalContent } from '@/components/LegalContent'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -78,36 +76,12 @@ export default async function Page({ params: paramsPromise }: Args) {
     }
 
     return (
-      <article className="legal-page">
+      <React.Fragment>
         <PageClient />
         <PayloadRedirects disableNotFound url={url} />
         {draft && <LivePreviewListener />}
-        <div className="container">
-          <header className="legal-page__header">
-            <span className="legal-page__eyebrow">Legal</span>
-            <h1 className="legal-page__title">{legalPage.title}</h1>
-            {legalPage.meta?.description && (
-              <p className="legal-page__description">{legalPage.meta.description}</p>
-            )}
-          </header>
-
-          <div className="legal-page__content">
-            {legalPage.contentMode === 'externalEmbed' && legalPage.embed ? (
-              <div className="legal-page__embed">
-                <ExternalEmbed embed={legalPage.embed} />
-              </div>
-            ) : (
-              legalPage.content && (
-                <RichText
-                  className="legal-page__rich-text"
-                  data={legalPage.content}
-                  enableGutter={false}
-                />
-              )
-            )}
-          </div>
-        </div>
-      </article>
+        <LegalContent legalPage={legalPage} />
+      </React.Fragment>
     )
   }
 
