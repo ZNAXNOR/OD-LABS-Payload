@@ -19,6 +19,7 @@ import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { LayoutClient } from './LayoutClient'
 import { getPagesData } from '@/getPagesData'
+import { getLegalPagesData } from '@/getLegalPagesData'
 
 export default async function RootLayout({
   children,
@@ -28,11 +29,18 @@ export default async function RootLayout({
   const { isEnabled } = await draftMode()
 
   let pagesData
+  let legalPagesData
 
   try {
     pagesData = await getPagesData()
   } catch (error) {
     console.error('Failed to fetch pages data:', error)
+  }
+
+  try {
+    legalPagesData = await getLegalPagesData()
+  } catch (error) {
+    console.error('Failed to fetch published legal pages:', error)
   }
 
   return (
@@ -63,9 +71,10 @@ export default async function RootLayout({
 
           <LayoutClient
             header={<Header />}
-            footer={<Footer pagesData={pagesData} />}
+            footer={<Footer pagesData={pagesData} legalPagesData={legalPagesData} />}
             leftRail={<LeftRail />}
             pagesData={pagesData}
+            legalPagesData={legalPagesData}
           >
             {children}
           </LayoutClient>
