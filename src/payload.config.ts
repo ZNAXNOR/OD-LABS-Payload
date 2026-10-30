@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import pg from 'pg'
 import { resendAdapter } from '@payloadcms/email-resend'
 
 import sharp from 'sharp'
@@ -72,6 +73,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    pg,
     extensions: ['vector'],
     afterSchemaInit: [vectorIntegration.afterSchemaInitHook],
   }),
