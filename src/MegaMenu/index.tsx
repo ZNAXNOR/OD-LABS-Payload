@@ -7,14 +7,16 @@ import { MegaMenuMain } from './main'
 import { usePathname } from 'next/navigation'
 
 import type { PagesData } from '../getPagesData'
+import type { LegalPagesData } from '../getLegalPagesData'
 
 interface MegaMenuProps {
   open: boolean
   onClose: () => void
   pages: PagesData[]
+  legalPages: LegalPagesData[]
 }
 
-export const MegaMenu = ({ open, onClose, pages }: MegaMenuProps) => {
+export const MegaMenu = ({ open, onClose, pages, legalPages }: MegaMenuProps) => {
   const pathname = usePathname()
   const currentSlug = pathname === '/' ? 'home' : pathname.split('/')[1] || 'home'
   const currentPage = pages.find((page) => page.slug === currentSlug) || null
@@ -36,7 +38,7 @@ export const MegaMenu = ({ open, onClose, pages }: MegaMenuProps) => {
   useEffect(() => {
     if (!open) return
 
-    //Disable scroll on body when megamenu opens
+    // Disable scroll on body when the mega menu opens.
     const originalStyle = document.body.style.overflow
 
     document.body.style.overflow = 'hidden'
@@ -61,7 +63,7 @@ export const MegaMenu = ({ open, onClose, pages }: MegaMenuProps) => {
 
       <MegaMenuMain pages={pages} currentPage={currentPage} />
 
-      <MegaMenuFooter />
+      <MegaMenuFooter legalPages={legalPages} />
     </div>
   )
 }
