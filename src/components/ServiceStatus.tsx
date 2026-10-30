@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 import type { ServiceStatus, UptimeKumaStatus } from '@/lib/uptime-kuma'
 
 type ServiceStatusProps = {
@@ -31,35 +31,111 @@ const presentation: Record<ServiceStatus, { dot: string; text: string; descripti
   },
 }
 
-export function ServiceStatus({ variant = 'compact', className = '' }: ServiceStatusProps) {
-  const [status, setStatus] = useState<ServiceStatus>('unknown')
+const CLIENT_CACHE_TTL_MS = 5 * 60 * 1000 // 5 minutes
 
-  useEffect(() => {
-    let active = true
-    const refresh = async () => {
-      try {
-        const response = await fetch('/api/service-status', {
-          cache: 'no-store',
-          headers: { Accept: 'application/json' },
-        })
-        if (!response.ok) throw new Error('Status endpoint unavailable')
-        const data = (await response.json()) as UptimeKumaStatus
-        const allowed: ServiceStatus[] = ['operational', 'degraded', 'outage', 'unknown']
-        if (!allowed.includes(data.status)) throw new Error('Invalid status response')
-        if (active) setStatus(data.status)
-      } catch {
-        if (active) setStatus('unknown')
+interface StatusState {
+  status: ServiceStatus
+  lastFetched: number
+}
+
+let globalState: StatusState = {
+  status: 'unknown',
+  lastFetched: 0,
+}
+
+const listeners = new Set<() => void>()
+let inFlightFetch: Promise<ServiceStatus> | null = null
+let sharedInterval: ReturnType<typeof setInterval> | null = null
+let subscriberCount = 0
+
+function notify() {
+  listeners.forEach((listener) => listener())
+}
+
+async function fetchServiceStatus(): Promise<ServiceStatus> {
+  const now = Date.now()
+  if (globalState.lastFetched > 0 && now - globalState.lastFetched < CLIENT_CACHE_TTL_MS) {
+    return globalState.status
+  }
+
+  if (inFlightFetch) {
+    return inFlightFetch
+  }
+
+  inFlightFetch = (async () => {
+    try {
+      const response = await fetch('/api/service-status', {
+        headers: { Accept: 'application/json' },
+      })
+      if (!response.ok) throw new Error('Status endpoint unavailable')
+      const data = (await response.json()) as UptimeKumaStatus
+      const allowed: ServiceStatus[] = ['operational', 'degraded', 'outage', 'unknown']
+      const newStatus = allowed.includes(data.status) ? data.status : 'unknown'
+      globalState = {
+        status: newStatus,
+        lastFetched: Date.now(),
       }
+      notify()
+      return newStatus
+    } catch {
+      if (globalState.lastFetched === 0) {
+        globalState = {
+          status: 'unknown',
+          lastFetched: Date.now(),
+        }
+        notify()
+      }
+      return globalState.status
+    } finally {
+      inFlightFetch = null
     }
+  })()
 
-    void refresh()
-    const interval = window.setInterval(() => void refresh(), 60_000)
-    return () => {
-      active = false
-      window.clearInterval(interval)
-    }
-  }, [])
+  return inFlightFetch
+}
 
+function startGlobalPolling() {
+  if (!sharedInterval) {
+    sharedInterval = setInterval(() => {
+      void fetchServiceStatus()
+    }, CLIENT_CACHE_TTL_MS)
+  }
+}
+
+function stopGlobalPolling() {
+  if (sharedInterval && subscriberCount === 0) {
+    clearInterval(sharedInterval)
+    sharedInterval = null
+  }
+}
+
+export function useServiceStatus(): ServiceStatus {
+  return useSyncExternalStore(
+    (onStoreChange) => {
+      listeners.add(onStoreChange)
+      subscriberCount++
+      startGlobalPolling()
+
+      const isStale = Date.now() - globalState.lastFetched >= CLIENT_CACHE_TTL_MS
+      if (isStale) {
+        void fetchServiceStatus()
+      }
+
+      return () => {
+        listeners.delete(onStoreChange)
+        subscriberCount--
+        if (subscriberCount === 0) {
+          stopGlobalPolling()
+        }
+      }
+    },
+    () => globalState.status,
+    () => 'unknown',
+  )
+}
+
+export function ServiceStatus({ variant = 'compact', className = '' }: ServiceStatusProps) {
+  const status = useServiceStatus()
   const current = presentation[status]
   const isBlock = variant === 'block'
 
@@ -73,7 +149,7 @@ export function ServiceStatus({ variant = 'compact', className = '' }: ServiceSt
         'group font-mono transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl',
         isBlock
           ? 'flex w-full items-center justify-between gap-4 border-t border-zinc-600/60 pt-6 text-xs'
-          : 'inline-flex items-center gap-2 text-xs tracking-wide',
+          : 'inline-flex items-center gap-2 text-[11px] tracking-wide',
         className,
       ].join(' ')}
     >

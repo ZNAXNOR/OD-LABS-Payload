@@ -50,37 +50,64 @@ async function fetchJSON<T>(url: string): Promise<T> {
   return (await response.json()) as T
 }
 
-/** Reads Uptime Kuma's documented public status-page and heartbeat endpoints. */
-export async function getUptimeKumaStatus(): Promise<UptimeKumaStatus> {
+const SERVER_CACHE_TTL_MS = 5 * 60 * 1000 // 5 minutes
+let cachedStatus: { data: UptimeKumaStatus; timestamp: number } | null = null
+let inFlightStatusPromise: Promise<UptimeKumaStatus> | null = null
+
+async function fetchUptimeKumaStatusFromSource(): Promise<UptimeKumaStatus> {
   const endpoint = getStatusPageEndpoint()
   if (!endpoint) return result('unknown')
-  try {
-    const slug = encodeURIComponent(endpoint.slug)
-    const pageURL = endpoint.origin + '/api/status-page/' + slug
-    const heartbeatURL = endpoint.origin + '/api/status-page/heartbeat/' + slug
-    const [page, heartbeatData] = await Promise.all([
-      fetchJSON<StatusPageResponse>(pageURL),
-      fetchJSON<HeartbeatResponse>(heartbeatURL),
-    ])
-    if (page.config?.published === false) return result('unknown')
-    const monitors = (page.publicGroupList ?? []).flatMap((group) => group.monitorList ?? [])
-    if (monitors.length === 0) return result('unknown')
-    const heartbeats = monitors.map((monitor) => {
-      const history = heartbeatData.heartbeatList?.[String(monitor.id)] ?? []
-      if (history.length === 0) return null
-      return history.reduce((latest, current) =>
-        Date.parse(current.time) > Date.parse(latest.time) ? current : latest,
-      )
-    })
-    if (heartbeats.some((heartbeat) => heartbeat?.status === 0)) return result('outage')
-    const incidentStyle = page.incident?.style?.toLowerCase()
-    if (incidentStyle === 'danger' || incidentStyle === 'critical') return result('outage')
-    if (incidentStyle === 'warning' || heartbeats.some((heartbeat) => heartbeat?.status === 3)) {
-      return result('degraded')
-    }
-    if (heartbeats.some((heartbeat) => heartbeat?.status !== 1)) return result('unknown')
-    return result('operational')
-  } catch {
-    return result('unknown')
+
+  const slug = encodeURIComponent(endpoint.slug)
+  const pageURL = endpoint.origin + '/api/status-page/' + slug
+  const heartbeatURL = endpoint.origin + '/api/status-page/heartbeat/' + slug
+  const [page, heartbeatData] = await Promise.all([
+    fetchJSON<StatusPageResponse>(pageURL),
+    fetchJSON<HeartbeatResponse>(heartbeatURL),
+  ])
+  if (page.config?.published === false) return result('unknown')
+  const monitors = (page.publicGroupList ?? []).flatMap((group) => group.monitorList ?? [])
+  if (monitors.length === 0) return result('unknown')
+  const heartbeats = monitors.map((monitor) => {
+    const history = heartbeatData.heartbeatList?.[String(monitor.id)] ?? []
+    if (history.length === 0) return null
+    return history.reduce((latest, current) =>
+      Date.parse(current.time) > Date.parse(latest.time) ? current : latest,
+    )
+  })
+  if (heartbeats.some((heartbeat) => heartbeat?.status === 0)) return result('outage')
+  const incidentStyle = page.incident?.style?.toLowerCase()
+  if (incidentStyle === 'danger' || incidentStyle === 'critical') return result('outage')
+  if (incidentStyle === 'warning' || heartbeats.some((heartbeat) => heartbeat?.status === 3)) {
+    return result('degraded')
   }
+  if (heartbeats.some((heartbeat) => heartbeat?.status !== 1)) return result('unknown')
+  return result('operational')
+}
+
+/** Reads Uptime Kuma's documented public status-page and heartbeat endpoints with in-memory caching and request deduplication. */
+export async function getUptimeKumaStatus(): Promise<UptimeKumaStatus> {
+  const now = Date.now()
+  if (cachedStatus && now - cachedStatus.timestamp < SERVER_CACHE_TTL_MS) {
+    return cachedStatus.data
+  }
+
+  if (inFlightStatusPromise) {
+    return inFlightStatusPromise
+  }
+
+  inFlightStatusPromise = (async () => {
+    try {
+      const data = await fetchUptimeKumaStatusFromSource()
+      cachedStatus = { data, timestamp: Date.now() }
+      return data
+    } catch {
+      if (cachedStatus) return cachedStatus.data
+      return result('unknown')
+    } finally {
+      inFlightStatusPromise = null
+    }
+  })()
+
+  return inFlightStatusPromise
 }
