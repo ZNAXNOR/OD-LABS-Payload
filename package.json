@@ -78,7 +78,9 @@
     "sharp": "0.34.2",
     "streamdown": "^2.7.1",
     "tailwind-merge": "^3.7.0",
-    "use-stick-to-bottom": "^1.1.6"
+    "use-stick-to-bottom": "^1.1.6",
+    "@sentry/nextjs": "^10.22.0",
+    "@payloadcms/plugin-sentry": "3.88.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.7",
