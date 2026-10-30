@@ -4,6 +4,7 @@ import React from 'react'
 import { RightRail } from '@/Rail/Right'
 import { MegaMenu } from '@/MegaMenu'
 import type { PagesData } from '@/getPagesData'
+import type { LegalPagesData } from '@/getLegalPagesData'
 import { MegaMenuProvider, useMegaMenu } from '@/providers/MegaMenu'
 import { usePathname } from 'next/navigation'
 
@@ -13,12 +14,14 @@ const LayoutClientContent = ({
   footer,
   leftRail,
   pagesData,
+  legalPagesData,
 }: {
   children: React.ReactNode
   header: React.ReactNode
   footer: React.ReactNode
   leftRail: React.ReactNode
   pagesData?: PagesData[]
+  legalPagesData?: LegalPagesData[]
 }) => {
   const { isOpen, openMenu, closeMenu } = useMegaMenu()
   const pathname = usePathname()
@@ -44,7 +47,12 @@ const LayoutClientContent = ({
       </div>
 
       {/* Mega menu */}
-      <MegaMenu open={isOpen} onClose={closeMenu} pages={pagesData ?? []} />
+      <MegaMenu
+        open={isOpen}
+        onClose={closeMenu}
+        pages={pagesData ?? []}
+        legalPages={legalPagesData ?? []}
+      />
     </>
   )
 }
@@ -55,6 +63,7 @@ export const LayoutClient = (props: {
   footer: React.ReactNode
   leftRail: React.ReactNode
   pagesData?: PagesData[]
+  legalPagesData?: LegalPagesData[]
 }) => {
   return (
     <MegaMenuProvider>
