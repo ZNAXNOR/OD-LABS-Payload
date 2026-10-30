@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
@@ -18,6 +19,7 @@ import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { LayoutClient } from './LayoutClient'
 import { getPagesData } from '@/getPagesData'
+import { getLegalPagesData } from '@/getLegalPagesData'
 
 export default async function RootLayout({
   children,
@@ -27,11 +29,18 @@ export default async function RootLayout({
   const { isEnabled } = await draftMode()
 
   let pagesData
+  let legalPagesData
 
   try {
     pagesData = await getPagesData()
   } catch (error) {
     console.error('Failed to fetch pages data:', error)
+  }
+
+  try {
+    legalPagesData = await getLegalPagesData()
+  } catch (error) {
+    console.error('Failed to fetch published legal pages:', error)
   }
 
   return (
@@ -41,6 +50,13 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <Script
+          id="Cookiebot"
+          src="https://consent.cookiebot.com/uc.js"
+          data-cbid="a6dbdbc7-4e29-4581-8033-e195c7bb3d0b"
+          data-blockingmode="auto"
+          strategy="beforeInteractive"
+        />
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
@@ -62,9 +78,10 @@ export default async function RootLayout({
 
           <LayoutClient
             header={<Header />}
-            footer={<Footer pagesData={pagesData} />}
+            footer={<Footer pagesData={pagesData} legalPagesData={legalPagesData} />}
             leftRail={<LeftRail />}
             pagesData={pagesData}
+            legalPagesData={legalPagesData}
           >
             {children}
           </LayoutClient>

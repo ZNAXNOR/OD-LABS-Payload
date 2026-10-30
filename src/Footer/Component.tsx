@@ -1,15 +1,18 @@
 import Link from 'next/link'
 
 import { Logo } from '@/components/Logo/Logo'
+import { LegalPageLinks } from '@/components/LegalPageLinks'
+import type { LegalPagesData } from '@/getLegalPagesData'
 import { ScrollToTop } from './ScrollToTop'
 import { FooterNav } from './Nav'
-import { PagesData } from '@/getPagesData'
+import type { PagesData } from '@/getPagesData'
 
 interface FooterProps {
   pagesData?: PagesData[]
+  legalPagesData?: LegalPagesData[]
 }
 
-export async function Footer({ pagesData }: FooterProps) {
+export async function Footer({ pagesData, legalPagesData = [] }: FooterProps) {
   const homePage = pagesData?.find((page) => page.href === '/')
 
   return (
@@ -59,6 +62,16 @@ export async function Footer({ pagesData }: FooterProps) {
 
           <ScrollToTop />
         </div>
+
+        {legalPagesData.length > 0 && (
+          <div className="mt-4 flex flex-col items-center gap-2 border-t border-zinc-900 pt-4 font-mono text-[10px] leading-relaxed text-zinc-600 sm:flex-row sm:justify-between">
+            <LegalPageLinks
+              pages={legalPagesData}
+              className="max-w-full [&_a:hover]:text-zinc-300"
+            />
+            <span className="text-center sm:text-right">Legal information</span>
+          </div>
+        )}
       </div>
     </footer>
   )
