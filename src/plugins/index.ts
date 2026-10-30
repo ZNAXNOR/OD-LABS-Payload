@@ -1,3 +1,5 @@
+import * as Sentry from '@sentry/nextjs'
+import { sentryPlugin } from '@payloadcms/plugin-sentry'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
@@ -63,6 +65,7 @@ const testDocumentsToKnowledgePool: ToKnowledgePoolFn = async (doc) => {
 }
 
 export const plugins: Plugin[] = [
+  sentryPlugin({ Sentry }),
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
