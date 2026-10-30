@@ -73,16 +73,16 @@ export function ServiceStatus({ variant = 'compact', className = '' }: ServiceSt
         'group font-mono transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl',
         isBlock
           ? 'flex w-full items-center justify-between gap-4 border-t border-zinc-600/60 pt-6 text-xs'
-          : 'inline-flex items-center gap-2 text-[11px] tracking-wide',
+          : 'inline-flex items-center gap-2 text-xs tracking-wide',
         className,
       ].join(' ')}
     >
       {isBlock ? (
         <>
-          <span className="flex min-w-0 items-center gap-3">
-            <span aria-hidden="true" className={'h-2 w-2 shrink-0 rounded-full ' + current.dot} />
-            <span className="flex min-w-0 flex-col gap-1">
-              <span className="text-[11px] tracking-widest text-zinc-400 uppercase">Service status</span>
+          <span className="flex min-w-0 flex-col gap-2">
+            <span className="text-xs tracking-widest text-zinc-400 uppercase">Service status</span>
+            <span className="flex items-center gap-2.5">
+              <span aria-hidden="true" className={'h-2 w-2 shrink-0 rounded-full ' + current.dot} />
               <span className={'leading-relaxed ' + current.text}>{current.description}</span>
             </span>
           </span>
