@@ -50,7 +50,7 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
     },
     preview: (data, { req }) =>
       generatePreviewPath({
-        slug: data.slug as string,
+        slug: data?.slug as string,
         collection: 'legal-pages',
         req,
       }),
@@ -184,7 +184,7 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
                           const url = new URL(value)
                           return url.protocol === 'https:' || 'Use an HTTPS script URL.'
                         } catch {
-                          return 'Enter a valid URL.'
+                          return 'Enter a valid script URL.'
                         }
                       },
                     },
