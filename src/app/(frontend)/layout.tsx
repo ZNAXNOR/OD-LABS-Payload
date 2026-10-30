@@ -50,23 +50,9 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <Script
-          id="Cookiebot"
-          src="https://consent.cookiebot.com/uc.js"
-          data-cbid="a6dbdbc7-4e29-4581-8033-e195c7bb3d0b"
-          data-blockingmode="auto"
-          strategy="beforeInteractive"
-        />
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-        <script
-          id="Cookiebot"
-          src="https://consent.cookiebot.com/uc.js"
-          data-cbid="a6dbdbc7-4e29-4581-8033-e195c7bb3d0b"
-          data-blockingmode="auto"
-          type="text/javascript"
-        ></script>
       </head>
       <body>
         <Providers>
