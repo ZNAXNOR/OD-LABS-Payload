@@ -9,15 +9,17 @@ import { Active } from './ConversationContainer/Active'
 import { Composer } from './Composer/Component'
 import { suggestions } from './suggestions'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { DEFAULT_CONTENT_SCOPE, type ContentScope } from './contentScopes'
 
 type AIMode = 'initial' | 'conversation'
 
 export const AIInterface = () => {
   const [input, setInput] = useState('')
   const [mode, setMode] = useState<AIMode>('initial')
+  const [scope, setScope] = useState<ContentScope>(DEFAULT_CONTENT_SCOPE)
 
   const { messages, sendMessage, status, setMessages, stop, regenerate } =
-    useAIInterface()
+    useAIInterface(scope)
 
   const isGenerating = status === 'submitted' || status === 'streaming'
 
@@ -63,6 +65,7 @@ export const AIInterface = () => {
               status={status}
               regenerate={regenerate}
               submitSuggestion={submitMessage}
+              scope={scope}
             />
           )}
         </div>
@@ -74,6 +77,8 @@ export const AIInterface = () => {
           status={status}
           stop={stop}
           sticky
+          scope={scope}
+          setScope={setScope}
         />
       </section>
     </TooltipProvider>
