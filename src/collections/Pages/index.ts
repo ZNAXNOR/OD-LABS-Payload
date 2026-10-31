@@ -100,11 +100,11 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'excludeFromIndex',
               type: 'checkbox',
-              label: 'Exclude from Index',
+              label: 'Exclude from AI Index',
               defaultValue: false,
               admin: {
                 description:
-                  'Exclude this page from search engines and the OD LABS AI knowledgebase',
+                  'Exclude this page from the OD LABS AI knowledgebase. This setting does not control search-engine indexing.',
               },
             },
             PreviewField({
