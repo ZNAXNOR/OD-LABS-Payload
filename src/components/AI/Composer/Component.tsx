@@ -63,8 +63,9 @@ export const Composer = ({
                 <select
                   aria-label="Search content category"
                   value={scope}
+                  disabled={status === 'submitted' || status === 'streaming'}
                   onChange={(event) => setScope(event.target.value as ContentScope)}
-                  className="h-8 max-w-36 appearance-none rounded-md border border-zinc-800 bg-zinc-950 py-1 pl-2.5 pr-7 text-xs text-zinc-300 outline-none transition-colors hover:border-zinc-600 focus-visible:border-odl/70 focus-visible:ring-1 focus-visible:ring-odl/50"
+                  className="h-8 max-w-36 appearance-none rounded-md border border-zinc-800 bg-zinc-950 py-1 pl-2.5 pr-7 text-xs text-zinc-300 outline-none transition-colors hover:border-zinc-600 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:border-odl/70 focus-visible:ring-1 focus-visible:ring-odl/50"
                 >
                   {CONTENT_SCOPES.map((option) => (
                     <option key={option.value} value={option.value}>
