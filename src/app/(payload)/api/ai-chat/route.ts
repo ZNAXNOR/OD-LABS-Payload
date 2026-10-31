@@ -10,6 +10,7 @@ import { openai } from '@ai-sdk/openai'
 import { NextRequest } from 'next/server'
 
 import { searchKnowledge } from '@/vectorize/search'
+import { DEFAULT_CONTENT_SCOPE, isContentScope } from '@/components/AI/contentScopes'
 
 const MAX_HISTORY_MESSAGES = 20
 const MAX_QUERY_LENGTH = 4_000
@@ -57,6 +58,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const scopeValue = 'scope' in body ? body.scope : DEFAULT_CONTENT_SCOPE
+    if (!isContentScope(scopeValue)) {
+      return Response.json({ error: 'Unsupported content scope.' }, { status: 400 })
+    }
+    const scope = scopeValue
+
     const messages = body.messages as UIMessage[]
     const lastMessage = messages.at(-1)
 
@@ -94,7 +101,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const results = await searchKnowledge(query, 5)
+    const results = await searchKnowledge(query, 5, scope)
 
     const context = results
       .map((result, index) => {
