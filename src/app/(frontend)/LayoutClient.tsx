@@ -37,7 +37,7 @@ const LayoutClientContent = ({
           {!isAIPage && header}
           <main
             id="main-content"
-            className={['flex-1', isAIPage ? 'flex min-h-svh flex-col' : ''].join(' ')}
+            className={['flex-1', isAIPage ? 'flex h-svh min-h-0 flex-col' : ''].join(' ')}
           >
             {children}
           </main>
