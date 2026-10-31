@@ -1,6 +1,7 @@
 import type { ToKnowledgePoolFn } from 'payloadcms-vectorize'
 
 import { lexicalToText } from './lexicalToText'
+import { splitTextIntoChunks } from './splitTextIntoChunks'
 
 export const postsToKnowledgePool: ToKnowledgePoolFn = async (doc) => {
   const title = typeof doc.title === 'string' ? doc.title : ''
@@ -9,13 +10,13 @@ export const postsToKnowledgePool: ToKnowledgePoolFn = async (doc) => {
 
   if (!content) return []
 
-  return [
-    {
-      chunk: `Post: ${title}\nSection: Article Content\n\n${content}`,
-      pageTitle: title,
-      pageSlug: slug ? `posts/${slug}` : '',
-      section: 'Article Content',
-      blockType: 'post',
-    },
-  ]
+  const parts = splitTextIntoChunks(content)
+
+  return parts.map((part, index) => ({
+    chunk: `Post: ${title}\nSection: Article Content${parts.length > 1 ? `\nPart: ${index + 1} of ${parts.length}` : ''}\n\n${part}`,
+    pageTitle: title,
+    pageSlug: slug ? `posts/${slug}` : '',
+    section: 'Article Content',
+    blockType: 'post',
+  }))
 }
