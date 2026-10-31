@@ -13,7 +13,7 @@ export const postsToKnowledgePool: ToKnowledgePoolFn = async (doc) => {
     {
       chunk: `Post: ${title}\nSection: Article Content\n\n${content}`,
       pageTitle: title,
-      pageSlug: slug,
+      pageSlug: slug ? `posts/${slug}` : '',
       section: 'Article Content',
       blockType: 'post',
     },
