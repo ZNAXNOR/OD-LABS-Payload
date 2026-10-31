@@ -8,6 +8,7 @@ import { Initial } from './ConversationContainer/Initial'
 import { Active } from './ConversationContainer/Active'
 import { Composer } from './Composer/Component'
 import { suggestions } from './suggestions'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 type AIMode = 'initial' | 'conversation'
 
@@ -45,34 +46,36 @@ export const AIInterface = () => {
   }
 
   return (
-    <section
-      id="ai-chat-workspace"
-      aria-label="OD LABS AI assistant"
-      className="mx-auto my-8 flex h-[min(78svh,900px)] min-h-[520px] w-[calc(100%-2rem)] max-w-6xl min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-zinc-800 bg-black text-white shadow-2xl shadow-black/30 sm:my-10 sm:w-[calc(100%-3rem)]"
-    >
-      <Header mode={mode} newConversation={newConversation} />
+    <TooltipProvider delayDuration={150}>
+      <section
+        id="ai-chat-workspace"
+        aria-label="OD LABS AI assistant"
+        className="mx-auto my-8 flex h-[min(78svh,900px)] min-h-[520px] w-[calc(100%-2rem)] max-w-6xl min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-zinc-800 bg-black text-white shadow-2xl shadow-black/30 sm:my-10 sm:w-[calc(100%-3rem)]"
+      >
+        <Header mode={mode} newConversation={newConversation} />
 
-      <div className="relative flex min-h-0 flex-1 flex-col">
-        {mode === 'initial' ? (
-          <Initial suggestedPrompts={suggestions} submit={submitMessage} />
-        ) : (
-          <Active
-            messages={messages}
-            status={status}
-            regenerate={regenerate}
-            submitSuggestion={submitMessage}
-          />
-        )}
-      </div>
+        <div className="relative flex min-h-0 flex-1 flex-col">
+          {mode === 'initial' ? (
+            <Initial suggestedPrompts={suggestions} submit={submitMessage} />
+          ) : (
+            <Active
+              messages={messages}
+              status={status}
+              regenerate={regenerate}
+              submitSuggestion={submitMessage}
+            />
+          )}
+        </div>
 
-      <Composer
-        input={input}
-        setInput={setInput}
-        onSubmit={handleSubmit}
-        status={status}
-        stop={stop}
-        sticky
-      />
-    </section>
+        <Composer
+          input={input}
+          setInput={setInput}
+          onSubmit={handleSubmit}
+          status={status}
+          stop={stop}
+          sticky
+        />
+      </section>
+    </TooltipProvider>
   )
 }

@@ -43,11 +43,17 @@ export const useConversation = useStickToBottomContext
 
 export type ConversationContentProps = ComponentProps<'div'>
 
-export const ConversationContent = ({ className, ...props }: ConversationContentProps) => (
+export const ConversationContent = ({
+  className,
+  children = null,
+  ...props
+}: ConversationContentProps) => (
   <StickToBottom.Content
     className={cn('flex min-h-max w-full flex-col gap-8 p-4 pb-8', className)}
     {...props}
-  />
+  >
+    {children}
+  </StickToBottom.Content>
 )
 
 export type ConversationEmptyStateProps = ComponentProps<'div'> & {
@@ -64,85 +70,99 @@ export const ConversationEmptyState = ({
   children,
   ...props
 }: ConversationEmptyStateProps) => (
-  <div className={cn('flex size-full flex-col items-center justify-center gap-3 p-8 text-center', className)} {...props}>
-    {children ?? (
-      <>
-        {icon && <div className="text-muted-foreground">{icon}</div>}
-        <div className="space-y-1">
-          <h3 className="text-sm font-medium">{title}</h3>
-          {description && <p className="text-muted-foreground text-sm">{description}</p>}
-        </div>
-      </>
+  <div
+    className={cn(
+      'flex min-h-[320px] flex-1 flex-col items-center justify-center gap-3 p-8 text-center text-zinc-400',
+      className,
     )}
+    {...props}
+  >
+    {icon ? <div className="text-zinc-500">{icon}</div> : null}
+    <div className="space-y-1">
+      <h3 className="font-mono text-sm font-medium text-white">{title}</h3>
+      <p className="max-w-md font-mono text-xs leading-relaxed text-zinc-400">{description}</p>
+    </div>
+    {children}
   </div>
 )
 
-export type ConversationScrollButtonProps = ComponentProps<typeof Button>
+export type ConversationScrollToBottomProps = ComponentProps<typeof Button>
 
-export const ConversationScrollButton = ({ className, ...props }: ConversationScrollButtonProps) => {
-  const { isAtBottom, scrollToBottom } = useConversation()
+export const ConversationScrollToBottom = ({
+  className,
+  children,
+  onClick,
+  ...props
+}: ConversationScrollToBottomProps) => {
+  const { isAtBottom, scrollToBottom } = useStickToBottomContext()
+
   if (isAtBottom) return null
 
   return (
     <Button
+      variant="outline"
+      size="sm"
       className={cn(
-        'absolute bottom-4 right-5 z-20 size-9 rounded-full border-zinc-700 bg-zinc-900 p-0 shadow-lg hover:bg-zinc-800',
+        'absolute bottom-4 left-1/2 -translate-x-1/2 shadow-lg backdrop-blur-md',
         className,
       )}
-      onClick={() => void scrollToBottom()}
-      size="icon"
-      type="button"
-      variant="outline"
-      aria-label="Scroll to latest message"
+      onClick={(e) => {
+        scrollToBottom('smooth')
+        onClick?.(e)
+      }}
       {...props}
     >
-      <ArrowDownIcon className="size-4" />
+      <ArrowDownIcon className="mr-1.5 size-3.5" />
+      {children ?? 'Scroll to bottom'}
     </Button>
   )
 }
 
-const getMessageText = (message: UIMessage): string =>
-  message.parts.filter((part) => part.type === 'text').map((part) => part.text).join('')
+export const ConversationScrollButton = ConversationScrollToBottom
+export type ConversationScrollButtonProps = ConversationScrollToBottomProps
 
-export type ConversationDownloadProps = Omit<ComponentProps<typeof Button>, 'onClick'> & {
+export interface ConversationDownloadProps
+  extends Omit<ComponentProps<typeof Button>, 'children'> {
   messages: UIMessage[]
   filename?: string
-  formatMessage?: (message: UIMessage, index: number) => string
+  formatMessage?: (message: UIMessage) => string
+  children?: ReactNode
 }
-
-const defaultFormatMessage = (message: UIMessage): string => {
-  const roleLabel = message.role.charAt(0).toUpperCase() + message.role.slice(1)
-  return `**${roleLabel}:** ${getMessageText(message)}`
-}
-
-export const messagesToMarkdown = (
-  messages: UIMessage[],
-  formatMessage: (message: UIMessage, index: number) => string = defaultFormatMessage,
-): string => messages.map((message, index) => formatMessage(message, index)).join('\n\n')
 
 export const ConversationDownload = ({
   messages,
-  filename = 'conversation.md',
-  formatMessage = defaultFormatMessage,
+  filename = 'conversation.txt',
+  formatMessage,
   className,
   children,
+  onClick,
   ...props
 }: ConversationDownloadProps) => {
-  const handleDownload = () => {
-    const markdown = messagesToMarkdown(messages, formatMessage)
-    const blob = new Blob([markdown], { type: 'text/markdown' })
+  const handleDownload = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const defaultFormat = (m: UIMessage) =>
+      `[${m.role.toUpperCase()}]\n${m.parts.map((p) => (p.type === 'text' ? p.text : '')).join('')}\n`
+
+    const formatter = formatMessage ?? defaultFormat
+    const content = messages.map(formatter).join('\n---\n\n')
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
     const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = filename
-    document.body.append(link)
-    link.click()
-    link.remove()
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    a.click()
     URL.revokeObjectURL(url)
+
+    onClick?.(e)
   }
 
   return (
-    <Button className={cn('absolute right-4 top-4', className)} onClick={handleDownload} size="icon" type="button" variant="outline" {...props}>
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      className={cn('text-zinc-400 hover:text-white', className)}
+      onClick={handleDownload}
+      {...props}
+    >
       {children ?? <DownloadIcon className="size-4" />}
     </Button>
   )

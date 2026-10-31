@@ -245,7 +245,7 @@ export interface Page {
     image?: (number | null) | Media;
     description?: string | null;
     /**
-     * Exclude this page from search engines and the OD LABS AI knowledgebase
+     * Exclude this page from the OD LABS AI knowledgebase. This setting does not control search-engine indexing.
      */
     excludeFromIndex?: boolean | null;
   };
@@ -410,6 +410,10 @@ export interface Post {
      */
     image?: (number | null) | Media;
     description?: string | null;
+    /**
+     * Exclude this post from the OD LABS AI knowledgebase while keeping it published on the website.
+     */
+    excludeFromIndex?: boolean | null;
   };
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
@@ -1665,6 +1669,7 @@ export interface PostsSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        excludeFromIndex?: T;
       };
   publishedAt?: T;
   authors?: T;
