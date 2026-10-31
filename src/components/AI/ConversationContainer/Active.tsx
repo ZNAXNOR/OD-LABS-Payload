@@ -1,7 +1,7 @@
 'use client'
 
 import { CheckIcon, CopyIcon, RefreshCcwIcon, CircleXIcon, FileTextIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { ChatStatus, UIMessage } from 'ai'
 
 import {
@@ -24,7 +24,6 @@ import {
   useConversation,
 } from '@/components/ai-elements/conversation'
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion'
-import { postSuggestions } from '../suggestions'
 import { ConversationNavigator } from './ConversationNavigator/Component'
 
 const LoadingState = () => {
@@ -77,11 +76,93 @@ export const Active = ({
   submitSuggestion: (text: string) => void
 }) => {
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null)
+  const [suggestions, setSuggestions] = useState<string[]>([])
+  const requestedMessageId = useRef<string | null>(null)
 
   const isStreaming = status === 'streaming'
   const isGenerating = status === 'submitted' || isStreaming
   const lastMessage = messages.at(-1)
   const awaitingAssistant = isGenerating && lastMessage?.role === 'user'
+
+  useEffect(() => {
+    if (isGenerating || status === 'error') {
+      setSuggestions([])
+      return
+    }
+
+    const assistantMessage = messages.at(-1)
+    if (status !== 'ready' || assistantMessage?.role !== 'assistant') return
+
+    const answer = getMessageText(assistantMessage).trim()
+    const sourceIds = [
+      ...new Set(
+        assistantMessage.parts
+          .filter((part) => part.type === 'source-url')
+          .map((part) => part.sourceId),
+      ),
+    ]
+    const userMessage = messages
+      .slice(0, -1)
+      .reverse()
+      .find((message) => message.role === 'user')
+    const query = userMessage ? getMessageText(userMessage).trim() : ''
+
+    if (
+      !answer ||
+      !query ||
+      sourceIds.length === 0 ||
+      requestedMessageId.current === assistantMessage.id
+    ) {
+      setSuggestions([])
+      return
+    }
+
+    const controller = new AbortController()
+
+    void (async () => {
+      try {
+        const response = await fetch('/api/ai-chat/suggestions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query,
+            answer,
+            sourceIds: sourceIds.slice(0, 10),
+          }),
+          signal: controller.signal,
+        })
+
+        if (!response.ok) {
+          throw new Error(`Suggestion request failed with status ${response.status}`)
+        }
+
+        const payload: unknown = await response.json()
+        if (controller.signal.aborted) return
+
+        const nextSuggestions =
+          payload &&
+          typeof payload === 'object' &&
+          'suggestions' in payload &&
+          Array.isArray(payload.suggestions)
+            ? payload.suggestions.filter(
+                (item): item is string =>
+                  typeof item === 'string' && item.trim().length > 0,
+              ).slice(0, 3)
+            : []
+
+        requestedMessageId.current = assistantMessage.id
+        setSuggestions(nextSuggestions)
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error('[AI Chat] Could not load grounded suggestions:', error)
+          requestedMessageId.current = assistantMessage.id
+          setSuggestions([])
+        }
+      }
+    })()
+
+    return () => controller.abort()
+  }, [messages, status, isGenerating])
 
   const copyMessage = async (message: UIMessage) => {
     const text = getMessageText(message).trim()
@@ -206,9 +287,9 @@ export const Active = ({
                 </MessageActions>
               )}
 
-              {!isStreamingMessage && !isUser && isLastMessage && (
+              {!isStreamingMessage && !isUser && isLastMessage && suggestions.length > 0 && (
                 <Suggestions className="pt-1">
-                  {postSuggestions.map((suggestion) => (
+                  {suggestions.map((suggestion) => (
                     <Suggestion
                       key={suggestion}
                       suggestion={suggestion}
