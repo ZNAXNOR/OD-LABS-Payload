@@ -36,6 +36,13 @@ export async function searchKnowledge(
     knowledgePool: 'odlabs_knowledge',
     query,
     limit,
+    // Legacy test-document vectors may still exist in the database. Keep them
+    // out of public RAG retrieval without deleting records during deployment.
+    where: {
+      sourceCollection: {
+        not_equals: 'test-documents',
+      },
+    },
   })
 
   return results.map((result) => {
