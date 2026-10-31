@@ -57,7 +57,7 @@ export const Composer = ({
 
             <PromptInputSubmit
               aria-label={status === 'streaming' || status === 'submitted' ? 'Stop generating' : 'Send message'}
-              className="size-10 rounded-xl bg-odl text-white transition-colors hover:bg-odl/80 disabled:pointer-events-none disabled:opacity-30"
+              className="size-10 rounded-full bg-odl text-white transition-colors hover:bg-odl/80 disabled:pointer-events-none disabled:opacity-30"
               disabled={!input.trim() && status !== 'streaming' && status !== 'submitted'}
               status={status}
               onStop={stop}
