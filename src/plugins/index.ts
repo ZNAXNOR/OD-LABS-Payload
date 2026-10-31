@@ -58,14 +58,6 @@ const embedQuery = async (text: string): Promise<number[]> => {
   return embedding
 }
 
-const testDocumentsToKnowledgePool: ToKnowledgePoolFn = async (doc) => {
-  return [
-    {
-      chunk: `${doc.title}\n\n${doc.content}`,
-    },
-  ]
-}
-
 export const plugins: Plugin[] = [
   sentryPlugin({ Sentry }),
   redirectsPlugin({
@@ -210,10 +202,6 @@ export const plugins: Plugin[] = [
         ],
 
         collections: {
-          'test-documents': {
-            toKnowledgePool: testDocumentsToKnowledgePool,
-          },
-
           pages: {
             toKnowledgePool: pagesToKnowledgePool,
 
