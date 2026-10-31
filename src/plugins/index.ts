@@ -226,7 +226,7 @@ export const plugins: Plugin[] = [
         },
 
         embeddingConfig: {
-          version: 'v1.0.0',
+          version: 'v1.1.0',
           queryFn: embedQuery,
           realTimeIngestionFn: embedDocuments,
         },
