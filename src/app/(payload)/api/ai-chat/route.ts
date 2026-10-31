@@ -62,11 +62,11 @@ export async function POST(request: NextRequest) {
     }
 
     const query = lastMessage.parts
-      .filter(
-        (part): part is Extract<(typeof lastMessage.parts)[number], { type: 'text' }> =>
-          part.type === 'text' && typeof part.text === 'string',
+      .flatMap((part) =>
+        part.type === 'text' && typeof part.text === 'string'
+          ? [part.text]
+          : [],
       )
-      .map((part) => part.text)
       .join('')
       .trim()
 
@@ -135,7 +135,7 @@ ${result.text}`,
             result.toUIMessageStream({
               onError: (error) => {
                 console.error('[AI Chat] UI stream failed:', error)
-                return 'The response could not be completed. Please try again.',
+                return 'The response could not be completed. Please try again.'
               },
             }),
           )
