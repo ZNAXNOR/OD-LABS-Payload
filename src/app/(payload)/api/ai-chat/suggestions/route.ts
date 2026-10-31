@@ -18,22 +18,13 @@ const suggestionSchema = jsonSchema<SuggestionOutput>({
   properties: {
     suggestions: {
       type: 'array',
-      maxItems: 3,
       items: {
         type: 'object',
         additionalProperties: false,
         properties: {
-          text: {
-            type: 'string',
-            minLength: 8,
-            maxLength: 90,
-          },
+          text: { type: 'string' },
           sourceId: { type: 'string' },
-          evidenceQuote: {
-            type: 'string',
-            minLength: 15,
-            maxLength: 250,
-          },
+          evidenceQuote: { type: 'string' },
         },
         required: ['text', 'sourceId', 'evidenceQuote'],
       },
@@ -163,6 +154,7 @@ Return only follow-up suggestions with verifiable verbatim evidence. If no sugge
         const hasVerbatimEvidence =
           Boolean(source) &&
           quote.length >= 15 &&
+          quote.length <= 250 &&
           sourceText.includes(quote)
 
         if (
