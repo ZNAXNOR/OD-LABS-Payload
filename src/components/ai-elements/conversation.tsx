@@ -52,7 +52,7 @@ export const ConversationContent = ({
   ...props
 }: ConversationContentProps) => (
   <StickToBottom.Content
-    scrollClassName={cn('min-h-0 flex-1 overflow-y-auto overscroll-y-auto', scrollClassName)}
+    scrollClassName={cn('ai-chat-scroll min-h-0 flex-1 overflow-y-auto overscroll-y-auto', scrollClassName)}
     className={cn('flex min-h-full w-full flex-col gap-8 p-4 pb-8', className)}
     {...props}
   >
