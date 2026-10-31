@@ -160,8 +160,9 @@ export const Active = ({
                       <Source
                         key={source.url}
                         href={source.url}
+                        target="_self"
                         title={source.title ?? source.url}
-                        className="flex min-w-0 max-w-full items-center gap-3 border border-zinc-800 bg-zinc-950/60 px-3 py-2.5 no-underline transition-colors hover:border-zinc-600 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
+                        className="group flex min-w-0 max-w-full items-center gap-3 border border-zinc-800 bg-zinc-950/60 px-3 py-2.5 no-underline transition-colors hover:border-zinc-600 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
                       >
                         <span className="flex size-8 shrink-0 items-center justify-center rounded-md border border-zinc-800 bg-black text-zinc-400 transition-colors group-hover:text-zinc-200">
                           <FileTextIcon className="size-4" aria-hidden="true" />
