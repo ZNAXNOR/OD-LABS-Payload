@@ -68,7 +68,7 @@ export const useConversationNavigator = (messages: UIMessage[]) => {
     sections[activeIndex] ?? sections[sections.length - 1] ?? null
 
   useEffect(() => {
-    const scrollRoot = document.getElementById('conversation-scroll-root')
+    const scrollRoot = document.getElementById('conversation-transcript')?.parentElement
 
     if (!scrollRoot || sections.length === 0) {
       setActiveIndex(0)
@@ -136,7 +136,7 @@ export const useConversationNavigator = (messages: UIMessage[]) => {
 
   const scrollToSection = useCallback(
     (section: ConversationSection) => {
-      const scrollRoot = document.getElementById('conversation-scroll-root')
+      const scrollRoot = document.getElementById('conversation-transcript')?.parentElement
       const element = document.getElementById(`message-${section.messageId}`)
 
       if (!scrollRoot || !element) return
