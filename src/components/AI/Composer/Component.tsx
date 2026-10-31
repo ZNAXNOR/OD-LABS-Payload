@@ -34,7 +34,7 @@ export const Composer = ({
     >
       <div className="mx-auto w-full max-w-5xl px-5 pb-3 pt-4 sm:px-8 lg:px-10">
         <PromptInput
-          className="border border-zinc-700 bg-zinc-950 transition-colors focus-within:border-odl/70"
+          className="rounded-xl border border-zinc-700 bg-zinc-950 transition-colors focus-within:border-odl/70"
           onSubmit={(_message, event) => onSubmit(event)}
         >
           <PromptInputBody>
@@ -43,7 +43,7 @@ export const Composer = ({
               onChange={(event) => setInput(event.target.value)}
               placeholder="Ask about OD LABS..."
               aria-label="Message the OD LABS AI assistant"
-              className="min-h-14 px-4 py-3 text-base leading-6 text-zinc-100 placeholder:text-zinc-600"
+              className="min-h-14 rounded-t-xl px-4 py-3 text-base leading-6 text-zinc-100 placeholder:text-zinc-600"
             />
           </PromptInputBody>
 
@@ -57,7 +57,7 @@ export const Composer = ({
 
             <PromptInputSubmit
               aria-label={status === 'streaming' || status === 'submitted' ? 'Stop generating' : 'Send message'}
-              className="bg-odl text-white transition-colors hover:bg-odl/80 disabled:pointer-events-none disabled:opacity-30"
+              className="size-10 rounded-xl bg-odl text-white transition-colors hover:bg-odl/80 disabled:pointer-events-none disabled:opacity-30"
               disabled={!input.trim() && status !== 'streaming' && status !== 'submitted'}
               status={status}
               onStop={stop}
