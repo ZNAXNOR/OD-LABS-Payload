@@ -2,9 +2,13 @@ import { getPayload } from 'payload'
 import { getVectorizedPayload } from 'payloadcms-vectorize'
 
 import configPromise from '@/payload.config'
+import type { ContentScope } from '@/components/AI/contentScopes'
+
+export type KnowledgeCollection = 'pages' | 'posts'
 
 export type KnowledgeSource = {
   id: string
+  contentType: KnowledgeCollection
   title: string
   url: string
   section: string
@@ -21,6 +25,7 @@ export type KnowledgeResult = {
 export async function searchKnowledge(
   query: string,
   limit = 5,
+  scope: ContentScope = 'all',
 ): Promise<KnowledgeResult[]> {
   const payload = await getPayload({
     config: configPromise,
@@ -32,28 +37,25 @@ export async function searchKnowledge(
     throw new Error("Payload's vectorize plugin is not configured")
   }
 
+  const collectionFilter =
+    scope === 'pages' || scope === 'posts'
+      ? { equals: scope }
+      : { not_equals: 'test-documents' }
+
   const results = await vectorizedPayload.search({
     knowledgePool: 'odlabs_knowledge',
     query,
+    // Oversample before validating current publication/indexing eligibility.
     limit: Math.min(Math.max(limit * 4, limit), 20),
-    // Legacy test-document vectors may still exist in the database. Keep them
-    // out of public RAG retrieval without deleting records during deployment.
     where: {
-      sourceCollection: {
-        not_equals: 'test-documents',
-      },
+      sourceCollection: collectionFilter,
     },
   })
 
-  const eligibleByDocument = new Map<string, boolean>()
-  const documents = new Map<string, { collection: 'pages' | 'posts'; id: string }>()
+  const documents = new Map<string, { collection: KnowledgeCollection; id: string }>()
 
   for (const result of results) {
     if (result.sourceCollection !== 'pages' && result.sourceCollection !== 'posts') {
-      eligibleByDocument.set(
-        `${result.sourceCollection}:${String(result.docId)}`,
-        result.sourceCollection !== 'test-documents',
-      )
       continue
     }
 
@@ -63,6 +65,8 @@ export async function searchKnowledge(
       id: String(result.docId),
     })
   }
+
+  const eligibleByDocument = new Map<string, boolean>()
 
   await Promise.all(
     Array.from(documents.entries()).map(async ([key, source]) => {
@@ -88,31 +92,38 @@ export async function searchKnowledge(
   )
 
   return results
-    .filter((result) =>
-      eligibleByDocument.get(
+    .filter((result) => {
+      if (result.sourceCollection !== 'pages' && result.sourceCollection !== 'posts') {
+        return false
+      }
+
+      return eligibleByDocument.get(
         `${result.sourceCollection}:${String(result.docId)}`,
-      ),
-    )
+      ) === true
+    })
     .slice(0, limit)
     .map((result) => {
-    const pageSlug = typeof result.pageSlug === 'string' ? result.pageSlug : ''
-    const pageTitle =
-      typeof result.pageTitle === 'string' ? result.pageTitle : ''
-    const section = typeof result.section === 'string' ? result.section : ''
-    const blockType =
-      typeof result.blockType === 'string' ? result.blockType : ''
+      const contentType = result.sourceCollection as KnowledgeCollection
+      const pageSlug = typeof result.pageSlug === 'string' ? result.pageSlug : ''
+      const pageTitle =
+        typeof result.pageTitle === 'string' ? result.pageTitle : ''
+      const section = typeof result.section === 'string' ? result.section : ''
+      const blockType =
+        typeof result.blockType === 'string' ? result.blockType : ''
+      const id = `${contentType}:${String(result.id)}`
 
-    return {
-      id: String(result.id),
-      text: result.chunkText,
-      source: {
-        id: String(result.id),
-        title: pageTitle || 'OD LABS',
-        url: pageSlug && pageSlug !== 'home' ? `/${pageSlug}` : '/',
-        section,
-        blockType,
-        score: result.score,
-      },
-    }
-  })
+      return {
+        id,
+        text: result.chunkText,
+        source: {
+          id,
+          contentType,
+          title: pageTitle || 'OD LABS',
+          url: pageSlug && pageSlug !== 'home' ? `/${pageSlug}` : '/',
+          section,
+          blockType,
+          score: result.score,
+        },
+      }
+    })
 }
