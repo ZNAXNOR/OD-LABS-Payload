@@ -38,5 +38,5 @@ export const DEFAULT_CONTENT_SCOPE: ContentScope = 'all'
 
 export const getContentCategory = (collection: string) =>
   CONTENT_SCOPES.find(
-    (scope) => scope.value !== 'all' && scope.collections.includes(collection as never),
+    (scope) => scope.value !== 'all' && (scope.collections as readonly string[]).includes(collection),
   )
