@@ -50,14 +50,14 @@ export async function POST(request: NextRequest) {
       return Response.json({ suggestions: EMPTY_SUGGESTIONS }, { status: 400 })
     }
 
-    const { query, answer, sourceIds } = body as {
+    const { query, answer, sourceIds, scope } = body as {
       query?: unknown
       answer?: unknown
       sourceIds?: unknown
       scope?: unknown
     }
 
-    const scopeValue = body.scope === undefined ? DEFAULT_CONTENT_SCOPE : scope
+    const scopeValue = scope === undefined ? DEFAULT_CONTENT_SCOPE : scope
     if (!isContentScope(scopeValue)) {
       return Response.json({ suggestions: EMPTY_SUGGESTIONS }, { status: 400 })
     }
