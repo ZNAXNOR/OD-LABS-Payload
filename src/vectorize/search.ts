@@ -66,7 +66,7 @@ export async function searchKnowledge(
 
     const key = `${result.sourceCollection}:${String(result.docId)}`
     documents.set(key, {
-      collection: result.sourceCollection,
+      collection: result.sourceCollection as ContentCollection,
       id: String(result.docId),
     })
   }
