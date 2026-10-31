@@ -28,6 +28,7 @@ import { ToKnowledgePoolFn } from 'payloadcms-vectorize'
 import { vectorIntegration } from '@/vectorize/config'
 import { pagesToKnowledgePool } from '@/vectorize/pagesToKnowledgePool'
 import { postsToKnowledgePool } from '@/vectorize/postsToKnowledgePool'
+import { createOpenAIBulkEmbeddingsFns } from '@/vectorize/openaiBulkEmbeddings'
 import { s3Storage } from '@payloadcms/storage-s3'
 import { wrapEmailHtml } from '@/email/template'
 
@@ -181,6 +182,11 @@ export const plugins: Plugin[] = [
 
   payloadVectorize({
     dbAdapter: vectorIntegration.adapter,
+    realtimeQueueName: 'odlabs-vectorize-realtime',
+    bulkQueueNames: {
+      prepareBulkEmbedQueueName: 'odlabs-vectorize-bulk-prepare',
+      pollOrCompleteQueueName: 'odlabs-vectorize-bulk-poll',
+    },
 
     knowledgePools: {
       odlabs_knowledge: {
@@ -229,6 +235,7 @@ export const plugins: Plugin[] = [
           version: 'v1.1.0',
           queryFn: embedQuery,
           realTimeIngestionFn: embedDocuments,
+          bulkEmbeddingsFns: createOpenAIBulkEmbeddingsFns(),
         },
       },
     },
