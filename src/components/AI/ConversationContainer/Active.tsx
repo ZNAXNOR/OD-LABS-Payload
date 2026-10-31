@@ -81,11 +81,12 @@ export const Active = ({
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null)
   const [suggestions, setSuggestions] = useState<string[]>([])
   const requestedMessageId = useRef<string | null>(null)
+  const scopeRef = useRef(scope)
+  scopeRef.current = scope
 
   const isStreaming = status === 'streaming'
   const isGenerating = status === 'submitted' || isStreaming
   const lastMessage = messages.at(-1)
-  const awaitingAssistant = isGenerating && lastMessage?.role === 'user'
 
   useEffect(() => {
     if (isGenerating || status === 'error') {
@@ -131,7 +132,7 @@ export const Active = ({
             query,
             answer,
             sourceIds: sourceIds.slice(0, 10),
-            scope,
+            scope: scopeRef.current,
           }),
           signal: controller.signal,
         })
