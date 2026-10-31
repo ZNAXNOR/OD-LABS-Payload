@@ -86,7 +86,6 @@ export const Active = ({
 
   const isStreaming = status === 'streaming'
   const isGenerating = status === 'submitted' || isStreaming
-  const lastMessage = messages.at(-1)
 
   useEffect(() => {
     if (isGenerating || status === 'error') {
