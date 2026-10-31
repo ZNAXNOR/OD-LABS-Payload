@@ -1,4 +1,4 @@
-import { SquareLogo } from '../../Logo/Logo'
+import { Sparkles } from 'lucide-react'
 
 export const Initial = ({
   suggestedPrompts,
@@ -8,36 +8,40 @@ export const Initial = ({
   submit: (prompt: string) => void
 }) => {
   return (
-    <div className="flex flex-col justify-center px-6 py-8 text-center">
-      <div className="mx-auto flex max-w-xl flex-col items-center space-y-8">
-        <div className="text-odl shadow-odl/10 flex h-12 w-12 items-center justify-center border border-zinc-600 bg-zinc-900 font-mono text-base font-semibold shadow-lg">
-          <SquareLogo className="size-7" />
+    <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center sm:px-10">
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
+        <div className="mb-7 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+          <Sparkles className="size-4 text-odl" aria-hidden="true" />
+          <span>OD LABS / Knowledge assistant</span>
         </div>
 
-        <div className="space-y-2">
-          <h2 className="font-mono text-2xl font-bold tracking-tight text-zinc-200 uppercase sm:text-3xl">
-            OD LABS Assistance AI
-          </h2>
+        <h1 className="max-w-3xl text-balance text-4xl font-semibold tracking-[-0.045em] text-zinc-100 sm:text-5xl lg:text-6xl">
+          What would you like to know?
+        </h1>
 
-          <p className="mx-auto max-w-md font-sans text-sm leading-relaxed text-zinc-400 sm:text-base">
-            Ask about my work, projects, technology, or how I build.
+        <p className="mt-5 max-w-xl text-pretty text-base leading-7 text-zinc-400 sm:text-lg">
+          Explore our work, projects, technology, and approach. Ask a question
+          in your own words to get started.
+        </p>
+
+        <div className="mt-10 w-full max-w-2xl">
+          <p className="mb-3 text-left font-mono text-[11px] uppercase tracking-[0.16em] text-zinc-500">
+            Suggested starting points
           </p>
-        </div>
 
-        <div className="flex w-full flex-col items-center space-y-3 pt-4">
-          <span className="text-odl font-mono text-xs font-semibold tracking-wider uppercase">
-            OR SELECT A STARTING POINT
-          </span>
-
-          <div className="flex max-w-lg flex-wrap justify-center gap-2.5">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {suggestedPrompts.map((prompt) => (
               <button
                 key={prompt}
                 type="button"
-                onClick={() => void submit(prompt)}
-                className="hover:border-odl/80 cursor-pointer border border-zinc-600 px-4 py-2 text-center font-mono text-xs text-zinc-400 transition-colors hover:text-zinc-200"
+                onClick={() => submit(prompt)}
+                className="group flex min-h-12 items-center justify-between gap-4 border border-zinc-800 px-4 py-3 text-left text-sm text-zinc-300 transition-colors hover:border-odl/70 hover:bg-zinc-950 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
               >
-                {prompt}
+                <span>{prompt}</span>
+                <Sparkles
+                  className="size-3.5 shrink-0 text-zinc-600 transition-colors group-hover:text-odl"
+                  aria-hidden="true"
+                />
               </button>
             ))}
           </div>
