@@ -85,7 +85,7 @@ export const Active = ({
   }
 
   return (
-    <Conversation className="relative w-full flex-1" initial="smooth" resize="smooth">
+    <Conversation className="relative w-full flex-1" initial="smooth" resize="instant">
       <ConversationContent
         id="conversation-transcript"
         className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-5 pb-10 pt-8 sm:px-8 lg:px-10"
