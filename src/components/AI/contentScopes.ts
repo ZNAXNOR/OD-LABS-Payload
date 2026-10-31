@@ -52,5 +52,5 @@ export const isContentScope = (value: unknown): value is ContentScope =>
 
 export const DEFAULT_CONTENT_SCOPE: ContentScope = 'all'
 
-export const getContentCategory = (collection: string) =>
+export const getContentCategory = (collection: string): { icon: string } | undefined =>
   CONTENT_CATEGORIES.find((category) => category.collection === collection)
