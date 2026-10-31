@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, createContext, useContext } from 'react'
+import { StickToBottom, useStickToBottomContext } from 'use-stick-to-bottom'
 import type { ComponentProps, ReactNode } from 'react'
 import type { UIMessage } from 'ai'
 import { ArrowDownIcon, DownloadIcon } from 'lucide-react'
@@ -10,118 +10,45 @@ import { cn } from '@/utilities/ui'
 
 type ScrollBehavior = 'smooth' | 'instant'
 
-type ConversationContextValue = {
-  rootRef: React.RefObject<HTMLDivElement | null>
-  contentRef: React.RefObject<HTMLDivElement | null>
-  isAtBottom: boolean
-  scrollToBottom: (behavior?: ScrollBehavior) => void
-}
-
-const ConversationContext = createContext<ConversationContextValue | null>(null)
-
-const useConversationContext = () => {
-  const context = useContext(ConversationContext)
-  if (!context) throw new Error('Conversation components must be used inside Conversation.')
-  return context
-}
-
-/** Access scrolling state and controls from a Conversation descendant. */
-export const useConversation = useConversationContext
-
 export type ConversationProps = Omit<ComponentProps<'div'>, 'onScroll'> & {
   initial?: ScrollBehavior
   resize?: ScrollBehavior
 }
 
+/**
+ * Thin styled wrapper around the public use-stick-to-bottom component.
+ * Scroll anchoring and streaming follow behavior are delegated to the library.
+ */
 export const Conversation = ({
   className,
   children,
   initial = 'smooth',
   resize = 'instant',
   ...props
-}: ConversationProps) => {
-  const rootRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const followingRef = useRef(true)
-  const [isAtBottom, setIsAtBottom] = useState(true)
+}: ConversationProps) => (
+  <StickToBottom
+    initial={initial}
+    resize={resize}
+    className={cn(
+      'relative flex min-h-0 w-full flex-1 flex-col overflow-y-auto overscroll-y-auto',
+      className,
+    )}
+    {...props}
+  >
+    {children}
+  </StickToBottom>
+)
 
-  const checkAtBottom = useCallback(() => {
-    const root = rootRef.current
-    return !root || root.scrollHeight - root.scrollTop - root.clientHeight < 56
-  }, [])
-
-  const scrollToBottom = useCallback((behavior: ScrollBehavior = 'smooth') => {
-    const root = rootRef.current
-    if (!root) return
-    followingRef.current = true
-    root.scrollTo({ top: root.scrollHeight, behavior })
-    setIsAtBottom(true)
-  }, [])
-
-  useEffect(() => {
-    const root = rootRef.current
-    const content = contentRef.current
-    if (!root || !content) return
-
-    const syncScroll = () => {
-      if (followingRef.current) {
-        root.scrollTo({ top: root.scrollHeight, behavior: resize })
-      }
-      setIsAtBottom(checkAtBottom())
-    }
-
-    const handleScroll = () => {
-      const atBottom = checkAtBottom()
-      setIsAtBottom(atBottom)
-      followingRef.current = atBottom
-    }
-
-    const resizeObserver = new ResizeObserver(syncScroll)
-    const mutationObserver = new MutationObserver(syncScroll)
-
-    resizeObserver.observe(root)
-    resizeObserver.observe(content)
-    mutationObserver.observe(content, { childList: true, subtree: true, characterData: true })
-    root.addEventListener('scroll', handleScroll, { passive: true })
-
-    const frame = requestAnimationFrame(() => scrollToBottom(initial))
-
-    return () => {
-      cancelAnimationFrame(frame)
-      resizeObserver.disconnect()
-      mutationObserver.disconnect()
-      root.removeEventListener('scroll', handleScroll)
-    }
-  }, [checkAtBottom, initial, resize, scrollToBottom])
-
-  return (
-    <ConversationContext.Provider value={{ rootRef, contentRef, isAtBottom, scrollToBottom }}>
-      <div
-        ref={rootRef}
-        className={cn(
-          'relative flex min-h-0 w-full flex-1 flex-col overflow-y-auto overscroll-y-auto',
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </div>
-    </ConversationContext.Provider>
-  )
-}
+export const useConversation = useStickToBottomContext
 
 export type ConversationContentProps = ComponentProps<'div'>
 
-export const ConversationContent = ({ className, ...props }: ConversationContentProps) => {
-  const { contentRef } = useConversationContext()
-  return (
-    <div
-      ref={contentRef}
-      className={cn('flex min-h-max w-full flex-col gap-8 p-4 pb-8', className)}
-      {...props}
-    />
-  )
-}
+export const ConversationContent = ({ className, ...props }: ConversationContentProps) => (
+  <StickToBottom.Content
+    className={cn('flex min-h-max w-full flex-col gap-8 p-4 pb-8', className)}
+    {...props}
+  />
+)
 
 export type ConversationEmptyStateProps = ComponentProps<'div'> & {
   title?: string
@@ -153,15 +80,16 @@ export const ConversationEmptyState = ({
 export type ConversationScrollButtonProps = ComponentProps<typeof Button>
 
 export const ConversationScrollButton = ({ className, ...props }: ConversationScrollButtonProps) => {
-  const { isAtBottom, scrollToBottom } = useConversationContext()
+  const { isAtBottom, scrollToBottom } = useConversation()
   if (isAtBottom) return null
+
   return (
     <Button
       className={cn(
         'absolute bottom-4 right-5 z-20 size-9 rounded-full border-zinc-700 bg-zinc-900 p-0 shadow-lg hover:bg-zinc-800',
         className,
       )}
-      onClick={() => scrollToBottom('smooth')}
+      onClick={() => void scrollToBottom('smooth')}
       size="icon"
       type="button"
       variant="outline"
@@ -200,7 +128,7 @@ export const ConversationDownload = ({
   children,
   ...props
 }: ConversationDownloadProps) => {
-  const handleDownload = useCallback(() => {
+  const handleDownload = () => {
     const markdown = messagesToMarkdown(messages, formatMessage)
     const blob = new Blob([markdown], { type: 'text/markdown' })
     const url = URL.createObjectURL(blob)
@@ -211,7 +139,7 @@ export const ConversationDownload = ({
     link.click()
     link.remove()
     URL.revokeObjectURL(url)
-  }, [messages, filename, formatMessage])
+  }
 
   return (
     <Button className={cn('absolute right-4 top-4', className)} onClick={handleDownload} size="icon" type="button" variant="outline" {...props}>
