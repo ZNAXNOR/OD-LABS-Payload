@@ -322,6 +322,33 @@ export const plugins: Plugin[] = [
       }
     })
 
+    // Bulk embedding endpoints can incur provider costs. Require an authenticated
+    // Payload user before allowing a bulk run or failed-batch retry to be queued.
+    config.endpoints = (config.endpoints ?? []).map((endpoint) => {
+      if (
+        endpoint.path !== '/vector-bulk-embed' &&
+        endpoint.path !== '/vector-retry-failed-batch'
+      ) {
+        return endpoint
+      }
+
+      const originalHandler = endpoint.handler
+
+      return {
+        ...endpoint,
+        handler: async (req) => {
+          if (!req.user) {
+            return Response.json(
+              { error: 'Authentication required.' },
+              { status: 401 },
+            )
+          }
+
+          return originalHandler(req)
+        },
+      }
+    })
+
     return config
   },
 
