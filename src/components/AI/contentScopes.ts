@@ -1,34 +1,50 @@
-export const CONTENT_SCOPES = [
-  {
-    value: 'all',
-    label: 'All content',
-    description: 'Search all published OD LABS content.',
-    collections: ['pages', 'posts'],
-    icon: null,
-  },
+export const CONTENT_CATEGORIES = [
   {
     value: 'pages',
     label: 'Pages',
-    description: 'Search published website pages only.',
-    collections: ['pages'],
+    description: 'Published website pages.',
+    collection: 'pages',
     icon: 'FileText',
   },
   {
     value: 'posts',
     label: 'Blog posts',
-    description: 'Search published blog posts only.',
-    collections: ['posts'],
+    description: 'Published blog posts.',
+    collection: 'posts',
     icon: 'Newspaper',
   },
 ] as const
 
-export type ContentScope = (typeof CONTENT_SCOPES)[number]['value']
+export type ContentScope = 'all' | (typeof CONTENT_CATEGORIES)[number]['value']
 export type ContentCollection =
-  (typeof CONTENT_SCOPES)[number]['collections'][number]
+  (typeof CONTENT_CATEGORIES)[number]['collection']
 
-export const CONTENT_COLLECTIONS = [
-  ...new Set(CONTENT_SCOPES.flatMap((scope) => scope.collections)),
-] as ContentCollection[]
+export const CONTENT_COLLECTIONS = CONTENT_CATEGORIES.map(
+  (category) => category.collection,
+) as ContentCollection[]
+
+export const CONTENT_SCOPES = [
+  {
+    value: 'all',
+    label: 'All content',
+    description: 'Search all published OD LABS content.',
+    collections: CONTENT_COLLECTIONS,
+    icon: null,
+  },
+  ...CONTENT_CATEGORIES.map((category) => ({
+    value: category.value,
+    label: category.label,
+    description: category.description,
+    collections: [category.collection],
+    icon: category.icon,
+  })),
+] satisfies Array<{
+  value: ContentScope
+  label: string
+  description: string
+  collections: readonly string[]
+  icon: string | null
+}>
 
 export const isContentScope = (value: unknown): value is ContentScope =>
   typeof value === 'string' &&
@@ -37,6 +53,4 @@ export const isContentScope = (value: unknown): value is ContentScope =>
 export const DEFAULT_CONTENT_SCOPE: ContentScope = 'all'
 
 export const getContentCategory = (collection: string) =>
-  CONTENT_SCOPES.find(
-    (scope) => scope.value !== 'all' && (scope.collections as readonly string[]).includes(collection),
-  )
+  CONTENT_CATEGORIES.find((category) => category.collection === collection)
