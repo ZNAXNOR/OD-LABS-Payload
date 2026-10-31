@@ -89,7 +89,7 @@ export const ConversationScrollButton = ({ className, ...props }: ConversationSc
         'absolute bottom-4 right-5 z-20 size-9 rounded-full border-zinc-700 bg-zinc-900 p-0 shadow-lg hover:bg-zinc-800',
         className,
       )}
-      onClick={() => void scrollToBottom('smooth')}
+      onClick={() => void scrollToBottom()}
       size="icon"
       type="button"
       variant="outline"
