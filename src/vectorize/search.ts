@@ -22,28 +22,14 @@ export async function searchKnowledge(
   query: string,
   limit = 5,
 ): Promise<KnowledgeResult[]> {
-  console.log('[VECTORIZE] Creating Payload Instance')
-
   const payload = await getPayload({
     config: configPromise,
   })
 
-  console.log('[VECTORIZE] Payload Instance Created')
-
-  console.log(
-    '[VECTORIZE] Config custom keys:',
-    Object.keys(payload.config.custom ?? {}),
-  )
-
   const vectorizedPayload = getVectorizedPayload(payload)
 
-  console.log(
-    '[VECTORIZE] Vectorized Payload:',
-    vectorizedPayload ? 'AVAILABLE' : 'MISSING',
-  )
-
   if (!vectorizedPayload) {
-    throw new Error("Payload's vectorize plugin is not configuted")
+    throw new Error("Payload's vectorize plugin is not configured")
   }
 
   const results = await vectorizedPayload.search({
@@ -54,12 +40,9 @@ export async function searchKnowledge(
 
   return results.map((result) => {
     const pageSlug = typeof result.pageSlug === 'string' ? result.pageSlug : ''
-
     const pageTitle =
       typeof result.pageTitle === 'string' ? result.pageTitle : ''
-
     const section = typeof result.section === 'string' ? result.section : ''
-
     const blockType =
       typeof result.blockType === 'string' ? result.blockType : ''
 
