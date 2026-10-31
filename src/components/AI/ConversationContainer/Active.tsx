@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckIcon, CopyIcon, RefreshCcwIcon, CircleXIcon } from 'lucide-react'
+import { CheckIcon, CopyIcon, RefreshCcwIcon, CircleXIcon, ExternalLinkIcon } from 'lucide-react'
 import { useState } from 'react'
 import type { ChatStatus, UIMessage } from 'ai'
 
@@ -163,7 +163,7 @@ export const Active = ({
                         className="flex min-w-0 max-w-full flex-col items-start gap-2 border border-zinc-800 bg-zinc-950/60 p-3 no-underline transition-colors hover:border-zinc-700 hover:bg-zinc-900"
                       >
                         <span className="flex size-7 items-center justify-center rounded-md border border-zinc-800 bg-black text-zinc-400">
-                          <span className="font-mono text-xs" aria-hidden="true">↗</span>
+                          <ExternalLinkIcon className="size-3.5" aria-hidden="true" />
                         </span>
                         <span className="w-full break-words text-xs font-medium leading-5 text-zinc-300 underline decoration-zinc-700 underline-offset-4 hover:text-white">
                           {source.title ?? source.url}
