@@ -35,7 +35,7 @@ export async function searchKnowledge(
   const results = await vectorizedPayload.search({
     knowledgePool: 'odlabs_knowledge',
     query,
-    limit,
+    limit: Math.min(Math.max(limit * 4, limit), 20),
     // Legacy test-document vectors may still exist in the database. Keep them
     // out of public RAG retrieval without deleting records during deployment.
     where: {
@@ -45,7 +45,56 @@ export async function searchKnowledge(
     },
   })
 
-  return results.map((result) => {
+  const eligibleByDocument = new Map<string, boolean>()
+  const documents = new Map<string, { collection: 'pages' | 'posts'; id: string }>()
+
+  for (const result of results) {
+    if (result.sourceCollection !== 'pages' && result.sourceCollection !== 'posts') {
+      eligibleByDocument.set(
+        `${result.sourceCollection}:${String(result.docId)}`,
+        result.sourceCollection !== 'test-documents',
+      )
+      continue
+    }
+
+    const key = `${result.sourceCollection}:${String(result.docId)}`
+    documents.set(key, {
+      collection: result.sourceCollection,
+      id: String(result.docId),
+    })
+  }
+
+  await Promise.all(
+    Array.from(documents.entries()).map(async ([key, source]) => {
+      try {
+        const doc = await payload.findByID({
+          collection: source.collection,
+          id: source.id,
+          depth: 0,
+        })
+        const meta = doc.meta as
+          | { excludeFromIndex?: boolean | null }
+          | null
+          | undefined
+
+        eligibleByDocument.set(
+          key,
+          doc._status === 'published' && !meta?.excludeFromIndex,
+        )
+      } catch {
+        eligibleByDocument.set(key, false)
+      }
+    }),
+  )
+
+  return results
+    .filter((result) =>
+      eligibleByDocument.get(
+        `${result.sourceCollection}:${String(result.docId)}`,
+      ),
+    )
+    .slice(0, limit)
+    .map((result) => {
     const pageSlug = typeof result.pageSlug === 'string' ? result.pageSlug : ''
     const pageTitle =
       typeof result.pageTitle === 'string' ? result.pageTitle : ''
