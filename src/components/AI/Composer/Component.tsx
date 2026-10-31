@@ -6,7 +6,8 @@ import {
   PromptInputTextarea,
   PromptInputTools,
 } from '@/components/ai-elements/prompt-input'
-import { Sparkles } from 'lucide-react'
+import { ChevronDown, Sparkles } from 'lucide-react'
+import { CONTENT_SCOPES, type ContentScope } from '../contentScopes'
 import type { ChatStatus } from 'ai'
 
 export const Composer = ({
@@ -16,6 +17,8 @@ export const Composer = ({
   status,
   stop,
   sticky = false,
+  scope,
+  setScope,
 }: {
   input: string
   setInput: (value: string) => void
@@ -23,6 +26,8 @@ export const Composer = ({
   status: ChatStatus
   stop: () => Promise<void>
   sticky: boolean
+  scope: ContentScope
+  setScope: (scope: ContentScope) => void
 }) => {
   return (
     <div
@@ -48,11 +53,27 @@ export const Composer = ({
           </PromptInputBody>
 
           <PromptInputFooter className="px-3 pb-3">
-            <PromptInputTools>
+            <PromptInputTools className="min-w-0 flex-wrap gap-2">
               <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-zinc-600">
                 <Sparkles className="size-3 text-odl" aria-hidden="true" />
                 Knowledge assistant
               </span>
+              <label className="relative inline-flex items-center">
+                <span className="sr-only">Search content category</span>
+                <select
+                  aria-label="Search content category"
+                  value={scope}
+                  onChange={(event) => setScope(event.target.value as ContentScope)}
+                  className="h-8 max-w-36 appearance-none rounded-md border border-zinc-800 bg-zinc-950 py-1 pl-2.5 pr-7 text-xs text-zinc-300 outline-none transition-colors hover:border-zinc-600 focus-visible:border-odl/70 focus-visible:ring-1 focus-visible:ring-odl/50"
+                >
+                  {CONTENT_SCOPES.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-2 size-3.5 text-zinc-500" aria-hidden="true" />
+              </label>
             </PromptInputTools>
 
             <PromptInputSubmit
