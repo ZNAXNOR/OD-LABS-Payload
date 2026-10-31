@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckIcon, CopyIcon, RefreshCcwIcon, CircleXIcon, ExternalLinkIcon } from 'lucide-react'
+import { CheckIcon, CopyIcon, RefreshCcwIcon, CircleXIcon, FileTextIcon } from 'lucide-react'
 import { useState } from 'react'
 import type { ChatStatus, UIMessage } from 'ai'
 
@@ -25,6 +25,7 @@ import {
 } from '@/components/ai-elements/conversation'
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion'
 import { postSuggestions } from '../suggestions'
+import { ConversationNavigator } from './ConversationNavigator/Component'
 
 const LoadingState = () => {
   const { scrollToBottom } = useConversation()
@@ -98,7 +99,7 @@ export const Active = ({
   }
 
   return (
-    <Conversation className="relative min-h-0 w-full flex-1" initial="smooth" resize="instant">
+    <Conversation id="conversation-scroll-root" className="relative min-h-0 w-full flex-1" initial="smooth" resize="instant">
       <ConversationContent
         id="conversation-transcript"
         className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-5 pb-8 pt-7 sm:px-8 lg:px-10"
@@ -160,22 +161,13 @@ export const Active = ({
                         key={source.url}
                         href={source.url}
                         title={source.title ?? source.url}
-                        className="flex min-w-0 max-w-full flex-col items-start gap-2 border border-zinc-800 bg-zinc-950/60 p-3 no-underline transition-colors hover:border-zinc-700 hover:bg-zinc-900"
+                        className="flex min-w-0 max-w-full items-center gap-3 border border-zinc-800 bg-zinc-950/60 px-3 py-2.5 no-underline transition-colors hover:border-zinc-600 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
                       >
-                        <span className="flex size-7 items-center justify-center rounded-md border border-zinc-800 bg-black text-zinc-400">
-                          <ExternalLinkIcon className="size-3.5" aria-hidden="true" />
+                        <span className="flex size-8 shrink-0 items-center justify-center rounded-md border border-zinc-800 bg-black text-zinc-400 transition-colors group-hover:text-zinc-200">
+                          <FileTextIcon className="size-4" aria-hidden="true" />
                         </span>
-                        <span className="w-full break-words text-xs font-medium leading-5 text-zinc-300 underline decoration-zinc-700 underline-offset-4 hover:text-white">
+                        <span className="line-clamp-2 min-w-0 text-xs font-medium leading-5 text-zinc-300 transition-colors hover:text-white">
                           {source.title ?? source.url}
-                        </span>
-                        <span className="w-full truncate font-mono text-[10px] text-zinc-600">
-                          {(() => {
-                            try {
-                              return new URL(source.url).hostname
-                            } catch {
-                              return source.url
-                            }
-                          })()}
                         </span>
                       </Source>
                     ))}
@@ -239,6 +231,7 @@ export const Active = ({
         {status === 'error' && <ErrorState />}
       </ConversationContent>
 
+      <ConversationNavigator messages={messages} />
       <ConversationScrollButton />
     </Conversation>
   )
