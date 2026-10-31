@@ -64,6 +64,8 @@ async function submitBatch(
         body: {
           model: EMBEDDING_MODEL,
           input: chunk.text,
+          dimensions: 1536,
+          encoding_format: 'float',
         },
       }),
     )
