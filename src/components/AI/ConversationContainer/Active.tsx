@@ -32,7 +32,7 @@ const LoadingState = () => {
   return (
     <button
       type="button"
-      onClick={() => scrollToBottom('smooth')}
+      onClick={() => void scrollToBottom()}
       className="inline-flex min-h-8 items-center gap-1.5 rounded-md px-1 text-zinc-500 transition-colors hover:text-zinc-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
       aria-label="Generating response. Scroll to latest message."
       title="Scroll to latest message"
