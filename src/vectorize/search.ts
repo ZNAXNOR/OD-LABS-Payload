@@ -2,9 +2,9 @@ import { getPayload } from 'payload'
 import { getVectorizedPayload } from 'payloadcms-vectorize'
 
 import configPromise from '@/payload.config'
-import type { ContentScope } from '@/components/AI/contentScopes'
+import { CONTENT_COLLECTIONS, CONTENT_SCOPES, type ContentCollection, type ContentScope } from '@/components/AI/contentScopes'
 
-export type KnowledgeCollection = 'pages' | 'posts'
+export type KnowledgeCollection = ContentCollection
 
 export type KnowledgeSource = {
   id: string
@@ -37,9 +37,14 @@ export async function searchKnowledge(
     throw new Error("Payload's vectorize plugin is not configured")
   }
 
+  const selectedScope = CONTENT_SCOPES.find((item) => item.value === scope)
+  if (!selectedScope) {
+    throw new Error(`Unsupported knowledge content scope: ${scope}`)
+  }
+
   const collectionFilter =
-    scope === 'pages' || scope === 'posts'
-      ? { equals: scope }
+    selectedScope.collections.length === 1
+      ? { equals: selectedScope.collections[0] }
       : { not_equals: 'test-documents' }
 
   const results = await vectorizedPayload.search({
@@ -55,7 +60,7 @@ export async function searchKnowledge(
   const documents = new Map<string, { collection: KnowledgeCollection; id: string }>()
 
   for (const result of results) {
-    if (result.sourceCollection !== 'pages' && result.sourceCollection !== 'posts') {
+    if (!CONTENT_COLLECTIONS.includes(result.sourceCollection as ContentCollection)) {
       continue
     }
 
@@ -93,7 +98,7 @@ export async function searchKnowledge(
 
   return results
     .filter((result) => {
-      if (result.sourceCollection !== 'pages' && result.sourceCollection !== 'posts') {
+      if (!CONTENT_COLLECTIONS.includes(result.sourceCollection as ContentCollection)) {
         return false
       }
 
