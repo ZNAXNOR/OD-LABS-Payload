@@ -25,6 +25,9 @@ const useConversationContext = () => {
   return context
 }
 
+/** Access scrolling state and controls from a Conversation descendant. */
+export const useConversation = useConversationContext
+
 export type ConversationProps = Omit<ComponentProps<'div'>, 'onScroll'> & {
   initial?: ScrollBehavior
   resize?: ScrollBehavior
@@ -40,7 +43,6 @@ export const Conversation = ({
   const rootRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const followingRef = useRef(true)
-  const touchStartY = useRef<number | null>(null)
   const [isAtBottom, setIsAtBottom] = useState(true)
 
   const checkAtBottom = useCallback(() => {
@@ -68,32 +70,12 @@ export const Conversation = ({
       setIsAtBottom(checkAtBottom())
     }
 
-    const handleWheel = (event: WheelEvent) => {
-      if (event.deltaY < 0) {
-        followingRef.current = false
-      } else if (checkAtBottom()) {
-        followingRef.current = true
-      }
-    }
-
-    const handleTouchStart = (event: TouchEvent) => {
-      touchStartY.current = event.touches[0]?.clientY ?? null
-    }
-
-    const handleTouchMove = (event: TouchEvent) => {
-      const y = event.touches[0]?.clientY
-      const previousY = touchStartY.current
-      if (y == null || previousY == null) return
-      if (y > previousY) followingRef.current = false
-      else if (checkAtBottom()) followingRef.current = true
-      touchStartY.current = y
-    }
-
     const handleScroll = () => {
       const atBottom = checkAtBottom()
       setIsAtBottom(atBottom)
       followingRef.current = atBottom
     }
+
     const resizeObserver = new ResizeObserver(syncScroll)
     const mutationObserver = new MutationObserver(syncScroll)
 
@@ -101,9 +83,6 @@ export const Conversation = ({
     resizeObserver.observe(content)
     mutationObserver.observe(content, { childList: true, subtree: true, characterData: true })
     root.addEventListener('scroll', handleScroll, { passive: true })
-    root.addEventListener('wheel', handleWheel, { passive: true })
-    root.addEventListener('touchstart', handleTouchStart, { passive: true })
-    root.addEventListener('touchmove', handleTouchMove, { passive: true })
 
     const frame = requestAnimationFrame(() => scrollToBottom(initial))
 
@@ -112,9 +91,6 @@ export const Conversation = ({
       resizeObserver.disconnect()
       mutationObserver.disconnect()
       root.removeEventListener('scroll', handleScroll)
-      root.removeEventListener('wheel', handleWheel)
-      root.removeEventListener('touchstart', handleTouchStart)
-      root.removeEventListener('touchmove', handleTouchMove)
     }
   }, [checkAtBottom, initial, resize, scrollToBottom])
 
@@ -122,7 +98,10 @@ export const Conversation = ({
     <ConversationContext.Provider value={{ rootRef, contentRef, isAtBottom, scrollToBottom }}>
       <div
         ref={rootRef}
-        className={cn('relative flex min-h-0 w-full flex-1 flex-col overflow-y-auto overscroll-y-contain', className)}
+        className={cn(
+          'relative flex min-h-0 w-full flex-1 flex-col overflow-y-auto overscroll-y-auto',
+          className,
+        )}
         {...props}
       >
         {children}
@@ -135,7 +114,13 @@ export type ConversationContentProps = ComponentProps<'div'>
 
 export const ConversationContent = ({ className, ...props }: ConversationContentProps) => {
   const { contentRef } = useConversationContext()
-  return <div ref={contentRef} className={cn('flex w-full flex-col gap-8 p-4 pb-8', className)} {...props} />
+  return (
+    <div
+      ref={contentRef}
+      className={cn('flex min-h-max w-full flex-col gap-8 p-4 pb-8', className)}
+      {...props}
+    />
+  )
 }
 
 export type ConversationEmptyStateProps = ComponentProps<'div'> & {
@@ -172,7 +157,10 @@ export const ConversationScrollButton = ({ className, ...props }: ConversationSc
   if (isAtBottom) return null
   return (
     <Button
-      className={cn('absolute bottom-4 right-5 z-20 size-9 rounded-full border-zinc-700 bg-zinc-900 shadow-lg hover:bg-zinc-800', className)}
+      className={cn(
+        'absolute bottom-4 right-5 z-20 size-9 rounded-full border-zinc-700 bg-zinc-900 p-0 shadow-lg hover:bg-zinc-800',
+        className,
+      )}
       onClick={() => scrollToBottom('smooth')}
       size="icon"
       type="button"
