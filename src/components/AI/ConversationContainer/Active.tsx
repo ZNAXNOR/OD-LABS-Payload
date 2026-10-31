@@ -21,17 +21,30 @@ import {
   Conversation,
   ConversationContent,
   ConversationScrollButton,
+  useConversation,
 } from '@/components/ai-elements/conversation'
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion'
 import { postSuggestions } from '../suggestions'
 
-const LoadingState = () => (
-  <span className="text-odl inline-flex items-center gap-1.5" role="status" aria-label="Generating response">
-    <span className="size-1.5 animate-pulse rounded-full bg-current" />
-    <span className="size-1.5 animate-pulse rounded-full bg-current [animation-delay:200ms]" />
-    <span className="size-1.5 animate-pulse rounded-full bg-current [animation-delay:400ms]" />
-  </span>
-)
+const LoadingState = () => {
+  const { scrollToBottom } = useConversation()
+
+  return (
+    <button
+      type="button"
+      onClick={() => scrollToBottom('smooth')}
+      className="inline-flex min-h-8 items-center gap-1.5 rounded-md px-1 text-zinc-500 transition-colors hover:text-zinc-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
+      aria-label="Generating response. Scroll to latest message."
+      title="Scroll to latest message"
+    >
+      <span role="status" aria-label="Generating response" className="inline-flex items-center gap-1.5">
+        <span className="size-1.5 animate-pulse rounded-full bg-zinc-500" />
+        <span className="size-1.5 animate-pulse rounded-full bg-zinc-500 [animation-delay:200ms]" />
+        <span className="size-1.5 animate-pulse rounded-full bg-zinc-500 [animation-delay:400ms]" />
+      </span>
+    </button>
+  )
+}
 
 const ErrorState = () => (
   <div
@@ -100,7 +113,8 @@ export const Active = ({
           const isStreamingMessage = isStreaming && isLastMessage && !isUser
           const text = getMessageText(message)
           const hasText = Boolean(text.trim())
-          const sources = message.parts.filter((part) => part.type === 'source-url')
+          const sourceParts = message.parts.filter((part) => part.type === 'source-url')
+          const sources = [...new Map(sourceParts.map((source) => [source.url, source])).values()]
 
           if (!hasText && !isStreamingMessage) return null
 
@@ -140,14 +154,30 @@ export const Active = ({
                       <span className="text-zinc-600">({sources.length})</span>
                     </span>
                   </SourcesTrigger>
-                  <SourcesContent className="max-w-full">
+                  <SourcesContent className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                     {sources.map((source) => (
                       <Source
-                        key={source.sourceId}
+                        key={source.url}
                         href={source.url}
                         title={source.title ?? source.url}
-                        className="max-w-full break-words text-xs text-zinc-400 underline decoration-zinc-700 underline-offset-4 hover:text-white"
-                      />
+                        className="flex min-w-0 max-w-full flex-col items-start gap-2 border border-zinc-800 bg-zinc-950/60 p-3 no-underline transition-colors hover:border-zinc-700 hover:bg-zinc-900"
+                      >
+                        <span className="flex size-7 items-center justify-center rounded-md border border-zinc-800 bg-black text-zinc-400">
+                          <span className="font-mono text-xs" aria-hidden="true">↗</span>
+                        </span>
+                        <span className="w-full break-words text-xs font-medium leading-5 text-zinc-300 underline decoration-zinc-700 underline-offset-4 hover:text-white">
+                          {source.title ?? source.url}
+                        </span>
+                        <span className="w-full truncate font-mono text-[10px] text-zinc-600">
+                          {(() => {
+                            try {
+                              return new URL(source.url).hostname
+                            } catch {
+                              return source.url
+                            }
+                          })()}
+                        </span>
+                      </Source>
                     ))}
                   </SourcesContent>
                 </Sources>
@@ -158,15 +188,16 @@ export const Active = ({
                   className={
                     isUser
                       ? 'justify-end opacity-0 transition-opacity group-hover/user:opacity-100 group-focus-within/user:opacity-100'
-                      : 'justify-start gap-0.5 [&_button]:rounded-md'
+                      : 'justify-start gap-0.5'
                   }
                 >
                   <MessageAction
                     label={isCopied ? 'Copied' : 'Copy message'}
                     tooltip={isCopied ? 'Copied' : 'Copy message'}
                     onClick={() => void copyMessage(message)}
+                    className="size-7 rounded-md p-1"
                   >
-                    {isCopied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
+                    {isCopied ? <CheckIcon className="size-3.5" /> : <CopyIcon className="size-3.5" />}
                   </MessageAction>
 
                   {!isUser && isLastMessage && (
@@ -174,8 +205,9 @@ export const Active = ({
                       label="Regenerate response"
                       tooltip="Regenerate response"
                       onClick={() => void regenerate()}
+                      className="size-7 rounded-md p-1"
                     >
-                      <RefreshCcwIcon className="size-4" />
+                      <RefreshCcwIcon className="size-3.5" />
                     </MessageAction>
                   )}
                 </MessageActions>
@@ -196,7 +228,7 @@ export const Active = ({
           )
         })}
 
-        {awaitingAssistant && (
+        {isGenerating && (
           <Message from="assistant" className="max-w-none gap-3">
             <MessageContent className="max-w-4xl bg-transparent p-0 text-base leading-8 text-zinc-100 sm:text-[17px]">
               <LoadingState />
