@@ -1,6 +1,7 @@
 import type { ToKnowledgePoolFn } from 'payloadcms-vectorize'
 
 import { lexicalToText } from './lexicalToText'
+import { splitTextIntoChunks } from './splitTextIntoChunks'
 
 type PageBlock = {
   blockType?: string
@@ -20,16 +21,19 @@ export const pagesToKnowledgePool: ToKnowledgePoolFn = async (doc) => {
   const pageSlug = typeof doc.slug === 'string' ? doc.slug : ''
 
   const addChunk = (section: string, text: string, blockType?: string) => {
-    const cleaned = text.trim()
+    const parts = splitTextIntoChunks(text)
 
-    if (!cleaned) return
+    parts.forEach((part, partIndex) => {
+      const partLabel =
+        parts.length > 1 ? `\nPart: ${partIndex + 1} of ${parts.length}` : ''
 
-    chunks.push({
-      chunk: `Page: ${pageTitle}\nSection: ${section}\n\n${cleaned}`,
-      pageTitle,
-      pageSlug,
-      section,
-      blockType: blockType ?? '',
+      chunks.push({
+        chunk: `Page: ${pageTitle}\nSection: ${section}${partLabel}\n\n${part}`,
+        pageTitle,
+        pageSlug,
+        section,
+        blockType: blockType ?? '',
+      })
     })
   }
 
