@@ -8,5 +8,8 @@ export const useAIInterface = () => {
     transport: new DefaultChatTransport({
       api: '/api/ai-chat',
     }),
+    onError: (error) => {
+      console.error('[AI Chat] Client request failed:', error)
+    },
   })
 }
