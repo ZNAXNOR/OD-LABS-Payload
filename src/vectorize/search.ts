@@ -52,7 +52,7 @@ export async function searchKnowledge(
       source: {
         id: String(result.id),
         title: pageTitle || 'OD LABS',
-        url: pageSlug ? `/${pageSlug}` : '/',
+        url: pageSlug && pageSlug !== 'home' ? `/${pageSlug}` : '/',
         section,
         blockType,
         score: result.score,
