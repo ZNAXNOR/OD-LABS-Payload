@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckIcon, CopyIcon, RefreshCcwIcon, CircleXIcon, FileTextIcon, NewspaperIcon } from 'lucide-react'
+import { CheckIcon, CopyIcon, RefreshCcwIcon, CircleXIcon, FileTextIcon, NewspaperIcon, BriefcaseBusinessIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { ChatStatus, UIMessage } from 'ai'
 
@@ -25,7 +25,7 @@ import {
 } from '@/components/ai-elements/conversation'
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion'
 import { ConversationNavigator } from './ConversationNavigator/Component'
-import type { ContentScope } from '../contentScopes'
+import { getContentCategory, type ContentScope } from '../contentScopes'
 
 const LoadingState = () => {
   const { scrollToBottom } = useConversation()
@@ -250,11 +250,20 @@ export const Active = ({
                         className="group flex min-w-0 max-w-full items-center gap-3 border border-zinc-800 bg-zinc-950/60 px-3 py-2.5 no-underline transition-colors hover:border-zinc-600 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
                       >
                         <span className="flex size-8 shrink-0 items-center justify-center rounded-md border border-zinc-800 bg-black text-zinc-400 transition-colors group-hover:text-zinc-200">
-                          {source.sourceId.startsWith('posts:') ? (
-                            <NewspaperIcon className="size-4" aria-hidden="true" />
-                          ) : (
-                            <FileTextIcon className="size-4" aria-hidden="true" />
-                          )}
+                          {(() => {
+                            const collection = source.sourceId.split(':', 1)[0]
+                            const icon = getContentCategory(collection)?.icon
+
+                            if (icon === 'Newspaper') {
+                              return <NewspaperIcon className="size-4" aria-hidden="true" />
+                            }
+
+                            if (icon === 'BriefcaseBusiness') {
+                              return <BriefcaseBusinessIcon className="size-4" aria-hidden="true" />
+                            }
+
+                            return <FileTextIcon className="size-4" aria-hidden="true" />
+                          })()}
                         </span>
                         <span className="line-clamp-2 min-w-0 text-xs font-medium leading-5 text-zinc-300 transition-colors hover:text-white">
                           {source.title ?? source.url}
