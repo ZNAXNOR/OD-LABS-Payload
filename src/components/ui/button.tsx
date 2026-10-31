@@ -57,7 +57,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           buttonVariants({ variant, size, className }),
           size === 'icon' || size === 'icon-sm'
-            ? 'p-0'
+            ? undefined
             : 'h-auto rounded-none px-8 py-4',
         )}
         ref={ref}
