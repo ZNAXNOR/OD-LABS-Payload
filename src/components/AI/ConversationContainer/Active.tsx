@@ -158,7 +158,7 @@ export const Active = ({
                   className={
                     isUser
                       ? 'justify-end opacity-0 transition-opacity group-hover/user:opacity-100 group-focus-within/user:opacity-100'
-                      : 'justify-start gap-0'
+                      : 'justify-start gap-0.5 [&_button]:rounded-md'
                   }
                 >
                   <MessageAction
