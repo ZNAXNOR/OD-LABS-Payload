@@ -27,6 +27,7 @@ import payloadVectorize, { deleteDocumentEmbeddings } from 'payloadcms-vectorize
 import { ToKnowledgePoolFn } from 'payloadcms-vectorize'
 import { vectorIntegration } from '@/vectorize/config'
 import { pagesToKnowledgePool } from '@/vectorize/pagesToKnowledgePool'
+import { postsToKnowledgePool } from '@/vectorize/postsToKnowledgePool'
 import { s3Storage } from '@payloadcms/storage-s3'
 import { wrapEmailHtml } from '@/email/template'
 
@@ -214,6 +215,14 @@ export const plugins: Plugin[] = [
               return doc._status === 'published' && !doc.meta?.excludeFromIndex
             },
           },
+
+          posts: {
+            toKnowledgePool: postsToKnowledgePool,
+
+            shouldEmbedFn: async (doc) => {
+              return doc._status === 'published' && !doc.meta?.excludeFromIndex
+            },
+          },
         },
 
         embeddingConfig: {
@@ -226,18 +235,20 @@ export const plugins: Plugin[] = [
   }),
 
   // The plugin skips ingestion when shouldEmbedFn returns false, but does not
-  // automatically remove chunks already stored for a document that becomes
-  // excluded or unpublished. Clean those chunks up after the plugin's hook.
+  // automatically remove existing chunks when a document becomes excluded or
+  // unpublished. Clean up those chunks after the plugin's own afterChange hook.
   (config) => {
-    const pagesCollection = config.collections?.find(
-      (collection) => collection.slug === 'pages',
-    )
+    for (const collectionSlug of ['pages', 'posts']) {
+      const collection = config.collections?.find(
+        (item) => item.slug === collectionSlug,
+      )
 
-    if (pagesCollection) {
-      pagesCollection.hooks = {
-        ...pagesCollection.hooks,
+      if (!collection) continue
+
+      collection.hooks = {
+        ...collection.hooks,
         afterChange: [
-          ...(pagesCollection.hooks?.afterChange ?? []),
+          ...(collection.hooks?.afterChange ?? []),
           async ({ doc, req }) => {
             const shouldBeIndexed =
               doc._status === 'published' && !doc.meta?.excludeFromIndex
@@ -247,7 +258,7 @@ export const plugins: Plugin[] = [
             await deleteDocumentEmbeddings({
               payload: req.payload,
               poolName: 'odlabs_knowledge',
-              collection: 'pages',
+              collection: collectionSlug,
               docId: String(doc.id),
               adapter: vectorIntegration.adapter,
             })
