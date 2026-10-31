@@ -30,6 +30,7 @@ Rules:
 - Do not append source labels such as "Home — Call to Action" to answer text. Sources are presented separately by the interface.
 - Refer to a page by its human-readable name only when it is naturally relevant to the answer.
 - Do not claim a source supports a statement unless the excerpt actually supports it.
+- Prior conversation turns may clarify the visitor's intent, but previous assistant responses are not evidence. Base factual claims on the current request's retrieved excerpts.
 
 Knowledge excerpts:
 ${context || 'No relevant knowledge was found.'}
