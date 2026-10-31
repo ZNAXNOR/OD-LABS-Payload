@@ -102,5 +102,10 @@ export default buildConfig({
       },
     },
     tasks: [],
+    autoRun: [
+      { cron: '* * * * *', queue: 'odlabs-vectorize-realtime', limit: 10 },
+      { cron: '* * * * *', queue: 'odlabs-vectorize-bulk-prepare', limit: 5 },
+      { cron: '* * * * *', queue: 'odlabs-vectorize-bulk-poll', limit: 10 },
+    ],
   },
 })
