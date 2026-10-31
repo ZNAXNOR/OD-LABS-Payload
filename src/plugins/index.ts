@@ -225,6 +225,30 @@ export const plugins: Plugin[] = [
     },
   }),
 
+  // The Vectorize plugin generates these collections internally, so group them
+  // after it has registered them instead of maintaining custom collection configs.
+  (config) => {
+    const aiCollectionSlugs = new Set([
+      'vector-bulk-embeddings-runs',
+      'vector-bulk-embeddings-batches',
+      'odlabs_knowledge',
+    ])
+
+    config.collections = (config.collections ?? []).map((collection) =>
+      aiCollectionSlugs.has(collection.slug)
+        ? {
+            ...collection,
+            admin: {
+              ...collection.admin,
+              group: 'AI',
+            },
+          }
+        : collection,
+    )
+
+    return config
+  },
+
   s3Storage({
     enabled: Boolean(process.env.AWS_S3_BUCKET),
     collections: {
