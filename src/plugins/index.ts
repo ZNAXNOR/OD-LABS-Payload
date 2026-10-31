@@ -234,9 +234,10 @@ export const plugins: Plugin[] = [
     },
   }),
 
-  // The plugin skips ingestion when shouldEmbedFn returns false, but does not
-  // automatically remove existing chunks when a document becomes excluded or
-  // unpublished. Clean up those chunks after the plugin's own afterChange hook.
+  // The plugin skips ingestion when shouldEmbedFn returns false, but it does
+  // not remove existing chunks when a published document is explicitly excluded.
+  // Only clean up on the explicit exclusion flag: draft saves can have draft
+  // status while the previously published version remains publicly available.
   (config) => {
     for (const collectionSlug of ['pages', 'posts']) {
       const collection = config.collections?.find(
@@ -254,10 +255,8 @@ export const plugins: Plugin[] = [
               | { excludeFromIndex?: boolean | null }
               | null
               | undefined
-            const shouldBeIndexed =
-              doc._status === 'published' && !meta?.excludeFromIndex
 
-            if (shouldBeIndexed) return doc
+            if (!meta?.excludeFromIndex) return doc
 
             await deleteDocumentEmbeddings({
               payload: req.payload,
