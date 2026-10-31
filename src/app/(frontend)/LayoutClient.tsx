@@ -25,28 +25,28 @@ const LayoutClientContent = ({
 }) => {
   const { isOpen, openMenu, closeMenu } = useMegaMenu()
   const pathname = usePathname()
+  const isAIPage = pathname === '/ai'
   const currentPage = pagesData?.find((page) => page.href === pathname)
 
   return (
     <>
       <div className="mx-auto grid w-full max-w-380 grid-cols-1 lg:grid-cols-[72px_minmax(0,1fr)_72px]">
-        {/* Left rail */}
         {leftRail}
 
-        {/* Main Site */}
-        <div className="flex min-h-screen flex-col">
-          {header}
-          <main id="main-content" className="flex-1">
+        <div className={['flex min-h-screen min-w-0 flex-col', isAIPage ? 'min-h-svh' : ''].join(' ')}>
+          {!isAIPage && header}
+          <main
+            id="main-content"
+            className={['flex-1', isAIPage ? 'flex min-h-svh flex-col' : ''].join(' ')}
+          >
             {children}
           </main>
-          {footer}
+          {!isAIPage && footer}
         </div>
 
-        {/* Right rail */}
         <RightRail onMenuOpen={openMenu} sections={currentPage?.sections ?? []} />
       </div>
 
-      {/* Mega menu */}
       <MegaMenu
         open={isOpen}
         onClose={closeMenu}
