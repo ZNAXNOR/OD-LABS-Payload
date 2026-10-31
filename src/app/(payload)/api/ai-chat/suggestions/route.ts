@@ -48,7 +48,7 @@ const MAX_SOURCE_IDS = 10
 const EMPTY_SUGGESTIONS: string[] = []
 
 const normalizeEvidence = (text: string) =>
-  text.replace(/\\s+/g, ' ').trim().toLocaleLowerCase()
+  text.replace(/\s+/g, ' ').trim().toLocaleLowerCase()
 
 export async function POST(request: NextRequest) {
   try {
