@@ -228,23 +228,42 @@ export const plugins: Plugin[] = [
   // The Vectorize plugin generates these collections internally, so group them
   // after it has registered them instead of maintaining custom collection configs.
   (config) => {
-    const aiCollectionSlugs = new Set([
-      'vector-bulk-embeddings-runs',
-      'vector-bulk-embeddings-batches',
-      'odlabs_knowledge',
-    ])
+    const aiCollectionLabels: Record<
+      string,
+      { singular: string; plural: string }
+    > = {
+      'vector-bulk-embeddings-runs': {
+        singular: 'Embedding Run',
+        plural: 'Embedding Runs',
+      },
+      'vector-bulk-embeddings-batches': {
+        singular: 'Embedding Batch',
+        plural: 'Embedding Batches',
+      },
+      'vector-bulk-embedding-input-metadata': {
+        singular: 'Embedding Input Record',
+        plural: 'Embedding Input Records',
+      },
+      odlabs_knowledge: {
+        singular: 'Knowledge Chunk',
+        plural: 'Knowledge Chunks',
+      },
+    }
 
-    config.collections = (config.collections ?? []).map((collection) =>
-      aiCollectionSlugs.has(collection.slug)
-        ? {
-            ...collection,
-            admin: {
-              ...collection.admin,
-              group: 'AI',
-            },
-          }
-        : collection,
-    )
+    config.collections = (config.collections ?? []).map((collection) => {
+      const labels = aiCollectionLabels[collection.slug]
+
+      if (!labels) return collection
+
+      return {
+        ...collection,
+        labels,
+        admin: {
+          ...collection.admin,
+          group: 'AI',
+        },
+      }
+    })
 
     return config
   },
