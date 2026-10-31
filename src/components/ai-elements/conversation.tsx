@@ -89,7 +89,11 @@ export const Conversation = ({
       touchStartY.current = y
     }
 
-    const handleScroll = () => setIsAtBottom(checkAtBottom())
+    const handleScroll = () => {
+      const atBottom = checkAtBottom()
+      setIsAtBottom(atBottom)
+      followingRef.current = atBottom
+    }
     const resizeObserver = new ResizeObserver(syncScroll)
     const mutationObserver = new MutationObserver(syncScroll)
 
