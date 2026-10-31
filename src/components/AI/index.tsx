@@ -48,7 +48,7 @@ export const AIInterface = () => {
     <section
       id="ai-chat-workspace"
       aria-label="OD LABS AI assistant"
-      className="flex min-h-svh w-full min-w-0 flex-1 flex-col bg-black text-white"
+      className="flex h-full min-h-0 w-full min-w-0 flex-1 flex-col overflow-hidden bg-black text-white"
     >
       <Header mode={mode} newConversation={newConversation} />
 
