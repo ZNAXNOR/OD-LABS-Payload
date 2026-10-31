@@ -149,6 +149,16 @@ export const Posts: CollectionConfig<'posts'> = {
             }),
 
             MetaDescriptionField({}),
+            {
+              name: 'excludeFromIndex',
+              type: 'checkbox',
+              label: 'Exclude from AI Index',
+              defaultValue: false,
+              admin: {
+                description:
+                  'Exclude this post from the OD LABS AI knowledgebase while keeping it published on the website.',
+              },
+            },
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,

@@ -30,11 +30,9 @@ const LayoutClientContent = ({
   return (
     <>
       <div className="mx-auto grid w-full max-w-380 grid-cols-1 lg:grid-cols-[72px_minmax(0,1fr)_72px]">
-        {/* Left rail */}
         {leftRail}
 
-        {/* Main Site */}
-        <div className="flex min-h-screen flex-col">
+        <div className="flex min-h-screen min-w-0 flex-col">
           {header}
           <main id="main-content" className="flex-1">
             {children}
@@ -42,11 +40,9 @@ const LayoutClientContent = ({
           {footer}
         </div>
 
-        {/* Right rail */}
         <RightRail onMenuOpen={openMenu} sections={currentPage?.sections ?? []} />
       </div>
 
-      {/* Mega menu */}
       <MegaMenu
         open={isOpen}
         onClose={closeMenu}

@@ -6,6 +6,7 @@ import {
   PromptInputTextarea,
   PromptInputTools,
 } from '@/components/ai-elements/prompt-input'
+import { Sparkles } from 'lucide-react'
 import type { ChatStatus } from 'ai'
 
 export const Composer = ({
@@ -27,49 +28,46 @@ export const Composer = ({
     <div
       id="ai-chat-composer"
       className={[
-        'relative pb-4 shrink-0 bg-black',
-        'shadow-[0_-25px_40px_-10px_rgba(0,0,0,0.8),0_-15px_30px_-5px_rgba(0,0,0,0.6)]',
-        sticky && ['sticky bottom-0 z-30'],
+        'relative shrink-0 border-t border-zinc-800/90 bg-black',
+        sticky ? 'sticky bottom-0 z-30' : '',
       ].join(' ')}
     >
-      <div className="mx-auto w-full max-w-5xl px-6 pt-3 pb-4 sm:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-5xl px-5 pb-3 pt-4 sm:px-8 lg:px-10">
         <PromptInput
-          className={[
-            'rounded-md border border-zinc-800 bg-zinc-950/90',
-            'transition-colors',
-            'focus-within:border-odl/50',
-          ].join(' ')}
+          className="rounded-xl border border-zinc-700 bg-zinc-950 transition-colors focus-within:border-odl/70"
           onSubmit={(_message, event) => onSubmit(event)}
         >
           <PromptInputBody>
             <PromptInputTextarea
               value={input}
-              onChange={(e) => setInput(e.target.value)}
-              className="min-h-16 px-4 py-3 text-base"
+              onChange={(event) => setInput(event.target.value)}
+              placeholder="Ask about OD LABS..."
+              aria-label="Message the OD LABS AI assistant"
+              className="min-h-14 rounded-t-xl px-4 py-3 text-base leading-6 text-zinc-100 placeholder:text-zinc-600"
             />
           </PromptInputBody>
 
           <PromptInputFooter className="px-3 pb-3">
-            <PromptInputTools />
+            <PromptInputTools>
+              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-zinc-600">
+                <Sparkles className="size-3 text-odl" aria-hidden="true" />
+                Knowledge assistant
+              </span>
+            </PromptInputTools>
 
             <PromptInputSubmit
-              className={[
-                'transition-all',
-                'disabled:pointer-events-none disabled:opacity-30',
-                'enabled:cursor-pointer',
-                'bg-odl text-white',
-                'hover:bg-odl/80',
-              ].join(' ')}
-              disabled={!input.trim() && status !== 'streaming'}
+              aria-label={status === 'streaming' || status === 'submitted' ? 'Stop generating' : 'Send message'}
+              className="size-10 rounded-full bg-odl text-white transition-colors hover:bg-odl/80 disabled:pointer-events-none disabled:opacity-30"
+              disabled={!input.trim() && status !== 'streaming' && status !== 'submitted'}
               status={status}
               onStop={stop}
             />
           </PromptInputFooter>
         </PromptInput>
 
-        <div className="mt-2.5 text-center text-xs text-zinc-500">
-          AI can make mistakes. Check important info.
-        </div>
+        <p className="mt-2 text-center text-[11px] leading-5 text-zinc-600">
+          AI can make mistakes. Verify important information.
+        </p>
       </div>
     </div>
   )
