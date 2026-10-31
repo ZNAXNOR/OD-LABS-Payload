@@ -24,7 +24,6 @@ import { openai } from '@ai-sdk/openai'
 
 import payloadVectorize, { deleteDocumentEmbeddings } from 'payloadcms-vectorize'
 
-import { ToKnowledgePoolFn } from 'payloadcms-vectorize'
 import { vectorIntegration } from '@/vectorize/config'
 import { pagesToKnowledgePool } from '@/vectorize/pagesToKnowledgePool'
 import { postsToKnowledgePool } from '@/vectorize/postsToKnowledgePool'
