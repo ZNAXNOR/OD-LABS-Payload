@@ -22,7 +22,7 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { embed, embedMany } from 'ai'
 import { openai } from '@ai-sdk/openai'
 
-import payloadVectorize from 'payloadcms-vectorize'
+import payloadVectorize, { deleteDocumentEmbeddings } from 'payloadcms-vectorize'
 
 import { ToKnowledgePoolFn } from 'payloadcms-vectorize'
 import { vectorIntegration } from '@/vectorize/config'
@@ -224,6 +224,42 @@ export const plugins: Plugin[] = [
       },
     },
   }),
+
+  // The plugin skips ingestion when shouldEmbedFn returns false, but does not
+  // automatically remove chunks already stored for a document that becomes
+  // excluded or unpublished. Clean those chunks up after the plugin's hook.
+  (config) => {
+    const pagesCollection = config.collections?.find(
+      (collection) => collection.slug === 'pages',
+    )
+
+    if (pagesCollection) {
+      pagesCollection.hooks = {
+        ...pagesCollection.hooks,
+        afterChange: [
+          ...(pagesCollection.hooks?.afterChange ?? []),
+          async ({ doc, req }) => {
+            const shouldBeIndexed =
+              doc._status === 'published' && !doc.meta?.excludeFromIndex
+
+            if (shouldBeIndexed) return doc
+
+            await deleteDocumentEmbeddings({
+              payload: req.payload,
+              poolName: 'odlabs_knowledge',
+              collection: 'pages',
+              docId: String(doc.id),
+              adapter: vectorIntegration.adapter,
+            })
+
+            return doc
+          },
+        ],
+      }
+    }
+
+    return config
+  },
 
   // The Vectorize plugin generates these collections internally, so group them
   // after it has registered them instead of maintaining custom collection configs.
