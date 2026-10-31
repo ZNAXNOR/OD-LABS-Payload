@@ -3,6 +3,7 @@ import { generateText, jsonSchema, Output } from 'ai'
 import { openai } from '@ai-sdk/openai'
 
 import { searchKnowledge } from '@/vectorize/search'
+import { DEFAULT_CONTENT_SCOPE, isContentScope } from '@/components/AI/contentScopes'
 
 type SuggestionOutput = {
   suggestions: Array<{
@@ -53,7 +54,14 @@ export async function POST(request: NextRequest) {
       query?: unknown
       answer?: unknown
       sourceIds?: unknown
+      scope?: unknown
     }
+
+    const scopeValue = body.scope === undefined ? DEFAULT_CONTENT_SCOPE : scope
+    if (!isContentScope(scopeValue)) {
+      return Response.json({ suggestions: EMPTY_SUGGESTIONS }, { status: 400 })
+    }
+    const contentScope = scopeValue
 
     if (
       typeof query !== 'string' ||
@@ -80,7 +88,7 @@ export async function POST(request: NextRequest) {
 
     // Re-retrieve eligible published website content on the server. Never trust
     // source IDs or source text supplied by the browser as evidence.
-    const results = await searchKnowledge(query.trim(), 10)
+    const results = await searchKnowledge(query.trim(), 10, contentScope)
     const requestedSourceIds = new Set(sourceIds)
     const approvedResults = results.filter((result) =>
       requestedSourceIds.has(result.source.id),
