@@ -250,8 +250,12 @@ export const plugins: Plugin[] = [
         afterChange: [
           ...(collection.hooks?.afterChange ?? []),
           async ({ doc, req }) => {
+            const meta = doc.meta as
+              | { excludeFromIndex?: boolean | null }
+              | null
+              | undefined
             const shouldBeIndexed =
-              doc._status === 'published' && !doc.meta?.excludeFromIndex
+              doc._status === 'published' && !meta?.excludeFromIndex
 
             if (shouldBeIndexed) return doc
 
