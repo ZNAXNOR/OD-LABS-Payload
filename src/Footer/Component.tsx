@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 import { Logo } from '@/components/Logo/Logo'
 import { LegalPageLinks } from '@/components/LegalPageLinks'
+import { ServiceStatus } from '@/components/ServiceStatus'
 import type { LegalPagesData } from '@/getLegalPagesData'
 import { ScrollToTop } from './ScrollToTop'
 import { FooterNav } from './Nav'
@@ -30,9 +31,14 @@ export async function Footer({ pagesData, legalPagesData = [] }: FooterProps) {
               </p>
             )}
 
-            <p className="pt-6 font-mono text-xs tracking-wider text-zinc-500 uppercase">
+            <p className="py-6 font-mono text-xs tracking-wider text-zinc-500 uppercase">
               Web · Data · Automation · Engineering
             </p>
+
+            <ServiceStatus
+              variant="compact"
+              className="hover:border-odl border border-transparent px-3 py-2 transition-all duration-300 ease-in-out hover:bg-zinc-950 hover:text-white"
+            />
           </div>
 
           {/* Navigation Links */}
@@ -40,7 +46,6 @@ export async function Footer({ pagesData, legalPagesData = [] }: FooterProps) {
             <div className="font-mono text-[11px] tracking-widest text-zinc-600 uppercase">
               Pages
             </div>
-
             <div className="mt-4">
               <FooterNav pagesData={pagesData} />
             </div>
@@ -48,7 +53,7 @@ export async function Footer({ pagesData, legalPagesData = [] }: FooterProps) {
         </div>
 
         {/* Signature Divider */}
-        <div className="my-20 flex w-full items-center gap-6">
+        <div className="my-15 flex w-full items-center gap-6">
           <div className="h-px flex-1 bg-zinc-600" />
           <span className="px-2 font-serif text-lg font-normal tracking-wide text-white/90 italic sm:text-xl">
             Omkar Dalvi
@@ -56,22 +61,20 @@ export async function Footer({ pagesData, legalPagesData = [] }: FooterProps) {
           <div className="h-px flex-1 bg-zinc-600" />
         </div>
 
-        {/* Meta */}
-        <div className="flex flex-col items-center justify-between gap-4 pt-2 font-mono text-xs text-zinc-400 sm:flex-row">
-          <div>© {new Date().getFullYear()} OD LABS. All rights reserved.</div>
+        {/* Copyright, live service status, and utility action */}
+        <div className="flex flex-col items-center justify-between gap-4 border-zinc-900 pt-5 font-mono text-xs text-zinc-400 sm:flex-row">
+          <div className="flex flex-row gap-6">
+            © {new Date().getFullYear()} OD LABS. All rights reserved.{' '}
+            {legalPagesData.length > 0 && (
+              <LegalPageLinks
+                pages={legalPagesData}
+                className="max-w-full [&_a:hover]:text-zinc-200"
+              />
+            )}
+          </div>
 
           <ScrollToTop />
         </div>
-
-        {legalPagesData.length > 0 && (
-          <div className="mt-4 flex flex-col items-center gap-2 border-t border-zinc-900 pt-4 font-mono text-[10px] leading-relaxed text-zinc-600 sm:flex-row sm:justify-between">
-            <LegalPageLinks
-              pages={legalPagesData}
-              className="max-w-full [&_a:hover]:text-zinc-300"
-            />
-            <span className="text-center sm:text-right">Legal information</span>
-          </div>
-        )}
       </div>
     </footer>
   )
