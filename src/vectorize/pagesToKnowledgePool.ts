@@ -55,7 +55,6 @@ export const pagesToKnowledgePool: ToKnowledgePoolFn = async (doc) => {
           lexicalToText(block.richText),
           'content',
         )
-        return
       }
 
       const columns = Array.isArray(block.columns) ? block.columns : []
