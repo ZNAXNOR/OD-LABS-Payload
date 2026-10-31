@@ -44,7 +44,7 @@ export async function searchKnowledge(
 
   const collectionFilter =
     selectedScope.collections.length === 1
-      ? { equals: selectedScope.collections[0] }
+      ? { equals: selectedScope.collections[0]! }
       : { not_equals: 'test-documents' }
 
   const results = await vectorizedPayload.search({
