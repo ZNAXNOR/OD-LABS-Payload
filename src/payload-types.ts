@@ -718,6 +718,15 @@ export interface FormBlock {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "forms".
  */
+export interface AIBlock {
+  heading?: string | null;
+  description?: string | null;
+  placeholder?: string | null;
+  defaultScope?: 'all' | 'pages' | 'posts' | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aiBlock';
+}
 export interface Form {
   id: number;
   title: string;
@@ -1658,6 +1667,14 @@ export interface FormBlockSelect<T extends boolean = true> {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
+export interface AIBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  placeholder?: T;
+  defaultScope?: T;
+  id?: T;
+  blockName?: T;
+}
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
