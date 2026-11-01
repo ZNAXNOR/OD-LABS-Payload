@@ -716,7 +716,7 @@ export interface FormBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "forms".
+ * via the definition "AIBlock".
  */
 export interface AIBlock {
   heading?: string | null;
@@ -1665,7 +1665,7 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts_select".
+ * via the definition "AIBlock_select".
  */
 export interface AIBlockSelect<T extends boolean = true> {
   heading?: T;
