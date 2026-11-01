@@ -24,7 +24,8 @@ export const Initial = ({
         </h1>
 
         <p className="mt-5 max-w-xl text-pretty text-base leading-7 text-zinc-400 sm:text-lg">
-          {description || 'Explore our work, projects, technology, and approach. Ask a question in your own words to get started.'}
+          {description ||
+            'Explore our work, projects, technology, and approach. Ask a question in your own words to get started.'}
         </p>
 
         <div className="mt-10 w-full">
