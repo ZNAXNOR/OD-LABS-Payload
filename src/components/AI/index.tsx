@@ -70,7 +70,12 @@ export const AIInterface = ({
 
         <div className="relative flex min-h-0 flex-1 flex-col">
           {mode === 'initial' ? (
-            <Initial suggestedPrompts={suggestions} submit={submitMessage} heading={heading} description={description} />
+            <Initial
+              suggestedPrompts={suggestions}
+              submit={submitMessage}
+              heading={heading}
+              description={description}
+            />
           ) : (
             <Active
               messages={messages}
