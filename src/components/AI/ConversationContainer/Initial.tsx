@@ -3,9 +3,13 @@ import { Sparkles } from 'lucide-react'
 export const Initial = ({
   suggestedPrompts,
   submit,
+  heading,
+  description,
 }: {
   suggestedPrompts: string[]
   submit: (prompt: string) => void
+  heading?: string
+  description?: string
 }) => {
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center sm:px-10">
@@ -16,12 +20,11 @@ export const Initial = ({
         </div>
 
         <h1 className="max-w-3xl text-balance text-4xl font-semibold tracking-[-0.045em] text-zinc-100 sm:text-5xl lg:text-6xl">
-          What would you like to know?
+          {heading || 'What would you like to know?'}
         </h1>
 
         <p className="mt-5 max-w-xl text-pretty text-base leading-7 text-zinc-400 sm:text-lg">
-          Explore our work, projects, technology, and approach. Ask a question
-          in your own words to get started.
+          {description || 'Explore our work, projects, technology, and approach. Ask a question in your own words to get started.'}
         </p>
 
         <div className="mt-10 w-full">
