@@ -22,6 +22,7 @@ export const Composer = ({
   status,
   stop,
   sticky = false,
+  placeholder,
   scope,
   setScope,
 }: {
@@ -31,6 +32,7 @@ export const Composer = ({
   status: ChatStatus
   stop: () => Promise<void>
   sticky: boolean
+  placeholder?: string
   scope: ContentScope
   setScope: (scope: ContentScope) => void
 }) => {
@@ -51,7 +53,7 @@ export const Composer = ({
             <PromptInputTextarea
               value={input}
               onChange={(event) => setInput(event.target.value)}
-              placeholder="Ask about OD LABS..."
+              placeholder={placeholder || "Ask about OD LABS..."}
               aria-label="Message the OD LABS AI assistant"
               className="min-h-14 rounded-t-xl px-4 py-3 text-base leading-6 text-zinc-100 placeholder:text-zinc-600"
             />
