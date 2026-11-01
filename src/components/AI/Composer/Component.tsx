@@ -5,8 +5,13 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
+  PromptInputSelect,
+  PromptInputSelectTrigger,
+  PromptInputSelectContent,
+  PromptInputSelectItem,
+  PromptInputSelectValue,
 } from '@/components/ai-elements/prompt-input'
-import { ChevronDown, Sparkles } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import { CONTENT_SCOPES, type ContentScope } from '../contentScopes'
 import type { ChatStatus } from 'ai'
 
@@ -58,23 +63,25 @@ export const Composer = ({
                 <Sparkles className="size-3 text-odl" aria-hidden="true" />
                 Knowledge assistant
               </span>
-              <label className="relative inline-flex items-center">
-                <span className="sr-only">Search content category</span>
-                <select
+              <PromptInputSelect
+                value={scope}
+                onValueChange={(value) => setScope(value as ContentScope)}
+                disabled={status === 'submitted' || status === 'streaming'}
+              >
+                <PromptInputSelectTrigger
                   aria-label="Search content category"
-                  value={scope}
-                  disabled={status === 'submitted' || status === 'streaming'}
-                  onChange={(event) => setScope(event.target.value as ContentScope)}
-                  className="h-8 max-w-36 appearance-none rounded-md border border-zinc-800 bg-zinc-950 py-1 pl-2.5 pr-7 text-xs text-zinc-300 outline-none transition-colors hover:border-zinc-600 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:border-odl/70 focus-visible:ring-1 focus-visible:ring-odl/50"
+                  className="h-8 w-auto min-w-28 rounded-md border border-zinc-800 px-2.5 text-xs text-zinc-300 hover:border-zinc-600 hover:bg-zinc-900 focus:ring-1 focus:ring-odl/50"
                 >
+                  <PromptInputSelectValue placeholder="All content" />
+                </PromptInputSelectTrigger>
+                <PromptInputSelectContent align="start">
                   {CONTENT_SCOPES.map((option) => (
-                    <option key={option.value} value={option.value}>
+                    <PromptInputSelectItem key={option.value} value={option.value}>
                       {option.label}
-                    </option>
+                    </PromptInputSelectItem>
                   ))}
-                </select>
-                <ChevronDown className="pointer-events-none absolute right-2 size-3.5 text-zinc-500" aria-hidden="true" />
-              </label>
+                </PromptInputSelectContent>
+              </PromptInputSelect>
             </PromptInputTools>
 
             <PromptInputSubmit
