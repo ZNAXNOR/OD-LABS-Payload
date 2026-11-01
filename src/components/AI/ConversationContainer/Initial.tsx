@@ -9,7 +9,7 @@ export const Initial = ({
 }) => {
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center sm:px-10">
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center">
         <div className="mb-7 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-500">
           <Sparkles className="size-4 text-odl" aria-hidden="true" />
           <span>OD LABS / Knowledge assistant</span>
@@ -24,7 +24,7 @@ export const Initial = ({
           in your own words to get started.
         </p>
 
-        <div className="mt-10 w-full max-w-2xl">
+        <div className="mt-10 w-full">
           <p className="mb-3 text-left font-mono text-[11px] uppercase tracking-[0.16em] text-zinc-500">
             Suggested starting points
           </p>
