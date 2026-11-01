@@ -1,5 +1,7 @@
 'use client'
 
+import type { FC } from 'react'
+
 import type { ContentScope } from '@/components/AI/contentScopes'
 import { AIInterface } from '@/components/AI'
 
@@ -10,7 +12,7 @@ type Props = {
   defaultScope?: ContentScope | null
 }
 
-export const AIBlockComponent: React.FC<Props> = ({
+export const AIBlockComponent: FC<Props> = ({
   heading,
   description,
   placeholder,
