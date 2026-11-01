@@ -42,9 +42,9 @@ export const Composer = ({
         sticky ? 'sticky bottom-0 z-30' : '',
       ].join(' ')}
     >
-      <div className="mx-auto w-full max-w-5xl px-5 pb-3 pt-4 sm:px-8 lg:px-10">
+      <div className="mx-auto w-full max-w-5xl px-5 pt-4 pb-3 sm:px-8 lg:px-10">
         <PromptInput
-          className="rounded-xl border border-zinc-700 bg-zinc-950 transition-colors focus-within:border-odl/70"
+          className="focus-within:border-odl/70 rounded-xl border border-zinc-700 bg-zinc-950 transition-colors"
           onSubmit={(_message, event) => onSubmit(event)}
         >
           <PromptInputBody>
@@ -59,9 +59,9 @@ export const Composer = ({
 
           <PromptInputFooter className="px-3 pb-3">
             <PromptInputTools className="min-w-0 flex-wrap gap-2">
-              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-zinc-600">
-                <Sparkles className="size-3 text-odl" aria-hidden="true" />
-                Knowledge assistant
+              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-zinc-600 uppercase">
+                <Sparkles className="text-odl size-3" aria-hidden="true" />
+                Knowledge assistant is using
               </span>
               <PromptInputSelect
                 value={scope}
@@ -70,24 +70,38 @@ export const Composer = ({
               >
                 <PromptInputSelectTrigger
                   aria-label="Search content category"
-                  className="h-8 w-auto min-w-28 rounded-md border border-zinc-800 px-2.5 text-xs text-zinc-300 hover:border-zinc-600 hover:bg-zinc-900 focus:ring-1 focus:ring-odl/50"
+                  className="focus:ring-odl/50 h-8 w-auto min-w-28 rounded-md border border-zinc-800 px-2.5 text-xs text-zinc-300 hover:border-zinc-600 hover:bg-zinc-900 focus:ring-1"
                 >
                   <PromptInputSelectValue placeholder="All content" />
                 </PromptInputSelectTrigger>
                 <PromptInputSelectContent align="start">
                   {CONTENT_SCOPES.map((option) => (
-                    <PromptInputSelectItem key={option.value} value={option.value}>
+                    <PromptInputSelectItem
+                      key={option.value}
+                      value={option.value}
+                    >
                       {option.label}
                     </PromptInputSelectItem>
                   ))}
                 </PromptInputSelectContent>
               </PromptInputSelect>
+              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-zinc-600 uppercase">
+                to answer your queries
+              </span>
             </PromptInputTools>
 
             <PromptInputSubmit
-              aria-label={status === 'streaming' || status === 'submitted' ? 'Stop generating' : 'Send message'}
-              className="size-10 rounded-full bg-odl text-white transition-colors hover:bg-odl/80 disabled:pointer-events-none disabled:opacity-30"
-              disabled={!input.trim() && status !== 'streaming' && status !== 'submitted'}
+              aria-label={
+                status === 'streaming' || status === 'submitted'
+                  ? 'Stop generating'
+                  : 'Send message'
+              }
+              className="bg-odl hover:bg-odl/80 size-10 rounded-full text-white transition-colors disabled:pointer-events-none disabled:opacity-30"
+              disabled={
+                !input.trim() &&
+                status !== 'streaming' &&
+                status !== 'submitted'
+              }
               status={status}
               onStop={stop}
             />
