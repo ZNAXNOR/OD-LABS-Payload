@@ -230,7 +230,7 @@ export const Active = ({
               </MessageContent>
 
               {!isGenerating && !isUser && sources.length > 0 && (
-                <Sources className="mt-1 border-t border-zinc-800 pt-3 text-zinc-400">
+                <Sources className="mt-1 w-full max-w-4xl border-t border-zinc-800 pt-3 text-zinc-400">
                   <SourcesTrigger
                     count={sources.length}
                     className="text-xs text-zinc-400 transition-colors hover:text-white"
@@ -240,7 +240,7 @@ export const Active = ({
                       <span className="text-zinc-600">({sources.length})</span>
                     </span>
                   </SourcesTrigger>
-                  <SourcesContent className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+                  <SourcesContent className="grid w-full max-w-full grid-cols-1 gap-2 sm:grid-cols-2">
                     {sources.map((source) => (
                       <Source
                         key={source.url}
@@ -265,7 +265,7 @@ export const Active = ({
                             return <FileTextIcon className="size-4" aria-hidden="true" />
                           })()}
                         </span>
-                        <span className="line-clamp-2 min-w-0 text-xs font-medium leading-5 text-zinc-300 transition-colors hover:text-white">
+                        <span className="min-w-0 flex-1 text-xs font-medium leading-5 text-zinc-300 transition-colors group-hover:text-white">
                           {source.title ?? source.url}
                         </span>
                       </Source>
@@ -319,9 +319,9 @@ export const Active = ({
           )
         })}
 
-        {isGenerating && (
+        {isGenerating && messages.at(-1)?.role === 'user' && (
           <Message from="assistant" className="max-w-none gap-3">
-            <MessageContent className="max-w-4xl bg-transparent p-0 text-base leading-8 text-zinc-100 sm:text-[17px]">
+            <MessageContent className="w-full max-w-4xl bg-transparent p-0 text-base leading-8 text-zinc-100 sm:text-[17px]">
               <LoadingState />
             </MessageContent>
           </Message>
