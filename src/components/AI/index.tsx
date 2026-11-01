@@ -13,10 +13,22 @@ import { DEFAULT_CONTENT_SCOPE, type ContentScope } from './contentScopes'
 
 type AIMode = 'initial' | 'conversation'
 
-export const AIInterface = () => {
+type AIInterfaceProps = {
+  heading?: string
+  description?: string
+  placeholder?: string
+  defaultScope?: ContentScope
+}
+
+export const AIInterface = ({
+  heading,
+  description,
+  placeholder,
+  defaultScope = DEFAULT_CONTENT_SCOPE,
+}: AIInterfaceProps) => {
   const [input, setInput] = useState('')
   const [mode, setMode] = useState<AIMode>('initial')
-  const [scope, setScope] = useState<ContentScope>(DEFAULT_CONTENT_SCOPE)
+  const [scope, setScope] = useState<ContentScope>(defaultScope)
 
   const { messages, sendMessage, status, setMessages, stop, regenerate } =
     useAIInterface(scope)
@@ -58,7 +70,7 @@ export const AIInterface = () => {
 
         <div className="relative flex min-h-0 flex-1 flex-col">
           {mode === 'initial' ? (
-            <Initial suggestedPrompts={suggestions} submit={submitMessage} />
+            <Initial suggestedPrompts={suggestions} submit={submitMessage} heading={heading} description={description} />
           ) : (
             <Active
               messages={messages}
@@ -77,6 +89,7 @@ export const AIInterface = () => {
           status={status}
           stop={stop}
           sticky
+          placeholder={placeholder}
           scope={scope}
           setScope={setScope}
         />
