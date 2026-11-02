@@ -1727,7 +1727,7 @@ export interface CalBookingBlockSelect<T extends boolean = true> {
         calLink?: T;
         directLink?: T;
         id?: T;
-      };
+      }[];
   id?: T;
   blockName?: T;
 }
