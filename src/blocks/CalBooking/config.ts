@@ -1,5 +1,6 @@
 import type { Block } from 'payload'
 import {
+  InlineToolbarFeature,
   ParagraphFeature,
   TextStateFeature,
   lexicalEditor,
@@ -8,7 +9,7 @@ import {
 import { textStateConfig } from '@/fields/textStateConfig'
 
 const bookingCopyEditor = lexicalEditor({
-  features: [ParagraphFeature(), TextStateFeature({ state: textStateConfig })],
+  features: [ParagraphFeature(), TextStateFeature({ state: textStateConfig }), InlineToolbarFeature()],
 })
 
 const paragraph = (text: string) => ({
