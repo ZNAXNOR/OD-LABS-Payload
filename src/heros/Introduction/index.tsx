@@ -34,7 +34,7 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
       <div className="relative z-10 container grid min-h-[75vh] grid-cols-1 items-center gap-12 py-8 lg:grid-cols-12 lg:gap-8 xl:gap-12">
         {/* Left: Content */}
         <div className="min-w-0 lg:col-span-8">
-          <Eyebrow eyebrow={introductionEyebrow} blockIndex={-1} />
+          <Eyebrow eyebrow={introductionEyebrow} sectionNumber="01" />
 
           {/* Heading */}
           <div className="space-y-3 sm:space-y-4">
