@@ -11,7 +11,7 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richTex
   return (
     <div className="">
       <div className="container mb-8">
-        <Eyebrow eyebrow={eyebrow} blockIndex={-1} />
+        <Eyebrow eyebrow={eyebrow} sectionNumber="01" />
         {richText && <RichText className="mb-6" data={richText} enableGutter={false} />}
 
         {Array.isArray(links) && links.length > 0 && (
