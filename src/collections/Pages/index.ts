@@ -8,6 +8,7 @@ import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { AIBlock } from '../../blocks/AIBlock/config'
+import { CalBooking } from '../../blocks/CalBooking/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -73,7 +74,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, AIBlock],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, AIBlock, CalBooking],
               required: true,
               admin: {
                 initCollapsed: true,
