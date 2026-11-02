@@ -5,12 +5,14 @@ export type EyebrowProps = {
   eyebrow?: string[] | string | null
   blockIndex?: number
   className?: string
+  sectionNumber?: string
 }
 
 export const Eyebrow: React.FC<EyebrowProps> = ({
   eyebrow,
   blockIndex = 0,
   className,
+  sectionNumber,
 }) => {
   const eyebrowPhrases = (
     Array.isArray(eyebrow)
@@ -24,7 +26,7 @@ export const Eyebrow: React.FC<EyebrowProps> = ({
     return null
   }
 
-  const blockNumber = String(blockIndex + 2).padStart(2, '0')
+  const blockNumber = sectionNumber ?? String(blockIndex + 2).padStart(2, '0')
 
   return (
     <div className={cn('mb-8', className)}>
