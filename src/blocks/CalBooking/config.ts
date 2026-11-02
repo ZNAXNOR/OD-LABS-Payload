@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 import {
-  InlineToolbarFeature,
+  ParagraphFeature,
   TextStateFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
@@ -8,11 +8,7 @@ import {
 import { textStateConfig } from '@/fields/textStateConfig'
 
 const bookingCopyEditor = lexicalEditor({
-  features: ({ rootFeatures }) => [
-    ...rootFeatures,
-    TextStateFeature({ state: textStateConfig }),
-    InlineToolbarFeature(),
-  ],
+  features: [ParagraphFeature(), TextStateFeature({ state: textStateConfig })],
 })
 
 const paragraph = (text: string) => ({
