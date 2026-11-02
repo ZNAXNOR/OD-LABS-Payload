@@ -4,10 +4,12 @@ import {
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
+  TextStateFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
 import { linkGroup } from '@/fields/linkGroup'
+import { textStateConfig } from '@/fields/textStateConfig'
 
 import { introductionFields } from './Introduction/config'
 
@@ -52,6 +54,7 @@ export const hero: Field = {
           return [
             ...rootFeatures,
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            TextStateFeature({ state: textStateConfig }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
           ]
@@ -60,6 +63,18 @@ export const hero: Field = {
       label: false,
       admin: {
         condition: (_, siblingData) => siblingData.type !== 'introduction',
+      },
+    },
+    {
+      name: 'eyebrow',
+      type: 'text',
+      label: 'Eyebrow',
+      hasMany: true,
+      minRows: 1,
+      admin: {
+        condition: (_, siblingData) =>
+          ['highImpact', 'mediumImpact', 'lowImpact'].includes(siblingData?.type),
+        description: 'Short eyebrow phrases. The first phrase receives the automatic section number.',
       },
     },
     ...introductionFields,
