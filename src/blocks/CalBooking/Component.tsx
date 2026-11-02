@@ -91,7 +91,7 @@ export const CalBookingBlock: FC<CalBookingBlockProps> = ({ options }) => {
       Boolean(option && option.calLink && option.heading && option.description),
   )
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const selectedOption = validOptions[selectedIndex]
+  const selectedOption = validOptions[selectedIndex] ?? validOptions[0]
 
   useEffect(() => {
     if (!selectedOption?.calLink) return
@@ -120,7 +120,7 @@ export const CalBookingBlock: FC<CalBookingBlockProps> = ({ options }) => {
     })
   }, [selectedIndex, selectedOption?.calLink])
 
-  if (!validOptions.length) return null
+  if (!selectedOption) return null
 
   return (
     <section className="px-6 py-8 md:px-10 md:py-10">
