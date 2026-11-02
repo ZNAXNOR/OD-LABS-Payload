@@ -8,6 +8,7 @@ import Eyebrow from '@/components/Eyebrow'
 type LowImpactHeroType =
   | {
       children?: React.ReactNode
+      eyebrow?: string[] | null
       richText?: never
     }
   | (Omit<Page['hero'], 'richText'> & {
@@ -18,7 +19,7 @@ type LowImpactHeroType =
 export const LowImpactHero: React.FC<LowImpactHeroType> = ({ children, richText, eyebrow }) => {
   return (
     <div className="mt-16 px-6 md:px-10">
-      <Eyebrow eyebrow={eyebrow} blockIndex={-1} className="mb-0" />
+      <Eyebrow eyebrow={eyebrow} sectionNumber="01" className="mb-0" />
       <div className="max-w-[48rem]">
         {children ||
           (richText && (
