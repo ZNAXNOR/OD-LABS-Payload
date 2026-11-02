@@ -175,6 +175,7 @@ export interface Page {
   title: string;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'introduction';
+    eyebrow?: string[] | null;
     richText?: {
       root: {
         type: string;
@@ -236,7 +237,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | AIBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | AIBlock | CalBookingBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -726,6 +727,46 @@ export interface AIBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'aiBlock';
+}
+export interface CalBookingBlock {
+  options?: {
+    heading: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    description: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    calLink: string;
+    directLink?: string | null;
+    id?: string | null;
+  }[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'calBooking';
 }
 export interface Form {
   id: number;
@@ -1496,6 +1537,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         type?: T;
         richText?: T;
+        eyebrow?: T;
         introductionEyebrow?: T;
         introductionHeader?: T;
         introductionPhrases?: T;
@@ -1540,6 +1582,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         aiBlock?: T | AIBlockSelect<T>;
+        calBooking?: T | CalBookingBlockSelect<T>;
       };
   meta?:
     | T
@@ -1672,6 +1715,19 @@ export interface AIBlockSelect<T extends boolean = true> {
   description?: T;
   placeholder?: T;
   defaultScope?: T;
+  id?: T;
+  blockName?: T;
+}
+export interface CalBookingBlockSelect<T extends boolean = true> {
+  options?:
+    | T
+    | {
+        heading?: T;
+        description?: T;
+        calLink?: T;
+        directLink?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
