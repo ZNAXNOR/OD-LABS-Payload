@@ -2,9 +2,13 @@ import { getPayload } from 'payload'
 import { getVectorizedPayload } from 'payloadcms-vectorize'
 
 import configPromise from '@/payload.config'
+import { CONTENT_COLLECTIONS, CONTENT_SCOPES, type ContentCollection, type ContentScope } from '@/components/AI/contentScopes'
+
+export type KnowledgeCollection = ContentCollection
 
 export type KnowledgeSource = {
   id: string
+  contentType: KnowledgeCollection
   title: string
   url: string
   section: string
@@ -21,59 +25,110 @@ export type KnowledgeResult = {
 export async function searchKnowledge(
   query: string,
   limit = 5,
+  scope: ContentScope = 'all',
 ): Promise<KnowledgeResult[]> {
-  console.log('[VECTORIZE] Creating Payload Instance')
-
   const payload = await getPayload({
     config: configPromise,
   })
 
-  console.log('[VECTORIZE] Payload Instance Created')
-
-  console.log(
-    '[VECTORIZE] Config custom keys:',
-    Object.keys(payload.config.custom ?? {}),
-  )
-
   const vectorizedPayload = getVectorizedPayload(payload)
 
-  console.log(
-    '[VECTORIZE] Vectorized Payload:',
-    vectorizedPayload ? 'AVAILABLE' : 'MISSING',
-  )
-
   if (!vectorizedPayload) {
-    throw new Error("Payload's vectorize plugin is not configuted")
+    throw new Error("Payload's vectorize plugin is not configured")
   }
+
+  const selectedScope = CONTENT_SCOPES.find((item) => item.value === scope)
+  if (!selectedScope) {
+    throw new Error(`Unsupported knowledge content scope: ${scope}`)
+  }
+
+  const collectionFilter =
+    selectedScope.collections.length === 1
+      ? { equals: selectedScope.collections[0]! }
+      : { not_equals: 'test-documents' }
 
   const results = await vectorizedPayload.search({
     knowledgePool: 'odlabs_knowledge',
     query,
-    limit,
+    // Oversample before validating current publication/indexing eligibility.
+    limit: Math.min(Math.max(limit * 4, limit), 20),
+    where: {
+      sourceCollection: collectionFilter,
+    },
   })
 
-  return results.map((result) => {
-    const pageSlug = typeof result.pageSlug === 'string' ? result.pageSlug : ''
+  const documents = new Map<string, { collection: KnowledgeCollection; id: string }>()
 
-    const pageTitle =
-      typeof result.pageTitle === 'string' ? result.pageTitle : ''
-
-    const section = typeof result.section === 'string' ? result.section : ''
-
-    const blockType =
-      typeof result.blockType === 'string' ? result.blockType : ''
-
-    return {
-      id: String(result.id),
-      text: result.chunkText,
-      source: {
-        id: String(result.id),
-        title: pageTitle || 'OD LABS',
-        url: pageSlug ? `/${pageSlug}` : '/',
-        section,
-        blockType,
-        score: result.score,
-      },
+  for (const result of results) {
+    if (!CONTENT_COLLECTIONS.includes(result.sourceCollection as ContentCollection)) {
+      continue
     }
-  })
+
+    const key = `${result.sourceCollection}:${String(result.docId)}`
+    documents.set(key, {
+      collection: result.sourceCollection as ContentCollection,
+      id: String(result.docId),
+    })
+  }
+
+  const eligibleByDocument = new Map<string, boolean>()
+
+  await Promise.all(
+    Array.from(documents.entries()).map(async ([key, source]) => {
+      try {
+        const doc = await payload.findByID({
+          collection: source.collection,
+          id: source.id,
+          depth: 0,
+        })
+        const meta = doc.meta as
+          | { excludeFromIndex?: boolean | null }
+          | null
+          | undefined
+
+        eligibleByDocument.set(
+          key,
+          doc._status === 'published' && !meta?.excludeFromIndex,
+        )
+      } catch {
+        eligibleByDocument.set(key, false)
+      }
+    }),
+  )
+
+  return results
+    .filter((result) => {
+      if (!CONTENT_COLLECTIONS.includes(result.sourceCollection as ContentCollection)) {
+        return false
+      }
+
+      return eligibleByDocument.get(
+        `${result.sourceCollection}:${String(result.docId)}`,
+      ) === true
+    })
+    .slice(0, limit)
+    .map((result) => {
+      const contentType = result.sourceCollection as KnowledgeCollection
+      const pageSlug = typeof result.pageSlug === 'string' ? result.pageSlug : ''
+      const pageTitle =
+        typeof result.pageTitle === 'string' ? result.pageTitle : ''
+      const section = typeof result.section === 'string' ? result.section : ''
+      const blockType =
+        typeof result.blockType === 'string' ? result.blockType : ''
+      const id = `${contentType}:${String(result.id)}`
+
+      return {
+        id,
+        text: result.chunkText,
+        source: {
+          id,
+          contentType,
+          title: pageTitle || 'OD LABS',
+          url: pageSlug && pageSlug !== 'home' ? `/${pageSlug}` : '/',
+          section,
+          blockType,
+          score: result.score,
+        },
+      }
+    })
 }

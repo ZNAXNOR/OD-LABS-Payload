@@ -75,6 +75,7 @@ export default buildConfig({
     },
     pg,
     extensions: ['vector'],
+    push: false,
     afterSchemaInit: [vectorIntegration.afterSchemaInitHook],
   }),
   collections: [Pages, Posts, LegalPages, Media, Categories, Users, TestDocuments],
@@ -102,5 +103,13 @@ export default buildConfig({
       },
     },
     tasks: [],
+    autoRun: [
+      // Vectorize 1.1.0 queues per-collection bulk preparation jobs on the
+      // default queue, so keep the default Payload queue runner active too.
+      { cron: '* * * * *', limit: 10 },
+      { cron: '* * * * *', queue: 'odlabs-vectorize-realtime', limit: 10 },
+      { cron: '* * * * *', queue: 'odlabs-vectorize-bulk-prepare', limit: 5 },
+      { cron: '* * * * *', queue: 'odlabs-vectorize-bulk-poll', limit: 10 },
+    ],
   },
 })

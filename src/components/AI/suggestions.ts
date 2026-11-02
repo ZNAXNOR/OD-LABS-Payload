@@ -1,11 +1,8 @@
+// Curated initial prompts stay within the subjects presented by the OD LABS website.
+// The assistant still answers only from retrieved, eligible published content.
 export const suggestions = [
-  'What have you built?',
-  'What technologies do you use?',
-  'How do you approach projects?',
-  'How can I work with you?',
-]
-
-export const postSuggestions = [
-  'Tell me more about this',
-  'Show me related projects',
+  'What does OD LABS do?',
+  'What projects are featured on this website?',
+  'What technologies are documented here?',
+  'How can I start a project with OD LABS?',
 ]

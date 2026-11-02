@@ -1,6 +1,7 @@
 import type { ToKnowledgePoolFn } from 'payloadcms-vectorize'
 
 import { lexicalToText } from './lexicalToText'
+import { splitTextIntoChunks } from './splitTextIntoChunks'
 
 type PageBlock = {
   blockType?: string
@@ -20,48 +21,53 @@ export const pagesToKnowledgePool: ToKnowledgePoolFn = async (doc) => {
   const pageSlug = typeof doc.slug === 'string' ? doc.slug : ''
 
   const addChunk = (section: string, text: string, blockType?: string) => {
-    const cleaned = text.trim()
+    const parts = splitTextIntoChunks(text)
 
-    if (!cleaned) return
+    parts.forEach((part, partIndex) => {
+      const partLabel =
+        parts.length > 1 ? `\nPart: ${partIndex + 1} of ${parts.length}` : ''
 
-    chunks.push({
-      chunk: `Page: ${pageTitle}\nSection: ${section}\n\n${cleaned}`,
-
-      pageTitle,
-      pageSlug,
-      section,
-      blockType: blockType ?? '',
+      chunks.push({
+        chunk: `Page: ${pageTitle}\nSection: ${section}${partLabel}\n\n${part}`,
+        pageTitle,
+        pageSlug,
+        section,
+        blockType: blockType ?? '',
+      })
     })
   }
 
-  // Hero
-  const hero = doc.hero as
-    | {
-        richText?: unknown
-      }
-    | undefined
+  // Hero content
+  const hero = doc.hero as { richText?: unknown } | undefined
 
   if (hero?.richText) {
     addChunk('Hero', lexicalToText(hero.richText), 'hero')
   }
 
-  // Layout blocks
+  // Payload ContentBlock stores rich text directly. Retain a fallback for
+  // legacy blocks that used a columns array.
   const layout = Array.isArray(doc.layout) ? (doc.layout as PageBlock[]) : []
 
   layout.forEach((block, index) => {
     const blockType = block.blockType
+    const sectionNumber = index + 1
 
-    // Content
     if (blockType === 'content') {
+      if (block.richText) {
+        addChunk(
+          `Content ${sectionNumber}`,
+          lexicalToText(block.richText),
+          'content',
+        )
+      }
+
       const columns = Array.isArray(block.columns) ? block.columns : []
 
-      columns.forEach((column: Record<string, any>, columnIndex: number) => {
-        const richText = column?.richText
-
-        if (richText) {
+      columns.forEach((column: Record<string, unknown>, columnIndex) => {
+        if (column.richText) {
           addChunk(
-            `Content ${index + 1}, Column ${columnIndex + 1}`,
-            lexicalToText(richText),
+            `Content ${sectionNumber}, Column ${columnIndex + 1}`,
+            lexicalToText(column.richText),
             'content',
           )
         }
@@ -69,49 +75,49 @@ export const pagesToKnowledgePool: ToKnowledgePoolFn = async (doc) => {
       return
     }
 
-    // CTA
-    if (blockType === 'cta') {
-      if (block.richText) {
-        addChunk(
-          `Call to Action ${index + 1}`,
-          lexicalToText(block.richText),
-          'cta',
-        )
-      }
+    if (blockType === 'cta' && block.richText) {
+      addChunk(
+        `Call to Action ${sectionNumber}`,
+        lexicalToText(block.richText),
+        'cta',
+      )
       return
     }
 
-    // Archive
-    if (blockType === 'archive') {
-      if (block.introContent) {
-        addChunk(
-          `Archive ${index + 1}`,
-          lexicalToText(block.introContent),
-          'archive',
-        )
-      }
+    if (blockType === 'archive' && block.introContent) {
+      addChunk(
+        `Archive ${sectionNumber}`,
+        lexicalToText(block.introContent),
+        'archive',
+      )
       return
     }
 
-    // Form Block
-    if (blockType === 'formBlock') {
-      if (block.introContent) {
-        addChunk(
-          `Form ${index + 1}`,
-          lexicalToText(block.introContent),
-          'formBlock',
-        )
-      }
+    if (
+      blockType === 'formBlock' &&
+      block.enableIntro !== false &&
+      block.introContent
+    ) {
+      addChunk(
+        `Form Introduction ${sectionNumber}`,
+        lexicalToText(block.introContent),
+        'formBlock',
+      )
       return
     }
 
-    // Banner
-    //     if (blockType === 'banner') {
-    //       if (block.content) {
-    //         addChunk(`Banner ${index + 1}`, lexicalToText(block.content), 'banner')
-    //       }
-    //       return
-    //     }
+    if (blockType === 'banner' && block.content) {
+      addChunk(
+        `Banner ${sectionNumber}`,
+        lexicalToText(block.content),
+        'banner',
+      )
+      return
+    }
+
+    if (blockType === 'code' && typeof block.code === 'string') {
+      addChunk(`Code Example ${sectionNumber}`, block.code, 'code')
+    }
   })
 
   return chunks

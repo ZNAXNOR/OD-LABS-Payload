@@ -1,9 +1,15 @@
 'use client'
 
-import { CheckIcon, CopyIcon, RefreshCcwIcon, CircleXIcon } from 'lucide-react'
-
-import { useState } from 'react'
-
+import {
+  CheckIcon,
+  CopyIcon,
+  RefreshCcwIcon,
+  CircleXIcon,
+  FileTextIcon,
+  NewspaperIcon,
+  BriefcaseBusinessIcon,
+} from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import type { ChatStatus, UIMessage } from 'ai'
 
 import {
@@ -13,33 +19,45 @@ import {
   MessageContent,
   MessageResponse,
 } from '@/components/ai-elements/message'
-
 import {
   Source,
   Sources,
   SourcesContent,
   SourcesTrigger,
 } from '@/components/ai-elements/sources'
-
 import {
   Conversation,
   ConversationContent,
   ConversationScrollButton,
+  useConversation,
 } from '@/components/ai-elements/conversation'
-
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion'
-import { postSuggestions } from '../suggestions'
+import { ConversationNavigator } from './ConversationNavigator/Component'
+import { getContentCategory, type ContentScope } from '../contentScopes'
 
-const LoadingState = () => (
-  <span
-    className="text-odl inline-flex items-center gap-1.5"
-    aria-label="Generating response"
-  >
-    <span className="size-1.5 animate-pulse rounded-full bg-current" />
-    <span className="size-1.5 animate-pulse rounded-full bg-current [animation-delay:200ms]" />
-    <span className="size-1.5 animate-pulse rounded-full bg-current [animation-delay:400ms]" />
-  </span>
-)
+const LoadingState = () => {
+  const { scrollToBottom } = useConversation()
+
+  return (
+    <button
+      type="button"
+      onClick={() => void scrollToBottom()}
+      className="focus-visible:outline-odl inline-flex min-h-8 items-center gap-1.5 rounded-md px-1 text-zinc-500 transition-colors hover:text-zinc-300 focus-visible:outline-2 focus-visible:outline-offset-2"
+      aria-label="Generating response. Scroll to latest message."
+      title="Scroll to latest message"
+    >
+      <span
+        role="status"
+        aria-label="Generating response"
+        className="inline-flex items-center gap-1.5"
+      >
+        <span className="size-1.5 animate-pulse rounded-full bg-zinc-500" />
+        <span className="size-1.5 animate-pulse rounded-full bg-zinc-500 [animation-delay:200ms]" />
+        <span className="size-1.5 animate-pulse rounded-full bg-zinc-500 [animation-delay:400ms]" />
+      </span>
+    </button>
+  )
+}
 
 const ErrorState = () => (
   <div
@@ -47,48 +65,134 @@ const ErrorState = () => (
     role="alert"
     aria-live="polite"
   >
-    <CircleXIcon className="size-4 font-bold" />
-
-    <strong>AI Error:</strong>
+    <CircleXIcon className="size-4" aria-hidden="true" />
+    <strong>AI error:</strong>
     <span>
       Something went wrong while generating the response. Please try again.
     </span>
   </div>
 )
 
+const getMessageText = (message: UIMessage) =>
+  message.parts
+    .filter((part) => part.type === 'text')
+    .map((part) => part.text)
+    .join('')
+
 export const Active = ({
   messages,
   status,
   regenerate,
   submitSuggestion,
+  scope,
 }: {
   messages: UIMessage[]
   status: ChatStatus
   regenerate: () => Promise<void>
   submitSuggestion: (text: string) => void
+  scope: ContentScope
 }) => {
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null)
+  const [suggestions, setSuggestions] = useState<string[]>([])
+  const requestedMessageId = useRef<string | null>(null)
+  const scopeRef = useRef(scope)
+  scopeRef.current = scope
 
   const isStreaming = status === 'streaming'
   const isGenerating = status === 'submitted' || isStreaming
 
-  const lastMessage = messages.at(-1)
+  useEffect(() => {
+    if (isGenerating || status === 'error') {
+      setSuggestions([])
+      return
+    }
 
-  const awaitingAssistant = isGenerating && lastMessage?.role === 'user'
+    const assistantMessage = messages.at(-1)
+    if (status !== 'ready' || assistantMessage?.role !== 'assistant') return
+
+    const answer = getMessageText(assistantMessage).trim()
+    const sourceIds = [
+      ...new Set(
+        assistantMessage.parts
+          .filter((part) => part.type === 'source-url')
+          .map((part) => part.sourceId),
+      ),
+    ]
+    const userMessage = messages
+      .slice(0, -1)
+      .reverse()
+      .find((message) => message.role === 'user')
+    const query = userMessage ? getMessageText(userMessage).trim() : ''
+
+    if (
+      !answer ||
+      !query ||
+      sourceIds.length === 0 ||
+      requestedMessageId.current === assistantMessage.id
+    ) {
+      setSuggestions([])
+      return
+    }
+
+    const controller = new AbortController()
+
+    void (async () => {
+      try {
+        const response = await fetch('/api/ai-chat/suggestions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query,
+            answer,
+            sourceIds: sourceIds.slice(0, 10),
+            scope: scopeRef.current,
+          }),
+          signal: controller.signal,
+        })
+
+        if (!response.ok) {
+          throw new Error(
+            `Suggestion request failed with status ${response.status}`,
+          )
+        }
+
+        const payload: unknown = await response.json()
+        if (controller.signal.aborted) return
+
+        const nextSuggestions =
+          payload &&
+          typeof payload === 'object' &&
+          'suggestions' in payload &&
+          Array.isArray(payload.suggestions)
+            ? payload.suggestions
+                .filter(
+                  (item): item is string =>
+                    typeof item === 'string' && item.trim().length > 0,
+                )
+                .slice(0, 3)
+            : []
+
+        requestedMessageId.current = assistantMessage.id
+        setSuggestions(nextSuggestions)
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error('[AI Chat] Could not load grounded suggestions:', error)
+          requestedMessageId.current = assistantMessage.id
+          setSuggestions([])
+        }
+      }
+    })()
+
+    return () => controller.abort()
+  }, [messages, status, isGenerating])
 
   const copyMessage = async (message: UIMessage) => {
-    const text = message.parts
-      .filter((part) => part.type === 'text')
-      .map((part) => part.text)
-      .join('')
-
+    const text = getMessageText(message).trim()
     if (!text) return
 
     try {
       await navigator.clipboard.writeText(text)
-
       setCopiedMessageId(message.id)
-
       window.setTimeout(() => {
         setCopiedMessageId((current) =>
           current === message.id ? null : current,
@@ -100,39 +204,36 @@ export const Active = ({
   }
 
   return (
-    <Conversation className="relative w-full" initial="smooth" resize="smooth">
+    <Conversation
+      id="conversation-scroll-root"
+      className="relative min-h-0 w-full flex-1"
+      initial="smooth"
+      resize="instant"
+    >
       <ConversationContent
         id="conversation-transcript"
-        className="mx-auto w-full max-w-5xl gap-5 px-6 pt-4 pb-12 sm:px-8 lg:px-12"
+        className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-5 pt-7 pb-8 sm:px-8 lg:px-10"
         role="log"
         aria-live="polite"
-        aria-busy={isStreaming}
+        aria-busy={isGenerating}
       >
         {messages.map((message, index) => {
           const isUser = message.role === 'user'
-
           const isLastMessage = index === messages.length - 1
-
           const isCopied = copiedMessageId === message.id
-
           const isStreamingMessage = isStreaming && isLastMessage && !isUser
-
-          const showActions = !isStreamingMessage
-
-          const text = message.parts
-            .filter((part) => part.type === 'text')
-            .map((part) => part.text)
-            .join('')
-
-          const hasText = Boolean(text)
-
-          const sources = message.parts.filter(
+          const text = getMessageText(message)
+          const hasText = Boolean(text.trim())
+          const sourceParts = message.parts.filter(
             (part) => part.type === 'source-url',
           )
+          const sources = [
+            ...new Map(
+              sourceParts.map((source) => [source.url, source]),
+            ).values(),
+          ]
 
-          if (!hasText && !isStreamingMessage) {
-            return null
-          }
+          if (!hasText && !isStreamingMessage) return null
 
           return (
             <Message
@@ -140,30 +241,20 @@ export const Active = ({
               key={message.id}
               from={message.role}
               className={[
-                'max-w-none gap-2',
-                isUser ? 'pt-6' : '',
+                'max-w-none gap-3',
+                isUser ? 'pt-3' : '',
                 isUser ? 'group/user' : 'group/assistant',
               ].join(' ')}
             >
               <MessageContent
                 className={
                   isUser
-                    ? [
-                        'ml-auto max-w-2xl rounded-none',
-                        'border-odl border',
-                        'bg-odl',
-                        'px-5 py-3',
-                        'text-base leading-7 text-zinc-200',
-                      ].join(' ')
-                    : [
-                        'max-w-4xl',
-                        'bg-transparent p-0',
-                        'text-lg leading-8 text-white',
-                      ].join(' ')
+                    ? 'ml-auto max-w-2xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-base leading-7 text-zinc-100'
+                    : 'max-w-4xl bg-transparent p-0 text-base leading-8 text-zinc-100 sm:text-[17px]'
                 }
               >
                 {isUser ? (
-                  <span>{text}</span>
+                  <span className="whitespace-pre-wrap">{text}</span>
                 ) : hasText ? (
                   <MessageResponse
                     isAnimating={isStreamingMessage}
@@ -171,51 +262,91 @@ export const Active = ({
                   >
                     {text}
                   </MessageResponse>
-                ) : isStreamingMessage ? (
-                  <LoadingState />
                 ) : (
-                  <ErrorState />
+                  <LoadingState />
                 )}
               </MessageContent>
 
               {!isGenerating && !isUser && sources.length > 0 && (
-                <Sources>
-                  <SourcesTrigger count={sources.length} />
-
-                  <SourcesContent>
+                <Sources className="mt-1 w-full max-w-4xl border-t border-zinc-800 pt-3 text-zinc-400">
+                  <SourcesTrigger
+                    count={sources.length}
+                    className="text-xs text-zinc-400 transition-colors hover:text-white"
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      <span className="font-mono tracking-wider uppercase">
+                        Sources
+                      </span>
+                      <span className="text-zinc-600">({sources.length})</span>
+                    </span>
+                  </SourcesTrigger>
+                  <SourcesContent className="flex w-full flex-wrap gap-2">
                     {sources.map((source) => (
                       <Source
-                        key={source.sourceId}
+                        key={source.url}
                         href={source.url}
+                        target="_self"
                         title={source.title ?? source.url}
-                      />
+                        className="group focus-visible:outline-odl flex w-fit max-w-full min-w-0 items-center gap-1 border border-zinc-800 bg-zinc-950/60 px-3 py-2.5 pe-3 no-underline transition-colors hover:border-zinc-600 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2"
+                      >
+                        <span className="flex size-8 shrink-0 items-center justify-center text-zinc-400 transition-colors group-hover:text-zinc-200">
+                          {(() => {
+                            const collection = source.sourceId.split(':', 1)[0]
+                            const icon = getContentCategory(collection)?.icon
+
+                            if (icon === 'Newspaper') {
+                              return (
+                                <NewspaperIcon
+                                  className="size-4"
+                                  aria-hidden="true"
+                                />
+                              )
+                            }
+
+                            if (icon === 'BriefcaseBusiness') {
+                              return (
+                                <BriefcaseBusinessIcon
+                                  className="size-4"
+                                  aria-hidden="true"
+                                />
+                              )
+                            }
+
+                            return (
+                              <FileTextIcon
+                                className="size-4"
+                                aria-hidden="true"
+                              />
+                            )
+                          })()}
+                        </span>
+                        <span className="min-w-0 truncate text-xs leading-5 font-medium text-zinc-300 transition-colors group-hover:text-white">
+                          {source.title ?? source.url}
+                        </span>
+                      </Source>
                     ))}
                   </SourcesContent>
                 </Sources>
               )}
 
-              {showActions && (
+              {!isStreamingMessage && (
                 <MessageActions
                   className={
                     isUser
-                      ? [
-                          'justify-end',
-                          'opacity-0 transition-opacity',
-                          'group-hover/user:opacity-100',
-                          'group-focus-within/user:opacity-100',
-                        ].join(' ')
-                      : 'justify-start'
+                      ? 'justify-end opacity-0 transition-opacity group-focus-within/user:opacity-100 group-hover/user:opacity-100'
+                      : 'justify-start gap-0.5'
                   }
                 >
                   <MessageAction
                     label={isCopied ? 'Copied' : 'Copy message'}
                     tooltip={isCopied ? 'Copied' : 'Copy message'}
                     onClick={() => void copyMessage(message)}
+                    className="size-7 rounded-md p-1"
                   >
                     {isCopied ? (
-                      <CheckIcon className="size-5" />
+                      <CheckIcon className="size-3.5" />
                     ) : (
-                      <CopyIcon className="size-5" />
+                      <CopyIcon className="size-3.5" />
                     )}
                   </MessageAction>
 
@@ -224,37 +355,35 @@ export const Active = ({
                       label="Regenerate response"
                       tooltip="Regenerate response"
                       onClick={() => void regenerate()}
+                      className="size-7 rounded-md p-1"
                     >
-                      <RefreshCcwIcon className="size-5" />
+                      <RefreshCcwIcon className="size-3.5" />
                     </MessageAction>
                   )}
                 </MessageActions>
               )}
 
-              {!isStreamingMessage && !isUser && isLastMessage && (
-                <Suggestions className="pt-2">
-                  {postSuggestions.map((suggestion) => (
-                    <Suggestion
-                      key={suggestion}
-                      suggestion={suggestion}
-                      onClick={submitSuggestion}
-                    />
-                  ))}
-                </Suggestions>
-              )}
+              {!isStreamingMessage &&
+                !isUser &&
+                isLastMessage &&
+                suggestions.length > 0 && (
+                  <Suggestions className="pt-1">
+                    {suggestions.map((suggestion) => (
+                      <Suggestion
+                        key={suggestion}
+                        suggestion={suggestion}
+                        onClick={submitSuggestion}
+                      />
+                    ))}
+                  </Suggestions>
+                )}
             </Message>
           )
         })}
 
-        {awaitingAssistant && (
-          <Message from="assistant" className="max-w-none gap-2">
-            <MessageContent
-              className={[
-                'max-w-4xl',
-                'bg-transparent p-0',
-                'text-lg leading-8 text-white',
-              ].join(' ')}
-            >
+        {isGenerating && messages.at(-1)?.role === 'user' && (
+          <Message from="assistant" className="max-w-none gap-3">
+            <MessageContent className="w-full max-w-4xl bg-transparent p-0 text-base leading-8 text-zinc-100 sm:text-[17px]">
               <LoadingState />
             </MessageContent>
           </Message>
@@ -263,6 +392,7 @@ export const Active = ({
         {status === 'error' && <ErrorState />}
       </ConversationContent>
 
+      <ConversationNavigator messages={messages} />
       <ConversationScrollButton />
     </Conversation>
   )

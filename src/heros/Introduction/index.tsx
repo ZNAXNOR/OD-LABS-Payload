@@ -6,6 +6,7 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 
 import TextType from '@/components/TextType'
+import Eyebrow from '@/components/Eyebrow'
 
 import { UserRound, ArrowDown, ArrowRight, MapPinHouse } from 'lucide-react'
 
@@ -22,12 +23,6 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
     introductionLocation,
   } = props
 
-  const eyebrowPhrases =
-    introductionEyebrow?.filter(
-      (phrase): phrase is string =>
-        typeof phrase === 'string' && phrase.trim().length > 0,
-    ) ?? []
-
   const phrases =
     introductionPhrases?.filter(
       (phrase): phrase is string =>
@@ -39,26 +34,7 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
       <div className="relative z-10 container grid min-h-[75vh] grid-cols-1 items-center gap-12 py-8 lg:grid-cols-12 lg:gap-8 xl:gap-12">
         {/* Left: Content */}
         <div className="min-w-0 lg:col-span-8">
-          {/* Eyebrow */}
-          <div className="mb-8">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs font-medium tracking-[0.18em] text-white/45 uppercase">
-              <span className="bg-odl size-2 shrink-0" aria-hidden="true" />
-
-              {eyebrowPhrases.map((phrase, index) => (
-                <React.Fragment key={`${phrase}-${index}`}>
-                  {index > 1 && (
-                    <span className="text-odl" aria-hidden="true">
-                      •
-                    </span>
-                  )}
-
-                  <span className={index === 0 ? 'text-odl' : 'text-white/60'}>
-                    {index === 0 ? `01 — ${phrase} //` : phrase}
-                  </span>
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
+          <Eyebrow eyebrow={introductionEyebrow} sectionNumber="01" />
 
           {/* Heading */}
           <div className="space-y-3 sm:space-y-4">

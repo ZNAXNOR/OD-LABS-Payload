@@ -1,6 +1,4 @@
-import { ChatGPTLogo } from '@/components/Logo/AI/AI_Logo'
-
-import { PlusIcon } from 'lucide-react'
+import { Sparkles, PlusIcon } from 'lucide-react'
 
 type AIMode = 'initial' | 'conversation'
 
@@ -14,42 +12,31 @@ export const Header = ({
   const isConversation = mode === 'conversation'
 
   return (
-    <div
+    <header
       className={[
-        'z-30 flex items-center justify-between gap-4',
-        'border-b border-zinc-700',
-        'bg-zinc-950 px-6 py-3.5 sm:px-6',
-        mode === 'conversation' ? 'sticky top-0' : '',
-      ]
-        .filter(Boolean)
-        .join(' ')}
+        'sticky top-0 z-30 flex min-h-14 items-center justify-between gap-4',
+        'border-b border-zinc-800/90 bg-black/95 px-5 py-3 backdrop-blur-sm sm:px-8 lg:px-10',
+      ].join(' ')}
     >
-      <div className="flex items-center gap-2 font-mono text-xs select-none">
-        <span className="bg-odl size-1.5 rounded-none" />
-
-        <span className="font-semibold text-zinc-300">OD LABS</span>
-
-        <span className="text-zinc-600">//</span>
-
-        <ChatGPTLogo className="size-4" />
-
-        <strong className="font-normal text-zinc-200">GPT-5 mini</strong>
+      <div className="flex min-w-0 items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.12em]">
+        <Sparkles className="size-4 shrink-0 text-odl" aria-hidden="true" />
+        <span className="font-semibold text-zinc-200">OD LABS</span>
+        <span className="text-zinc-700">/</span>
+        <span className="truncate text-zinc-500">AI assistant</span>
       </div>
 
       {isConversation && (
-        <div className="flex items-center gap-2.5 font-mono text-xs">
-          <button
-            type="button"
-            onClick={newConversation}
-            aria-label="New conversation"
-            title="New conversation"
-            className="group flex items-center gap-1 text-zinc-300 transition-colors hover:cursor-pointer hover:text-white"
-          >
-            New Conversation{' '}
-            <PlusIcon className="group-hover:text-odl size-3.5 transition-colors" />
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={newConversation}
+          aria-label="Start a new conversation"
+          title="Start a new conversation"
+          className="group flex shrink-0 items-center gap-2 border border-zinc-800 px-3 py-2 font-mono text-[11px] text-zinc-400 transition-colors hover:border-zinc-600 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
+        >
+          <span>New chat</span>
+          <PlusIcon className="size-3.5 transition-colors group-hover:text-odl" />
+        </button>
       )}
-    </div>
+    </header>
   )
 }
