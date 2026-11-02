@@ -175,7 +175,6 @@ export interface Page {
   title: string;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'introduction';
-    eyebrow?: string[] | null;
     richText?: {
       root: {
         type: string;
@@ -191,6 +190,19 @@ export interface Page {
       };
       [k: string]: unknown;
     } | null;
+    /**
+     * Short eyebrow phrases. The first phrase receives the automatic section number.
+     */
+    eyebrow?: string[] | null;
+    addPadding?: boolean | null;
+    /**
+     * Padding in px
+     */
+    paddingX?: number | null;
+    /**
+     * Padding in px
+     */
+    paddingY?: number | null;
     /**
      * Short phrases displayed in the hero eyebrow. First phrase unique & introductory.
      */
@@ -717,57 +729,8 @@ export interface FormBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the definition "AIBlock".
+ * via the `definition` "forms".
  */
-export interface AIBlock {
-  heading?: string | null;
-  description?: string | null;
-  placeholder?: string | null;
-  defaultScope?: 'all' | 'pages' | 'posts' | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'aiBlock';
-}
-export interface CalBookingBlock {
-  options?: {
-    heading: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    description: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    calLink: string;
-    directLink?: string | null;
-    id?: string | null;
-  }[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'calBooking';
-}
 export interface Form {
   id: number;
   title: string;
@@ -928,6 +891,80 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AIBlock".
+ */
+export interface AIBlock {
+  /**
+   * Optional. Overrides the default heading on the initial AI screen.
+   */
+  heading?: string | null;
+  /**
+   * Optional. Overrides the default description on the initial AI screen.
+   */
+  description?: string | null;
+  placeholder?: string | null;
+  defaultScope: 'all' | 'pages' | 'posts';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aiBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CalBookingBlock".
+ */
+export interface CalBookingBlock {
+  /**
+   * Add up to three event types. Header and description sizes are fixed on the frontend; use Text State colors to adjust their colors.
+   */
+  options?:
+    | {
+        heading: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        description: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        /**
+         * Example: od-omkar-dalvi/30min
+         */
+        calLink: string;
+        /**
+         * When provided, a fixed “Open Cal.com directly” link appears below the calendar. Leave empty to hide it.
+         */
+        directLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'calBooking';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1538,6 +1575,9 @@ export interface PagesSelect<T extends boolean = true> {
         type?: T;
         richText?: T;
         eyebrow?: T;
+        addPadding?: T;
+        paddingX?: T;
+        paddingY?: T;
         introductionEyebrow?: T;
         introductionHeader?: T;
         introductionPhrases?: T;
@@ -1708,7 +1748,7 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the definition "AIBlock_select".
+ * via the `definition` "AIBlock_select".
  */
 export interface AIBlockSelect<T extends boolean = true> {
   heading?: T;
@@ -1718,6 +1758,10 @@ export interface AIBlockSelect<T extends boolean = true> {
   id?: T;
   blockName?: T;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CalBookingBlock_select".
+ */
 export interface CalBookingBlockSelect<T extends boolean = true> {
   options?:
     | T
@@ -1727,10 +1771,14 @@ export interface CalBookingBlockSelect<T extends boolean = true> {
         calLink?: T;
         directLink?: T;
         id?: T;
-      }[];
+      };
   id?: T;
   blockName?: T;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;

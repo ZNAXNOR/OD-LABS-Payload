@@ -75,6 +75,7 @@ export default buildConfig({
     },
     pg,
     extensions: ['vector'],
+    push: false,
     afterSchemaInit: [vectorIntegration.afterSchemaInitHook],
   }),
   collections: [Pages, Posts, LegalPages, Media, Categories, Users, TestDocuments],

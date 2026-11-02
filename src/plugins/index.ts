@@ -305,6 +305,14 @@ export const plugins: Plugin[] = [
         admin: {
           ...collection.admin,
           group: 'AI',
+          components: {
+            ...collection.admin?.components,
+            beforeList: undefined,
+            edit: {
+              ...collection.admin?.components?.edit,
+              beforeDocumentControls: undefined,
+            },
+          },
         },
       }
     })

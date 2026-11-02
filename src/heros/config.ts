@@ -12,6 +12,7 @@ import { linkGroup } from '@/fields/linkGroup'
 import { textStateConfig } from '@/fields/textStateConfig'
 
 import { introductionFields } from './Introduction/config'
+import { lowImpactFields } from './LowImpact/config'
 
 export const hero: Field = {
   name: 'hero',
@@ -77,6 +78,7 @@ export const hero: Field = {
         description: 'Short eyebrow phrases. The first phrase receives the automatic section number.',
       },
     },
+    ...lowImpactFields,
     ...introductionFields,
     linkGroup({
       overrides: {
