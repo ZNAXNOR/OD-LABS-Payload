@@ -43,6 +43,7 @@ type FormStep = {
 }
 
 type ManagedForm = FormType & {
+  formPurpose?: 'general' | 'projectInquiry' | null
   steps?: FormStep[] | null
 }
 
