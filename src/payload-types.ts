@@ -706,9 +706,14 @@ export interface ArchiveBlock {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
-  generalForm?: (number | null) | Form;
-  projectInquiryForm?: (number | null) | Form;
-  form?: (number | null) | Form;
+  variant?: ('single' | 'multi') | null;
+  singleForm?: (number | null) | Form;
+  multiForms?: {
+    form: number | Form;
+    tabLabel: string;
+    description?: string | null;
+    id?: string | null;
+  }[] | null;
   enableIntro?: boolean | null;
   introContent?: {
     root: {
