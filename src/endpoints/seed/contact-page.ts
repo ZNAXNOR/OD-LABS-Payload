@@ -19,8 +19,19 @@ export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pag
     {
       blockType: 'formBlock',
       enableIntro: true,
-      generalForm,
-      projectInquiryForm,
+      variant: 'multi',
+      multiForms: [
+        {
+          form: generalForm,
+          tabLabel: 'General Enquiry',
+          description: 'For general questions, support, and other enquiries.',
+        },
+        {
+          form: projectInquiryForm,
+          tabLabel: 'Project Inquiry',
+          description: 'Tell us about the project you are planning.',
+        },
+      ],
       introContent: {
         root: {
           type: 'root',
