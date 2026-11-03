@@ -767,6 +767,16 @@ export interface Form {
             name: string;
             label?: string | null;
             width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'date';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
             required?: boolean | null;
             id?: string | null;
             blockName?: string | null;
@@ -801,6 +811,23 @@ export interface Form {
             id?: string | null;
             blockName?: string | null;
             blockType: 'number';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'radio';
           }
         | {
             name: string;
@@ -852,24 +879,85 @@ export interface Form {
       )[]
     | null;
   steps?: {
-    key: string;
     title: string;
     description?: string | null;
     type: 'form' | 'preview';
-    fields?: {
-      name: string;
-      label: string;
-      type: 'text' | 'email' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'date' | 'number';
-      required?: boolean | null;
-      placeholder?: string | null;
-      helpText?: string | null;
-      options?: {
-        label: string;
-        value: string;
-        id?: string | null;
-      }[] | null;
-      id?: string | null;
-    }[] | null;
+    fields?:
+      | (
+          | {
+              name: string;
+              label?: string | null;
+              width?: number | null;
+              required?: boolean | null;
+              defaultValue?: boolean | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'checkbox';
+            }
+          | {
+              name: string;
+              label?: string | null;
+              width?: number | null;
+              defaultValue?: string | null;
+              required?: boolean | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'date';
+            }
+          | {
+              name: string;
+              label?: string | null;
+              width?: number | null;
+              required?: boolean | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'email';
+            }
+          | {
+              name: string;
+              label?: string | null;
+              width?: number | null;
+              defaultValue?: number | null;
+              required?: boolean | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'number';
+            }
+          | {
+              name: string;
+              label?: string | null;
+              width?: number | null;
+              defaultValue?: string | null;
+              options?: { label: string; value: string; id?: string | null }[] | null;
+              required?: boolean | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'radio';
+            }
+          | {
+              name: string;
+              label?: string | null;
+              width?: number | null;
+              defaultValue?: string | null;
+              placeholder?: string | null;
+              options?: { label: string; value: string; id?: string | null }[] | null;
+              required?: boolean | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'select';
+            }
+          | {
+              name: string;
+              label?: string | null;
+              width?: number | null;
+              defaultValue?: string | null;
+              required?: boolean | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'text' | 'textarea';
+            }
+        )[]
+      | null;
     id?: string | null;
   }[] | null;
   submitButtonLabel?: string | null;
