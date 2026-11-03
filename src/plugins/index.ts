@@ -145,7 +145,12 @@ export const plugins: Plugin[] = [
           ({ data, originalDoc }) => {
             const formLayout = data.formLayout ?? originalDoc?.formLayout
 
-            if (formLayout !== 'multiStep') return data
+            if (formLayout !== 'multiStep') {
+              return {
+                ...data,
+                fields: data.fields ?? originalDoc?.fields,
+              }
+            }
 
             const steps = data.steps ?? originalDoc?.steps
             if (!Array.isArray(steps)) return data
