@@ -52,11 +52,9 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
 }) => {
   const [activeTab, setActiveTab] = useState(0)
   const valuesByTab = useRef<Record<number, Record<string, unknown>>>({})
-  const configuredForms = variant === 'multi'
-    ? multiForms
-    : [{ form: singleForm, tabLabel: '', description: '' }]
+  const configuredForms = (variant === 'multi' ? multiForms : [{ form: singleForm, tabLabel: '', description: '' }]) || []
   const activeEntry = configuredForms[activeTab]
-  const activeForm = (typeof activeEntry?.form === 'object' ? activeEntry.form : null) as ManagedForm | null
+  const activeForm = (typeof activeEntry?.form === 'object' && activeEntry.form ? activeEntry.form : null) as ManagedForm | null
   const isMultiStep = activeForm?.formLayout === 'multiStep'
   const [activeStep, setActiveStep] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
@@ -171,7 +169,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                     onClick={() => { valuesByTab.current[activeTab] = formMethods.getValues(); setActiveTab(index); reset(valuesByTab.current[index] ?? {}); formMethods.clearErrors(); setActiveStep(0); setError(undefined); setHasSubmitted(false) }}
                     className={`min-h-24 min-w-0 flex-1 border-r border-border px-5 py-4 text-left transition-colors last:border-r-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl ${activeTab === index ? 'border-odl bg-odl/5' : 'hover:border-zinc-600'}`}
                   >
-                    <span className="block text-sm font-medium leading-6 text-zinc-100">{entry.tabLabel || (typeof entry.form === 'object' ? entry.form.title : 'Form')}</span>
+                    <span className="block text-sm font-medium leading-6 text-zinc-100">{entry.tabLabel || (typeof entry?.form === 'object' && entry.form ? entry.form.title : 'Form')}</span>
                     {activeTab === index ? <span aria-hidden="true" className="mt-3 block text-xs text-odl">●</span> : <span aria-hidden="true" className="mt-3 block text-xs text-zinc-600">○</span>}
                   </button>
                 ))}
@@ -185,7 +183,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                     {activeForm?.fields?.map((field, index) => {
                       const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
                       if (!Field) return null
-                      return <div className="mb-6 last:mb-0" key={('id' in field && field.id) || index}><Field form={activeForm} {...field} {...formMethods} control={control} errors={errors} register={register} /></div>
+                      return <div className="mb-6 last:mb-0" key={('id' in field && typeof field.id === 'string' ? field.id : index)}><Field form={activeForm} {...field} {...formMethods} control={control} errors={errors} register={register} /></div>
                     })}
                     <div className="mt-8"><Button type="submit" disabled={isLoading}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Send enquiry'}</Button></div>
                   </>
@@ -213,7 +211,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                               return (
                                 <div
                                   className={field.blockType === 'textarea' || field.blockType === 'message' ? 'sm:col-span-2' : ''}
-                                  key={('id' in field && field.id) || index}
+                                  key={('id' in field && typeof field.id === 'string' ? field.id : index)}
                                 >
                                   <Field
                                     form={activeForm}

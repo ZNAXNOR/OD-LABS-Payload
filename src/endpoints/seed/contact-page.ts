@@ -20,6 +20,7 @@ export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pag
       blockType: 'formBlock',
       enableIntro: true,
       variant: 'multi',
+      singleForm: null,
       multiForms: [
         {
           form: generalForm,

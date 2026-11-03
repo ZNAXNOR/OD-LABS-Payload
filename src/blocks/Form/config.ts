@@ -85,7 +85,7 @@ export const FormBlock: Block = {
               validate: (value) => {
                 if (!Array.isArray(value)) return true
                 const ids = value
-                  .map((item) => {
+                  .map((item: any) => {
                     const form = item?.form
                     return typeof form === 'object' && form !== null ? form.id : form
                   })
