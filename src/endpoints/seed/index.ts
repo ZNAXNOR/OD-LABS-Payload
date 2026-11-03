@@ -251,26 +251,24 @@ export const seed = async ({
       fields: [],
       steps: [
         {
-          key: 'about-you',
           title: 'About You',
           description: 'Tell us how to reach you.',
           type: 'form',
           fields: [
-            { name: 'fullName', label: 'Full Name', type: 'text', required: true },
-            { name: 'workEmail', label: 'Work Email', type: 'email', required: true },
-            { name: 'company', label: 'Company / Organization', type: 'text', required: false },
+            { blockType: 'text', name: 'fullName', label: 'Full Name', required: true, width: 100 },
+            { blockType: 'email', name: 'workEmail', label: 'Work Email', required: true, width: 100 },
+            { blockType: 'text', name: 'company', label: 'Company / Organization', required: false, width: 100 },
           ],
         },
         {
-          key: 'project',
           title: 'Project',
           description: 'What are you looking to build or improve?',
           type: 'form',
           fields: [
             {
+              blockType: 'select',
               name: 'projectType',
               label: 'Project Type',
-              type: 'select',
               required: true,
               options: [
                 { label: 'Website', value: 'website' },
@@ -282,9 +280,9 @@ export const seed = async ({
               ],
             },
             {
+              blockType: 'radio',
               name: 'projectStage',
               label: 'Project Stage',
-              type: 'radio',
               required: true,
               options: [
                 { label: 'Early idea', value: 'early-idea' },
@@ -296,40 +294,37 @@ export const seed = async ({
           ],
         },
         {
-          key: 'scope',
           title: 'Scope',
           description: 'Share your expected budget and timeline, if known.',
           type: 'form',
           fields: [
-            { name: 'budget', label: 'Budget', type: 'select', required: false, options: [
+            { blockType: 'select', name: 'budget', label: 'Budget', required: false, options: [
               { label: 'Not decided', value: 'undecided' },
               { label: 'Under $1,000', value: 'under-1000' },
               { label: '$1,000–$5,000', value: '1000-5000' },
               { label: '$5,000–$15,000', value: '5000-15000' },
               { label: '$15,000+', value: '15000-plus' },
             ] },
-            { name: 'timeline', label: 'Timeline', type: 'select', required: false, options: [
+            { blockType: 'select', name: 'timeline', label: 'Timeline', required: false, options: [
               { label: 'Flexible', value: 'flexible' },
               { label: 'Within 1 month', value: '1-month' },
               { label: '1–3 months', value: '1-3-months' },
               { label: '3+ months', value: '3-plus-months' },
               { label: 'ASAP', value: 'asap' },
             ] },
-            { name: 'launchDate', label: 'Target Launch Date', type: 'date', required: false },
+            { blockType: 'date', name: 'launchDate', label: 'Target Launch Date', required: false },
           ],
         },
         {
-          key: 'goals',
           title: 'Goals',
           description: 'Describe the project and what success would look like.',
           type: 'form',
           fields: [
-            { name: 'summary', label: 'Project Summary', type: 'textarea', required: true, placeholder: 'What do you want to achieve?' },
-            { name: 'successCriteria', label: 'Success Criteria', type: 'textarea', required: false, placeholder: 'What would make this project successful?' },
+            { blockType: 'textarea', name: 'summary', label: 'Project Summary', required: true, width: 100 },
+            { blockType: 'textarea', name: 'successCriteria', label: 'Success Criteria', required: false, width: 100 },
           ],
         },
         {
-          key: 'preview',
           title: 'Preview',
           description: 'Review your answers before submitting.',
           type: 'preview',
