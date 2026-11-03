@@ -917,6 +917,31 @@ export interface Form {
               name: string;
               label?: string | null;
               width?: number | null;
+              required?: boolean | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'country' | 'state';
+            }
+          | {
+              message?: {
+                root: {
+                  type: string;
+                  children: { type: any; version: number; [k: string]: unknown }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'message';
+            }
+          | {
+              name: string;
+              label?: string | null;
+              width?: number | null;
               defaultValue?: number | null;
               required?: boolean | null;
               id?: string | null;
