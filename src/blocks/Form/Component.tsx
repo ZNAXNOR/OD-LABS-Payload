@@ -46,14 +46,20 @@ type ManagedForm = FormType & {
   steps?: FormStep[] | null
 }
 
+type MultiFormItem = {
+  form?: FormType | number | null
+  tabLabel: string
+  description?: string | null
+}
+
 type ManagedFormBlock = {
   blockName?: string
   blockType?: 'formBlock'
+  variant?: 'single' | 'multi' | null
+  singleForm?: ManagedForm | number | null
+  multiForms?: MultiFormItem[] | null
   enableIntro?: boolean | null
   introContent?: DefaultTypedEditorState
-  generalForm?: FormType | null
-  projectInquiryForm?: ManagedForm | null
-  form?: FormType | null
 }
 
 export type FormBlockType = ManagedFormBlock
@@ -61,23 +67,27 @@ export type FormBlockType = ManagedFormBlock
 export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   enableIntro,
   introContent,
-  generalForm: generalFormFromProps,
-  projectInquiryForm,
-  form: legacyForm,
+  variant = 'single',
+  singleForm,
+  multiForms = [],
 }) => {
-  const generalForm = generalFormFromProps ?? legacyForm
-  const [mode, setMode] = useState<'general' | 'projectInquiry'>('general')
+  const [activeTab, setActiveTab] = useState(0)
+  const configuredForms = variant === 'multi'
+    ? multiForms
+    : [{ form: singleForm, tabLabel: '', description: '' }]
+  const activeEntry = configuredForms[activeTab]
+  const activeForm = (typeof activeEntry?.form === 'object' ? activeEntry.form : null) as ManagedForm | null
+  const isProjectInquiry = activeForm?.formPurpose === 'projectInquiry'
   const [activeStep, setActiveStep] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [error, setError] = useState<string>()
   const router = useRouter()
 
-  const activeForm = mode === 'general' ? generalForm : projectInquiryForm
   const formID = activeForm?.id
   const steps = useMemo(
-    () => (projectInquiryForm?.steps ?? []).filter((step) => step.type === 'form' || step.type === 'preview'),
-    [projectInquiryForm?.steps],
+    () => (activeForm?.steps ?? []).filter((step) => step.type === 'form' || step.type === 'preview'),
+    [activeForm?.steps],
   )
   const currentStep = steps[activeStep]
   const formMethods = useForm<Record<string, unknown>>({
@@ -100,9 +110,9 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     setError(undefined)
     setIsLoading(true)
     try {
-      const allowedNames = mode === 'general'
-        ? (generalForm?.fields ?? []).map((field) => field.name)
-        : steps.flatMap((step) => step.fields ?? []).map((field) => field.name)
+      const allowedNames = isProjectInquiry
+        ? steps.flatMap((step) => step.fields ?? []).map((field) => field.name)
+        : (activeForm?.fields ?? []).map((field) => field.name)
       const submissionData = [...new Set(allowedNames)]
         .filter((field) => Object.prototype.hasOwnProperty.call(data, field))
         .map((field) => ({ field, value: data[field] ?? '' }))
@@ -124,7 +134,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     } finally {
       setIsLoading(false)
     }
-  }, [activeForm, formID, generalForm?.fields, mode, router, steps])
+  }, [activeForm, formID, isProjectInquiry, router, steps])
 
   const advance = async () => {
     if (!currentStep) return
@@ -205,16 +215,6 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     )
   }
 
-  const renderGeneralFields = () => (
-    <div className="space-y-6">
-      {generalForm?.fields?.map((field, index) => {
-        const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
-        if (!Field) return null
-        return <div className="mb-6 last:mb-0" key={field.id ?? index}><Field form={generalForm} {...field} {...formMethods} control={control} errors={errors} register={register} /></div>
-      })}
-    </div>
-  )
-
   return (
     <section className="w-full">
       {enableIntro && introContent && !hasSubmitted && (
@@ -223,21 +223,33 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
       <div className="border border-border">
         {!hasSubmitted ? (
           <>
-            <div className="grid grid-cols-2 border-b border-border" role="tablist" aria-label="Contact form type">
-              <button type="button" role="tab" aria-selected={mode === 'general'} onClick={() => { setMode('general'); setActiveStep(0); setError(undefined) }} className={`px-4 py-4 text-left text-sm transition-colors ${mode === 'general' ? 'bg-foreground text-background' : 'text-foreground hover:bg-muted'}`}>
-                <span className="block font-mono text-[10px] uppercase tracking-widest opacity-70">01</span>
-                General Enquiry
-              </button>
-              <button type="button" role="tab" aria-selected={mode === 'projectInquiry'} onClick={() => { setMode('projectInquiry'); setActiveStep(0); setError(undefined) }} className={`border-l border-border px-4 py-4 text-left text-sm transition-colors ${mode === 'projectInquiry' ? 'bg-foreground text-background' : 'text-foreground hover:bg-muted'}`}>
-                <span className="block font-mono text-[10px] uppercase tracking-widest opacity-70">02</span>
-                Project Inquiry
-              </button>
-            </div>
+            {variant === 'multi' && (
+              <div className="flex flex-wrap border-b border-border" role="tablist" aria-label="Available forms">
+                {configuredForms.map((entry, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeTab === index}
+                    onClick={() => { setActiveTab(index); setActiveStep(0); setError(undefined); setHasSubmitted(false) }}
+                    className={`min-w-0 flex-1 border-r border-border px-4 py-4 text-left text-sm transition-colors last:border-r-0 ${activeTab === index ? 'bg-foreground text-background' : 'text-foreground hover:bg-muted'}`}
+                  >
+                    <span className="block font-mono text-[10px] uppercase tracking-widest opacity-70">{String(index + 1).padStart(2, '0')}</span>
+                    {entry.tabLabel || (typeof entry.form === 'object' ? entry.form.title : 'Form')}
+                  </button>
+                ))}
+              </div>
+            )}
+            {activeEntry?.description && variant === 'multi' ? <p className="border-b border-border px-5 py-4 text-sm text-muted-foreground md:px-8">{activeEntry.description}</p> : null}
             <FormProvider {...formMethods}>
               <form onSubmit={handleSubmit(submit)} className="p-5 md:p-8">
-                {mode === 'general' ? (
+                {!isProjectInquiry ? (
                   <>
-                    {renderGeneralFields()}
+                    {activeForm?.fields?.map((field, index) => {
+                      const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                      if (!Field) return null
+                      return <div className="mb-6 last:mb-0" key={field.id ?? index}><Field form={activeForm} {...field} {...formMethods} control={control} errors={errors} register={register} /></div>
+                    })}
                     <div className="mt-8"><Button type="submit" disabled={isLoading}>{isLoading ? 'Submitting…' : generalForm.submitButtonLabel || 'Send enquiry'}</Button></div>
                   </>
                 ) : (
