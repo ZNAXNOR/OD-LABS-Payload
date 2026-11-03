@@ -12,10 +12,24 @@ export const FormBlock: Block = {
   interfaceName: 'FormBlock',
   fields: [
     {
-      name: 'form',
+      name: 'generalForm',
       type: 'relationship',
       relationTo: 'forms',
       required: true,
+      label: 'General Contact Form',
+      admin: {
+        description: 'Select the form used for general enquiries.',
+      },
+    },
+    {
+      name: 'projectInquiryForm',
+      type: 'relationship',
+      relationTo: 'forms',
+      required: true,
+      label: 'Project Inquiry Form',
+      admin: {
+        description: 'Select the form whose Steps tab defines the multi-step inquiry.',
+      },
     },
     {
       name: 'enableIntro',
