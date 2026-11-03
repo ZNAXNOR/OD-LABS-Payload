@@ -250,7 +250,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                       if (!Field) return null
                       return <div className="mb-6 last:mb-0" key={field.id ?? index}><Field form={activeForm} {...field} {...formMethods} control={control} errors={errors} register={register} /></div>
                     })}
-                    <div className="mt-8"><Button type="submit" disabled={isLoading}>{isLoading ? 'Submitting…' : generalForm.submitButtonLabel || 'Send enquiry'}</Button></div>
+                    <div className="mt-8"><Button type="submit" disabled={isLoading}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Send enquiry'}</Button></div>
                   </>
                 ) : (
                   <>
@@ -279,7 +279,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                           {activeStep < steps.length - 1 ? (
                             <Button type="button" disabled={isLoading} onClick={advance}>Continue</Button>
                           ) : (
-                            <Button type="button" disabled={isLoading} onClick={handleSubmit(submit)}>{isLoading ? 'Submitting…' : projectInquiryForm.submitButtonLabel || 'Submit inquiry'}</Button>
+                            <Button type="button" disabled={isLoading} onClick={handleSubmit(submit)}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Submit inquiry'}</Button>
                           )}
                         </div>
                       </>
