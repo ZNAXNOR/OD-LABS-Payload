@@ -15,7 +15,7 @@ export const FormBlock: Block = {
       name: 'generalForm',
       type: 'relationship',
       relationTo: 'forms',
-      required: true,
+      required: false,
       label: 'General Contact Form',
       admin: {
         description: 'Select the form used for general enquiries.',
@@ -25,10 +25,21 @@ export const FormBlock: Block = {
       name: 'projectInquiryForm',
       type: 'relationship',
       relationTo: 'forms',
-      required: true,
+      required: false,
       label: 'Project Inquiry Form',
       admin: {
         description: 'Select the form whose Steps tab defines the multi-step inquiry.',
+      },
+    },
+    {
+      name: 'form',
+      type: 'relationship',
+      relationTo: 'forms',
+      required: false,
+      label: 'Legacy Form (compatibility)',
+      admin: {
+        condition: (_, siblingData) => !siblingData?.generalForm,
+        description: 'Fallback for existing pages. Select General Contact Form above when updating this block.',
       },
     },
     {
