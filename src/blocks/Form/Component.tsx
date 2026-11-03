@@ -51,8 +51,9 @@ type ManagedFormBlock = {
   blockType?: 'formBlock'
   enableIntro?: boolean | null
   introContent?: DefaultTypedEditorState
-  generalForm: FormType
-  projectInquiryForm: ManagedForm
+  generalForm?: FormType | null
+  projectInquiryForm?: ManagedForm | null
+  form?: FormType | null
 }
 
 export type FormBlockType = ManagedFormBlock
@@ -60,9 +61,11 @@ export type FormBlockType = ManagedFormBlock
 export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   enableIntro,
   introContent,
-  generalForm,
+  generalForm: generalFormFromProps,
   projectInquiryForm,
+  form: legacyForm,
 }) => {
+  const generalForm = generalFormFromProps ?? legacyForm
   const [mode, setMode] = useState<'general' | 'projectInquiry'>('general')
   const [activeStep, setActiveStep] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
