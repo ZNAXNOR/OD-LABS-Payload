@@ -189,10 +189,11 @@ export const plugins: Plugin[] = [
           return field
         })
 
+        const nativeFieldsField = configuredFields.find(
+          (field) => 'name' in field && field.name === 'fields' && field.type === 'blocks',
+        )
         const nativeFieldBlocks =
-          configuredFields.find(
-            (field) => 'name' in field && field.name === 'fields' && field.type === 'blocks',
-          )?.blocks ?? []
+          nativeFieldsField && 'blocks' in nativeFieldsField ? nativeFieldsField.blocks : []
 
         return [
           ...configuredFields,
