@@ -279,7 +279,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
           </>
         ) : (
           <div className="p-6 md:p-8">
-            {activeForm.confirmationMessage ? <RichText data={activeForm.confirmationMessage} /> : <p>Thank you. Your message has been received.</p>}
+            {activeForm?.confirmationMessage ? <RichText data={activeForm.confirmationMessage} /> : <p>Thank you. Your message has been received.</p>}
           </div>
         )}
       </div>
