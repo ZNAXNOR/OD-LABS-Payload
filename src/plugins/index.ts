@@ -221,6 +221,20 @@ export const plugins: Plugin[] = [
               condition: (_, siblingData) => siblingData?.formLayout === 'multiStep',
               description: 'Add steps in the order visitors should complete them. Each step uses the native Payload Form Builder field types.',
             },
+            validate: (value) => {
+              if (!Array.isArray(value)) return true
+
+              const names = value.flatMap((step) =>
+                Array.isArray(step?.fields) ? step.fields : [],
+              ).flatMap((field) =>
+                field && typeof field === 'object' && 'name' in field && typeof field.name === 'string'
+                  ? [field.name]
+                  : [],
+              )
+
+              return new Set(names).size === names.length ||
+                'Each field name must be unique across all form steps.'
+            },
             fields: [
               {
                 name: 'title',
