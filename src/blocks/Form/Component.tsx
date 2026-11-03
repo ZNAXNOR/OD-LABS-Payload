@@ -201,7 +201,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                             <p className="text-sm">{currentStep?.title}</p>
                           </div>
                           <div className="flex gap-1" aria-hidden="true">
-                            {steps.map((step, index) => <div key={step.key || index} className={`h-1 flex-1 ${index <= activeStep ? 'bg-foreground' : 'bg-border'}`} />)}
+                            {steps.map((step, index) => <div key={step.id || index} className={`h-1 flex-1 ${index <= activeStep ? 'bg-foreground' : 'bg-border'}`} />)}
                           </div>
                         </div>
                         {currentStep?.description ? <p className="mb-6 text-sm text-muted-foreground">{currentStep.description}</p> : null}
