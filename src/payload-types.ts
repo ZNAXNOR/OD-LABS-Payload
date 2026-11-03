@@ -706,7 +706,8 @@ export interface ArchiveBlock {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
-  form: number | Form;
+  generalForm: number | Form;
+  projectInquiryForm: number | Form;
   enableIntro?: boolean | null;
   introContent?: {
     root: {
@@ -843,6 +844,27 @@ export interface Form {
           }
       )[]
     | null;
+  steps?: {
+    key: string;
+    title: string;
+    description?: string | null;
+    type: 'form' | 'preview';
+    fields?: {
+      name: string;
+      label: string;
+      type: 'text' | 'email' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'date' | 'number';
+      required?: boolean | null;
+      placeholder?: string | null;
+      helpText?: string | null;
+      options?: {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[] | null;
+      id?: string | null;
+    }[] | null;
+    id?: string | null;
+  }[] | null;
   submitButtonLabel?: string | null;
   confirmationType?: ('message' | 'redirect') | null;
   confirmationMessage?: {
