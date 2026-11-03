@@ -106,7 +106,9 @@ export const plugins: Plugin[] = [
   }),
   formBuilderPlugin({
     fields: {
+      date: true,
       payment: false,
+      radio: true,
     },
     beforeEmail: (emailsToSend, { doc }: any) =>
       emailsToSend.map((email) => {
