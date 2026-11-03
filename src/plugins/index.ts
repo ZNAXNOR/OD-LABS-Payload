@@ -162,13 +162,28 @@ export const plugins: Plugin[] = [
         return [
           ...configuredFields,
           {
+            name: 'formPurpose',
+            type: 'select',
+            label: 'Form purpose',
+            defaultValue: 'general',
+            required: true,
+            options: [
+              { label: 'General Contact', value: 'general' },
+              { label: 'Project Inquiry', value: 'projectInquiry' },
+            ],
+            admin: {
+              position: 'sidebar',
+              description: 'Select the intended use of this form. Project Inquiry forms use the Steps configuration below.',
+            },
+          },
+          {
             name: 'steps',
             type: 'array',
             label: 'Project Inquiry Steps',
             admin: {
               description:
                 'Configure the ordered steps shown by the Project Inquiry variant. Use a step type of Preview for the final review screen.',
-              condition: (_, siblingData) => siblingData?.title === 'Project Inquiry',
+              condition: (_, siblingData) => siblingData?.formPurpose === 'projectInquiry',
             },
             fields: [
               {
