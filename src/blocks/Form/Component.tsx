@@ -97,9 +97,12 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     setError(undefined)
     setIsLoading(true)
     try {
-      const submissionData = Object.entries(data)
-        .filter(([key]) => !key.startsWith('__'))
-        .map(([field, value]) => ({ field, value: value ?? '' }))
+      const allowedNames = mode === 'general'
+        ? (generalForm?.fields ?? []).map((field) => field.name)
+        : steps.flatMap((step) => step.fields ?? []).map((field) => field.name)
+      const submissionData = [...new Set(allowedNames)]
+        .filter((field) => Object.prototype.hasOwnProperty.call(data, field))
+        .map((field) => ({ field, value: data[field] ?? '' }))
       const response = await fetch(`${getClientSideURL()}/api/form-submissions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -118,12 +121,12 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     } finally {
       setIsLoading(false)
     }
-  }, [activeForm, formID, router])
+  }, [activeForm, formID, generalForm?.fields, mode, router, steps])
 
   const advance = async () => {
     if (!currentStep) return
     if (currentStep.type === 'form') {
-      const names = (currentStep.fields ?? []).filter((field) => field.required).map((field) => field.name)
+      const names = (currentStep.fields ?? []).map((field) => field.name)
       const valid = names.length ? await trigger(names) : true
       if (!valid) return
     }
@@ -167,6 +170,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
           </div>
         ) : field.type === 'checkbox' ? (
           <label className="flex items-center gap-3 text-sm">
+            <input type="checkbox" className="sr-only" {...register(field.name, { required: field.required ? `${field.label} is required.` : false })} />
             <Checkbox checked={Boolean(getValues(field.name))} onCheckedChange={(checked) => setValue(field.name, checked, { shouldValidate: true })} />
             <span>{field.label}{field.required ? ' *' : ''}</span>
           </label>
