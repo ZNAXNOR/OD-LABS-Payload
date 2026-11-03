@@ -741,7 +741,7 @@ export interface FormBlock {
 export interface Form {
   id: number;
   title: string;
-  formPurpose?: ('general' | 'projectInquiry') | null;
+  formLayout?: ('standard' | 'multiStep') | null;
   fields?:
     | (
         | {
