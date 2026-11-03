@@ -139,7 +139,7 @@ export const plugins: Plugin[] = [
       }),
     formOverrides: {
       fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
+        const configuredFields = defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
             return {
               ...field,
@@ -158,6 +158,104 @@ export const plugins: Plugin[] = [
           }
           return field
         })
+
+        return [
+          ...configuredFields,
+          {
+            name: 'steps',
+            type: 'array',
+            label: 'Project Inquiry Steps',
+            admin: {
+              description:
+                'Configure the ordered steps shown by the Project Inquiry variant. Use a step type of Preview for the final review screen.',
+              condition: (_, siblingData) => siblingData?.title === 'Project Inquiry',
+            },
+            fields: [
+              {
+                name: 'key',
+                type: 'text',
+                required: true,
+                admin: {
+                  description:
+                    'Stable identifier used internally. Use lowercase letters, numbers, and hyphens; do not change it after collecting submissions.',
+                },
+              },
+              {
+                name: 'title',
+                type: 'text',
+                required: true,
+                label: 'Step title',
+              },
+              {
+                name: 'description',
+                type: 'textarea',
+                label: 'Step description',
+              },
+              {
+                name: 'type',
+                type: 'select',
+                required: true,
+                defaultValue: 'form',
+                options: [
+                  { label: 'Form fields', value: 'form' },
+                  { label: 'Preview submission', value: 'preview' },
+                ],
+              },
+              {
+                name: 'fields',
+                type: 'array',
+                label: 'Fields',
+                admin: {
+                  condition: (_, siblingData) => siblingData?.type === 'form',
+                  description:
+                    'Field names must be unique across the entire form. Supported types are rendered by the OD LABS form renderer.',
+                },
+                fields: [
+                  {
+                    name: 'name',
+                    type: 'text',
+                    required: true,
+                    admin: {
+                      description: 'Stable submission key, e.g. workEmail. Do not use spaces.',
+                    },
+                  },
+                  { name: 'label', type: 'text', required: true },
+                  {
+                    name: 'type',
+                    type: 'select',
+                    required: true,
+                    defaultValue: 'text',
+                    options: [
+                      { label: 'Text', value: 'text' },
+                      { label: 'Email', value: 'email' },
+                      { label: 'Textarea', value: 'textarea' },
+                      { label: 'Select', value: 'select' },
+                      { label: 'Radio group', value: 'radio' },
+                      { label: 'Checkbox', value: 'checkbox' },
+                      { label: 'Date', value: 'date' },
+                      { label: 'Number', value: 'number' },
+                    ],
+                  },
+                  { name: 'required', type: 'checkbox', defaultValue: false },
+                  { name: 'placeholder', type: 'text' },
+                  { name: 'helpText', type: 'textarea', label: 'Help text' },
+                  {
+                    name: 'options',
+                    type: 'array',
+                    admin: {
+                      condition: (_, siblingData) =>
+                        siblingData?.type === 'select' || siblingData?.type === 'radio',
+                    },
+                    fields: [
+                      { name: 'label', type: 'text', required: true },
+                      { name: 'value', type: 'text', required: true },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ]
       },
     },
   }),
