@@ -200,7 +200,7 @@ export const seed = async ({
     data: {
       ...contactFormData,
       title: 'General Contact',
-      formPurpose: 'general',
+      formLayout: 'standard',
       fields: [
         {
           name: 'fullName',
@@ -244,7 +244,7 @@ export const seed = async ({
     depth: 0,
     data: {
       title: 'Project Inquiry',
-      formPurpose: 'projectInquiry',
+      formLayout: 'multiStep',
       confirmationType: 'message',
       confirmationMessage: contactFormData.confirmationMessage,
       submitButtonLabel: 'Submit inquiry',
