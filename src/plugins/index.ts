@@ -138,26 +138,59 @@ export const plugins: Plugin[] = [
         }
       }),
     formOverrides: {
+      hooks: {
+        beforeChange: [
+          ({ data, originalDoc }) => {
+            const formLayout = data.formLayout ?? originalDoc?.formLayout
+
+            if (formLayout !== 'multiStep') return data
+
+            const steps = data.steps ?? originalDoc?.steps
+            if (!Array.isArray(steps)) return data
+
+            return {
+              ...data,
+              fields: steps.flatMap((step: { fields?: unknown[] | null }) =>
+                Array.isArray(step.fields) ? step.fields : [],
+              ),
+            }
+          },
+        ],
+      },
       fields: ({ defaultFields }) => {
         const configuredFields = defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
             return {
               ...field,
               editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    FixedToolbarFeature(),
-                    HeadingFeature({
-                      enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'],
-                    }),
-                  ]
-                },
+                features: ({ rootFeatures }) => [
+                  ...rootFeatures,
+                  FixedToolbarFeature(),
+                  HeadingFeature({
+                    enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'],
+                  }),
+                ],
               }),
             }
           }
+
+          if ('name' in field && field.name === 'fields' && field.type === 'blocks') {
+            return {
+              ...field,
+              admin: {
+                ...field.admin,
+                condition: (_, siblingData) => siblingData?.formLayout === 'standard',
+              },
+            }
+          }
+
           return field
         })
+
+        const nativeFieldBlocks =
+          configuredFields.find(
+            (field) => 'name' in field && field.name === 'fields' && field.type === 'blocks',
+          )?.blocks ?? []
 
         return [
           ...configuredFields,
@@ -173,28 +206,19 @@ export const plugins: Plugin[] = [
             ],
             admin: {
               position: 'sidebar',
-              description: 'Choose how this form is presented. Multi-step forms use the Steps configuration below.',
+              description: 'Standard forms use the Fields editor. Multi-step forms organize those same Payload Form Builder fields into steps.',
             },
           },
           {
             name: 'steps',
             type: 'array',
             label: 'Form Steps',
+            minRows: 1,
             admin: {
-              description:
-                'Configure the ordered steps shown by this form. Use a step type of Preview for the final review screen.',
               condition: (_, siblingData) => siblingData?.formLayout === 'multiStep',
+              description: 'Add steps in the order visitors should complete them. Each step uses the native Payload Form Builder field types.',
             },
             fields: [
-              {
-                name: 'key',
-                type: 'text',
-                required: true,
-                admin: {
-                  description:
-                    'Stable identifier used internally. Use lowercase letters, numbers, and hyphens; do not change it after collecting submissions.',
-                },
-              },
               {
                 name: 'title',
                 type: 'text',
@@ -218,55 +242,14 @@ export const plugins: Plugin[] = [
               },
               {
                 name: 'fields',
-                type: 'array',
+                type: 'blocks',
                 label: 'Fields',
+                blocks: nativeFieldBlocks,
+                minRows: 1,
                 admin: {
                   condition: (_, siblingData) => siblingData?.type === 'form',
-                  description:
-                    'Field names must be unique across the entire form. Supported types are rendered by the OD LABS form renderer.',
+                  description: 'These are the same native field types available in a standard Payload form.',
                 },
-                fields: [
-                  {
-                    name: 'name',
-                    type: 'text',
-                    required: true,
-                    admin: {
-                      description: 'Stable submission key, e.g. workEmail. Do not use spaces.',
-                    },
-                  },
-                  { name: 'label', type: 'text', required: true },
-                  {
-                    name: 'type',
-                    type: 'select',
-                    required: true,
-                    defaultValue: 'text',
-                    options: [
-                      { label: 'Text', value: 'text' },
-                      { label: 'Email', value: 'email' },
-                      { label: 'Textarea', value: 'textarea' },
-                      { label: 'Select', value: 'select' },
-                      { label: 'Radio group', value: 'radio' },
-                      { label: 'Checkbox', value: 'checkbox' },
-                      { label: 'Date', value: 'date' },
-                      { label: 'Number', value: 'number' },
-                    ],
-                  },
-                  { name: 'required', type: 'checkbox', defaultValue: false },
-                  { name: 'placeholder', type: 'text' },
-                  { name: 'helpText', type: 'textarea', label: 'Help text' },
-                  {
-                    name: 'options',
-                    type: 'array',
-                    admin: {
-                      condition: (_, siblingData) =>
-                        siblingData?.type === 'select' || siblingData?.type === 'radio',
-                    },
-                    fields: [
-                      { name: 'label', type: 'text', required: true },
-                      { name: 'value', type: 'text', required: true },
-                    ],
-                  },
-                ],
               },
             ],
           },
