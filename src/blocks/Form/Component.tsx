@@ -43,7 +43,7 @@ type FormStep = {
 }
 
 type ManagedForm = FormType & {
-  formPurpose?: 'general' | 'projectInquiry' | null
+  formLayout?: 'standard' | 'multiStep' | null
   steps?: FormStep[] | null
 }
 
@@ -79,7 +79,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     : [{ form: singleForm, tabLabel: '', description: '' }]
   const activeEntry = configuredForms[activeTab]
   const activeForm = (typeof activeEntry?.form === 'object' ? activeEntry.form : null) as ManagedForm | null
-  const isProjectInquiry = activeForm?.formPurpose === 'projectInquiry'
+  const isMultiStep = activeForm?.formLayout === 'multiStep'
   const [activeStep, setActiveStep] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
@@ -113,7 +113,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     setError(undefined)
     setIsLoading(true)
     try {
-      const allowedNames = isProjectInquiry
+      const allowedNames = isMultiStep
         ? steps.flatMap((step) => step.fields ?? []).map((field) => field.name)
         : (activeForm?.fields ?? []).map((field) => field.name)
       const submissionData = [...new Set(allowedNames)]
@@ -137,7 +137,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     } finally {
       setIsLoading(false)
     }
-  }, [activeForm, formID, isProjectInquiry, router, steps])
+  }, [activeForm, formID, isMultiStep, router, steps])
 
   const advance = async () => {
     if (!currentStep) return
@@ -227,7 +227,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
         {!hasSubmitted ? (
           <>
             {variant === 'multi' && (
-              <div className="flex flex-wrap border-b border-border" role="tablist" aria-label="Available forms">
+              <div className="flex flex-col gap-3 border-b border-border p-5 sm:flex-row md:p-6" role="tablist" aria-label="Available forms">
                 {configuredForms.map((entry, index) => (
                   <button
                     key={index}
@@ -235,9 +235,9 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                     role="tab"
                     aria-selected={activeTab === index}
                     onClick={() => { valuesByTab.current[activeTab] = formMethods.getValues(); setActiveTab(index); reset(valuesByTab.current[index] ?? {}); setActiveStep(0); setError(undefined); setHasSubmitted(false) }}
-                    className={`min-w-0 flex-1 border-r border-border px-4 py-4 text-left text-sm transition-colors last:border-r-0 ${activeTab === index ? 'bg-foreground text-background' : 'text-foreground hover:bg-muted'}`}
+                    className={`min-h-24 min-w-0 flex-1 border-r border-border px-5 py-4 text-left transition-colors last:border-r-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl ${activeTab === index ? 'border-odl bg-odl/5' : 'hover:border-zinc-600'}`}
                   >
-                    <span className="block font-mono text-[10px] uppercase tracking-widest opacity-70">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="block text-sm font-medium leading-6 text-zinc-100"></span>
                     {entry.tabLabel || (typeof entry.form === 'object' ? entry.form.title : 'Form')}
                   </button>
                 ))}
@@ -246,7 +246,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
             {activeEntry?.description && variant === 'multi' ? <p className="border-b border-border px-5 py-4 text-sm text-muted-foreground md:px-8">{activeEntry.description}</p> : null}
             <FormProvider {...formMethods}>
               <form onSubmit={handleSubmit(submit)} className="p-5 md:p-8">
-                {!isProjectInquiry ? (
+                {!isMultiStep ? (
                   <>
                     {activeForm?.fields?.map((field, index) => {
                       const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
@@ -258,7 +258,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                 ) : (
                   <>
                     {steps.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">Project Inquiry has no steps configured yet. Add steps to the selected form in Payload Admin.</p>
+                      <p className="text-sm text-muted-foreground">This multi-step form has no steps configured yet. Add steps to the selected form in Payload Admin.</p>
                     ) : (
                       <>
                         <div className="mb-8">
