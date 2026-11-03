@@ -2,7 +2,7 @@
 
 import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 
@@ -72,6 +72,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   multiForms = [],
 }) => {
   const [activeTab, setActiveTab] = useState(0)
+  const valuesByTab = useRef<Record<number, Record<string, unknown>>>({})
   const configuredForms = variant === 'multi'
     ? multiForms
     : [{ form: singleForm, tabLabel: '', description: '' }]
@@ -103,6 +104,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     trigger,
     getValues,
     setValue,
+    reset,
   } = formMethods
 
   const submit = useCallback(async (data: Record<string, unknown>) => {
@@ -231,7 +233,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                     type="button"
                     role="tab"
                     aria-selected={activeTab === index}
-                    onClick={() => { setActiveTab(index); setActiveStep(0); setError(undefined); setHasSubmitted(false) }}
+                    onClick={() => { valuesByTab.current[activeTab] = formMethods.getValues(); setActiveTab(index); reset(valuesByTab.current[index] ?? {}); setActiveStep(0); setError(undefined); setHasSubmitted(false) }}
                     className={`min-w-0 flex-1 border-r border-border px-4 py-4 text-left text-sm transition-colors last:border-r-0 ${activeTab === index ? 'bg-foreground text-background' : 'text-foreground hover:bg-muted'}`}
                   >
                     <span className="block font-mono text-[10px] uppercase tracking-widest opacity-70">{String(index + 1).padStart(2, '0')}</span>
