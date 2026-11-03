@@ -162,28 +162,28 @@ export const plugins: Plugin[] = [
         return [
           ...configuredFields,
           {
-            name: 'formPurpose',
+            name: 'formLayout',
             type: 'select',
-            label: 'Form purpose',
-            defaultValue: 'general',
+            label: 'Form layout',
+            defaultValue: 'standard',
             required: true,
             options: [
-              { label: 'General Contact', value: 'general' },
-              { label: 'Project Inquiry', value: 'projectInquiry' },
+              { label: 'Standard Form', value: 'standard' },
+              { label: 'Multi-step Form', value: 'multiStep' },
             ],
             admin: {
               position: 'sidebar',
-              description: 'Select the intended use of this form. Project Inquiry forms use the Steps configuration below.',
+              description: 'Choose how this form is presented. Multi-step forms use the Steps configuration below.',
             },
           },
           {
             name: 'steps',
             type: 'array',
-            label: 'Project Inquiry Steps',
+            label: 'Form Steps',
             admin: {
               description:
-                'Configure the ordered steps shown by the Project Inquiry variant. Use a step type of Preview for the final review screen.',
-              condition: (_, siblingData) => siblingData?.formPurpose === 'projectInquiry',
+                'Configure the ordered steps shown by this form. Use a step type of Preview for the final review screen.',
+              condition: (_, siblingData) => siblingData?.formLayout === 'multiStep',
             },
             fields: [
               {
