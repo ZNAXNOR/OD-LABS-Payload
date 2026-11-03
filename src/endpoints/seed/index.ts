@@ -197,7 +197,158 @@ export const seed = async ({
   const contactForm = await payload.create({
     collection: 'forms',
     depth: 0,
-    data: contactFormData,
+    data: {
+      ...contactFormData,
+      title: 'General Contact',
+      fields: [
+        {
+          name: 'fullName',
+          blockName: 'fullName',
+          blockType: 'text',
+          label: 'Full Name',
+          required: true,
+          width: 100,
+        },
+        {
+          name: 'email',
+          blockName: 'email',
+          blockType: 'email',
+          label: 'Email',
+          required: true,
+          width: 100,
+        },
+        {
+          name: 'subject',
+          blockName: 'subject',
+          blockType: 'text',
+          label: 'Subject',
+          required: false,
+          width: 100,
+        },
+        {
+          name: 'message',
+          blockName: 'message',
+          blockType: 'textarea',
+          label: 'Message',
+          required: true,
+          width: 100,
+        },
+      ],
+      steps: [],
+    },
+  })
+
+  const projectInquiryForm = await payload.create({
+    collection: 'forms',
+    depth: 0,
+    data: {
+      title: 'Project Inquiry',
+      confirmationType: 'message',
+      confirmationMessage: contactFormData.confirmationMessage,
+      submitButtonLabel: 'Submit inquiry',
+      fields: [],
+      steps: [
+        {
+          key: 'about-you',
+          title: 'About You',
+          description: 'Tell us how to reach you.',
+          type: 'form',
+          fields: [
+            { name: 'fullName', label: 'Full Name', type: 'text', required: true },
+            { name: 'workEmail', label: 'Work Email', type: 'email', required: true },
+            { name: 'company', label: 'Company / Organization', type: 'text', required: false },
+          ],
+        },
+        {
+          key: 'project',
+          title: 'Project',
+          description: 'What are you looking to build or improve?',
+          type: 'form',
+          fields: [
+            {
+              name: 'projectType',
+              label: 'Project Type',
+              type: 'select',
+              required: true,
+              options: [
+                { label: 'Website', value: 'website' },
+                { label: 'Web application', value: 'web-application' },
+                { label: 'Automation', value: 'automation' },
+                { label: 'Data / reporting', value: 'data-reporting' },
+                { label: 'Technical assistance', value: 'technical-assistance' },
+                { label: 'Something else', value: 'other' },
+              ],
+            },
+            {
+              name: 'projectStage',
+              label: 'Project Stage',
+              type: 'radio',
+              required: true,
+              options: [
+                { label: 'Early idea', value: 'early-idea' },
+                { label: 'Planning / scoped', value: 'planning' },
+                { label: 'Existing product', value: 'existing-product' },
+                { label: 'Rebuild / improvement', value: 'rebuild' },
+              ],
+            },
+          ],
+        },
+        {
+          key: 'scope',
+          title: 'Scope',
+          description: 'Share your expected budget and timeline, if known.',
+          type: 'form',
+          fields: [
+            { name: 'budget', label: 'Budget', type: 'select', required: false, options: [
+              { label: 'Not decided', value: 'undecided' },
+              { label: 'Under $1,000', value: 'under-1000' },
+              { label: '$1,000–$5,000', value: '1000-5000' },
+              { label: '$5,000–$15,000', value: '5000-15000' },
+              { label: '$15,000+', value: '15000-plus' },
+            ] },
+            { name: 'timeline', label: 'Timeline', type: 'select', required: false, options: [
+              { label: 'Flexible', value: 'flexible' },
+              { label: 'Within 1 month', value: '1-month' },
+              { label: '1–3 months', value: '1-3-months' },
+              { label: '3+ months', value: '3-plus-months' },
+              { label: 'ASAP', value: 'asap' },
+            ] },
+            { name: 'launchDate', label: 'Target Launch Date', type: 'date', required: false },
+          ],
+        },
+        {
+          key: 'goals',
+          title: 'Goals',
+          description: 'Describe the project and what success would look like.',
+          type: 'form',
+          fields: [
+            { name: 'summary', label: 'Project Summary', type: 'textarea', required: true, placeholder: 'What do you want to achieve?' },
+            { name: 'successCriteria', label: 'Success Criteria', type: 'textarea', required: false, placeholder: 'What would make this project successful?' },
+          ],
+        },
+        {
+          key: 'preview',
+          title: 'Preview',
+          description: 'Review your answers before submitting.',
+          type: 'preview',
+          fields: [],
+        },
+      ],
+      emails: [
+        {
+          emailFrom: '"OD LABS" <omkar@notifications.odtechlab.com>',
+          emailTo: '{{workEmail}}',
+          subject: 'We received your project inquiry',
+          message: contactFormData.confirmationMessage,
+        },
+        {
+          emailFrom: '"OD LABS" <omkar@notifications.odtechlab.com>',
+          emailTo: 'omkar@odtechlab.com',
+          subject: 'New OD LABS project inquiry',
+          message: contactFormData.confirmationMessage,
+        },
+      ],
+    },
   })
 
   payload.logger.info(`— Seeding pages...`)
@@ -211,7 +362,7 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: contactPageData({ contactForm: contactForm }),
+      data: contactPageData({ generalForm: contactForm, projectInquiryForm }),
     }),
   ])
 
