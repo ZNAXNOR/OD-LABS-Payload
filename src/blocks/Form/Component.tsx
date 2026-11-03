@@ -142,7 +142,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
           if (value === undefined || value === '' || value === false) return null
           const displayValue = Array.isArray(value) ? value.join(', ') : String(value)
           return (
-            <div className="grid gap-2 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]" key={field.id ?? field.name ?? index}>
+            <div className="grid gap-2 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]" key={field.name}>
               <dt className="text-sm text-muted-foreground">{field.label || field.name}</dt>
               <dd className="text-sm break-words">{displayValue}</dd>
             </div>
@@ -185,7 +185,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                     {activeForm?.fields?.map((field, index) => {
                       const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
                       if (!Field) return null
-                      return <div className="mb-6 last:mb-0" key={field.id ?? index}><Field form={activeForm} {...field} {...formMethods} control={control} errors={errors} register={register} /></div>
+                      return <div className="mb-6 last:mb-0" key={('id' in field && field.id) || index}><Field form={activeForm} {...field} {...formMethods} control={control} errors={errors} register={register} /></div>
                     })}
                     <div className="mt-8"><Button type="submit" disabled={isLoading}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Send enquiry'}</Button></div>
                   </>
@@ -213,7 +213,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                               return (
                                 <div
                                   className={field.blockType === 'textarea' || field.blockType === 'message' ? 'sm:col-span-2' : ''}
-                                  key={field.id ?? index}
+                                  key={('id' in field && field.id) || index}
                                 >
                                   <Field
                                     form={activeForm}
