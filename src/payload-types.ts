@@ -706,8 +706,9 @@ export interface ArchiveBlock {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
-  generalForm: number | Form;
-  projectInquiryForm: number | Form;
+  generalForm?: (number | null) | Form;
+  projectInquiryForm?: (number | null) | Form;
+  form?: (number | null) | Form;
   enableIntro?: boolean | null;
   introContent?: {
     root: {
@@ -735,6 +736,7 @@ export interface FormBlock {
 export interface Form {
   id: number;
   title: string;
+  formPurpose?: ('general' | 'projectInquiry') | null;
   fields?:
     | (
         | {
