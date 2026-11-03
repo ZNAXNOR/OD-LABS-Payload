@@ -23,23 +23,12 @@ import { getClientSideURL } from '@/utilities/getURL'
 
 import { fields } from './fields'
 
-type StepField = {
-  name: string
-  label: string
-  type: 'text' | 'email' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'date' | 'number'
-  required?: boolean | null
-  placeholder?: string | null
-  helpText?: string | null
-  defaultValue?: string | boolean | null
-  options?: { label: string; value: string }[] | null
-}
-
 type FormStep = {
-  key: string
+  id?: string | null
   title: string
   description?: string | null
   type: 'form' | 'preview'
-  fields?: StepField[] | null
+  fields?: FormType['fields'] | null
 }
 
 type ManagedForm = FormType & {
@@ -114,8 +103,12 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     setIsLoading(true)
     try {
       const allowedNames = isMultiStep
-        ? steps.flatMap((step) => step.fields ?? []).map((field) => field.name)
-        : (activeForm?.fields ?? []).map((field) => field.name)
+        ? steps
+            .flatMap((step) => step.fields ?? [])
+            .flatMap((field) => ('name' in field && field.name ? [field.name] : []))
+        : (activeForm?.fields ?? []).flatMap((field) =>
+            'name' in field && field.name ? [field.name] : [],
+          )
       const submissionData = [...new Set(allowedNames)]
         .filter((field) => Object.prototype.hasOwnProperty.call(data, field))
         .map((field) => ({ field, value: data[field] ?? '' }))
@@ -142,74 +135,27 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   const advance = async () => {
     if (!currentStep) return
     if (currentStep.type === 'form') {
-      const names = (currentStep.fields ?? []).map((field) => field.name)
+      const names = (currentStep.fields ?? []).flatMap((field) =>
+        'name' in field && field.name ? [field.name] : [],
+      )
       const valid = names.length ? await trigger(names) : true
       if (!valid) return
     }
     setActiveStep((step) => Math.min(step + 1, steps.length - 1))
   }
 
-  const renderManagedField = (field: StepField) => {
-    const common = {
-      id: field.name,
-      ...register(field.name, {
-        required: field.required ? `${field.label} is required.` : false,
-        ...(field.type === 'email' ? {
-          pattern: { value: /^\S+@\S+\.\S+$/, message: 'Enter a valid email address.' },
-        } : {}),
-      }),
-    }
-    const label = (
-      <Label htmlFor={field.name} className="mb-2 block text-sm">
-        {field.label}{field.required ? <span aria-hidden="true"> *</span> : null}
-      </Label>
-    )
-    const errorMessage = errors[field.name]?.message
-    return (
-      <div className="space-y-2" key={field.name}>
-        {field.type !== 'checkbox' && label}
-        {field.type === 'textarea' ? (
-          <Textarea {...common} placeholder={field.placeholder ?? ''} />
-        ) : field.type === 'select' ? (
-          <Select onValueChange={(value) => setValue(field.name, value, { shouldValidate: true })}>
-            <SelectTrigger id={field.name} className="w-full"><SelectValue placeholder={field.placeholder || 'Select an option'} /></SelectTrigger>
-            <SelectContent>{(field.options ?? []).map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectContent>
-          </Select>
-        ) : field.type === 'radio' ? (
-          <div className="grid gap-2">
-            {(field.options ?? []).map((option) => (
-              <label className="flex items-center gap-3 border border-border px-3 py-3 text-sm" key={option.value}>
-                <input type="radio" value={option.value} {...register(field.name, { required: field.required ? `${field.label} is required.` : false })} />
-                {option.label}
-              </label>
-            ))}
-          </div>
-        ) : field.type === 'checkbox' ? (
-          <label className="flex items-center gap-3 text-sm">
-            <input type="checkbox" className="sr-only" {...register(field.name, { required: field.required ? `${field.label} is required.` : false })} />
-            <Checkbox checked={Boolean(getValues(field.name))} onCheckedChange={(checked) => setValue(field.name, checked, { shouldValidate: true })} />
-            <span>{field.label}{field.required ? ' *' : ''}</span>
-          </label>
-        ) : (
-          <Input {...common} type={field.type} placeholder={field.placeholder ?? ''} />
-        )}
-        {field.helpText ? <p className="text-xs text-muted-foreground">{field.helpText}</p> : null}
-        {errorMessage ? <p role="alert" className="text-sm text-red-500">{String(errorMessage)}</p> : null}
-      </div>
-    )
-  }
-
   const renderPreview = () => {
     const fieldsToPreview = steps.flatMap((step) => step.fields ?? [])
     return (
       <dl className="divide-y divide-border border-y border-border">
-        {fieldsToPreview.map((field) => {
+        {fieldsToPreview.map((field, index) => {
+          if (!('name' in field) || !field.name) return null
           const value = getValues(field.name)
           if (value === undefined || value === '' || value === false) return null
           const displayValue = Array.isArray(value) ? value.join(', ') : String(value)
           return (
-            <div className="grid gap-2 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]" key={field.name}>
-              <dt className="text-sm text-muted-foreground">{field.label}</dt>
+            <div className="grid gap-2 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]" key={field.id ?? field.name ?? index}>
+              <dt className="text-sm text-muted-foreground">{field.label || field.name}</dt>
               <dd className="text-sm break-words">{displayValue}</dd>
             </div>
           )
@@ -273,7 +219,25 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                         {currentStep?.description ? <p className="mb-6 text-sm text-muted-foreground">{currentStep.description}</p> : null}
                         {currentStep?.type === 'preview' ? renderPreview() : (
                           <div className="grid gap-6 sm:grid-cols-2">
-                            {(currentStep?.fields ?? []).map((field) => <div className={field.type === 'textarea' ? 'sm:col-span-2' : ''} key={field.name}>{renderManagedField(field)}</div>)}
+                            {(currentStep?.fields ?? []).map((field, index) => {
+                              const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                              if (!Field) return null
+                              return (
+                                <div
+                                  className={field.blockType === 'textarea' || field.blockType === 'message' ? 'sm:col-span-2' : ''}
+                                  key={field.id ?? index}
+                                >
+                                  <Field
+                                    form={activeForm}
+                                    {...field}
+                                    {...formMethods}
+                                    control={control}
+                                    errors={errors}
+                                    register={register}
+                                  />
+                                </div>
+                              )
+                            })}
                           </div>
                         )}
                         {error ? <p role="alert" className="mt-5 text-sm text-red-500">{error}</p> : null}
