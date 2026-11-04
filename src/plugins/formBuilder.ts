@@ -2,9 +2,13 @@ import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import {
   FixedToolbarFeature,
   HeadingFeature,
+  InlineToolbarFeature,
+  ParagraphFeature,
+  TextStateFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import { wrapEmailHtml } from '@/email/template'
+import { textStateConfig } from '@/fields/textStateConfig'
 import type { Field, Plugin } from 'payload'
 
 export const formBuilder: Plugin = formBuilderPlugin({
@@ -214,8 +218,15 @@ export const formBuilder: Plugin = formBuilderPlugin({
           },
           {
             name: 'description',
-            type: 'textarea',
+            type: 'richText',
             label: 'Step description',
+            editor: lexicalEditor({
+              features: [
+                ParagraphFeature(),
+                TextStateFeature({ state: textStateConfig }),
+                InlineToolbarFeature(),
+              ],
+            }),
           },
           {
             name: 'type',
