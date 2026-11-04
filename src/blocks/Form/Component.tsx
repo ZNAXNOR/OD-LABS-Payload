@@ -15,7 +15,7 @@ import { fields } from './fields'
 type FormStep = {
   id?: string | null
   title: string
-  description?: string | null
+  description?: DefaultTypedEditorState | null
   type: 'form' | 'preview'
   fields?: FormType['fields'] | null
 }
@@ -202,7 +202,15 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                             {steps.map((step, index) => <div key={step.id || index} className={`h-1 flex-1 ${index <= activeStep ? 'bg-foreground' : 'bg-border'}`} />)}
                           </div>
                         </div>
-                        {currentStep?.description ? <p className="mb-6 text-sm text-muted-foreground">{currentStep.description}</p> : null}
+                        {currentStep?.description ? (
+                          <div className="mb-6 text-sm leading-6 text-zinc-500 [&_p]:m-0">
+                            <RichText
+                              data={currentStep.description}
+                              enableGutter={false}
+                              enableProse={false}
+                            />
+                          </div>
+                        ) : null}
                         {currentStep?.type === 'preview' ? renderPreview() : (
                           <div className="grid gap-6 sm:grid-cols-2">
                             {(currentStep?.fields ?? []).map((field, index) => {
