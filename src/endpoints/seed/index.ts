@@ -252,7 +252,7 @@ export const seed = async ({
       steps: [
         {
           title: 'About You',
-          description: 'Tell us how to reach you.',
+          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Tell us how to reach you.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
           type: 'form',
           fields: [
             { blockType: 'text', name: 'fullName', label: 'Full Name', required: true, width: 100 },
@@ -262,7 +262,7 @@ export const seed = async ({
         },
         {
           title: 'Project',
-          description: 'What are you looking to build or improve?',
+          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"What are you looking to build or improve?","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
           type: 'form',
           fields: [
             {
@@ -295,7 +295,7 @@ export const seed = async ({
         },
         {
           title: 'Scope',
-          description: 'Share your expected budget and timeline, if known.',
+          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Share your expected budget and timeline, if known.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
           type: 'form',
           fields: [
             { blockType: 'select', name: 'budget', label: 'Budget', required: false, options: [
@@ -317,7 +317,7 @@ export const seed = async ({
         },
         {
           title: 'Goals',
-          description: 'Describe the project and what success would look like.',
+          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Describe the project and what success would look like.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
           type: 'form',
           fields: [
             { blockType: 'textarea', name: 'summary', label: 'Project Summary', required: true, width: 100 },
@@ -326,7 +326,7 @@ export const seed = async ({
         },
         {
           title: 'Preview',
-          description: 'Review your answers before submitting.',
+          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Review your answers before submitting.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
           type: 'preview',
           fields: [],
         },
