@@ -1,4 +1,3 @@
-import { Label } from '@/components/ui/label'
 import type { RadioField } from '@payloadcms/plugin-form-builder/types'
 import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
 
@@ -19,15 +18,16 @@ export const Radio: React.FC<
       <legend className="mb-3 text-sm font-medium"><FieldLabel label={label} required={required} /></legend>
       <div className="grid gap-3">
         {options.map(({ label: optionLabel, value }) => (
-          <Label className="flex cursor-pointer items-center gap-3 text-sm font-normal" key={value}>
+          <label className="group flex cursor-pointer items-center gap-3 text-sm font-normal text-zinc-300" key={value}>
             <input
               type="radio"
+              className="size-4 shrink-0 appearance-none rounded-full border border-zinc-600 bg-black transition-colors checked:border-odl checked:bg-odl checked:ring-2 checked:ring-odl/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
               value={value}
               defaultChecked={defaultValue === value}
               {...register(name, { required })}
             />
             {optionLabel}
-          </Label>
+          </label>
         ))}
       </div>
     </fieldset>
