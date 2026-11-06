@@ -23,13 +23,14 @@ export const Checkbox: React.FC<
       <div className="flex items-center gap-2">
         <CheckboxUi
           defaultChecked={defaultValue}
+          className="size-4 rounded-none border-zinc-600 bg-black data-[state=checked]:border-odl data-[state=checked]:bg-odl data-[state=checked]:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl focus-visible:ring-0"
           id={name}
           {...props}
           onCheckedChange={(checked) => {
             setValue(props.name, checked)
           }}
         />
-        <label htmlFor={name} className="text-sm font-medium leading-none">{label}<span className="ml-2 font-mono text-[9px] font-normal uppercase tracking-[0.14em] text-zinc-500">{required ? 'Required' : 'Optional'}</span></label>
+        <label htmlFor={name} className="cursor-pointer text-sm font-medium leading-5 text-zinc-300">{label}<span className="ml-2 font-mono text-[9px] font-normal uppercase tracking-[0.14em] text-red-500">{required ? 'Required' : 'Optional'}</span></label>
       </div>
       {errors[name] && <Error name={name} />}
     </Width>
