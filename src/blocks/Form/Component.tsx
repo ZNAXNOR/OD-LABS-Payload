@@ -231,8 +231,8 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
 
     return (
       <div className="border-y border-border">
-        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-4 border-b border-border py-3 font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
-          <span>Field</span><span>Response</span>
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto] gap-3 border-b border-border py-3 font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500 sm:gap-6">
+          <span>Field</span><span>Response</span><span>Edit</span>
         </div>
         {fieldsToPreview.map(({ field, stepIndex }, index) => {
           if (!('name' in field) || !field.name) return null
