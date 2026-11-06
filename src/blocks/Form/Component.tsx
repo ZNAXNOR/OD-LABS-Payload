@@ -128,7 +128,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   const privacyConsentEnabled = activeForm?.privacyConsent?.enabled !== false
   const privacyPolicy = activeForm?.privacyConsent?.privacyPolicy
   const privacyPolicyDoc = typeof privacyPolicy === 'object' && privacyPolicy ? privacyPolicy : null
-  const privacyPolicyHref = privacyPolicyDoc?.slug ? `/legal-pages/${privacyPolicyDoc.slug}` : '/legal-pages'
+  const privacyPolicyHref = privacyPolicyDoc?.slug ? `/${privacyPolicyDoc.slug}` : '/privacy-policy'
   const steps = useMemo(
     () => (activeForm?.steps ?? []).filter((step) => step.type === 'form' || step.type === 'preview'),
     [activeForm?.steps],
@@ -147,7 +147,6 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     trigger,
     getValues,
     reset,
-    setError: setFormError,
     getFieldState,
   } = formMethods
 
@@ -448,7 +447,18 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                                 ) : null}
                                 {errors.privacyConsentAccepted ? <p role="alert" className="mt-2 text-xs text-red-500">{String(errors.privacyConsentAccepted.message)}</p> : null}
                               </>
-                            ) : renderFields(currentStep?.fields ?? [])}
+                            ) : (
+                              <>
+                                {renderFields(currentStep?.fields ?? [])}
+                                {activeStep === steps.length - 1 && privacyConsentEnabled ? (
+                                  <label className="mt-8 flex cursor-pointer items-start gap-3 border-t border-border pt-5 text-sm leading-6 text-zinc-400">
+                                    <input type="checkbox" className="mt-1 size-4 shrink-0 accent-[var(--color-odl)]" {...privacyConsentRegistration} />
+                                    <span>By sending this inquiry, you agree to the <a className="text-zinc-100 underline underline-offset-4 hover:text-odl" href={privacyPolicyHref} target="_blank" rel="noreferrer">Privacy Policy</a> and consent to the details in this brief being used to respond to your enquiry.</span>
+                                  </label>
+                                ) : null}
+                                {activeStep === steps.length - 1 && errors.privacyConsentAccepted ? <p role="alert" className="mt-2 text-xs text-red-500">{String(errors.privacyConsentAccepted.message)}</p> : null}
+                              </>
+                            )}
                             {error ? <p role="alert" className="mt-5 text-sm text-red-500">{error}</p> : null}
                           </>
                         )}
@@ -457,7 +467,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                         <Button type="button" variant="outline" disabled={(isMultiStep ? activeStep === 0 : true) || isLoading} onClick={() => setActiveStep((step) => Math.max(0, step - 1))}>Back</Button>
                         {!isMultiStep ? (
                           <Button type="submit" disabled={isLoading}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Send enquiry'}</Button>
-                        ) : currentStep?.type === 'preview' ? (
+                        ) : currentStep?.type === 'preview' || activeStep === steps.length - 1 ? (
                           <Button type="button" disabled={isLoading} onClick={submitMultiStep}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Submit inquiry'}</Button>
                         ) : (
                           <Button type="button" disabled={isLoading} onClick={advance}>Continue</Button>
