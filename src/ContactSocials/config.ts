@@ -5,6 +5,10 @@ export const ContactSocials: GlobalConfig = {
   label: 'Contact & Socials',
   access: {
     read: () => true,
+    update: () => true,
+  },
+  admin: {
+    group: 'Content',
   },
   fields: [
     {
