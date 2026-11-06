@@ -125,6 +125,10 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   const router = useRouter()
 
   const formID = activeForm?.id
+  const privacyConsentEnabled = activeForm?.privacyConsent?.enabled !== false
+  const privacyPolicy = activeForm?.privacyConsent?.privacyPolicy
+  const privacyPolicyDoc = typeof privacyPolicy === 'object' && privacyPolicy ? privacyPolicy : null
+  const privacyPolicyHref = privacyPolicyDoc?.slug ? `/legal-pages/${privacyPolicyDoc.slug}` : '/legal-pages'
   const steps = useMemo(
     () => (activeForm?.steps ?? []).filter((step) => step.type === 'form' || step.type === 'preview'),
     [activeForm?.steps],
@@ -168,11 +172,9 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
         ...new Set(allowedNames),
         ...(privacyConsentEnabled ? ['privacyConsentAccepted'] : []),
       ]
-      const submissionData = submissionFields
+      const submissionData = [...new Set(submissionFields)]
         .filter((field) => Object.prototype.hasOwnProperty.call(data, field))
-        && [...new Set(submissionFields)]
-          .filter((field) => Object.prototype.hasOwnProperty.call(data, field))
-          .map((field) => ({ field, value: data[field] ?? '' }))
+        .map((field) => ({ field, value: data[field] ?? '' }))
       const response = await fetch(`${getClientSideURL()}/api/form-submissions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -255,10 +257,6 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     )
   }
 
-  const privacyConsentEnabled = activeForm?.privacyConsent?.enabled !== false
-  const privacyPolicy = activeForm?.privacyConsent?.privacyPolicy
-  const privacyPolicyDoc = typeof privacyPolicy === 'object' && privacyPolicy ? privacyPolicy : null
-  const privacyPolicyHref = privacyPolicyDoc?.slug ? `/legal-pages/${privacyPolicyDoc.slug}` : '/legal-pages'
   const privacyConsentRegistration = register('privacyConsentAccepted', {
     required: privacyConsentEnabled ? 'Please accept the Privacy Policy to submit this inquiry.' : false,
   })
