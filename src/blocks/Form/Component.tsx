@@ -23,6 +23,10 @@ type FormStep = {
 type ManagedForm = FormType & {
   formLayout?: 'standard' | 'multiStep' | null
   steps?: FormStep[] | null
+  privacyConsent?: {
+    enabled?: boolean | null
+    privacyPolicy?: number | { id?: number; slug?: string; title?: string } | null
+  } | null
 }
 
 type MultiFormItem = {
@@ -108,6 +112,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   const [activeTab, setActiveTab] = useState(0)
   const [activeStep, setActiveStep] = useState(0)
   const [completedSteps, setCompletedSteps] = useState<number[]>([])
+  const [furthestStep, setFurthestStep] = useState(0)
   const [contactSocials, setContactSocials] = useState<ContactSocialData | null>(null)
   const valuesByTab = useRef<Record<number, Record<string, unknown>>>({})
   const configuredForms = (variant === 'multi' ? multiForms : [{ form: singleForm, description: null }]) || []
@@ -138,6 +143,8 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     trigger,
     getValues,
     reset,
+    setError: setFormError,
+    getFieldState,
   } = formMethods
 
   useEffect(() => {
@@ -188,11 +195,12 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
       if (!valid) return
     }
     setCompletedSteps((previous) => previous.includes(activeStep) ? previous : [...previous, activeStep])
+    setFurthestStep((previous) => Math.max(previous, activeStep + 1))
     setActiveStep((step) => Math.min(step + 1, steps.length - 1))
   }
 
   const navigateToStep = (index: number) => {
-    if (index < 0 || index >= steps.length || !completedSteps.includes(index) || isLoading) return
+    if (index < 0 || index >= steps.length || isLoading) return
     setActiveStep(index)
   }
 
@@ -208,22 +216,59 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
 
   const renderPreview = () => {
     const fieldsToPreview = steps.flatMap((step) => step.fields ?? [])
+    const getOptionLabel = (field: any, value: unknown) => {
+      const options = Array.isArray(field.options) ? field.options : []
+      const option = options.find((item: any) => item.value === value)
+      return option?.label ?? String(value)
+    }
+
     return (
-      <dl className="divide-y divide-border border-y border-border">
-        {fieldsToPreview.map((field) => {
+      <div className="border-y border-border">
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-4 border-b border-border py-3 font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
+          <span>Field</span><span>Response</span>
+        </div>
+        {fieldsToPreview.map((field, index) => {
           if (!('name' in field) || !field.name) return null
           const value = getValues(field.name)
-          if (value === undefined || value === '' || value === false) return null
-          const displayValue = Array.isArray(value) ? value.join(', ') : String(value)
+          const isEmpty = value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)
+          let displayValue = 'Not provided'
+          if (!isEmpty) {
+            if (field.blockType === 'checkbox') displayValue = value === true ? 'Yes' : 'No'
+            else if (field.blockType === 'radio' || field.blockType === 'select') displayValue = getOptionLabel(field, value)
+            else if (Array.isArray(value)) displayValue = value.map((item) => getOptionLabel(field, item)).join(', ')
+            else displayValue = String(value)
+          }
           return (
-            <div className="grid gap-2 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]" key={field.name}>
-              <dt className="text-sm text-muted-foreground">{field.label || field.name}</dt>
-              <dd className="wrap-break-word text-sm">{displayValue}</dd>
+            <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-4 py-3 sm:gap-6" key={field.name || index}>
+              <dt className="text-sm text-zinc-400">{field.label || field.name}{field.required ? <span className="ml-1 text-odl">*</span> : null}</dt>
+              <dd className={`wrap-break-word text-sm ${isEmpty ? 'text-zinc-600 italic' : 'text-zinc-100'}`}>{displayValue}</dd>
             </div>
           )
         })}
-      </dl>
+      </div>
     )
+  }
+
+  const privacyConsentEnabled = activeForm?.privacyConsent?.enabled !== false
+  const privacyPolicy = activeForm?.privacyConsent?.privacyPolicy
+  const privacyPolicyDoc = typeof privacyPolicy === 'object' && privacyPolicy ? privacyPolicy : null
+  const privacyPolicyHref = privacyPolicyDoc?.slug ? `/legal-pages/${privacyPolicyDoc.slug}` : '/legal-pages'
+  const privacyConsentRegistration = register('privacyConsentAccepted', {
+    required: privacyConsentEnabled ? 'Please accept the Privacy Policy to submit this inquiry.' : false,
+  })
+
+  const submitMultiStep = async () => {
+    const names = steps.flatMap((step) => step.fields ?? []).flatMap((field) => ('name' in field && field.name ? [field.name] : []))
+    const valid = await trigger([...names, ...(privacyConsentEnabled ? ['privacyConsentAccepted'] : [])])
+    if (!valid) {
+      const firstInvalidStep = steps.findIndex((step) =>
+        (step.fields ?? []).some((field) => 'name' in field && field.name && Boolean(getFieldState(field.name).error)),
+      )
+      if (firstInvalidStep >= 0) setActiveStep(firstInvalidStep)
+      else if (privacyConsentEnabled) setActiveStep(steps.findIndex((step) => step.type === 'preview') >= 0 ? steps.findIndex((step) => step.type === 'preview') : activeStep)
+      return
+    }
+    await submit(getValues())
   }
 
   const introTitle = isMultiStep ? currentStep?.title : activeForm?.title
@@ -255,6 +300,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                         formMethods.clearErrors()
                         setActiveStep(0)
                         setCompletedSteps([])
+                        setFurthestStep(0)
                         setError(undefined)
                         setHasSubmitted(false)
                       }}
@@ -279,8 +325,9 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                       <ol className="grid items-start gap-0" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
                         {steps.map((step, index) => {
                           const completed = completedSteps.includes(index)
-                          const current = index === activeStep
-                          const accessible = completed && !current
+                          const current = index === furthestStep && !completed
+                          const viewing = index === activeStep
+                          const accessible = true
                           return (
                             <li key={step.id || index} className="min-w-0">
                               <button
@@ -291,13 +338,13 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                                 className="group w-full text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl disabled:cursor-default"
                               >
                                 <span className="flex items-center">
-                                  <span className={`grid size-8 shrink-0 place-items-center rounded-full border font-mono text-xs transition-colors ${completed ? 'border-emerald-700 bg-emerald-500/10 text-emerald-400' : current ? 'border-odl bg-odl/5 text-odl' : 'border-zinc-800 text-zinc-600'}`}>
+                                  <span className={`grid size-8 shrink-0 place-items-center rounded-full border font-mono text-xs transition-colors ${completed ? 'border-emerald-700 bg-emerald-500/10 text-emerald-400' : viewing || current ? 'border-odl bg-odl/5 text-odl' : 'border-zinc-800 text-zinc-600'}`}>
                                     {String(index + 1).padStart(2, '0')}
                                   </span>
                                   {index < steps.length - 1 ? <span aria-hidden="true" className={`mx-3 h-px flex-1 ${completed ? 'bg-emerald-700' : 'bg-zinc-800'}`} /> : null}
                                 </span>
-                                <span className={`mt-3 block truncate pr-3 text-sm ${current ? 'font-medium text-zinc-100' : completed ? 'text-emerald-400 group-hover:text-emerald-300' : 'text-zinc-500'}`}>{step.title}</span>
-                                <span className={`mt-1 block font-mono text-[9px] uppercase tracking-[0.14em] ${completed ? 'text-emerald-500' : current ? 'text-odl' : 'text-zinc-600'}`}>{completed ? 'Complete' : current ? 'Current' : 'Upcoming'}</span>
+                                <span className={`mt-3 block truncate pr-3 text-sm ${viewing || current ? 'font-medium text-zinc-100' : completed ? 'text-emerald-400 group-hover:text-emerald-300' : 'text-zinc-500'}`}>{step.title}</span>
+                                <span className={`mt-1 block font-mono text-[9px] uppercase tracking-[0.14em] ${completed ? 'text-emerald-500' : current ? 'text-odl' : viewing ? 'text-odl' : 'text-zinc-600'}`}>{completed ? 'Complete' : current ? 'Current' : viewing ? 'Viewing' : 'Upcoming'}</span>
                               </button>
                             </li>
                           )
@@ -313,7 +360,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                         <p className="shrink-0 font-mono text-xs text-zinc-500"><span className="text-zinc-100">{String(activeStep + 1).padStart(2, '0')}</span> / {String(steps.length).padStart(2, '0')}</p>
                       </div>
                       <div className="flex gap-1.5" role="progressbar" aria-label="Form progress" aria-valuemin={1} aria-valuemax={steps.length} aria-valuenow={activeStep + 1}>
-                        {steps.map((step, index) => <span key={step.id || index} className={`h-1 flex-1 ${completedSteps.includes(index) ? 'bg-emerald-600' : index === activeStep ? 'bg-odl' : 'bg-zinc-800'}`} />)}
+                        {steps.map((step, index) => <span key={step.id || index} className={`h-1 flex-1 ${completedSteps.includes(index) ? 'bg-emerald-600' : index <= furthestStep ? 'bg-odl' : 'bg-zinc-800'}`} />)}
                       </div>
                       <p className="mt-2 text-xs text-zinc-500">{steps.length - activeStep - 1} {steps.length - activeStep - 1 === 1 ? 'step' : 'steps'} remaining</p>
                     </div>
@@ -360,24 +407,48 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                       </div>
                     </aside>
 
-                    <div className="min-w-0 p-5 md:p-8">
-                      {!isMultiStep ? (
-                        <>
-                          {activeEntry?.description && variant === 'multi' ? null : null}
-                          {renderFields(activeForm?.fields ?? [])}
-                          {error ? <p role="alert" className="mt-5 text-sm text-red-500">{error}</p> : null}
-                          <div className="mt-8"><Button type="submit" disabled={isLoading}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Send enquiry'}</Button></div>
-                        </>
-                      ) : (
-                        <>
-                          {currentStep?.type === 'preview' ? renderPreview() : renderFields(currentStep?.fields ?? [])}
-                          {error ? <p role="alert" className="mt-5 text-sm text-red-500">{error}</p> : null}
-                          <div className="mt-8 flex items-center justify-between gap-3 border-t border-border pt-5">
-                            <Button type="button" variant="outline" disabled={activeStep === 0 || isLoading} onClick={() => setActiveStep((step) => Math.max(0, step - 1))}>Back</Button>
-                            {activeStep < steps.length - 1 ? <Button type="button" disabled={isLoading} onClick={advance}>Continue</Button> : <Button type="button" disabled={isLoading} onClick={handleSubmit(submit)}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Submit inquiry'}</Button>}
-                          </div>
-                        </>
-                      )}
+                    <div className="flex min-h-[34rem] min-w-0 flex-col p-5 md:p-8">
+                      <div className="flex-1">
+                        {!isMultiStep ? (
+                          <>
+                            {renderFields(activeForm?.fields ?? [])}
+                            {privacyConsentEnabled ? (
+                              <label className="mt-8 flex cursor-pointer items-start gap-3 border-t border-border pt-5 text-sm leading-6 text-zinc-400">
+                                <input type="checkbox" className="mt-1 size-4 shrink-0 accent-[var(--color-odl)]" {...privacyConsentRegistration} />
+                                <span>By sending this inquiry, you agree to the <a className="text-zinc-100 underline underline-offset-4 hover:text-odl" href={privacyPolicyHref} target="_blank" rel="noreferrer">Privacy Policy</a> and consent to the details in this brief being used to respond to your enquiry.</span>
+                              </label>
+                            ) : null}
+                            {errors.privacyConsentAccepted ? <p role="alert" className="mt-2 text-xs text-red-500">{String(errors.privacyConsentAccepted.message)}</p> : null}
+                            {error ? <p role="alert" className="mt-5 text-sm text-red-500">{error}</p> : null}
+                          </>
+                        ) : (
+                          <>
+                            {currentStep?.type === 'preview' ? (
+                              <>
+                                {renderPreview()}
+                                {privacyConsentEnabled ? (
+                                  <label className="mt-6 flex cursor-pointer items-start gap-3 border-t border-border pt-5 text-sm leading-6 text-zinc-400">
+                                    <input type="checkbox" className="mt-1 size-4 shrink-0 accent-[var(--color-odl)]" {...privacyConsentRegistration} />
+                                    <span>By sending this inquiry, you agree to the <a className="text-zinc-100 underline underline-offset-4 hover:text-odl" href={privacyPolicyHref} target="_blank" rel="noreferrer">Privacy Policy</a> and consent to the details in this brief being used to respond to your enquiry.</span>
+                                  </label>
+                                ) : null}
+                                {errors.privacyConsentAccepted ? <p role="alert" className="mt-2 text-xs text-red-500">{String(errors.privacyConsentAccepted.message)}</p> : null}
+                              </>
+                            ) : renderFields(currentStep?.fields ?? [])}
+                            {error ? <p role="alert" className="mt-5 text-sm text-red-500">{error}</p> : null}
+                          </>
+                        )}
+                      </div>
+                      <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-5">
+                        <Button type="button" variant="outline" disabled={(isMultiStep ? activeStep === 0 : true) || isLoading} onClick={() => setActiveStep((step) => Math.max(0, step - 1))}>Back</Button>
+                        {!isMultiStep ? (
+                          <Button type="submit" disabled={isLoading}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Send enquiry'}</Button>
+                        ) : currentStep?.type === 'preview' ? (
+                          <Button type="button" disabled={isLoading} onClick={submitMultiStep}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Submit inquiry'}</Button>
+                        ) : (
+                          <Button type="button" disabled={isLoading} onClick={advance}>Continue</Button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}
