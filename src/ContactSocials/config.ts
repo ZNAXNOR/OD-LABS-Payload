@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { authenticated } from '../access/authenticated'
+import { link } from '@/fields/link'
 
 export const ContactSocials: GlobalConfig = {
   slug: 'contact-socials',
@@ -8,25 +9,45 @@ export const ContactSocials: GlobalConfig = {
     read: () => true,
     update: authenticated,
   },
-  admin: {
-    group: 'Content',
-  },
   fields: [
     {
       name: 'contactActions',
       type: 'array',
       defaultValue: [
-        { label: 'Email us', href: 'mailto:omkar@notifications.odtechlab.com', enabled: true },
-        { label: 'Schedule a meeting', href: 'https://cal.com/od-omkar-dalvi/30min', enabled: true },
+        {
+          label: 'Email us',
+          link: {
+            type: 'custom',
+            url: 'mailto:omkar@notifications.odtechlab.com',
+          },
+          enabled: true,
+        },
+        {
+          label: 'Schedule a meeting',
+          link: {
+            type: 'custom',
+            url: 'https://cal.com/od-omkar-dalvi/30min',
+            newTab: true,
+          },
+          enabled: true,
+        },
       ],
       label: 'Contact actions',
       admin: {
-        description: 'Actions displayed in the contact form sidebar. Use mailto: for email and the Cal.com URL for scheduling.',
+        description:
+          'Actions displayed in the contact form sidebar. Select an internal page or provide an external custom URL (such as mailto: or a Cal.com link).',
         initCollapsed: true,
       },
       fields: [
         { name: 'label', type: 'text', required: true, label: 'Button label' },
-        { name: 'href', type: 'text', required: true, label: 'Destination URL' },
+        link({
+          appearances: false,
+          disableLabel: true,
+          overrides: {
+            name: 'link',
+            label: 'Destination URL',
+          },
+        }),
         { name: 'description', type: 'text', label: 'Description' },
         {
           name: 'enabled',
@@ -43,22 +64,49 @@ export const ContactSocials: GlobalConfig = {
       admin: { initCollapsed: true },
       fields: [
         {
-          name: 'platform',
-          type: 'select',
-          required: true,
-          options: [
-            { label: 'LinkedIn', value: 'linkedin' },
-            { label: 'GitHub', value: 'github' },
-            { label: 'Instagram', value: 'instagram' },
-            { label: 'YouTube', value: 'youtube' },
-            { label: 'X', value: 'x' },
-            { label: 'Facebook', value: 'facebook' },
-            { label: 'Threads', value: 'threads' },
-            { label: 'Website', value: 'website' },
+          type: 'row',
+          fields: [
+            {
+              name: 'profile',
+              type: 'select',
+              label: 'Profile',
+              required: true,
+              defaultValue: 'omkar-dalvi',
+              options: [
+                { label: 'Omkar Dalvi', value: 'omkar-dalvi' },
+                { label: 'OD LABS', value: 'od-labs' },
+              ],
+              admin: {
+                width: '50%',
+              },
+            },
+            {
+              name: 'platform',
+              type: 'select',
+              label: 'Platform',
+              required: true,
+              options: [
+                { label: 'LinkedIn', value: 'linkedin' },
+                { label: 'GitHub', value: 'github' },
+                { label: 'Instagram', value: 'instagram' },
+                { label: 'YouTube', value: 'youtube' },
+                { label: 'X / Twitter', value: 'x' },
+                { label: 'Facebook', value: 'facebook' },
+                { label: 'Threads', value: 'threads' },
+              ],
+              admin: {
+                width: '50%',
+              },
+            },
           ],
         },
         { name: 'url', type: 'text', required: true, label: 'Profile URL' },
-        { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Enabled' },
+        {
+          name: 'enabled',
+          type: 'checkbox',
+          defaultValue: true,
+          label: 'Enabled',
+        },
       ],
     },
   ],

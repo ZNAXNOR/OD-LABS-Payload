@@ -68,34 +68,15 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
       type: 'select',
       label: 'Legal document type',
       unique: true,
-      options: async ({ req, data }) => {
-        const availableTypes = [
-          { label: 'Privacy Policy', value: 'privacy-policy' },
-          { label: 'Terms of Service', value: 'terms-of-service' },
-          { label: 'Cookie Policy', value: 'cookie-policy' },
-          { label: 'Refund Policy', value: 'refund-policy' },
-          { label: 'Data Processing Agreement', value: 'data-processing-agreement' },
-          { label: 'Acceptable Use Policy', value: 'acceptable-use-policy' },
-          { label: 'Other legal document', value: 'other' },
-        ]
-        const existing = await req.payload.find({
-          collection: 'legal-pages',
-          depth: 0,
-          limit: 1000,
-          pagination: false,
-          overrideAccess: true,
-          select: { documentType: true },
-        })
-        const usedByOtherDocuments = new Set(
-          existing.docs
-            .filter((doc) => String(doc.id) !== String(data?.id))
-            .map((doc) => doc.documentType)
-            .filter(Boolean),
-        )
-        return availableTypes.filter(
-          (option) => !usedByOtherDocuments.has(option.value) || option.value === data?.documentType,
-        )
-      },
+      options: [
+        { label: 'Privacy Policy', value: 'privacy-policy' },
+        { label: 'Terms of Service', value: 'terms-of-service' },
+        { label: 'Cookie Policy', value: 'cookie-policy' },
+        { label: 'Refund Policy', value: 'refund-policy' },
+        { label: 'Data Processing Agreement', value: 'data-processing-agreement' },
+        { label: 'Acceptable Use Policy', value: 'acceptable-use-policy' },
+        { label: 'Other legal document', value: 'other' },
+      ],
       admin: {
         position: 'sidebar',
         description: 'A unique purpose for this legal page. Assign each type to only one page. Leave blank temporarily on existing documents until classified.',

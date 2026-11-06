@@ -124,7 +124,7 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
-    'contact-socials': ContactSocials;
+    'contact-socials': ContactSocial;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
@@ -1111,82 +1111,18 @@ export interface Form {
    * Standard forms use the Fields editor. Multi-step forms organize those same Payload Form Builder fields into steps.
    */
   formLayout: 'standard' | 'multiStep';
+  privacyConsent?: {
+    /**
+     * Enabled by default. Visitors must accept this consent before submitting the form.
+     */
+    enabled?: boolean | null;
+    /**
+     * Select the published Privacy Policy page linked in the consent statement.
+     */
+    privacyPolicy?: (number | null) | LegalPage;
+  };
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AIBlock".
- */
-export interface AIBlock {
-  /**
-   * Optional. Overrides the default heading on the initial AI screen.
-   */
-  heading?: string | null;
-  /**
-   * Optional. Overrides the default description on the initial AI screen.
-   */
-  description?: string | null;
-  placeholder?: string | null;
-  defaultScope: 'all' | 'pages' | 'posts';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'aiBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CalBookingBlock".
- */
-export interface CalBookingBlock {
-  /**
-   * Add up to three event types. Header and description sizes are fixed on the frontend; use Text State colors to adjust their colors.
-   */
-  options?:
-    | {
-        heading: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
-        description: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
-        /**
-         * Example: od-omkar-dalvi/30min
-         */
-        calLink: string;
-        /**
-         * When provided, a fixed “Open Cal.com directly” link appears below the calendar. Leave empty to hide it.
-         */
-        directLink?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'calBooking';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1195,7 +1131,20 @@ export interface CalBookingBlock {
 export interface LegalPage {
   id: number;
   title: string;
-  documentType?: ('privacy-policy' | 'terms-of-service' | 'cookie-policy' | 'refund-policy' | 'data-processing-agreement' | 'acceptable-use-policy' | 'other') | null;
+  /**
+   * A unique purpose for this legal page. Assign each type to only one page. Leave blank temporarily on existing documents until classified.
+   */
+  documentType?:
+    | (
+        | 'privacy-policy'
+        | 'terms-of-service'
+        | 'cookie-policy'
+        | 'refund-policy'
+        | 'data-processing-agreement'
+        | 'acceptable-use-policy'
+        | 'other'
+      )
+    | null;
   contentMode: 'richText' | 'externalEmbed';
   content?: {
     root: {
@@ -1275,6 +1224,80 @@ export interface LegalPage {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AIBlock".
+ */
+export interface AIBlock {
+  /**
+   * Optional. Overrides the default heading on the initial AI screen.
+   */
+  heading?: string | null;
+  /**
+   * Optional. Overrides the default description on the initial AI screen.
+   */
+  description?: string | null;
+  placeholder?: string | null;
+  defaultScope: 'all' | 'pages' | 'posts';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aiBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CalBookingBlock".
+ */
+export interface CalBookingBlock {
+  /**
+   * Add up to three event types. Header and description sizes are fixed on the frontend; use Text State colors to adjust their colors.
+   */
+  options?:
+    | {
+        heading: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        description: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        /**
+         * Example: od-omkar-dalvi/30min
+         */
+        calLink: string;
+        /**
+         * When provided, a fixed “Open Cal.com directly” link appears below the calendar. Leave empty to hide it.
+         */
+        directLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'calBooking';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2549,6 +2572,12 @@ export interface FormsSelect<T extends boolean = true> {
         id?: T;
       };
   formLayout?: T;
+  privacyConsent?:
+    | T
+    | {
+        enabled?: T;
+        privacyPolicy?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2811,33 +2840,51 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header_select".
+ * via the `definition` "contact-socials".
  */
-export interface ContactSocials {
+export interface ContactSocial {
   id: number;
-  contactActions?: {
-    label: string;
-    href: string;
-    description?: string | null;
-    enabled?: boolean | null;
-    id?: string | null;
-  }[] | null;
-  socialLinks?: {
-    platform: 'linkedin' | 'github' | 'instagram' | 'youtube' | 'x' | 'facebook' | 'threads' | 'website';
-    url: string;
-    enabled?: boolean | null;
-    id?: string | null;
-  }[] | null;
+  /**
+   * Actions displayed in the contact form sidebar. Select an internal page or provide an external custom URL (such as mailto: or a Cal.com link).
+   */
+  contactActions?:
+    | {
+        label: string;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+        };
+        description?: string | null;
+        enabled?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  socialLinks?:
+    | {
+        profile: 'omkar-dalvi' | 'od-labs';
+        platform: 'linkedin' | 'github' | 'instagram' | 'youtube' | 'x' | 'facebook' | 'threads';
+        url: string;
+        enabled?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
-export interface ContactSocialsSelect<T extends boolean = true> {
-  contactActions?: T | { label?: T; href?: T; description?: T; enabled?: T; id?: T };
-  socialLinks?: T | { platform?: T; url?: T; enabled?: T; id?: T };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
 export interface HeaderSelect<T extends boolean = true> {
   navItems?:
     | T
@@ -2874,6 +2921,40 @@ export interface FooterSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-socials_select".
+ */
+export interface ContactSocialsSelect<T extends boolean = true> {
+  contactActions?:
+    | T
+    | {
+        label?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+            };
+        description?: T;
+        enabled?: T;
+        id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        profile?: T;
+        platform?: T;
+        url?: T;
+        enabled?: T;
         id?: T;
       };
   updatedAt?: T;

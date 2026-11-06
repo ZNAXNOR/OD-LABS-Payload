@@ -280,7 +280,7 @@ export const formBuilder: Plugin = formBuilderPlugin({
             type: 'relationship',
             relationTo: 'legal-pages',
             label: 'Privacy Policy page',
-            validate: (value, { siblingData }: any) =>
+            validate: (value: unknown, { siblingData }: any) =>
               siblingData?.enabled === false || Boolean(value) || 'Select the Privacy Policy page used by this form.',
             filterOptions: {
               documentType: { equals: 'privacy-policy' },

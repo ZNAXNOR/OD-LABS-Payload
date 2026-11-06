@@ -94,8 +94,51 @@ const getTabDescription = (entry?: MultiFormItem | null): string | null => {
   return null
 }
 type ContactSocialData = {
-  contactActions?: { label?: string; href?: string; description?: string; enabled?: boolean; actionType?: string }[] | null
-  socialLinks?: { platform?: string; url?: string; enabled?: boolean }[] | null
+  contactActions?:
+    | {
+        label?: string
+        href?: string
+        link?: {
+          type?: 'reference' | 'custom' | null
+          newTab?: boolean | null
+          url?: string | null
+          reference?: {
+            relationTo?: string | null
+            value?: any
+          } | null
+        } | null
+        description?: string
+        enabled?: boolean
+        actionType?: string
+      }[]
+    | null
+  socialLinks?:
+    | {
+        profile?: 'omkar-dalvi' | 'od-labs' | string
+        platform?: string
+        url?: string
+        enabled?: boolean
+      }[]
+    | null
+}
+
+const getActionHref = (action?: any): string => {
+  if (!action) return '#'
+  if (action.link) {
+    if (action.link.type === 'custom') {
+      return action.link.url || '#'
+    }
+    if (action.link.type === 'reference' && action.link.reference?.value) {
+      const refVal = action.link.reference.value
+      if (typeof refVal === 'object' && refVal?.slug) {
+        const relationTo = action.link.reference.relationTo
+        return `${relationTo && relationTo !== 'pages' ? `/${relationTo}` : ''}/${refVal.slug}`
+      }
+      if (typeof refVal === 'string') return `/${refVal}`
+    }
+    if (action.link.url) return action.link.url
+  }
+  return action.href || '#'
 }
 
 const platformMarks: Record<string, string> = {
@@ -152,7 +195,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
 
   useEffect(() => {
     let cancelled = false
-    fetch('/api/globals/contact-socials?depth=0')
+    fetch('/api/globals/contact-socials?depth=1')
       .then((response) => response.ok ? response.json() : null)
       .then((data) => { if (!cancelled && data) setContactSocials(data) })
       .catch(() => undefined)
@@ -277,7 +320,11 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
 
   const introTitle = isMultiStep ? currentStep?.title : activeForm?.title
   const introDescription = isMultiStep ? currentStep?.description : activeEntry?.description
-  const contactActions = (contactSocials?.contactActions ?? []).filter((item) => item.enabled !== false && item.href)
+  const contactActions = (contactSocials?.contactActions ?? []).filter((item) => {
+    if (item.enabled === false) return false
+    const href = getActionHref(item)
+    return Boolean((href && href !== '#') || item.href)
+  })
   const socialLinks = (contactSocials?.socialLinks ?? []).filter((item) => item.enabled !== false && item.url)
 
   return (
@@ -399,19 +446,41 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                       <div className="space-y-5">
                         {contactActions.length > 0 ? (
                           <div className="grid gap-2">
-                            {contactActions.map((action, index) => (
-                              <a key={index} href={action.href || '#'} className="flex min-h-14 items-center justify-between gap-4 border border-zinc-800 px-4 py-3 text-sm text-zinc-200 transition-colors hover:border-odl hover:bg-odl/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl">
-                                <span>{action.label}</span><span aria-hidden="true" className="text-odl">↗</span>
-                              </a>
-                            ))}
+                            {contactActions.map((action, index) => {
+                              const href = getActionHref(action)
+                              const target = action.link?.newTab ? '_blank' : undefined
+                              const rel = action.link?.newTab ? 'noreferrer noopener' : undefined
+                              return (
+                                <a
+                                  key={index}
+                                  href={href}
+                                  target={target}
+                                  rel={rel}
+                                  className="flex min-h-14 items-center justify-between gap-4 border border-zinc-800 px-4 py-3 text-sm text-zinc-200 transition-colors hover:border-odl hover:bg-odl/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
+                                >
+                                  <span>{action.label}</span>
+                                  <span aria-hidden="true" className="text-odl">↗</span>
+                                </a>
+                              )
+                            })}
                           </div>
                         ) : null}
                         {socialLinks.length > 0 ? (
                           <div className="flex flex-wrap gap-2">
                             {socialLinks.map((social, index) => {
                               const key = (social.platform || '').toLowerCase()
+                              const profileLabel = social.profile === 'od-labs' ? 'OD LABS' : 'Omkar Dalvi'
+                              const label = `${profileLabel} · ${social.platform || 'Social profile'}`
                               return (
-                                <a key={index} href={social.url || '#'} target="_blank" rel="noreferrer" aria-label={social.platform || 'Social profile'} title={social.platform || undefined} className="grid size-11 place-items-center border border-zinc-800 font-mono text-xs text-zinc-400 transition-colors hover:border-odl hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl">
+                                <a
+                                  key={index}
+                                  href={social.url || '#'}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  aria-label={label}
+                                  title={label}
+                                  className="grid size-11 place-items-center border border-zinc-800 font-mono text-xs text-zinc-400 transition-colors hover:border-odl hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
+                                >
                                   {platformMarks[key] || key.slice(0, 2).toUpperCase()}
                                 </a>
                               )
