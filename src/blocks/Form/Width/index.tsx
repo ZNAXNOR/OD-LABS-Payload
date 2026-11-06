@@ -5,8 +5,10 @@ export const Width: React.FC<{
   className?: string
   width?: number | string
 }> = ({ children, className, width }) => {
+  const spansFullWidth = width === 100 || width === '100'
+
   return (
-    <div className={className} style={{ maxWidth: width ? `${width}%` : undefined }}>
+    <div className={[spansFullWidth ? 'sm:col-span-2' : 'sm:col-span-1', 'min-w-0', className].filter(Boolean).join(' ')}>
       {children}
     </div>
   )
