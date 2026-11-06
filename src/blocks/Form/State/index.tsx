@@ -34,13 +34,13 @@ export const State: React.FC<
 
           return (
             <Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
-              <SelectTrigger className="w-full" id={name}>
+              <SelectTrigger className="h-12 w-full rounded-none border-zinc-800 bg-black text-sm text-zinc-200 shadow-none focus:ring-1 focus:ring-odl focus:ring-offset-0" id={name}>
                 <SelectValue placeholder={label} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="rounded-none border-zinc-800 bg-zinc-950 text-zinc-200">
                 {stateOptions.map(({ label, value }) => {
                   return (
-                    <SelectItem key={value} value={value}>
+                    <SelectItem className="rounded-none focus:bg-zinc-800 focus:text-white" key={value} value={value}>
                       {label}
                     </SelectItem>
                   )
