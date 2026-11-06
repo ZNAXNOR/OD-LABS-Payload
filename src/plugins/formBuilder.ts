@@ -260,6 +260,38 @@ export const formBuilder: Plugin = formBuilderPlugin({
         ],
       }
 
+      const privacyConsentField: Field = {
+        name: 'privacyConsent',
+        type: 'group',
+        label: 'Privacy consent',
+        defaultValue: { enabled: true },
+        fields: [
+          {
+            name: 'enabled',
+            type: 'checkbox',
+            label: 'Require privacy consent',
+            defaultValue: true,
+            admin: {
+              description: 'Enabled by default. Visitors must accept this consent before submitting the form.',
+            },
+          },
+          {
+            name: 'privacyPolicy',
+            type: 'relationship',
+            relationTo: 'legal-pages',
+            label: 'Privacy Policy page',
+            required: true,
+            filterOptions: {
+              documentType: { equals: 'privacy-policy' },
+            },
+            admin: {
+              condition: (_, siblingData) => siblingData?.enabled === true,
+              description: 'Select the published Privacy Policy page linked in the consent statement.',
+            },
+          },
+        ],
+      }
+
       const formLayoutField: Field = {
         name: 'formLayout',
         type: 'select',
@@ -324,6 +356,7 @@ export const formBuilder: Plugin = formBuilderPlugin({
         ...configuredFields,
         ...(hasSteps ? [] : [stepsField]),
         formLayoutField,
+        privacyConsentField,
       ]
     },
   },
