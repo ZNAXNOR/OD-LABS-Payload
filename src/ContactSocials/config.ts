@@ -10,6 +10,10 @@ export const ContactSocials: GlobalConfig = {
     {
       name: 'contactActions',
       type: 'array',
+      defaultValue: [
+        { label: 'Email us', href: 'mailto:omkar@notifications.odtechlab.com', enabled: true },
+        { label: 'Schedule a meeting', href: 'https://cal.com/od-omkar-dalvi/30min', enabled: true },
+      ],
       label: 'Contact actions',
       admin: {
         description: 'Actions displayed in the contact form sidebar. Use mailto: for email and the Cal.com URL for scheduling.',
