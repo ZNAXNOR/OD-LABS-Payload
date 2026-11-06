@@ -2,7 +2,8 @@ import type { DateField } from '@payloadcms/plugin-form-builder/types'
 import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
 
 import { Input } from '@/components/ui/input'
-import React from 'react'
+import React, { useRef } from 'react'
+import { CalendarDays } from 'lucide-react'
 
 import { Error } from '../Error'
 import { FieldLabel } from '../FieldLabel'
