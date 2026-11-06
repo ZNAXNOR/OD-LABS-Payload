@@ -5,6 +5,8 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
+import { ContactActions } from '@/components/Contact/ContactActions'
+import { SocialLinks } from '@/components/Contact/SocialLinks'
 
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
@@ -141,10 +143,6 @@ const getActionHref = (action?: any): string => {
   return action.href || '#'
 }
 
-const platformMarks: Record<string, string> = {
-  linkedin: 'in', x: 'X', github: 'GH', instagram: 'IG', youtube: 'YT', facebook: 'f', threads: '@',
-}
-
 export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   enableIntro,
   introContent,
@@ -155,7 +153,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   const [activeTab, setActiveTab] = useState(0)
   const [activeStep, setActiveStep] = useState(0)
   const [completedSteps, setCompletedSteps] = useState<number[]>([])
-  const [furthestStep, setFurthestStep] = useState(0)
+  const [furthestVisitedStep, setFurthestVisitedStep] = useState(0)
   const [contactSocials, setContactSocials] = useState<ContactSocialData | null>(null)
   const valuesByTab = useRef<Record<number, Record<string, unknown>>>({})
   const configuredForms = (variant === 'multi' ? multiForms : [{ form: singleForm, description: null }]) || []
@@ -245,12 +243,13 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
       if (!valid) return
     }
     setCompletedSteps((previous) => previous.includes(activeStep) ? previous : [...previous, activeStep])
-    setFurthestStep((previous) => Math.max(previous, activeStep + 1))
+    setFurthestVisitedStep((previous) => Math.max(previous, Math.min(activeStep + 1, steps.length - 1)))
     setActiveStep((step) => Math.min(step + 1, steps.length - 1))
   }
 
   const navigateToStep = (index: number) => {
     if (index < 0 || index >= steps.length || isLoading) return
+    setFurthestVisitedStep((previous) => Math.max(previous, index))
     setActiveStep(index)
   }
 
@@ -265,7 +264,6 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   )
 
   const renderPreview = () => {
-    const fieldsToPreview = steps.flatMap((step, stepIndex) => (step.fields ?? []).map((field) => ({ field, stepIndex })))
     const getOptionLabel = (field: any, value: unknown) => {
       const options = Array.isArray(field.options) ? field.options : []
       const option = options.find((item: any) => item.value === value)
@@ -273,27 +271,31 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     }
 
     return (
-      <div className="border-y border-border">
-        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto] gap-3 border-b border-border py-3 font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500 sm:gap-6">
-          <span>Field</span><span>Response</span><span>Edit</span>
-        </div>
-        {fieldsToPreview.map(({ field, stepIndex }, index) => {
-          if (!('name' in field) || !field.name) return null
-          const value = getValues(field.name)
-          const isEmpty = value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)
-          let displayValue = 'Not provided'
-          if (!isEmpty) {
-            if (field.blockType === 'checkbox') displayValue = value === true ? 'Yes' : 'No'
-            else if (field.blockType === 'radio' || field.blockType === 'select') displayValue = getOptionLabel(field, value)
-            else if (Array.isArray(value)) displayValue = value.map((item) => getOptionLabel(field, item)).join(', ')
-            else displayValue = String(value)
-          }
+      <div className="space-y-7">
+        {steps.map((step, stepIndex) => {
+          const stepFields = (step.fields ?? []).filter((field) => 'name' in field && field.name)
+          if (!stepFields.length) return null
           return (
-            <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto] items-start gap-3 py-3 sm:gap-6" key={field.name || index}>
-              <dt className="text-sm text-zinc-400">{field.label || field.name}{field.required ? <span className="ml-1 text-odl">*</span> : null}</dt>
-              <dd className={`wrap-break-word text-sm ${isEmpty ? 'text-zinc-600 italic' : 'text-zinc-100'}`}>{displayValue}</dd>
-              <button className="font-mono text-[9px] uppercase tracking-[0.12em] text-zinc-500 transition-colors hover:text-odl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl" onClick={() => setActiveStep(stepIndex)} type="button">Edit</button>
-            </div>
+            <section className="border-t border-border pt-4 first:border-t-0 first:pt-0" key={step.id || stepIndex}>
+              <div className="mb-3 flex items-center justify-between gap-4">
+                <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-300">{step.title}</h3>
+                <button className="font-mono text-[9px] uppercase tracking-[0.12em] text-zinc-400 transition-colors hover:text-odl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl" onClick={() => navigateToStep(stepIndex)} type="button">Edit stage</button>
+              </div>
+              <dl className="divide-y divide-border border-y border-border">
+                {stepFields.map((field: any) => {
+                  const value = getValues(field.name)
+                  const isEmpty = value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)
+                  let displayValue = 'Not provided'
+                  if (!isEmpty) {
+                    if (field.blockType === 'checkbox') displayValue = value === true ? 'Yes' : 'No'
+                    else if (field.blockType === 'radio' || field.blockType === 'select') displayValue = getOptionLabel(field, value)
+                    else if (Array.isArray(value)) displayValue = value.map((item) => getOptionLabel(field, item)).join(', ')
+                    else displayValue = String(value)
+                  }
+                  return <div className="grid grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] gap-4 py-3 sm:gap-6" key={field.name}><dt className="text-sm text-zinc-400">{field.label || field.name}{field.required ? <span className="ml-1 text-odl">*</span> : null}</dt><dd className={`wrap-break-word text-sm ${isEmpty ? 'text-zinc-600 italic' : 'text-zinc-100'}`}>{displayValue}</dd></div>
+                })}
+              </dl>
+            </section>
           )
         })}
       </div>
@@ -351,7 +353,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                         formMethods.clearErrors()
                         setActiveStep(0)
                         setCompletedSteps([])
-                        setFurthestStep(0)
+                        setFurthestVisitedStep(0)
                         setError(undefined)
                         setHasSubmitted(false)
                       }}
@@ -376,8 +378,9 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                       <ol className="grid items-start gap-0" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
                         {steps.map((step, index) => {
                           const completed = completedSteps.includes(index)
-                          const current = index === furthestStep && !completed
+                          const pending = index < furthestVisitedStep && !completed
                           const viewing = index === activeStep
+                          const progressLabel = completed ? 'Completed' : pending ? 'Pending' : 'Upcoming'
                           const accessible = true
                           return (
                             <li key={step.id || index} className="min-w-0">
@@ -389,13 +392,13 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                                 className="group w-full text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl disabled:cursor-default"
                               >
                                 <span className="flex items-center">
-                                  <span className={`grid size-8 shrink-0 place-items-center rounded-full border font-mono text-xs transition-colors ${completed ? 'border-emerald-700 bg-emerald-500/10 text-emerald-400' : viewing || current ? 'border-odl bg-odl/5 text-odl' : 'border-zinc-800 text-zinc-600'}`}>
+                                  <span className={`grid size-8 shrink-0 place-items-center rounded-full border font-mono text-xs transition-colors ${completed ? 'border-emerald-700 bg-emerald-500/10 text-emerald-400' : viewing ? 'border-white bg-white/5 text-white' : pending ? 'border-amber-500/70 bg-amber-500/5 text-amber-400' : 'border-zinc-800 text-zinc-600'}`}>
                                     {String(index + 1).padStart(2, '0')}
                                   </span>
-                                  {index < steps.length - 1 ? <span aria-hidden="true" className={`mx-3 h-px flex-1 ${completed ? 'bg-emerald-700' : 'bg-zinc-800'}`} /> : null}
+                                  {index < steps.length - 1 ? <span aria-hidden="true" className={`mx-3 h-px flex-1 ${completed ? 'bg-emerald-700' : pending ? 'bg-amber-500/50' : 'bg-zinc-800'}`} /> : null}
                                 </span>
-                                <span className={`mt-3 block truncate pr-3 text-sm ${viewing || current ? 'font-medium text-zinc-100' : completed ? 'text-emerald-400 group-hover:text-emerald-300' : 'text-zinc-500'}`}>{step.title}</span>
-                                <span className={`mt-1 block font-mono text-[9px] uppercase tracking-[0.14em] ${completed ? 'text-emerald-500' : current ? 'text-odl' : viewing ? 'text-odl' : 'text-zinc-600'}`}>{completed ? 'Complete' : current ? 'Current' : viewing ? 'Viewing' : 'Upcoming'}</span>
+                                <span className={`mt-3 block truncate pr-3 text-sm ${viewing ? 'font-medium text-white' : completed ? 'text-emerald-400 group-hover:text-emerald-300' : pending ? 'text-amber-300' : 'text-zinc-500'}`}>{step.title}</span>
+                                <span className={`mt-1 block font-mono text-[9px] uppercase tracking-[0.14em] ${completed ? 'text-emerald-500' : pending ? 'text-amber-400' : 'text-zinc-600'}`}>{progressLabel}</span>
                               </button>
                             </li>
                           )
@@ -415,7 +418,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                           <button
                             aria-current={index === activeStep ? 'step' : undefined}
                             aria-label={`Go to step ${index + 1}: ${step.title}`}
-                            className={`h-1 min-w-0 flex-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl ${completedSteps.includes(index) ? 'bg-emerald-600' : index <= furthestStep ? 'bg-odl' : 'bg-zinc-800'}`}
+                            className={`h-1 min-w-0 flex-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl ${completedSteps.includes(index) ? 'bg-emerald-600' : index < furthestVisitedStep ? 'bg-amber-500' : index === activeStep ? 'bg-white' : 'bg-zinc-800'}`}
                             disabled={isLoading}
                             key={step.id || index}
                             onClick={() => navigateToStep(index)}
@@ -444,49 +447,8 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                       </div>
 
                       <div className="space-y-5">
-                        {contactActions.length > 0 ? (
-                          <div className="grid gap-2">
-                            {contactActions.map((action, index) => {
-                              const href = getActionHref(action)
-                              const target = action.link?.newTab ? '_blank' : undefined
-                              const rel = action.link?.newTab ? 'noreferrer noopener' : undefined
-                              return (
-                                <a
-                                  key={index}
-                                  href={href}
-                                  target={target}
-                                  rel={rel}
-                                  className="flex min-h-14 items-center justify-between gap-4 border border-zinc-800 px-4 py-3 text-sm text-zinc-200 transition-colors hover:border-odl hover:bg-odl/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
-                                >
-                                  <span>{action.label}</span>
-                                  <span aria-hidden="true" className="text-odl">↗</span>
-                                </a>
-                              )
-                            })}
-                          </div>
-                        ) : null}
-                        {socialLinks.length > 0 ? (
-                          <div className="flex flex-wrap gap-2">
-                            {socialLinks.map((social, index) => {
-                              const key = (social.platform || '').toLowerCase()
-                              const profileLabel = social.profile === 'od-labs' ? 'OD LABS' : 'Omkar Dalvi'
-                              const label = `${profileLabel} · ${social.platform || 'Social profile'}`
-                              return (
-                                <a
-                                  key={index}
-                                  href={social.url || '#'}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  aria-label={label}
-                                  title={label}
-                                  className="grid size-11 place-items-center border border-zinc-800 font-mono text-xs text-zinc-400 transition-colors hover:border-odl hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
-                                >
-                                  {platformMarks[key] || key.slice(0, 2).toUpperCase()}
-                                </a>
-                              )
-                            })}
-                          </div>
-                        ) : null}
+                        {contactActions.length > 0 ? <ContactActions actions={contactActions.map((action) => ({ label: action.label, href: getActionHref(action), description: action.description, newTab: action.link?.newTab ?? false }))} /> : null}
+                        {socialLinks.length > 0 ? <SocialLinks links={socialLinks.map((social) => ({ profile: social.profile, platform: social.platform, url: social.url || '' }))} /> : null}
                       </div>
                     </aside>
 
