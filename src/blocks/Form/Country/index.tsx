@@ -1,7 +1,6 @@
 import type { CountryField } from '@payloadcms/plugin-form-builder/types'
 import type { Control, FieldErrorsImpl } from 'react-hook-form'
 
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -13,6 +12,7 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 
 import { Error } from '../Error'
+import { FieldLabel } from '../FieldLabel'
 import { Width } from '../Width'
 import { countryOptions } from './options'
 
@@ -24,15 +24,7 @@ export const Country: React.FC<
 > = ({ name, control, errors, label, required, width }) => {
   return (
     <Width width={width}>
-      <Label className="" htmlFor={name}>
-        {label}
-
-        {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
-          </span>
-        )}
-      </Label>
+      <FieldLabel htmlFor={name} label={label} required={required} />
       <Controller
         control={control}
         defaultValue=""
