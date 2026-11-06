@@ -5,10 +5,10 @@ export const Width: React.FC<{
   className?: string
   width?: number | string
 }> = ({ children, className, width }) => {
-  const spansFullWidth = width === 100 || width === '100'
+  const occupiesHalfWidth = width === 50 || width === '50'
 
   return (
-    <div className={[spansFullWidth ? 'sm:col-span-2' : 'sm:col-span-1', 'min-w-0', className].filter(Boolean).join(' ')}>
+    <div className={[occupiesHalfWidth ? 'sm:col-span-1' : 'sm:col-span-2', 'min-w-0', className].filter(Boolean).join(' ')}>
       {children}
     </div>
   )
