@@ -4,7 +4,7 @@ import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { ContactActions } from '@/components/Contact/ContactActions'
 import { SocialLinks } from '@/components/Contact/SocialLinks'
 
@@ -96,6 +96,12 @@ const getTabDescription = (entry?: MultiFormItem | null): string | null => {
   return null
 }
 type ContactSocialData = {
+  contactPage?: {
+    eyebrow?: string | null
+    heading?: string | null
+    description?: string | null
+    formIntroduction?: string | null
+  } | null
   contactActions?:
     | {
         label?: string
@@ -164,6 +170,8 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [error, setError] = useState<string>()
   const router = useRouter()
+  const pathname = usePathname()
+  const isContactPage = pathname === '/contact'
 
   const formID = activeForm?.id
   const privacyConsentEnabled = activeForm?.privacyConsent?.enabled !== false
@@ -320,8 +328,9 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     await submit(getValues())
   }
 
-  const introTitle = isMultiStep ? currentStep?.title : activeForm?.title
-  const introDescription = isMultiStep ? currentStep?.description : activeEntry?.description
+  const introTitle = isMultiStep ? currentStep?.title : isContactPage ? contactSocials?.contactPage?.heading || activeForm?.title : activeForm?.title
+  const introDescription = isMultiStep ? currentStep?.description : isContactPage ? contactSocials?.contactPage?.description || activeEntry?.description : activeEntry?.description
+  const introEyebrow = isContactPage ? contactSocials?.contactPage?.eyebrow || 'Enquiry' : 'Enquiry'
   const contactActions = (contactSocials?.contactActions ?? []).filter((item) => {
     if (item.enabled === false) return false
     const href = getActionHref(item)
@@ -437,7 +446,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                   <div className="grid lg:grid-cols-[minmax(0,0.35fr)_minmax(0,0.65fr)]">
                     <aside className="flex flex-col justify-between gap-10 border-b border-border p-6 md:p-8 lg:min-h-[34rem] lg:border-b-0 lg:border-r">
                       <div>
-                        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-odl">{isMultiStep ? `Step ${String(activeStep + 1).padStart(2, '0')}` : 'Enquiry'}</p>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-odl">{isMultiStep ? `Step ${String(activeStep + 1).padStart(2, '0')}` : introEyebrow}</p>
                         <h2 className="mt-3 text-2xl font-medium leading-tight tracking-tight text-zinc-100 md:text-3xl">{introTitle || 'Get in touch'}</h2>
                         {introDescription ? (
                           <div className="mt-4 max-w-md text-sm leading-6 text-zinc-400 [&_p]:m-0">
