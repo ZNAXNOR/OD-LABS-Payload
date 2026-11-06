@@ -30,7 +30,7 @@ export const Checkbox: React.FC<
             setValue(props.name, checked)
           }}
         />
-        <label htmlFor={name} className="cursor-pointer text-sm font-medium leading-5 text-zinc-300">{label}<span className="ml-2 font-mono text-[9px] font-normal uppercase tracking-[0.14em] {required ? 'text-red-500' : 'text-zinc-500'}">{required ? 'Required' : 'Optional'}</span></label>
+        <label htmlFor={name} className="cursor-pointer text-sm font-medium leading-5 text-zinc-300">{label}<span className={`ml-2 font-mono text-[9px] font-normal uppercase tracking-[0.14em] ${required ? 'text-odl' : 'text-zinc-500'}`}>{required ? 'Required' : 'Optional'}</span></label>
       </div>
       {errors[name] && <Error name={name} />}
     </Width>
