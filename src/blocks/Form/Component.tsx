@@ -164,9 +164,15 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
       const allowedNames = isMultiStep
         ? steps.flatMap((step) => step.fields ?? []).flatMap((field) => ('name' in field && field.name ? [field.name] : []))
         : (activeForm?.fields ?? []).flatMap((field) => 'name' in field && field.name ? [field.name] : [])
-      const submissionData = [...new Set(allowedNames)]
+      const submissionFields = [
+        ...new Set(allowedNames),
+        ...(privacyConsentEnabled ? ['privacyConsentAccepted'] : []),
+      ]
+      const submissionData = submissionFields
         .filter((field) => Object.prototype.hasOwnProperty.call(data, field))
-        .map((field) => ({ field, value: data[field] ?? '' }))
+        && [...new Set(submissionFields)]
+          .filter((field) => Object.prototype.hasOwnProperty.call(data, field))
+          .map((field) => ({ field, value: data[field] ?? '' }))
       const response = await fetch(`${getClientSideURL()}/api/form-submissions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -185,7 +191,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     } finally {
       setIsLoading(false)
     }
-  }, [activeForm, formID, isMultiStep, router, steps])
+  }, [activeForm, formID, isMultiStep, privacyConsentEnabled, router, steps])
 
   const advance = async () => {
     if (!currentStep) return
