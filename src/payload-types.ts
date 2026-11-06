@@ -707,24 +707,6 @@ export interface ArchiveBlock {
  */
 export interface FormBlock {
   variant: 'single' | 'multi';
-  /**
-   * Select the form to display. Its Form Layout setting determines whether it is standard or multi-step.
-   */
-  singleForm: number | Form;
-  /**
-   * Add 2–3 forms. Each entry becomes a selectable tab on the page. Reorder entries to change tab order.
-   */
-  multiForms?:
-    | {
-        form: number | Form;
-        /**
-         * Label displayed on the public form tab.
-         */
-        tabLabel: string;
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   enableIntro?: boolean | null;
   introContent?: {
     root: {
@@ -741,6 +723,31 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  singleForm?: (number | null) | Form;
+  /**
+   * Add 2–3 forms. Each entry becomes a selectable tab on the page. Reorder entries to change tab order.
+   */
+  multiForms?:
+    | {
+        form: number | Form;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -1954,17 +1961,16 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
  */
 export interface FormBlockSelect<T extends boolean = true> {
   variant?: T;
+  enableIntro?: T;
+  introContent?: T;
   singleForm?: T;
   multiForms?:
     | T
     | {
         form?: T;
-        tabLabel?: T;
         description?: T;
         id?: T;
       };
-  enableIntro?: T;
-  introContent?: T;
   id?: T;
   blockName?: T;
 }

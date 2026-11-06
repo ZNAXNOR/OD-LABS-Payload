@@ -1,3 +1,4 @@
+import { Label } from '@/components/ui/label'
 import type { RadioField } from '@payloadcms/plugin-form-builder/types'
 import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
 

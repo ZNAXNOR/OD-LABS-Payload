@@ -27,8 +27,8 @@ type ManagedForm = FormType & {
 
 type MultiFormItem = {
   form?: FormType | number | null
-  tabLabel: string
-  description?: string | null
+  tabLabel?: string | null
+  description?: DefaultTypedEditorState | string | null
 }
 
 type ManagedFormBlock = {
@@ -43,6 +43,52 @@ type ManagedFormBlock = {
 
 export type FormBlockType = ManagedFormBlock
 
+const extractTextFromLexical = (node: any): string => {
+  if (!node) return ''
+  if (typeof node.text === 'string') return node.text
+  if (Array.isArray(node.children)) {
+    return node.children.map(extractTextFromLexical).join('')
+  }
+  return ''
+}
+
+const getTabLabel = (entry?: MultiFormItem | null): string => {
+  if (!entry) return 'Form'
+  if (entry.tabLabel) return entry.tabLabel
+
+  if (entry.description && typeof entry.description === 'object') {
+    const children = (entry.description as any)?.root?.children
+    if (Array.isArray(children)) {
+      const heading = children.find((child: any) => child?.type === 'heading')
+      if (heading) {
+        const text = extractTextFromLexical(heading).trim()
+        if (text) return text
+      }
+    }
+  }
+
+  if (typeof entry.form === 'object' && entry.form?.title) {
+    return entry.form.title
+  }
+
+  return 'Form'
+}
+
+const getTabDescription = (entry?: MultiFormItem | null): string | null => {
+  if (!entry?.description) return null
+  if (typeof entry.description === 'string') return entry.description
+
+  const children = (entry.description as any)?.root?.children
+  if (Array.isArray(children)) {
+    const paragraph = children.find((child: any) => child?.type === 'paragraph')
+    if (paragraph) {
+      const text = extractTextFromLexical(paragraph).trim()
+      if (text) return text
+    }
+  }
+
+  return null
+}
 export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   enableIntro,
   introContent,
@@ -52,7 +98,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
 }) => {
   const [activeTab, setActiveTab] = useState(0)
   const valuesByTab = useRef<Record<number, Record<string, unknown>>>({})
-  const configuredForms = (variant === 'multi' ? multiForms : [{ form: singleForm, tabLabel: '', description: '' }]) || []
+  const configuredForms = (variant === 'multi' ? multiForms : [{ form: singleForm, description: null }]) || []
   const activeEntry = configuredForms[activeTab]
   const activeForm = (typeof activeEntry?.form === 'object' && activeEntry.form ? activeEntry.form : null) as ManagedForm | null
   const isMultiStep = activeForm?.formLayout === 'multiStep'
@@ -141,7 +187,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
           return (
             <div className="grid gap-2 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]" key={field.name}>
               <dt className="text-sm text-muted-foreground">{field.label || field.name}</dt>
-              <dd className="break-words text-sm">{displayValue}</dd>
+              <dd className="wrap-break-word text-sm">{displayValue}</dd>
             </div>
           )
         })}
@@ -161,6 +207,8 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
               <div aria-label="Choose a form" className="flex flex-col gap-3 border-b border-border p-5 sm:flex-row md:p-6" role="group">
                 {configuredForms.map((entry, index) => {
                   const isSelected = activeTab === index
+                  const tabLabel = getTabLabel(entry)
+                  const tabDescription = getTabDescription(entry)
                   return (
                     <button
                       key={index}
@@ -178,8 +226,8 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                       className={`flex min-h-24 min-w-0 flex-1 items-center justify-between gap-4 border px-5 py-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl ${isSelected ? 'border-odl bg-odl/5' : 'border-zinc-800 hover:border-zinc-600'}`}
                     >
                       <span className="min-w-0">
-                        <span className="block text-sm font-medium leading-6 text-zinc-100">{entry.tabLabel || (typeof entry.form === 'object' && entry.form ? entry.form.title : 'Form')}</span>
-                        {entry.description ? <span className="mt-1 block text-xs leading-5 text-zinc-500">{entry.description}</span> : null}
+                        <span className="block text-sm font-medium leading-6 text-zinc-100">{tabLabel}</span>
+                        {tabDescription ? <span className="mt-1 block text-xs leading-5 text-zinc-500">{tabDescription}</span> : null}
                       </span>
                       <span aria-hidden="true" className={`shrink-0 text-lg ${isSelected ? 'text-odl' : 'text-zinc-600'}`}>{isSelected ? '●' : '○'}</span>
                     </button>
@@ -191,7 +239,15 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
               <form onSubmit={handleSubmit(submit)} className="p-5 md:p-8">
                 {!isMultiStep ? (
                   <>
-                    {activeEntry?.description && variant === 'multi' ? <p className="mb-8 text-sm leading-6 text-muted-foreground">{activeEntry.description}</p> : null}
+                    {activeEntry?.description && variant === 'multi' ? (
+                      <div className="mb-8 text-sm leading-6 text-muted-foreground [&_p]:m-0">
+                        {typeof activeEntry.description === 'string' ? (
+                          <p>{activeEntry.description}</p>
+                        ) : (
+                          <RichText data={activeEntry.description} enableGutter={false} enableProse={false} />
+                        )}
+                      </div>
+                    ) : null}
                     <div className="grid gap-x-6 gap-y-6 sm:grid-cols-2">
                       {activeForm?.fields?.map((field, index) => {
                         const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
@@ -239,7 +295,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                           <div className="md:hidden">
                             <div className="mb-3 flex items-end justify-between gap-4">
                               <div>
-                                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">Project inquiry</p>
+                                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">{activeForm?.title || 'Form'}</p>
                                 <h2 className="mt-1 text-base font-medium text-zinc-100">{currentStep?.title}</h2>
                               </div>
                               <p className="shrink-0 font-mono text-xs text-zinc-500"><span className="text-zinc-100">{String(activeStep + 1).padStart(2, '0')}</span> / {String(steps.length).padStart(2, '0')}</p>

@@ -1,3 +1,54 @@
+const headingAndTextToLexical = (heading: string, text: string) => ({
+  root: {
+    type: 'root',
+    children: [
+      {
+        type: 'heading',
+        children: [
+          {
+            type: 'text',
+            detail: 0,
+            format: 0,
+            mode: 'normal',
+            style: '',
+            text: heading,
+            version: 1,
+          },
+        ],
+        direction: 'ltr' as const,
+        format: '' as const,
+        indent: 0,
+        tag: 'h3' as const,
+        version: 1,
+      },
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'text',
+            detail: 0,
+            format: 0,
+            mode: 'normal',
+            style: '',
+            text,
+            version: 1,
+          },
+        ],
+        direction: 'ltr' as const,
+        format: '' as const,
+        indent: 0,
+        textFormat: 0,
+        textStyle: '',
+        version: 1,
+      },
+    ],
+    direction: 'ltr' as const,
+    format: '' as const,
+    indent: 0,
+    version: 1,
+  },
+})
+
 import type { Form } from '@/payload-types'
 import type { RequiredDataFromCollectionSlug } from 'payload'
 
@@ -24,13 +75,11 @@ export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pag
       multiForms: [
         {
           form: generalForm,
-          tabLabel: 'General Enquiry',
-          description: 'For general questions, support, and other enquiries.',
+          description: headingAndTextToLexical('General Enquiry', 'For general questions, support, and other enquiries.'),
         },
         {
           form: projectInquiryForm,
-          tabLabel: 'Project Inquiry',
-          description: 'Tell us about the project you are planning.',
+          description: headingAndTextToLexical('Project Inquiry', 'Tell us about the project you are planning.'),
         },
       ],
       introContent: {

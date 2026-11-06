@@ -145,13 +145,16 @@ export const formBuilder: Plugin = formBuilderPlugin({
     },
     fields: ({ defaultFields }) => {
       const nativeFieldsField = defaultFields.find(
-        (field) => 'name' in field && field.name === 'fields' && field.type === 'blocks',
+        (field) =>
+          'name' in field && field.name === 'fields' && field.type === 'blocks',
       )
       const nativeFieldBlocks =
         nativeFieldsField && 'blocks' in nativeFieldsField
           ? nativeFieldsField.blocks.map((block) => ({
               ...block,
-              fields: Array.isArray(block.fields) ? [...block.fields] : block.fields,
+              fields: Array.isArray(block.fields)
+                ? [...block.fields]
+                : block.fields,
             }))
           : []
 
@@ -161,7 +164,8 @@ export const formBuilder: Plugin = formBuilderPlugin({
         label: 'Form Steps',
         defaultValue: [],
         admin: {
-          condition: (_, siblingData) => siblingData?.formLayout === 'multiStep',
+          condition: (_, siblingData) =>
+            siblingData?.formLayout === 'multiStep',
           description:
             'Add steps in the order visitors should complete them. Each step uses the native Payload Form Builder field types.',
         },
@@ -221,9 +225,12 @@ export const formBuilder: Plugin = formBuilderPlugin({
             type: 'richText',
             label: 'Step description',
             editor: lexicalEditor({
-              features: [
-                ParagraphFeature(),
-                TextStateFeature({ state: textStateConfig }),
+              features: ({ rootFeatures }) => [
+                ...rootFeatures,
+                HeadingFeature({
+                  enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'],
+                }),
+                FixedToolbarFeature(),
                 InlineToolbarFeature(),
               ],
             }),
@@ -288,13 +295,18 @@ export const formBuilder: Plugin = formBuilderPlugin({
           ]
         }
 
-        if ('name' in field && field.name === 'fields' && field.type === 'blocks') {
+        if (
+          'name' in field &&
+          field.name === 'fields' &&
+          field.type === 'blocks'
+        ) {
           return [
             {
               ...field,
               admin: {
                 ...field.admin,
-                condition: (_: any, siblingData: any) => siblingData?.formLayout === 'standard',
+                condition: (_: any, siblingData: any) =>
+                  siblingData?.formLayout === 'standard',
               },
             },
             stepsField,
