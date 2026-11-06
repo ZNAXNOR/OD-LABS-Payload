@@ -89,6 +89,15 @@ const getTabDescription = (entry?: MultiFormItem | null): string | null => {
 
   return null
 }
+type ContactSocialData = {
+  contactActions?: { label?: string; href?: string; description?: string; enabled?: boolean; actionType?: string }[] | null
+  socialLinks?: { platform?: string; url?: string; enabled?: boolean }[] | null
+}
+
+const platformMarks: Record<string, string> = {
+  linkedin: 'in', x: 'X', github: 'GH', instagram: 'IG', youtube: 'YT', facebook: 'f', threads: '@',
+}
+
 export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   enableIntro,
   introContent,
@@ -97,12 +106,14 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   multiForms = [],
 }) => {
   const [activeTab, setActiveTab] = useState(0)
+  const [activeStep, setActiveStep] = useState(0)
+  const [completedSteps, setCompletedSteps] = useState<number[]>([])
+  const [contactSocials, setContactSocials] = useState<ContactSocialData | null>(null)
   const valuesByTab = useRef<Record<number, Record<string, unknown>>>({})
   const configuredForms = (variant === 'multi' ? multiForms : [{ form: singleForm, description: null }]) || []
   const activeEntry = configuredForms[activeTab]
   const activeForm = (typeof activeEntry?.form === 'object' && activeEntry.form ? activeEntry.form : null) as ManagedForm | null
   const isMultiStep = activeForm?.formLayout === 'multiStep'
-  const [activeStep, setActiveStep] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [error, setError] = useState<string>()
@@ -128,6 +139,15 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     getValues,
     reset,
   } = formMethods
+
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/globals/contact-socials?depth=0')
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => { if (!cancelled && data) setContactSocials(data) })
+      .catch(() => undefined)
+    return () => { cancelled = true }
+  }, [])
 
   const submit = useCallback(async (data: Record<string, unknown>) => {
     if (!formID) return
@@ -167,13 +187,24 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
       const valid = names.length ? await trigger(names) : true
       if (!valid) return
     }
+    setCompletedSteps((previous) => previous.includes(activeStep) ? previous : [...previous, activeStep])
     setActiveStep((step) => Math.min(step + 1, steps.length - 1))
   }
 
   const navigateToStep = (index: number) => {
-    if (index >= activeStep || index < 0) return
+    if (index < 0 || index >= steps.length || !completedSteps.includes(index) || isLoading) return
     setActiveStep(index)
   }
+
+  const renderFields = (formFields: NonNullable<FormType['fields']>) => (
+    <div className="grid gap-x-6 gap-y-6 sm:grid-cols-2">
+      {formFields.map((field, index) => {
+        const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+        if (!Field) return null
+        return <Field key={('id' in field && typeof field.id === 'string' ? field.id : index)} form={activeForm} {...field} {...formMethods} control={control} errors={errors} register={register} />
+      })}
+    </div>
+  )
 
   const renderPreview = () => {
     const fieldsToPreview = steps.flatMap((step) => step.fields ?? [])
@@ -195,15 +226,18 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
     )
   }
 
+  const introTitle = isMultiStep ? currentStep?.title : activeForm?.title
+  const introDescription = isMultiStep ? currentStep?.description : activeEntry?.description
+  const contactActions = (contactSocials?.contactActions ?? []).filter((item) => item.enabled !== false && item.href)
+  const socialLinks = (contactSocials?.socialLinks ?? []).filter((item) => item.enabled !== false && item.url)
+
   return (
     <section className="w-full px-6 py-8 md:px-10 md:py-10">
-      {enableIntro && introContent && !hasSubmitted && (
-        <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
-      )}
+      {enableIntro && introContent && !hasSubmitted ? <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} /> : null}
       <div className="border border-border">
         {!hasSubmitted ? (
           <>
-            {variant === 'multi' && (
+            {variant === 'multi' ? (
               <div aria-label="Choose a form" className="flex flex-col gap-3 border-b border-border p-5 sm:flex-row md:p-6" role="group">
                 {configuredForms.map((entry, index) => {
                   const isSelected = activeTab === index
@@ -220,6 +254,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                         reset(valuesByTab.current[index] ?? {})
                         formMethods.clearErrors()
                         setActiveStep(0)
+                        setCompletedSteps([])
                         setError(undefined)
                         setHasSubmitted(false)
                       }}
@@ -229,105 +264,122 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                         <span className="block text-sm font-medium leading-6 text-zinc-100">{tabLabel}</span>
                         {tabDescription ? <span className="mt-1 block text-xs leading-5 text-zinc-500">{tabDescription}</span> : null}
                       </span>
-                      <span aria-hidden="true" className={`shrink-0 text-lg ${isSelected ? 'text-odl' : 'text-zinc-600'}`}>{isSelected ? '●' : '○'}</span>
+                      <span aria-hidden="true" className={`grid size-5 shrink-0 place-items-center rounded-full border text-[9px] ${isSelected ? 'border-odl text-odl' : 'border-zinc-700 text-transparent'}`}>{isSelected ? '●' : ''}</span>
                     </button>
                   )
                 })}
               </div>
-            )}
+            ) : null}
+
             <FormProvider {...formMethods}>
-              <form onSubmit={handleSubmit(submit)} className="p-5 md:p-8">
-                {!isMultiStep ? (
-                  <>
-                    {activeEntry?.description && variant === 'multi' ? (
-                      <div className="mb-8 text-sm leading-6 text-muted-foreground [&_p]:m-0">
-                        {typeof activeEntry.description === 'string' ? (
-                          <p>{activeEntry.description}</p>
-                        ) : (
-                          <RichText data={activeEntry.description} enableGutter={false} enableProse={false} />
-                        )}
+              <form onSubmit={handleSubmit(submit)}>
+                {isMultiStep && steps.length > 0 ? (
+                  <div className="border-b border-border px-5 py-6 md:px-8 md:py-7">
+                    <nav aria-label="Form progress" className="hidden md:block">
+                      <ol className="grid items-start gap-0" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
+                        {steps.map((step, index) => {
+                          const completed = completedSteps.includes(index)
+                          const current = index === activeStep
+                          const accessible = completed && !current
+                          return (
+                            <li key={step.id || index} className="min-w-0">
+                              <button
+                                type="button"
+                                disabled={!accessible || isLoading}
+                                aria-current={current ? 'step' : undefined}
+                                onClick={() => navigateToStep(index)}
+                                className="group w-full text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl disabled:cursor-default"
+                              >
+                                <span className="flex items-center">
+                                  <span className={`grid size-8 shrink-0 place-items-center rounded-full border font-mono text-xs transition-colors ${completed ? 'border-emerald-700 bg-emerald-500/10 text-emerald-400' : current ? 'border-odl bg-odl/5 text-odl' : 'border-zinc-800 text-zinc-600'}`}>
+                                    {String(index + 1).padStart(2, '0')}
+                                  </span>
+                                  {index < steps.length - 1 ? <span aria-hidden="true" className={`mx-3 h-px flex-1 ${completed ? 'bg-emerald-700' : 'bg-zinc-800'}`} /> : null}
+                                </span>
+                                <span className={`mt-3 block truncate pr-3 text-sm ${current ? 'font-medium text-zinc-100' : completed ? 'text-emerald-400 group-hover:text-emerald-300' : 'text-zinc-500'}`}>{step.title}</span>
+                                <span className={`mt-1 block font-mono text-[9px] uppercase tracking-[0.14em] ${completed ? 'text-emerald-500' : current ? 'text-odl' : 'text-zinc-600'}`}>{completed ? 'Complete' : current ? 'Current' : 'Upcoming'}</span>
+                              </button>
+                            </li>
+                          )
+                        })}
+                      </ol>
+                    </nav>
+                    <div className="md:hidden">
+                      <div className="mb-3 flex items-end justify-between gap-4">
+                        <div>
+                          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">{activeForm?.title || 'Form'}</p>
+                          <h2 className="mt-1 text-base font-medium text-zinc-100">{currentStep?.title}</h2>
+                        </div>
+                        <p className="shrink-0 font-mono text-xs text-zinc-500"><span className="text-zinc-100">{String(activeStep + 1).padStart(2, '0')}</span> / {String(steps.length).padStart(2, '0')}</p>
                       </div>
-                    ) : null}
-                    <div className="grid gap-x-6 gap-y-6 sm:grid-cols-2">
-                      {activeForm?.fields?.map((field, index) => {
-                        const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
-                        if (!Field) return null
-                        return <Field key={('id' in field && typeof field.id === 'string' ? field.id : index)} form={activeForm} {...field} {...formMethods} control={control} errors={errors} register={register} />
-                      })}
+                      <div className="flex gap-1.5" role="progressbar" aria-label="Form progress" aria-valuemin={1} aria-valuemax={steps.length} aria-valuenow={activeStep + 1}>
+                        {steps.map((step, index) => <span key={step.id || index} className={`h-1 flex-1 ${index <= activeStep || completedSteps.includes(index) ? 'bg-odl' : 'bg-zinc-800'}`} />)}
+                      </div>
+                      <p className="mt-2 text-xs text-zinc-500">{steps.length - activeStep - 1} {steps.length - activeStep - 1 === 1 ? 'step' : 'steps'} remaining</p>
                     </div>
-                    <div className="mt-8"><Button type="submit" disabled={isLoading}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Send enquiry'}</Button></div>
-                  </>
+                  </div>
+                ) : null}
+
+                {steps.length === 0 && isMultiStep ? (
+                  <p className="p-6 text-sm text-muted-foreground">This multi-step form has no steps configured yet. Add steps to the selected form in Payload Admin.</p>
                 ) : (
-                  <>
-                    {steps.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">This multi-step form has no steps configured yet. Add steps to the selected form in Payload Admin.</p>
-                    ) : (
-                      <>
-                        <div className="mb-8">
-                          <nav aria-label="Form progress" className="hidden md:block">
-                            <ol className="grid items-start" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
-                              {steps.map((step, index) => {
-                                const completed = index < activeStep
-                                const current = index === activeStep
-                                return (
-                                  <li key={step.id || index} className="min-w-0">
-                                    <button
-                                      type="button"
-                                      disabled={!completed || isLoading}
-                                      aria-current={current ? 'step' : undefined}
-                                      onClick={() => navigateToStep(index)}
-                                      className="group w-full text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl disabled:cursor-default"
-                                    >
-                                      <span className="flex items-center">
-                                        <span className={`grid size-8 shrink-0 place-items-center rounded-full border font-mono text-xs transition-colors ${completed ? 'border-odl bg-odl/5 text-odl' : current ? 'border-odl text-odl' : 'border-zinc-800 text-zinc-600'}`}>
-                                          {completed ? '✓' : String(index + 1).padStart(2, '0')}
-                                        </span>
-                                        {index < steps.length - 1 ? <span aria-hidden="true" className={`mx-3 h-px flex-1 ${completed ? 'bg-odl' : 'bg-zinc-800'}`} /> : null}
-                                      </span>
-                                      <span className={`mt-3 block truncate pr-3 text-sm ${current ? 'font-medium text-zinc-100' : completed ? 'text-zinc-300 group-hover:text-zinc-100' : 'text-zinc-500'}`}>{step.title}</span>
-                                      <span className={`mt-1 block font-mono text-[9px] uppercase tracking-[0.14em] ${current ? 'text-odl' : 'text-zinc-600'}`}>{completed ? 'Complete' : current ? 'Current' : 'Upcoming'}</span>
-                                    </button>
-                                  </li>
-                                )
-                              })}
-                            </ol>
-                          </nav>
-                          <div className="md:hidden">
-                            <div className="mb-3 flex items-end justify-between gap-4">
-                              <div>
-                                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">{activeForm?.title || 'Form'}</p>
-                                <h2 className="mt-1 text-base font-medium text-zinc-100">{currentStep?.title}</h2>
-                              </div>
-                              <p className="shrink-0 font-mono text-xs text-zinc-500"><span className="text-zinc-100">{String(activeStep + 1).padStart(2, '0')}</span> / {String(steps.length).padStart(2, '0')}</p>
-                            </div>
-                            <div className="flex gap-1.5" role="progressbar" aria-label="Form progress" aria-valuemin={1} aria-valuemax={steps.length} aria-valuenow={activeStep + 1}>
-                              {steps.map((step, index) => <span key={step.id || index} className={`h-1 flex-1 ${index <= activeStep ? 'bg-odl' : 'bg-zinc-800'}`} />)}
-                            </div>
-                            <p className="mt-2 text-xs text-zinc-500">{steps.length - activeStep - 1} {steps.length - activeStep - 1 === 1 ? 'step' : 'steps'} remaining</p>
+                  <div className="grid lg:grid-cols-[minmax(0,0.35fr)_minmax(0,0.65fr)]">
+                    <aside className="flex flex-col justify-between gap-10 border-b border-border p-6 md:p-8 lg:min-h-[34rem] lg:border-b-0 lg:border-r">
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-odl">{isMultiStep ? `Step ${String(activeStep + 1).padStart(2, '0')}` : 'Enquiry'}</p>
+                        <h2 className="mt-3 text-2xl font-medium leading-tight tracking-tight text-zinc-100 md:text-3xl">{introTitle || 'Get in touch'}</h2>
+                        {introDescription ? (
+                          <div className="mt-4 max-w-md text-sm leading-6 text-zinc-400 [&_p]:m-0">
+                            {typeof introDescription === 'string' ? <p>{introDescription}</p> : <RichText data={introDescription} enableGutter={false} enableProse={false} />}
                           </div>
-                        </div>
-                        <div className="mb-6 border-b border-border pb-5 md:mb-8">
-                          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">Step {String(activeStep + 1).padStart(2, '0')}</p>
-                          <h2 className="mt-2 text-xl font-medium tracking-tight text-zinc-100 md:text-2xl">{currentStep?.title}</h2>
-                          {currentStep?.description ? <div className="mt-2 text-sm leading-6 text-zinc-500 [&_p]:m-0"><RichText data={currentStep.description} enableGutter={false} enableProse={false} /></div> : null}
-                        </div>
-                        {currentStep?.type === 'preview' ? renderPreview() : (
-                          <div className="grid gap-x-6 gap-y-6 sm:grid-cols-2">
-                            {(currentStep?.fields ?? []).map((field, index) => {
-                              const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
-                              if (!Field) return null
-                              return <Field key={('id' in field && typeof field.id === 'string' ? field.id : index)} form={activeForm} {...field} {...formMethods} control={control} errors={errors} register={register} />
+                        ) : null}
+                      </div>
+
+                      <div className="space-y-5">
+                        {contactActions.length > 0 ? (
+                          <div className="grid gap-2">
+                            {contactActions.map((action, index) => (
+                              <a key={index} href={action.href || '#'} className="flex min-h-14 items-center justify-between gap-4 border border-zinc-800 px-4 py-3 text-sm text-zinc-200 transition-colors hover:border-odl hover:bg-odl/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl">
+                                <span>{action.label}</span><span aria-hidden="true" className="text-odl">↗</span>
+                              </a>
+                            ))}
+                          </div>
+                        ) : null}
+                        {socialLinks.length > 0 ? (
+                          <div className="flex flex-wrap gap-2">
+                            {socialLinks.map((social, index) => {
+                              const key = (social.platform || '').toLowerCase()
+                              return (
+                                <a key={index} href={social.url || '#'} target="_blank" rel="noreferrer" aria-label={social.platform || 'Social profile'} title={social.platform || undefined} className="grid size-11 place-items-center border border-zinc-800 font-mono text-xs text-zinc-400 transition-colors hover:border-odl hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl">
+                                  {platformMarks[key] || key.slice(0, 2).toUpperCase()}
+                                </a>
+                              )
                             })}
                           </div>
-                        )}
-                        {error ? <p role="alert" className="mt-5 text-sm text-red-500">{error}</p> : null}
-                        <div className="mt-8 flex items-center justify-between gap-3 border-t border-border pt-5">
-                          <Button type="button" variant="outline" disabled={activeStep === 0 || isLoading} onClick={() => setActiveStep((step) => Math.max(0, step - 1))}>Back</Button>
-                          {activeStep < steps.length - 1 ? <Button type="button" disabled={isLoading} onClick={advance}>Continue</Button> : <Button type="button" disabled={isLoading} onClick={handleSubmit(submit)}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Submit inquiry'}</Button>}
-                        </div>
-                      </>
-                    )}
-                  </>
+                        ) : null}
+                      </div>
+                    </aside>
+
+                    <div className="min-w-0 p-5 md:p-8">
+                      {!isMultiStep ? (
+                        <>
+                          {activeEntry?.description && variant === 'multi' ? null : null}
+                          {renderFields(activeForm?.fields ?? [])}
+                          {error ? <p role="alert" className="mt-5 text-sm text-red-500">{error}</p> : null}
+                          <div className="mt-8"><Button type="submit" disabled={isLoading}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Send enquiry'}</Button></div>
+                        </>
+                      ) : (
+                        <>
+                          {currentStep?.type === 'preview' ? renderPreview() : renderFields(currentStep?.fields ?? [])}
+                          {error ? <p role="alert" className="mt-5 text-sm text-red-500">{error}</p> : null}
+                          <div className="mt-8 flex items-center justify-between gap-3 border-t border-border pt-5">
+                            <Button type="button" variant="outline" disabled={activeStep === 0 || isLoading} onClick={() => setActiveStep((step) => Math.max(0, step - 1))}>Back</Button>
+                            {activeStep < steps.length - 1 ? <Button type="button" disabled={isLoading} onClick={advance}>Continue</Button> : <Button type="button" disabled={isLoading} onClick={handleSubmit(submit)}>{isLoading ? 'Submitting…' : activeForm?.submitButtonLabel || 'Submit inquiry'}</Button>}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 )}
               </form>
             </FormProvider>
