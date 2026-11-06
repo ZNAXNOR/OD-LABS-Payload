@@ -463,6 +463,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
 
                     <div className="flex min-h-[34rem] min-w-0 flex-col p-5 md:p-8">
                       <div className="flex-1">
+                        {isContactPage && contactSocials?.contactPage?.formIntroduction ? <p className="mb-6 max-w-xl text-sm leading-6 text-zinc-400">{contactSocials.contactPage.formIntroduction}</p> : null}
                         {!isMultiStep ? (
                           <>
                             {renderFields(activeForm?.fields ?? [])}
