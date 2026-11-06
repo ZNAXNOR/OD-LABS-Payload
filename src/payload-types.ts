@@ -124,10 +124,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'contact-socials': ContactSocials;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'contact-socials': ContactSocialsSelect<false> | ContactSocialsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2809,6 +2811,31 @@ export interface Footer {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
+export interface ContactSocials {
+  id: number;
+  contactActions?: {
+    label: string;
+    href: string;
+    description?: string | null;
+    enabled?: boolean | null;
+    id?: string | null;
+  }[] | null;
+  socialLinks?: {
+    platform: 'linkedin' | 'github' | 'instagram' | 'youtube' | 'x' | 'facebook' | 'threads' | 'website';
+    url: string;
+    enabled?: boolean | null;
+    id?: string | null;
+  }[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+export interface ContactSocialsSelect<T extends boolean = true> {
+  contactActions?: T | { label?: T; href?: T; description?: T; enabled?: T; id?: T };
+  socialLinks?: T | { platform?: T; url?: T; enabled?: T; id?: T };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
 export interface HeaderSelect<T extends boolean = true> {
   navItems?:
     | T
