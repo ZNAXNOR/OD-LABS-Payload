@@ -1,11 +1,12 @@
 import type { GlobalConfig } from 'payload'
+import { authenticated } from '../access/authenticated'
 
 export const ContactSocials: GlobalConfig = {
   slug: 'contact-socials',
   label: 'Contact & Socials',
   access: {
     read: () => true,
-    update: () => true,
+    update: authenticated,
   },
   admin: {
     group: 'Content',
