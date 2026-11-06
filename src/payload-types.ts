@@ -2044,6 +2044,7 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface LegalPagesSelect<T extends boolean = true> {
   title?: T;
+  documentType?: T;
   contentMode?: T;
   content?: T;
   embed?:
