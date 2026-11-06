@@ -105,6 +105,7 @@ export const ContactSocials: GlobalConfig = {
                 { label: 'X / Twitter', value: 'x' },
                 { label: 'Facebook', value: 'facebook' },
                 { label: 'Threads', value: 'threads' },
+                { label: 'Website', value: 'website' },
               ],
               admin: {
                 width: '50%',
