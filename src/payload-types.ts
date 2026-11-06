@@ -1195,6 +1195,7 @@ export interface CalBookingBlock {
 export interface LegalPage {
   id: number;
   title: string;
+  documentType?: ('privacy-policy' | 'terms-of-service' | 'cookie-policy' | 'refund-policy' | 'data-processing-agreement' | 'acceptable-use-policy' | 'other') | null;
   contentMode: 'richText' | 'externalEmbed';
   content?: {
     root: {
