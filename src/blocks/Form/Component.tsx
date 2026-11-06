@@ -222,7 +222,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
   )
 
   const renderPreview = () => {
-    const fieldsToPreview = steps.flatMap((step) => step.fields ?? [])
+    const fieldsToPreview = steps.flatMap((step, stepIndex) => (step.fields ?? []).map((field) => ({ field, stepIndex })))
     const getOptionLabel = (field: any, value: unknown) => {
       const options = Array.isArray(field.options) ? field.options : []
       const option = options.find((item: any) => item.value === value)
@@ -234,7 +234,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
         <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-4 border-b border-border py-3 font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
           <span>Field</span><span>Response</span>
         </div>
-        {fieldsToPreview.map((field, index) => {
+        {fieldsToPreview.map(({ field, stepIndex }, index) => {
           if (!('name' in field) || !field.name) return null
           const value = getValues(field.name)
           const isEmpty = value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)
@@ -246,9 +246,10 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
             else displayValue = String(value)
           }
           return (
-            <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-4 py-3 sm:gap-6" key={field.name || index}>
+            <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto] items-start gap-3 py-3 sm:gap-6" key={field.name || index}>
               <dt className="text-sm text-zinc-400">{field.label || field.name}{field.required ? <span className="ml-1 text-odl">*</span> : null}</dt>
               <dd className={`wrap-break-word text-sm ${isEmpty ? 'text-zinc-600 italic' : 'text-zinc-100'}`}>{displayValue}</dd>
+              <button className="font-mono text-[9px] uppercase tracking-[0.12em] text-zinc-500 transition-colors hover:text-odl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl" onClick={() => setActiveStep(stepIndex)} type="button">Edit</button>
             </div>
           )
         })}
