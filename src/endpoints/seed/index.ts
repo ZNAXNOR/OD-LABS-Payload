@@ -248,12 +248,14 @@ export const seed = async ({
       confirmationType: 'message',
       confirmationMessage: contactFormData.confirmationMessage,
       submitButtonLabel: 'Submit inquiry',
+      previewStep: {
+        title: 'Review & submit',
+      },
       fields: [],
       steps: [
         {
           title: 'About You',
           description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Tell us how to reach you.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
-          type: 'form',
           fields: [
             { blockType: 'text', name: 'fullName', label: 'Full Name', required: true, width: 100 },
             { blockType: 'email', name: 'workEmail', label: 'Work Email', required: true, width: 100 },
@@ -263,7 +265,6 @@ export const seed = async ({
         {
           title: 'Project',
           description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"What are you looking to build or improve?","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
-          type: 'form',
           fields: [
             {
               blockType: 'select',
@@ -296,7 +297,6 @@ export const seed = async ({
         {
           title: 'Scope',
           description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Share your expected budget and timeline, if known.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
-          type: 'form',
           fields: [
             { blockType: 'select', name: 'budget', label: 'Budget', required: false, options: [
               { label: 'Not decided', value: 'undecided' },
@@ -318,17 +318,10 @@ export const seed = async ({
         {
           title: 'Goals',
           description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Describe the project and what success would look like.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
-          type: 'form',
           fields: [
             { blockType: 'textarea', name: 'summary', label: 'Project Summary', required: true, width: 100 },
             { blockType: 'textarea', name: 'successCriteria', label: 'Success Criteria', required: false, width: 100 },
           ],
-        },
-        {
-          title: 'Preview',
-          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Review your answers before submitting.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
-          type: 'preview',
-          fields: [],
         },
       ],
       emails: [
@@ -416,6 +409,50 @@ export const seed = async ({
               newTab: true,
               url: 'https://payloadcms.com/',
             },
+          },
+        ],
+      },
+    }),
+    payload.updateGlobal({
+      slug: 'contact-socials',
+      data: {
+        contactActions: [
+          {
+            link: {
+              type: 'custom',
+              url: 'mailto:omkar@notifications.odtechlab.com',
+              label: 'Email us',
+            },
+            enabled: true,
+          },
+          {
+            link: {
+              type: 'custom',
+              url: 'https://cal.com/od-omkar-dalvi/30min',
+              newTab: true,
+              label: 'Schedule a meeting',
+            },
+            enabled: true,
+          },
+        ],
+        socialLinks: [
+          {
+            profile: 'omkar-dalvi',
+            platform: 'linkedin',
+            url: 'https://linkedin.com/in/omkar-dalvi',
+            enabled: true,
+          },
+          {
+            profile: 'od-labs',
+            platform: 'github',
+            url: 'https://github.com/od-labs',
+            enabled: true,
+          },
+          {
+            profile: 'omkar-dalvi',
+            platform: 'x',
+            url: 'https://x.com/omkardalvi',
+            enabled: true,
           },
         ],
       },

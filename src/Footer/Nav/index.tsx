@@ -19,7 +19,7 @@ export const FooterNav = ({ pagesData = [] }: FooterNavProps) => {
   )
 
   return (
-    <div className="grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-3">
+    <div className="grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-2">
       {columns.map((column, columnIndex) => (
         <nav
           key={columnIndex}

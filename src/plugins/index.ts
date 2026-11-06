@@ -28,7 +28,10 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 }
 
 export const plugins: Plugin[] = [
-  sentryPlugin({ Sentry }),
+  sentryPlugin({
+    Sentry,
+    enabled: process.env.NODE_ENV === 'production',
+  }),
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {

@@ -8,15 +8,23 @@ import { usePathname } from 'next/navigation'
 
 import type { PagesData } from '../getPagesData'
 import type { LegalPagesData } from '../getLegalPagesData'
+import type { ContactSocial } from '@/payload-types'
 
 interface MegaMenuProps {
   open: boolean
   onClose: () => void
   pages: PagesData[]
   legalPages: LegalPagesData[]
+  contactSocials?: ContactSocial | null
 }
 
-export const MegaMenu = ({ open, onClose, pages, legalPages }: MegaMenuProps) => {
+export const MegaMenu = ({
+  open,
+  onClose,
+  pages,
+  legalPages,
+  contactSocials,
+}: MegaMenuProps) => {
   const pathname = usePathname()
   const currentSlug = pathname === '/' ? 'home' : pathname.split('/')[1] || 'home'
   const currentPage = pages.find((page) => page.slug === currentSlug) || null
@@ -61,7 +69,11 @@ export const MegaMenu = ({ open, onClose, pages, legalPages }: MegaMenuProps) =>
     >
       <MegaMenuHeader onClose={onClose} />
 
-      <MegaMenuMain pages={pages} currentPage={currentPage} />
+      <MegaMenuMain
+        pages={pages}
+        currentPage={currentPage}
+        contactSocials={contactSocials}
+      />
 
       <MegaMenuFooter legalPages={legalPages} />
     </div>

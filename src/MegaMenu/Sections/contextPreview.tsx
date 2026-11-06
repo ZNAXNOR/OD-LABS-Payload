@@ -1,11 +1,16 @@
 import { PagesData } from '../../getPagesData'
 import { MegaMenu_ContextDefault } from './contextDefault'
+import type { ContactSocial } from '@/payload-types'
 
 interface MegaMenu_ContextPreviewProps {
   page: PagesData | null
+  contactSocials?: ContactSocial | null
 }
 
-export const MegaMenu_ContextPreview = ({ page }: MegaMenu_ContextPreviewProps) => {
+export const MegaMenu_ContextPreview = ({
+  page,
+  contactSocials,
+}: MegaMenu_ContextPreviewProps) => {
   return (
     <div className="relative h-full min-h-[400px]">
       {/* Default Context */}
@@ -15,7 +20,7 @@ export const MegaMenu_ContextPreview = ({ page }: MegaMenu_ContextPreviewProps) 
           page ? 'pointer-events-none opacity-0' : 'opacity-100',
         ].join(' ')}
       >
-        <MegaMenu_ContextDefault />
+        <MegaMenu_ContextDefault contactSocials={contactSocials} />
       </div>
 
       {/* Preview Context */}

@@ -20,6 +20,7 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { LayoutClient } from './LayoutClient'
 import { getPagesData } from '@/getPagesData'
 import { getLegalPagesData } from '@/getLegalPagesData'
+import { getContactSocials } from '@/utilities/getContactSocials'
 
 export default async function RootLayout({
   children,
@@ -30,6 +31,7 @@ export default async function RootLayout({
 
   let pagesData
   let legalPagesData
+  let contactSocials
 
   try {
     pagesData = await getPagesData()
@@ -41,6 +43,12 @@ export default async function RootLayout({
     legalPagesData = await getLegalPagesData()
   } catch (error) {
     console.error('Failed to fetch published legal pages:', error)
+  }
+
+  try {
+    contactSocials = await getContactSocials()
+  } catch (error) {
+    console.error('Failed to fetch contact socials:', error)
   }
 
   return (
@@ -64,10 +72,17 @@ export default async function RootLayout({
 
           <LayoutClient
             header={<Header />}
-            footer={<Footer pagesData={pagesData} legalPagesData={legalPagesData} />}
+            footer={
+              <Footer
+                pagesData={pagesData}
+                legalPagesData={legalPagesData}
+                contactSocials={contactSocials}
+              />
+            }
             leftRail={<LeftRail />}
             pagesData={pagesData}
             legalPagesData={legalPagesData}
+            contactSocials={contactSocials}
           >
             {children}
           </LayoutClient>

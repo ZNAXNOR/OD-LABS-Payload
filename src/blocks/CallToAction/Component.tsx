@@ -21,7 +21,7 @@ export const CallToActionBlock: React.FC<Props> = ({
       data-purpose="conversational-cta"
       className="relative"
     >
-      <div className="px-6 py-20 lg:px-10 lg:py-28">
+      <div className="px-6 py-10 lg:px-10">
         <Eyebrow eyebrow={eyebrow} blockIndex={blockIndex} />
 
         <div className="relative border border-zinc-800">

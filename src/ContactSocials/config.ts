@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 import { authenticated } from '../access/authenticated'
 import { link } from '@/fields/link'
+import { revalidateContactSocials } from './hooks/revalidateContactSocials'
 
 export const ContactSocials: GlobalConfig = {
   slug: 'contact-socials',
@@ -9,37 +10,28 @@ export const ContactSocials: GlobalConfig = {
     read: () => true,
     update: authenticated,
   },
+  hooks: {
+    afterChange: [revalidateContactSocials],
+  },
   fields: [
-    {
-      name: 'contactPage',
-      type: 'group',
-      label: 'Contact page content',
-      admin: { description: 'Shared page-level content for the Contact page and reusable site sections.' },
-      fields: [
-        { name: 'eyebrow', type: 'text', label: 'Eyebrow', defaultValue: 'Contact' },
-        { name: 'heading', type: 'text', label: 'Heading', defaultValue: "Let's talk about your project." },
-        { name: 'description', type: 'textarea', label: 'Description', defaultValue: 'Tell us what you are working on. Share a few details and we will get back to you.' },
-        { name: 'formIntroduction', type: 'textarea', label: 'Form introduction' },
-      ],
-    },
     {
       name: 'contactActions',
       type: 'array',
       defaultValue: [
         {
-          label: 'Email us',
           link: {
             type: 'custom',
             url: 'mailto:omkar@notifications.odtechlab.com',
+            label: 'Email us',
           },
           enabled: true,
         },
         {
-          label: 'Schedule a meeting',
           link: {
             type: 'custom',
             url: 'https://cal.com/od-omkar-dalvi/30min',
             newTab: true,
+            label: 'Schedule a meeting',
           },
           enabled: true,
         },
@@ -51,16 +43,10 @@ export const ContactSocials: GlobalConfig = {
         initCollapsed: true,
       },
       fields: [
-        { name: 'label', type: 'text', required: true, label: 'Button label' },
         link({
           appearances: false,
-          disableLabel: true,
-          overrides: {
-            name: 'link',
-            label: 'Destination URL',
-          },
         }),
-        { name: 'description', type: 'text', label: 'Description' },
+        { name: 'description', type: 'textarea', label: 'Description' },
         {
           name: 'enabled',
           type: 'checkbox',

@@ -2,8 +2,10 @@
 
 import { useState } from 'react'
 import { ArrowUpRight, Check, Copy } from 'lucide-react'
+import { cn } from '@/utilities/ui'
+import type { FormattedContactAction as ContactAction } from './utils'
 
-type ContactAction = { label?: string | null; href: string; description?: string | null; newTab?: boolean }
+export type { ContactAction }
 
 function CopyEmailButton({ email }: { email: string }) {
   const [copied, setCopied] = useState(false)
@@ -12,18 +14,50 @@ function CopyEmailButton({ email }: { email: string }) {
       await navigator.clipboard.writeText(email)
       setCopied(true)
       window.setTimeout(() => setCopied(false), 1800)
-    } catch { setCopied(false) }
+    } catch {
+      setCopied(false)
+    }
   }
-  return <button type="button" onClick={copy} aria-label={copied ? 'Email address copied' : 'Copy email address'} title={copied ? 'Copied' : 'Copy email address'} className="grid size-11 shrink-0 place-items-center border border-zinc-800 text-zinc-400 transition-colors hover:border-odl hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl">{copied ? <Check aria-hidden="true" size={16} /> : <Copy aria-hidden="true" size={16} />}</button>
+  return (
+    <button
+      type="button"
+      onClick={copy}
+      aria-label={copied ? 'Email address copied' : 'Copy email address'}
+      title={copied ? 'Copied' : 'Copy email address'}
+      className="grid size-11 shrink-0 place-items-center border border-zinc-800 text-zinc-400 transition-colors hover:border-odl hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
+    >
+      {copied ? <Check aria-hidden="true" size={16} /> : <Copy aria-hidden="true" size={16} />}
+    </button>
+  )
 }
 
-export function ContactActions({ actions }: { actions: ContactAction[] }) {
-  return <div className="grid gap-2">{actions.map((action, index) => {
-    const isEmail = action.href.toLowerCase().startsWith('mailto:')
-    const email = isEmail ? decodeURIComponent(action.href.slice(7).split('?')[0]) : ''
-    return <div className="flex min-w-0 gap-2" key={action.href + index}>
-      <a href={action.href} target={action.newTab ? '_blank' : undefined} rel={action.newTab ? 'noreferrer noopener' : undefined} className="flex min-h-14 min-w-0 flex-1 items-center justify-between gap-4 border border-zinc-800 px-4 py-3 text-sm text-zinc-200 transition-colors hover:border-odl hover:bg-odl/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"><span className="min-w-0">{action.label}</span><ArrowUpRight aria-hidden="true" className="shrink-0 text-odl" size={16} /></a>
-      {isEmail && email ? <CopyEmailButton email={email} /> : null}
+export function ContactActions({
+  actions,
+  className,
+}: {
+  actions: ContactAction[]
+  className?: string
+}) {
+  return (
+    <div className={cn('grid gap-2', className)}>
+      {actions.map((action, index) => {
+        const isEmail = action.href.toLowerCase().startsWith('mailto:')
+        const email = isEmail ? decodeURIComponent(action.href.slice(7).split('?')[0]) : ''
+        return (
+          <div className="flex min-w-0 gap-2" key={action.href + index}>
+            <a
+              href={action.href}
+              target={action.newTab ? '_blank' : undefined}
+              rel={action.newTab ? 'noreferrer noopener' : undefined}
+              className="flex min-h-14 min-w-0 flex-1 items-center justify-between gap-4 border border-zinc-800 px-4 py-3 text-sm text-zinc-200 transition-colors hover:border-odl hover:bg-odl/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
+            >
+              <span className="min-w-0">{action.label}</span>
+              <ArrowUpRight aria-hidden="true" className="shrink-0 text-odl" size={16} />
+            </a>
+            {isEmail && email ? <CopyEmailButton email={email} /> : null}
+          </div>
+        )
+      })}
     </div>
-  })}</div>
+  )
 }

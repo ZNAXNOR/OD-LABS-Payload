@@ -51,38 +51,10 @@ export const formBuilder: Plugin = formBuilderPlugin({
       afterRead: [
         ({ doc }) => {
           if (Array.isArray(doc?.steps)) {
-            doc.steps = doc.steps.map((step: any) => {
-              if (step?.type === 'preview') {
-                step.fields = []
-              } else if (Array.isArray(step?.fields)) {
-                step.fields = step.fields.filter(
-                  (block: any) =>
-                    block &&
-                    typeof block === 'object' &&
-                    typeof block.blockType === 'string' &&
-                    Boolean(block.blockType),
-                )
-              } else {
-                step.fields = []
-              }
-              return step
-            })
-          }
-          return doc
-        },
-      ],
-      beforeValidate: [
-        ({ data, originalDoc }) => {
-          if (!data) return data
-
-          const formLayout = data.formLayout ?? originalDoc?.formLayout
-
-          if (formLayout === 'multiStep') {
-            if (Array.isArray(data.steps)) {
-              data.steps = data.steps.map((step: any) => {
-                if (step?.type === 'preview') {
-                  step.fields = []
-                } else if (Array.isArray(step?.fields)) {
+            doc.steps = doc.steps
+              .filter((step: any) => step?.type !== 'preview')
+              .map((step: any) => {
+                if (Array.isArray(step?.fields)) {
                   step.fields = step.fields.filter(
                     (block: any) =>
                       block &&
@@ -95,6 +67,46 @@ export const formBuilder: Plugin = formBuilderPlugin({
                 }
                 return step
               })
+          }
+          if (doc?.formLayout === 'multiStep' && !doc?.previewStep?.title) {
+            doc.previewStep = {
+              title: doc?.previewStepTitle || 'Review & submit',
+              ...(doc?.previewStepDescription ? { description: doc.previewStepDescription } : {}),
+            }
+          }
+          return doc
+        },
+      ],
+      beforeValidate: [
+        ({ data, originalDoc }) => {
+          if (!data) return data
+
+          const formLayout = data.formLayout ?? originalDoc?.formLayout
+
+          if (formLayout === 'multiStep') {
+            if (Array.isArray(data.steps)) {
+              data.steps = data.steps
+                .filter((step: any) => step?.type !== 'preview')
+                .map((step: any) => {
+                  if (Array.isArray(step?.fields)) {
+                    step.fields = step.fields.filter(
+                      (block: any) =>
+                        block &&
+                        typeof block === 'object' &&
+                        typeof block.blockType === 'string' &&
+                        Boolean(block.blockType),
+                    )
+                  } else {
+                    step.fields = []
+                  }
+                  return step
+                })
+            }
+            if (!data?.previewStep?.title) {
+              data.previewStep = {
+                ...(data?.previewStep || {}),
+                title: originalDoc?.previewStep?.title || 'Review & submit',
+              }
             }
             // Multi-step forms organize their field blocks inside `steps`.
             // Top-level `fields` is kept empty to prevent primary key ID conflicts in Postgres forms_blocks_* tables.
@@ -114,22 +126,28 @@ export const formBuilder: Plugin = formBuilderPlugin({
 
           if (formLayout === 'multiStep') {
             if (Array.isArray(data.steps)) {
-              data.steps = data.steps.map((step: any) => {
-                if (step?.type === 'preview') {
-                  step.fields = []
-                } else if (Array.isArray(step?.fields)) {
-                  step.fields = step.fields.filter(
-                    (block: any) =>
-                      block &&
-                      typeof block === 'object' &&
-                      typeof block.blockType === 'string' &&
-                      Boolean(block.blockType),
-                  )
-                } else {
-                  step.fields = []
-                }
-                return step
-              })
+              data.steps = data.steps
+                .filter((step: any) => step?.type !== 'preview')
+                .map((step: any) => {
+                  if (Array.isArray(step?.fields)) {
+                    step.fields = step.fields.filter(
+                      (block: any) =>
+                        block &&
+                        typeof block === 'object' &&
+                        typeof block.blockType === 'string' &&
+                        Boolean(block.blockType),
+                    )
+                  } else {
+                    step.fields = []
+                  }
+                  return step
+                })
+            }
+            if (!data?.previewStep?.title) {
+              data.previewStep = {
+                ...(data?.previewStep || {}),
+                title: originalDoc?.previewStep?.title || 'Review & submit',
+              }
             }
             data.fields = []
             return data
@@ -144,18 +162,58 @@ export const formBuilder: Plugin = formBuilderPlugin({
       ],
     },
     fields: ({ defaultFields }) => {
+      const placeholderField: Field = {
+        name: 'placeholder',
+        type: 'text',
+        label: 'Placeholder',
+        admin: {
+          description: 'Placeholder text displayed inside the field when empty.',
+        },
+      }
+
+      const blockHasField = (fields: any[], fieldName: string): boolean => {
+        if (!Array.isArray(fields)) return false
+        return fields.some((f: any) => {
+          if (!f || typeof f !== 'object') return false
+          if ('name' in f && f.name === fieldName) return true
+          if (Array.isArray(f.fields)) return blockHasField(f.fields, fieldName)
+          if (Array.isArray(f.tabs)) {
+            return f.tabs.some((tab: any) => blockHasField(tab.fields, fieldName))
+          }
+          return false
+        })
+      }
+
+      const enhanceBlocksWithPlaceholder = (blocks: any[]): any[] => {
+        return blocks.map((block) => {
+          if (!block || !Array.isArray(block.fields)) return block
+          if (blockHasField(block.fields, 'placeholder')) return block
+          if (block.slug === 'message') return block
+          return {
+            ...block,
+            fields: [...block.fields, placeholderField],
+          }
+        })
+      }
+
       const nativeFieldsField = defaultFields.find(
         (field) =>
           'name' in field && field.name === 'fields' && field.type === 'blocks',
       )
+
+      if (
+        nativeFieldsField &&
+        'blocks' in nativeFieldsField &&
+        Array.isArray(nativeFieldsField.blocks)
+      ) {
+        nativeFieldsField.blocks = enhanceBlocksWithPlaceholder(
+          nativeFieldsField.blocks,
+        )
+      }
+
       const nativeFieldBlocks =
         nativeFieldsField && 'blocks' in nativeFieldsField
-          ? nativeFieldsField.blocks.map((block) => ({
-              ...block,
-              fields: Array.isArray(block.fields)
-                ? [...block.fields]
-                : block.fields,
-            }))
+          ? nativeFieldsField.blocks
           : []
 
       const stepsField: Field = {
@@ -173,7 +231,6 @@ export const formBuilder: Plugin = formBuilderPlugin({
           type StepItem = {
             title?: string
             description?: string
-            type?: 'form' | 'preview'
             fields?: unknown[]
           }
 
@@ -186,10 +243,7 @@ export const formBuilder: Plugin = formBuilderPlugin({
 
             for (let i = 0; i < steps.length; i++) {
               const step = steps[i]
-              if (
-                step?.type === 'form' &&
-                (!Array.isArray(step?.fields) || step.fields.length === 0)
-              ) {
+              if (!Array.isArray(step?.fields) || step.fields.length === 0) {
                 return `Step ${i + 1} ("${step?.title || 'Untitled'}") must have at least one field.`
               }
             }
@@ -236,25 +290,61 @@ export const formBuilder: Plugin = formBuilderPlugin({
             }),
           },
           {
-            name: 'type',
-            type: 'select',
-            required: true,
-            defaultValue: 'form',
-            options: [
-              { label: 'Form fields', value: 'form' },
-              { label: 'Preview submission', value: 'preview' },
-            ],
-          },
-          {
             name: 'fields',
             type: 'blocks',
             label: 'Fields',
             defaultValue: [],
             blocks: nativeFieldBlocks,
             admin: {
-              condition: (_, siblingData) => siblingData?.type === 'form',
               description:
                 'These are the same native field types available in a standard Payload form.',
+            },
+          },
+        ],
+      }
+
+      const previewStepField: Field = {
+        name: 'previewStep',
+        type: 'group',
+        label: 'Preview Submission Step',
+        defaultValue: {
+          title: 'Review & submit',
+        },
+        admin: {
+          condition: (_, siblingData) =>
+            siblingData?.formLayout === 'multiStep',
+          description:
+            'Compulsory final stage for multi-step forms where visitors review their answers before submitting.',
+        },
+        fields: [
+          {
+            name: 'title',
+            type: 'text',
+            required: true,
+            label: 'Step name',
+            defaultValue: 'Review & submit',
+            admin: {
+              description:
+                'Name displayed in the step progress bar and stage header.',
+            },
+          },
+          {
+            name: 'description',
+            type: 'richText',
+            label: 'Step description',
+            editor: lexicalEditor({
+              features: ({ rootFeatures }) => [
+                ...rootFeatures,
+                HeadingFeature({
+                  enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'],
+                }),
+                FixedToolbarFeature(),
+                InlineToolbarFeature(),
+              ],
+            }),
+            admin: {
+              description:
+                'Optional introductory text displayed above the submission summary.',
             },
           },
         ],
@@ -343,6 +433,7 @@ export const formBuilder: Plugin = formBuilderPlugin({
               },
             },
             stepsField,
+            previewStepField,
           ]
         }
 
@@ -352,10 +443,14 @@ export const formBuilder: Plugin = formBuilderPlugin({
       const hasSteps = configuredFields.some(
         (field) => 'name' in field && field.name === 'steps',
       )
+      const hasPreviewStep = configuredFields.some(
+        (field) => 'name' in field && field.name === 'previewStep',
+      )
 
       return [
         ...configuredFields,
         ...(hasSteps ? [] : [stepsField]),
+        ...(hasPreviewStep ? [] : [previewStepField]),
         formLayoutField,
         privacyConsentField,
       ]

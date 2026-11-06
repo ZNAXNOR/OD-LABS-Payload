@@ -769,6 +769,10 @@ export interface Form {
             width?: number | null;
             required?: boolean | null;
             defaultValue?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'checkbox';
@@ -778,6 +782,10 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'country';
@@ -787,6 +795,10 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'email';
@@ -817,6 +829,10 @@ export interface Form {
             width?: number | null;
             defaultValue?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'number';
@@ -844,6 +860,10 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'state';
@@ -854,6 +874,10 @@ export interface Form {
             width?: number | null;
             defaultValue?: string | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'text';
@@ -864,6 +888,10 @@ export interface Form {
             width?: number | null;
             defaultValue?: string | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'textarea';
@@ -874,6 +902,10 @@ export interface Form {
             width?: number | null;
             required?: boolean | null;
             defaultValue?: string | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'date';
@@ -891,6 +923,10 @@ export interface Form {
                 }[]
               | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'radio';
@@ -918,7 +954,6 @@ export interface Form {
           };
           [k: string]: unknown;
         } | null;
-        type: 'form' | 'preview';
         /**
          * These are the same native field types available in a standard Payload form.
          */
@@ -930,6 +965,10 @@ export interface Form {
                   width?: number | null;
                   required?: boolean | null;
                   defaultValue?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
                   id?: string | null;
                   blockName?: string | null;
                   blockType: 'checkbox';
@@ -939,6 +978,10 @@ export interface Form {
                   label?: string | null;
                   width?: number | null;
                   required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
                   id?: string | null;
                   blockName?: string | null;
                   blockType: 'country';
@@ -948,6 +991,10 @@ export interface Form {
                   label?: string | null;
                   width?: number | null;
                   required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
                   id?: string | null;
                   blockName?: string | null;
                   blockType: 'email';
@@ -978,6 +1025,10 @@ export interface Form {
                   width?: number | null;
                   defaultValue?: number | null;
                   required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
                   id?: string | null;
                   blockName?: string | null;
                   blockType: 'number';
@@ -1005,6 +1056,10 @@ export interface Form {
                   label?: string | null;
                   width?: number | null;
                   required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
                   id?: string | null;
                   blockName?: string | null;
                   blockType: 'state';
@@ -1015,6 +1070,10 @@ export interface Form {
                   width?: number | null;
                   defaultValue?: string | null;
                   required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
                   id?: string | null;
                   blockName?: string | null;
                   blockType: 'text';
@@ -1025,6 +1084,10 @@ export interface Form {
                   width?: number | null;
                   defaultValue?: string | null;
                   required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
                   id?: string | null;
                   blockName?: string | null;
                   blockType: 'textarea';
@@ -1035,6 +1098,10 @@ export interface Form {
                   width?: number | null;
                   required?: boolean | null;
                   defaultValue?: string | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
                   id?: string | null;
                   blockName?: string | null;
                   blockType: 'date';
@@ -1052,6 +1119,10 @@ export interface Form {
                       }[]
                     | null;
                   required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
                   id?: string | null;
                   blockName?: string | null;
                   blockType: 'radio';
@@ -1061,6 +1132,33 @@ export interface Form {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Compulsory final stage for multi-step forms where visitors review their answers before submitting.
+   */
+  previewStep?: {
+    /**
+     * Name displayed in the step progress bar and stage header.
+     */
+    title: string;
+    /**
+     * Optional introductory text displayed above the submission summary.
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
   submitButtonLabel?: string | null;
   confirmationType?: ('message' | 'redirect') | null;
   confirmationMessage?: {
@@ -2288,6 +2386,7 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               required?: T;
               defaultValue?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2298,6 +2397,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2308,6 +2408,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2326,6 +2427,7 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2355,6 +2457,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2366,6 +2469,7 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2377,6 +2481,7 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2388,6 +2493,7 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               required?: T;
               defaultValue?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2406,6 +2512,7 @@ export interface FormsSelect<T extends boolean = true> {
                     id?: T;
                   };
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2415,7 +2522,6 @@ export interface FormsSelect<T extends boolean = true> {
     | {
         title?: T;
         description?: T;
-        type?: T;
         fields?:
           | T
           | {
@@ -2427,6 +2533,7 @@ export interface FormsSelect<T extends boolean = true> {
                     width?: T;
                     required?: T;
                     defaultValue?: T;
+                    placeholder?: T;
                     id?: T;
                     blockName?: T;
                   };
@@ -2437,6 +2544,7 @@ export interface FormsSelect<T extends boolean = true> {
                     label?: T;
                     width?: T;
                     required?: T;
+                    placeholder?: T;
                     id?: T;
                     blockName?: T;
                   };
@@ -2447,6 +2555,7 @@ export interface FormsSelect<T extends boolean = true> {
                     label?: T;
                     width?: T;
                     required?: T;
+                    placeholder?: T;
                     id?: T;
                     blockName?: T;
                   };
@@ -2465,6 +2574,7 @@ export interface FormsSelect<T extends boolean = true> {
                     width?: T;
                     defaultValue?: T;
                     required?: T;
+                    placeholder?: T;
                     id?: T;
                     blockName?: T;
                   };
@@ -2494,6 +2604,7 @@ export interface FormsSelect<T extends boolean = true> {
                     label?: T;
                     width?: T;
                     required?: T;
+                    placeholder?: T;
                     id?: T;
                     blockName?: T;
                   };
@@ -2505,6 +2616,7 @@ export interface FormsSelect<T extends boolean = true> {
                     width?: T;
                     defaultValue?: T;
                     required?: T;
+                    placeholder?: T;
                     id?: T;
                     blockName?: T;
                   };
@@ -2516,6 +2628,7 @@ export interface FormsSelect<T extends boolean = true> {
                     width?: T;
                     defaultValue?: T;
                     required?: T;
+                    placeholder?: T;
                     id?: T;
                     blockName?: T;
                   };
@@ -2527,6 +2640,7 @@ export interface FormsSelect<T extends boolean = true> {
                     width?: T;
                     required?: T;
                     defaultValue?: T;
+                    placeholder?: T;
                     id?: T;
                     blockName?: T;
                   };
@@ -2545,11 +2659,18 @@ export interface FormsSelect<T extends boolean = true> {
                           id?: T;
                         };
                     required?: T;
+                    placeholder?: T;
                     id?: T;
                     blockName?: T;
                   };
             };
         id?: T;
+      };
+  previewStep?:
+    | T
+    | {
+        title?: T;
+        description?: T;
       };
   submitButtonLabel?: T;
   confirmationType?: T;
@@ -2845,12 +2966,11 @@ export interface Footer {
 export interface ContactSocial {
   id: number;
   /**
-   * Actions displayed in the contact form sidebar. Select an internal page or provide an external custom URL (such as mailto: or a Cal.com link).
+   * Actions displayed in the contact form sidebar, megamenu, or footer. Select an internal page or provide an external custom URL (such as mailto: or a Cal.com link).
    */
   contactActions?:
     | {
-        label: string;
-        link?: {
+        link: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
@@ -2863,6 +2983,7 @@ export interface ContactSocial {
                 value: number | Post;
               } | null);
           url?: string | null;
+          label: string;
         };
         description?: string | null;
         enabled?: boolean | null;
@@ -2872,7 +2993,7 @@ export interface ContactSocial {
   socialLinks?:
     | {
         profile: 'omkar-dalvi' | 'od-labs';
-        platform: 'linkedin' | 'github' | 'instagram' | 'youtube' | 'x' | 'facebook' | 'threads';
+        platform: 'linkedin' | 'github' | 'instagram' | 'youtube' | 'x' | 'facebook' | 'threads' | 'website';
         url: string;
         enabled?: boolean | null;
         id?: string | null;
@@ -2935,7 +3056,6 @@ export interface ContactSocialsSelect<T extends boolean = true> {
   contactActions?:
     | T
     | {
-        label?: T;
         link?:
           | T
           | {
@@ -2943,6 +3063,7 @@ export interface ContactSocialsSelect<T extends boolean = true> {
               newTab?: T;
               reference?: T;
               url?: T;
+              label?: T;
             };
         description?: T;
         enabled?: T;

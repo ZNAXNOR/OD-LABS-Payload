@@ -2,6 +2,7 @@
 
 import * as Sentry from '@sentry/nextjs'
 import React, { useEffect } from 'react'
+import { getGitHubIssueUrl } from '@/utilities/getGitHubIssueUrl'
 
 export default function GlobalError({
   error,
@@ -217,6 +218,37 @@ export default function GlobalError({
             >
               Return Home
             </button>
+
+            <a
+              href={getGitHubIssueUrl({
+                errorMessage: error?.message,
+                errorName: error?.name,
+                digest: error?.digest,
+                title: `[Bug]: Critical Root Layout Failure${error?.digest ? ` (${error.digest})` : ''}`,
+                labels: ['bug', 'critical'],
+              })}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                backgroundColor: 'transparent',
+                color: '#d4d4d8',
+                border: '1px solid #3f3f46',
+                padding: '12px 24px',
+                fontFamily: 'monospace',
+                fontSize: '11px',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                cursor: 'pointer',
+              }}
+            >
+              <span>Report Issue</span>
+              <span style={{ color: '#71717a' }}>↗</span>
+            </a>
 
             <a
               href="https://status.odtechlab.com"
