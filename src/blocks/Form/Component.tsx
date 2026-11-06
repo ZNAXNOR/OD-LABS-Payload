@@ -313,7 +313,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                         <p className="shrink-0 font-mono text-xs text-zinc-500"><span className="text-zinc-100">{String(activeStep + 1).padStart(2, '0')}</span> / {String(steps.length).padStart(2, '0')}</p>
                       </div>
                       <div className="flex gap-1.5" role="progressbar" aria-label="Form progress" aria-valuemin={1} aria-valuemax={steps.length} aria-valuenow={activeStep + 1}>
-                        {steps.map((step, index) => <span key={step.id || index} className={`h-1 flex-1 ${index <= activeStep || completedSteps.includes(index) ? 'bg-odl' : 'bg-zinc-800'}`} />)}
+                        {steps.map((step, index) => <span key={step.id || index} className={`h-1 flex-1 ${completedSteps.includes(index) ? 'bg-emerald-600' : index === activeStep ? 'bg-odl' : 'bg-zinc-800'}`} />)}
                       </div>
                       <p className="mt-2 text-xs text-zinc-500">{steps.length - activeStep - 1} {steps.length - activeStep - 1 === 1 ? 'step' : 'steps'} remaining</p>
                     </div>
