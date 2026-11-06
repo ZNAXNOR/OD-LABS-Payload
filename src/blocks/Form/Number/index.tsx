@@ -17,6 +17,7 @@ export const Number: React.FC<
     <Width width={width}>
       <FieldLabel htmlFor={name} label={label} required={required} />
       <Input
+        className="h-12 rounded-none border-zinc-800 bg-black text-sm text-zinc-100 shadow-none placeholder:text-zinc-600 focus-visible:ring-1 focus-visible:ring-odl focus-visible:ring-offset-0"
         defaultValue={defaultValue}
         id={name}
         type="number"
