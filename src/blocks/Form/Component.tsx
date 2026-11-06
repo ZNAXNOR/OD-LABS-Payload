@@ -387,7 +387,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                               <button
                                 type="button"
                                 disabled={!accessible || isLoading}
-                                aria-current={current ? 'step' : undefined}
+                                aria-current={viewing ? 'step' : undefined}
                                 onClick={() => navigateToStep(index)}
                                 className="group w-full text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl disabled:cursor-default"
                               >
