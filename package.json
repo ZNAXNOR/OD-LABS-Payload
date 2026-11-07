@@ -119,8 +119,10 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "sharp",
+      "@parcel/watcher",
+      "@sentry/cli",
       "esbuild",
+      "sharp",
       "unrs-resolver"
     ]
   }
