@@ -31,37 +31,40 @@ export const RightRail = ({ onMenuOpen, sections }: RightRailProps) => {
         </span>
       </button>
 
-      {/* Page Sections */}
-      <nav aria-label="Section navigation" className="bottom-16 mt-auto mb-16">
-        <ol className="flex flex-col items-center gap-4">
-          {visibleSections.map(({ section, index, isCompressed }) => (
-            <li key={section.id}>
-              <a
-                href={section.href}
-                onClick={(event) => handleSectionScroll({ section, event })}
-                aria-label={`Go to ${section.label}`}
-                className="group flex items-center justify-center p-1.5"
-              >
-                <span className="pointer-events-none absolute right-full mr-0 -translate-x-1 border border-zinc-700 bg-zinc-900 px-2 py-1 font-mono text-xs tracking-widest whitespace-nowrap text-zinc-300 uppercase opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100">
-                  {String(index + 1).padStart(2, '0')} / {section.label}
-                </span>
+      {/* Page Sections: Only displayed if more than 1 section exists */}
+      {visibleSections.length > 1 && (
+        <nav aria-label="Section navigation" className="bottom-16 mt-auto mb-16">
+          <ol className="flex flex-col items-center gap-4">
+            {visibleSections.map(({ section, index, isCompressed }) => (
+              <li key={section.id}>
+                <a
+                  href={section.href}
+                  onClick={(event) => handleSectionScroll({ section, event })}
+                  aria-label={`Go to ${section.label}`}
+                  aria-current={activeSection === section.id ? 'location' : undefined}
+                  className="group relative flex items-center justify-center p-1.5 focus:outline-none"
+                >
+                  <span className="pointer-events-none absolute right-full mr-2 -translate-x-1 border border-zinc-700 bg-zinc-900 px-2 py-1 font-mono text-xs tracking-widest whitespace-nowrap text-zinc-300 uppercase opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
+                    {String(index + 1).padStart(2, '0')} / {section.label}
+                  </span>
 
-                <span
-                  className={[
-                    'block h-2 w-2 rounded-full border transition-all duration-200',
-                    isCompressed
-                      ? '- size-1.5 border border-zinc-700 bg-zinc-900 opacity-100'
-                      : 'size-2',
-                    activeSection === section.id
-                      ? 'border-[#FF3B30] bg-[#FF3B30]'
-                      : 'border-zinc-700 bg-zinc-900',
-                  ].join(' ')}
-                />
-              </a>
-            </li>
-          ))}
-        </ol>
-      </nav>
+                  <span
+                    className={[
+                      'block rounded-full border transition-all duration-200',
+                      isCompressed
+                        ? 'size-1.5 border-zinc-700 bg-zinc-900 opacity-100'
+                        : 'size-2',
+                      activeSection === section.id
+                        ? 'border-odl bg-odl'
+                        : 'border-zinc-700 bg-zinc-900',
+                    ].join(' ')}
+                  />
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
     </aside>
   )
 }

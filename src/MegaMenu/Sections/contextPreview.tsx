@@ -1,29 +1,44 @@
-import { PagesData } from '../../getPagesData'
+import React from 'react'
+import type { PagesData } from '../../getPagesData'
 import { MegaMenu_ContextDefault } from './contextDefault'
+import { MegaMenu_ContextErrorPreview } from './contextErrorPreview'
+import type { CurrentPageInfo } from '../types'
 import type { ContactSocial } from '@/payload-types'
 
 interface MegaMenu_ContextPreviewProps {
   page: PagesData | null
+  currentPage?: CurrentPageInfo | PagesData | null
   contactSocials?: ContactSocial | null
 }
 
 export const MegaMenu_ContextPreview = ({
   page,
+  currentPage,
   contactSocials,
 }: MegaMenu_ContextPreviewProps) => {
+  const isErrorState =
+    currentPage && 'errorCode' in currentPage && Boolean(currentPage.errorCode)
+
   return (
     <div className="relative h-full min-h-[400px]">
-      {/* Default Context */}
+      {/* Default Context or Error Diagnostic Preview */}
       <div
         className={[
           'absolute inset-0 transition-opacity duration-300 ease-out',
           page ? 'pointer-events-none opacity-0' : 'opacity-100',
         ].join(' ')}
       >
-        <MegaMenu_ContextDefault contactSocials={contactSocials} />
+        {isErrorState ? (
+          <MegaMenu_ContextErrorPreview
+            errorInfo={currentPage as CurrentPageInfo}
+            contactSocials={contactSocials}
+          />
+        ) : (
+          <MegaMenu_ContextDefault contactSocials={contactSocials} />
+        )}
       </div>
 
-      {/* Preview Context */}
+      {/* Hovered Page Preview Context */}
       <div
         className={[
           'absolute inset-0 transition-opacity duration-200 ease-out',
@@ -57,7 +72,7 @@ export const MegaMenu_ContextPreview = ({
                 <div className="space-y-2 font-mono text-xs">
                   {page.sections.map((section, index) => (
                     <div
-                      key={section.href ?? section.label}
+                      key={section.id || `${section.href}-${index}`}
                       className="flex h-9 border border-zinc-700 bg-zinc-900 p-2 text-white"
                     >
                       <span className="mr-2 text-odl select-none">

@@ -1,5 +1,4 @@
-import { PagesData } from '@/getPagesData'
-import { useActiveSection } from './activeSection'
+import type { PagesData } from '@/getPagesData'
 
 const MAX_VISIBLE_SECTIONS = 5
 
@@ -7,6 +6,10 @@ export const getVisibleSections = (
   sections: PagesData['sections'],
   activeSection: string | null,
 ) => {
+  if (!sections || sections.length <= 1) {
+    return []
+  }
+
   if (sections.length <= MAX_VISIBLE_SECTIONS) {
     return sections.map((section, index) => ({
       section,

@@ -28,7 +28,10 @@ const LayoutClientContent = ({
 }) => {
   const { isOpen, openMenu, closeMenu } = useMegaMenu()
   const pathname = usePathname()
-  const currentPage = pagesData?.find((page) => page.href === pathname)
+  const normalizedPath = pathname ? pathname.replace(/\/$/, '') || '/' : '/'
+  const currentPage = pagesData?.find(
+    (page) => page.href === pathname || page.href === normalizedPath,
+  )
 
   return (
     <>

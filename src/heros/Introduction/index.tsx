@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { Page } from '@/payload-types'
 
@@ -7,6 +9,7 @@ import { Media } from '@/components/Media'
 
 import TextType from '@/components/TextType'
 import Eyebrow from '@/components/Eyebrow'
+import { handleSectionScroll } from '@/Rail/Right/sectionScroll'
 
 import { UserRound, ArrowDown, ArrowRight, MapPinHouse } from 'lucide-react'
 
@@ -23,6 +26,57 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
     introductionLocation,
   } = props
 
+  const heroRef = useRef<HTMLElement>(null)
+  const [scrollTargetHref, setScrollTargetHref] = useState<string>('#')
+
+  const getSecondBlock = useCallback((): HTMLElement | null => {
+    const heroElement =
+      document.getElementById('hero') ??
+      heroRef.current?.closest('#hero') ??
+      heroRef.current
+    const nextSibling = heroElement?.nextElementSibling as HTMLElement | null
+    if (nextSibling) return nextSibling
+
+    return document.querySelector('article > div[id]') as HTMLElement | null
+  }, [])
+
+  useEffect(() => {
+    const secondBlock = getSecondBlock()
+    if (secondBlock?.id) {
+      setScrollTargetHref(`#${secondBlock.id}`)
+    }
+  }, [getSecondBlock])
+
+  const handleScrollDown = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const secondBlock = getSecondBlock()
+
+    if (secondBlock) {
+      handleSectionScroll({
+        target: secondBlock,
+        section: secondBlock.id
+          ? { id: secondBlock.id, href: `#${secondBlock.id}` }
+          : undefined,
+        event,
+      })
+      return
+    }
+
+    event.preventDefault()
+    const heroElement =
+      document.getElementById('hero') ??
+      heroRef.current?.closest('#hero') ??
+      heroRef.current
+    if (heroElement) {
+      const offset = 16
+      const heroBottom = heroElement.getBoundingClientRect().bottom + window.scrollY - offset
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      window.scrollTo({
+        top: heroBottom,
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+      })
+    }
+  }
+
   const phrases =
     introductionPhrases?.filter(
       (phrase): phrase is string =>
@@ -30,7 +84,7 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
     ) ?? []
 
   return (
-    <section className="relative isolate mb-4 overflow-hidden">
+    <section ref={heroRef} className="relative isolate mb-4 overflow-hidden">
       <div className="relative z-10 container grid min-h-[75vh] grid-cols-1 items-center gap-12 py-8 lg:grid-cols-12 lg:gap-8 xl:gap-12">
         {/* Left: Content */}
         <div className="min-w-0 lg:col-span-8">
@@ -151,7 +205,8 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
       </div>
       <div className="container flex items-center justify-between border-b border-white/10 py-5">
         <a
-          href="#work"
+          href={scrollTargetHref}
+          onClick={handleScrollDown}
           className="group mb-8 inline-flex items-center gap-3 font-mono text-sm tracking-[0.2em] text-white/50 uppercase transition-colors hover:text-white"
         >
           <span>Scroll down</span>

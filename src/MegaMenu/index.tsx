@@ -6,6 +6,8 @@ import { useEffect } from 'react'
 import { MegaMenuMain } from './main'
 import { usePathname } from 'next/navigation'
 
+import { resolveCurrentPage } from './utils/resolveCurrentPage'
+
 import type { PagesData } from '../getPagesData'
 import type { LegalPagesData } from '../getLegalPagesData'
 import type { ContactSocial } from '@/payload-types'
@@ -26,8 +28,7 @@ export const MegaMenu = ({
   contactSocials,
 }: MegaMenuProps) => {
   const pathname = usePathname()
-  const currentSlug = pathname === '/' ? 'home' : pathname.split('/')[1] || 'home'
-  const currentPage = pages.find((page) => page.slug === currentSlug) || null
+  const currentPage = resolveCurrentPage({ pathname, pages, legalPages })
 
   useEffect(() => {
     if (!open) return

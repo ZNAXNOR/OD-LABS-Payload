@@ -9,11 +9,15 @@ export const LeftRail = () => {
   const showLogo = useShowLogo()
 
   return (
-    <aside className="hidden h-full w-18 border-r border-zinc-600 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] [--pattern-fg:var(--color-zinc-100)]/10 lg:block">
+    <aside
+      className="hidden h-full w-18 border-r border-zinc-600 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] [--pattern-fg:var(--color-zinc-100)]/10 lg:block"
+      aria-label="Brand navigation"
+    >
       <Link
         href="/"
+        aria-label="Go to home"
         className={cn(
-          'sticky top-0  flex h-18 w-full cursor-pointer items-center justify-center border-b border-zinc-600 bg-zinc-950 transition-opacity duration-150',
+          'sticky top-0 flex h-18 w-full cursor-pointer items-center justify-center border-b border-zinc-600 bg-zinc-950 transition-opacity duration-150',
           showLogo ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
         )}
       >

@@ -52,11 +52,11 @@ function loadCalEmbed() {
         let api = current.ns![namespace]
         if (!api) {
           api = ((...apiArgs: unknown[]) => queue(api!, apiArgs)) as CalNamespace
+          api.q = []
+          current.ns![namespace] = api
+          queue(api, args)
+          queue(current, ['initNamespace', namespace])
         }
-        api.q = api.q || []
-        current.ns![namespace] = api
-        queue(api, args)
-        queue(current, ['initNamespace', namespace])
       } else {
         queue(current, args)
       }
@@ -104,6 +104,17 @@ export const CalBookingBlock: FC<CalBookingBlockProps> = ({ options }) => {
 
     const namespaceApi = cal.ns?.[namespace]
     if (!namespaceApi) return
+
+    const container = document.getElementById(elementId)
+    if (!container || container.querySelector('iframe')) return
+
+    // Prevent duplicate inline queueing if effect runs before embed script finishes loading
+    if (Array.isArray(namespaceApi.q)) {
+      const alreadyQueued = namespaceApi.q.some(
+        (args) => Array.isArray(args) && args[0] === 'inline',
+      )
+      if (alreadyQueued) return
+    }
 
     namespaceApi('inline', {
       elementOrSelector: `#${elementId}`,

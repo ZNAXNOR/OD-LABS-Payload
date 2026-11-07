@@ -4,31 +4,52 @@ import type { PagesData } from '@/getPagesData'
 const ACTIVE_OFFSET = 80
 
 export const useActiveSection = (sections: PagesData['sections']) => {
-  const [activeSection, setActiveSection] = useState<string | null>(sections[0]?.id ?? null)
+  const [activeSection, setActiveSection] = useState<string | null>(
+    sections && sections.length > 1 ? sections[0].id : null,
+  )
 
   useEffect(() => {
-    if (!sections.length) {
+    if (!sections || sections.length <= 1) {
       setActiveSection(null)
       return
     }
 
     setActiveSection(sections[0].id)
 
+    let ticking = false
+
     const handleScroll = () => {
-      let currentSection = sections[0]
+      if (ticking) return
+      ticking = true
 
-      for (const section of sections) {
-        const element = document.getElementById(section.id)
+      requestAnimationFrame(() => {
+        ticking = false
 
-        if (!element) continue
+        // Check if user is scrolled to the bottom of the page
+        const isBottom =
+          window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight - 50
 
-        if (element.getBoundingClientRect().top <= ACTIVE_OFFSET) {
-          currentSection = section
-        } else {
-          break
+        if (isBottom) {
+          setActiveSection(sections[sections.length - 1].id)
+          return
         }
-      }
-      setActiveSection(currentSection.id)
+
+        let currentSection = sections[0]
+
+        for (const section of sections) {
+          const element = document.getElementById(section.id)
+
+          if (!element) continue
+
+          if (element.getBoundingClientRect().top <= ACTIVE_OFFSET) {
+            currentSection = section
+          } else {
+            break
+          }
+        }
+        setActiveSection(currentSection.id)
+      })
     }
 
     handleScroll()
