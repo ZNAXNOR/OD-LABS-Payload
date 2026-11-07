@@ -1,10 +1,13 @@
 # Nixpacks configuration for Dokploy deployment
+[variables]
+COREPACK_ENABLE_DOWNLOAD_PROMPT = "0"
+
 [phases.setup]
 nixPkgs = ["nodejs_22", "openssl"]
 
 [phases.install]
 cmds = [
-  "npm install -g pnpm@12.16.1",
+  "npm install -g corepack@latest && corepack enable && corepack prepare pnpm@12.16.1 --activate",
   "pnpm i --frozen-lockfile"
 ]
 
