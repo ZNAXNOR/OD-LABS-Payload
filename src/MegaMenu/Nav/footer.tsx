@@ -1,5 +1,6 @@
 import { LegalPageLinks } from '@/components/LegalPageLinks'
 import type { LegalPagesData } from '@/getLegalPagesData'
+import { ReportIssue } from '@/components/ReportIssue'
 
 interface MegaMenuFooterProps {
   legalPages: LegalPagesData[]
@@ -21,8 +22,13 @@ export const MegaMenuFooter = ({ legalPages }: MegaMenuFooterProps) => {
             )}
           </div>
 
-          <div className="hidden text-xs text-zinc-600 sm:block">
-            ESC to close
+          <div className="flex items-center gap-4 text-xs">
+            <ReportIssue
+              variant="link"
+              label="Report an Issue"
+              className="text-zinc-500 hover:text-white"
+            />
+            <span className="hidden text-zinc-600 sm:block">ESC to close</span>
           </div>
         </div>
       </div>

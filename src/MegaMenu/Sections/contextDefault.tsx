@@ -1,8 +1,11 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { ServiceStatus } from '@/components/ServiceStatus'
+import { ContactActions } from '@/components/Contact/ContactActions'
+import { SocialLinks } from '@/components/Contact/SocialLinks'
+import { formatContactActions, formatSocialLinks } from '@/components/Contact/utils'
+import type { ContactSocial } from '@/payload-types'
 
 const Time_Zone = 'Asia/Kolkata'
 const Locale = 'en-IN'
@@ -25,8 +28,32 @@ const formatDate = (date: Date) =>
     day: '2-digit',
   }).format(date)
 
-export const MegaMenu_ContextDefault = () => {
+export const MegaMenu_ContextDefault = ({
+  contactSocials: initialContactSocials,
+}: {
+  contactSocials?: ContactSocial | null
+}) => {
   const [now, setNow] = useState<Date | null>(null)
+  const [contactSocials, setContactSocials] = useState<ContactSocial | null | undefined>(
+    initialContactSocials,
+  )
+
+  useEffect(() => {
+    if (initialContactSocials !== undefined) {
+      setContactSocials(initialContactSocials)
+      return
+    }
+    let cancelled = false
+    fetch('/api/globals/contact-socials?depth=1')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data) setContactSocials(data)
+      })
+      .catch(() => undefined)
+    return () => {
+      cancelled = true
+    }
+  }, [initialContactSocials])
 
   useEffect(() => {
     const updateTime = () => setNow(new Date())
@@ -34,6 +61,9 @@ export const MegaMenu_ContextDefault = () => {
     const interval = setInterval(updateTime, 1000)
     return () => clearInterval(interval)
   }, [])
+
+  const contactActions = formatContactActions(contactSocials?.contactActions)
+  const socialLinks = formatSocialLinks(contactSocials?.socialLinks)
 
   return (
     <aside className="flex flex-col justify-between pt-8 lg:pt-0">
@@ -61,38 +91,28 @@ export const MegaMenu_ContextDefault = () => {
           </div>
         </section>
 
-        {/* Contact actions */}
-        <section className="space-y-3 border-t border-zinc-600/60 pt-6">
-          <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
-            Contact
+        {/* Contact actions & Socials */}
+        {(contactActions.length > 0 || socialLinks.length > 0) && (
+          <div className="space-y-6 border-t border-zinc-600/60 pt-6">
+            {contactActions.length > 0 && (
+              <section className="space-y-3">
+                <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
+                  Contacts
+                </div>
+                <ContactActions actions={contactActions} />
+              </section>
+            )}
+
+            {socialLinks.length > 0 && (
+              <section className="space-y-3">
+                <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
+                  Socials
+                </div>
+                <SocialLinks links={socialLinks} />
+              </section>
+            )}
           </div>
-          <div className="flex flex-col gap-2">
-            <Link
-              href="/contact"
-              className="group border-odl bg-odl hover:bg-odl/90 hover:border-odl/60 focus-visible:outline-odl flex min-h-12 w-full items-center justify-between border px-4 py-3 font-mono text-xs tracking-wide text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
-            >
-              <span>[ Build a project ]</span>
-              <span
-                aria-hidden="true"
-                className="transition-transform group-hover:translate-x-1"
-              >
-                ↗
-              </span>
-            </Link>
-            <Link
-              href="/book"
-              className="group focus-visible:outline-odl hover:bg-odl/5 hover:border-odl flex min-h-12 w-full items-center justify-between border border-zinc-800 px-4 py-3 font-mono text-xs tracking-wide text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
-            >
-              <span>[ Schedule a meeting ]</span>
-              <span
-                aria-hidden="true"
-                className="text-zinc-500 transition-transform group-hover:translate-x-1 group-hover:text-white"
-              >
-                ↗
-              </span>
-            </Link>
-          </div>
-        </section>
+        )}
 
         {/* Public service status */}
         <ServiceStatus variant="block" />

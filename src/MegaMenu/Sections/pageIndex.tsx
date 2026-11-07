@@ -35,7 +35,7 @@ export const MegaMenu_PageIndex = ({
               className={[
                 'flex w-full items-center justify-between',
                 'min-h-16 pb-5',
-                'font-mono text-2xl font-semibold sm:text-3xl lg:text-4xl',
+                'font-mono text-xl font-semibold sm:text-2xl lg:text-3xl',
               ].join(' ')}
             >
               {/* Page Title Link */}

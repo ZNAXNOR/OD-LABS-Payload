@@ -4,7 +4,6 @@ import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-f
 import { useFormContext } from 'react-hook-form'
 
 import { Checkbox as CheckboxUi } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
 import React from 'react'
 
 import { Error } from '../Error'
@@ -24,20 +23,14 @@ export const Checkbox: React.FC<
       <div className="flex items-center gap-2">
         <CheckboxUi
           defaultChecked={defaultValue}
+          className="size-4 rounded-none border-zinc-600 bg-black data-[state=checked]:border-odl data-[state=checked]:bg-odl data-[state=checked]:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl focus-visible:ring-0"
           id={name}
           {...props}
           onCheckedChange={(checked) => {
             setValue(props.name, checked)
           }}
         />
-        <Label htmlFor={name}>
-          {required && (
-            <span className="required">
-              * <span className="sr-only">(required)</span>
-            </span>
-          )}
-          {label}
-        </Label>
+        <label htmlFor={name} className="cursor-pointer text-sm font-medium leading-5 text-zinc-300">{label}<span className={`ml-2 font-mono text-[9px] font-normal uppercase tracking-[0.14em] ${required ? 'text-odl' : 'text-zinc-500'}`}>{required ? 'Required' : 'Optional'}</span></label>
       </div>
       {errors[name] && <Error name={name} />}
     </Width>

@@ -1,6 +1,7 @@
 import { RequiredDataFromCollectionSlug } from 'payload'
 
 export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
+  formLayout: 'standard',
   confirmationMessage: {
     root: {
       type: 'root',

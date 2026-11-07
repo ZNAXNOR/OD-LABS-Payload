@@ -12,10 +12,15 @@ export const FormBlock: Block = {
   interfaceName: 'FormBlock',
   fields: [
     {
-      name: 'form',
-      type: 'relationship',
-      relationTo: 'forms',
+      name: 'variant',
+      type: 'select',
+      label: 'Form layout',
       required: true,
+      defaultValue: 'single',
+      options: [
+        { label: 'Single Form', value: 'single' },
+        { label: 'Multi Form', value: 'multi' },
+      ]
     },
     {
       name: 'enableIntro',
@@ -26,19 +31,78 @@ export const FormBlock: Block = {
       name: 'introContent',
       type: 'richText',
       admin: {
-        condition: (_, { enableIntro }) => Boolean(enableIntro),
+        condition: (_, siblingData) => Boolean(siblingData?.enableIntro),
       },
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
+          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+        ],
       }),
       label: 'Intro Content',
+    },
+    {
+      name: 'singleForm',
+      type: 'relationship',
+      relationTo: 'forms',
+      required: true,
+      label: 'Form',
+      admin: {
+        condition: (_, siblingData) => siblingData?.variant === 'single',
+      },
+    },
+    {
+      name: 'multiForms',
+      type: 'array',
+      label: 'Forms',
+      minRows: 2,
+      maxRows: 3,
+      admin: {
+        condition: (_, siblingData) => siblingData?.variant === 'multi',
+        description:
+          'Add 2–3 forms. Each entry becomes a selectable tab on the page. Reorder entries to change tab order.',
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'form',
+          type: 'relationship',
+          relationTo: 'forms',
+          required: true,
+          label: 'Form',
+        },
+        {
+          name: 'description',
+          type: 'richText',
+          label: 'Tab description',
+          editor: lexicalEditor({
+            features: ({ rootFeatures }) => [
+              ...rootFeatures,
+              HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+              FixedToolbarFeature(),
+              InlineToolbarFeature(),
+            ],
+          }),
+        },
+      ],
+      validate: (value) => {
+        if (!Array.isArray(value)) return true
+
+        const ids = value
+          .map((item: any) => {
+            const form = item?.form
+            return typeof form === 'object' && form !== null ? form.id : form
+          })
+          .filter((id) => id !== undefined && id !== null)
+          .map(String)
+
+        return (
+          new Set(ids).size === ids.length ||
+          'Select a different form for each tab.'
+        )
+      },
     },
   ],
   graphQL: {

@@ -64,6 +64,25 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
       required: true,
     },
     {
+      name: 'documentType',
+      type: 'select',
+      label: 'Legal document type',
+      unique: true,
+      options: [
+        { label: 'Privacy Policy', value: 'privacy-policy' },
+        { label: 'Terms of Service', value: 'terms-of-service' },
+        { label: 'Cookie Policy', value: 'cookie-policy' },
+        { label: 'Refund Policy', value: 'refund-policy' },
+        { label: 'Data Processing Agreement', value: 'data-processing-agreement' },
+        { label: 'Acceptable Use Policy', value: 'acceptable-use-policy' },
+        { label: 'Other legal document', value: 'other' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'A unique purpose for this legal page. Assign each type to only one page. Leave blank temporarily on existing documents until classified.',
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {

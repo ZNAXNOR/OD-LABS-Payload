@@ -1,7 +1,6 @@
 import type { SelectField } from '@payloadcms/plugin-form-builder/types'
 import type { Control, FieldErrorsImpl } from 'react-hook-form'
 
-import { Label } from '@/components/ui/label'
 import {
   Select as SelectComponent,
   SelectContent,
@@ -13,24 +12,19 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 
 import { Error } from '../Error'
+import { FieldLabel } from '../FieldLabel'
 import { Width } from '../Width'
 
 export const Select: React.FC<
   SelectField & {
     control: Control
     errors: Partial<FieldErrorsImpl>
+    placeholder?: string
   }
-> = ({ name, control, errors, label, options, required, width, defaultValue }) => {
+> = ({ name, control, errors, label, options, placeholder, required, width, defaultValue }) => {
   return (
     <Width width={width}>
-      <Label htmlFor={name}>
-        {label}
-        {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
-          </span>
-        )}
-      </Label>
+      <FieldLabel htmlFor={name} label={label} required={required} />
       <Controller
         control={control}
         defaultValue={defaultValue}
@@ -40,13 +34,13 @@ export const Select: React.FC<
 
           return (
             <SelectComponent onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
-              <SelectTrigger className="w-full" id={name}>
-                <SelectValue placeholder={label} />
+              <SelectTrigger className="h-12 w-full rounded-none border-zinc-800 bg-black text-sm text-zinc-200 shadow-none focus:ring-1 focus:ring-odl focus:ring-offset-0" id={name}>
+                <SelectValue placeholder={placeholder || label} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="rounded-none border-zinc-800 bg-zinc-950 text-zinc-200">
                 {options.map(({ label, value }) => {
                   return (
-                    <SelectItem key={value} value={value}>
+                    <SelectItem className="rounded-none focus:bg-zinc-800 focus:text-white" key={value} value={value}>
                       {label}
                     </SelectItem>
                   )

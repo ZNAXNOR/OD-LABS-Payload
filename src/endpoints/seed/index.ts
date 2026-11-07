@@ -50,7 +50,7 @@ export const seed = async ({
         slug: global,
         data: {
           navItems: [],
-        },
+        } as any,
         depth: 0,
         context: {
           disableRevalidate: true,
@@ -197,7 +197,148 @@ export const seed = async ({
   const contactForm = await payload.create({
     collection: 'forms',
     depth: 0,
-    data: contactFormData,
+    data: {
+      ...contactFormData,
+      title: 'General Contact',
+      formLayout: 'standard',
+      fields: [
+        {
+          name: 'fullName',
+          blockName: 'fullName',
+          blockType: 'text',
+          label: 'Full Name',
+          required: true,
+          width: 100,
+        },
+        {
+          name: 'email',
+          blockName: 'email',
+          blockType: 'email',
+          label: 'Email',
+          required: true,
+          width: 100,
+        },
+        {
+          name: 'subject',
+          blockName: 'subject',
+          blockType: 'text',
+          label: 'Subject',
+          required: false,
+          width: 100,
+        },
+        {
+          name: 'message',
+          blockName: 'message',
+          blockType: 'textarea',
+          label: 'Message',
+          required: true,
+          width: 100,
+        },
+      ],
+      steps: [],
+    },
+  })
+
+  const projectInquiryForm = await payload.create({
+    collection: 'forms',
+    depth: 0,
+    data: {
+      title: 'Project Inquiry',
+      formLayout: 'multiStep',
+      confirmationType: 'message',
+      confirmationMessage: contactFormData.confirmationMessage,
+      submitButtonLabel: 'Submit inquiry',
+      previewStep: {
+        title: 'Review & submit',
+      },
+      fields: [],
+      steps: [
+        {
+          title: 'About You',
+          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Tell us how to reach you.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
+          fields: [
+            { blockType: 'text', name: 'fullName', label: 'Full Name', required: true, width: 100 },
+            { blockType: 'email', name: 'workEmail', label: 'Work Email', required: true, width: 100 },
+            { blockType: 'text', name: 'company', label: 'Company / Organization', required: false, width: 100 },
+          ],
+        },
+        {
+          title: 'Project',
+          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"What are you looking to build or improve?","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
+          fields: [
+            {
+              blockType: 'select',
+              name: 'projectType',
+              label: 'Project Type',
+              required: true,
+              options: [
+                { label: 'Website', value: 'website' },
+                { label: 'Web application', value: 'web-application' },
+                { label: 'Automation', value: 'automation' },
+                { label: 'Data / reporting', value: 'data-reporting' },
+                { label: 'Technical assistance', value: 'technical-assistance' },
+                { label: 'Something else', value: 'other' },
+              ],
+            },
+            {
+              blockType: 'radio',
+              name: 'projectStage',
+              label: 'Project Stage',
+              required: true,
+              options: [
+                { label: 'Early idea', value: 'early-idea' },
+                { label: 'Planning / scoped', value: 'planning' },
+                { label: 'Existing product', value: 'existing-product' },
+                { label: 'Rebuild / improvement', value: 'rebuild' },
+              ],
+            },
+          ],
+        },
+        {
+          title: 'Scope',
+          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Share your expected budget and timeline, if known.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
+          fields: [
+            { blockType: 'select', name: 'budget', label: 'Budget', required: false, options: [
+              { label: 'Not decided', value: 'undecided' },
+              { label: 'Under $1,000', value: 'under-1000' },
+              { label: '$1,000–$5,000', value: '1000-5000' },
+              { label: '$5,000–$15,000', value: '5000-15000' },
+              { label: '$15,000+', value: '15000-plus' },
+            ] },
+            { blockType: 'select', name: 'timeline', label: 'Timeline', required: false, options: [
+              { label: 'Flexible', value: 'flexible' },
+              { label: 'Within 1 month', value: '1-month' },
+              { label: '1–3 months', value: '1-3-months' },
+              { label: '3+ months', value: '3-plus-months' },
+              { label: 'ASAP', value: 'asap' },
+            ] },
+            { blockType: 'date', name: 'launchDate', label: 'Target Launch Date', required: false },
+          ],
+        },
+        {
+          title: 'Goals',
+          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Describe the project and what success would look like.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
+          fields: [
+            { blockType: 'textarea', name: 'summary', label: 'Project Summary', required: true, width: 100 },
+            { blockType: 'textarea', name: 'successCriteria', label: 'Success Criteria', required: false, width: 100 },
+          ],
+        },
+      ],
+      emails: [
+        {
+          emailFrom: '"OD LABS" <omkar@notifications.odtechlab.com>',
+          emailTo: '{{workEmail}}',
+          subject: 'We received your project inquiry',
+          message: contactFormData.confirmationMessage,
+        },
+        {
+          emailFrom: '"OD LABS" <omkar@notifications.odtechlab.com>',
+          emailTo: 'omkar@odtechlab.com',
+          subject: 'New OD LABS project inquiry',
+          message: contactFormData.confirmationMessage,
+        },
+      ],
+    },
   })
 
   payload.logger.info(`— Seeding pages...`)
@@ -211,7 +352,7 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: contactPageData({ contactForm: contactForm }),
+      data: contactPageData({ generalForm: contactForm, projectInquiryForm }),
     }),
   ])
 
@@ -268,6 +409,50 @@ export const seed = async ({
               newTab: true,
               url: 'https://payloadcms.com/',
             },
+          },
+        ],
+      },
+    }),
+    payload.updateGlobal({
+      slug: 'contact-socials',
+      data: {
+        contactActions: [
+          {
+            link: {
+              type: 'custom',
+              url: 'mailto:omkar@notifications.odtechlab.com',
+              label: 'Email us',
+            },
+            enabled: true,
+          },
+          {
+            link: {
+              type: 'custom',
+              url: 'https://cal.com/od-omkar-dalvi/30min',
+              newTab: true,
+              label: 'Schedule a meeting',
+            },
+            enabled: true,
+          },
+        ],
+        socialLinks: [
+          {
+            profile: 'omkar-dalvi',
+            platform: 'linkedin',
+            url: 'https://linkedin.com/in/omkar-dalvi',
+            enabled: true,
+          },
+          {
+            profile: 'od-labs',
+            platform: 'github',
+            url: 'https://github.com/od-labs',
+            enabled: true,
+          },
+          {
+            profile: 'omkar-dalvi',
+            platform: 'x',
+            url: 'https://x.com/omkardalvi',
+            enabled: true,
           },
         ],
       },

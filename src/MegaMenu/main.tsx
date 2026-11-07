@@ -7,13 +7,19 @@ import { MegaMenu_PageIndex } from './Sections/pageIndex'
 import { MegaMenu_ContextPreview } from './Sections/contextPreview'
 
 import type { PagesData } from '../getPagesData'
+import type { ContactSocial } from '@/payload-types'
 
 interface MegaMenuMainProps {
   pages: PagesData[]
   currentPage: PagesData | null
+  contactSocials?: ContactSocial | null
 }
 
-export const MegaMenuMain = ({ pages, currentPage }: MegaMenuMainProps) => {
+export const MegaMenuMain = ({
+  pages,
+  currentPage,
+  contactSocials,
+}: MegaMenuMainProps) => {
   const [hoveredPage, setHoveredPage] = useState<PagesData | null>(null)
 
   return (
@@ -36,7 +42,10 @@ export const MegaMenuMain = ({ pages, currentPage }: MegaMenuMainProps) => {
           {/* Context Section */}
           <aside className="lg:col-span-3 flex flex-col justify-between h-full">
             <div className="space-y-8">
-              <MegaMenu_ContextPreview page={hoveredPage} />
+              <MegaMenu_ContextPreview
+                page={hoveredPage}
+                contactSocials={contactSocials}
+              />
             </div>
           </aside>
         </div>

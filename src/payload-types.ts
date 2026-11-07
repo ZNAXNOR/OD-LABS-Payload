@@ -124,10 +124,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'contact-socials': ContactSocial;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'contact-socials': ContactSocialsSelect<false> | ContactSocialsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -706,7 +708,7 @@ export interface ArchiveBlock {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
-  form: number | Form;
+  variant: 'single' | 'multi';
   enableIntro?: boolean | null;
   introContent?: {
     root: {
@@ -723,6 +725,31 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  singleForm?: (number | null) | Form;
+  /**
+   * Add 2–3 forms. Each entry becomes a selectable tab on the page. Reorder entries to change tab order.
+   */
+  multiForms?:
+    | {
+        form: number | Form;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -742,6 +769,10 @@ export interface Form {
             width?: number | null;
             required?: boolean | null;
             defaultValue?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'checkbox';
@@ -751,6 +782,10 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'country';
@@ -760,6 +795,10 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'email';
@@ -790,6 +829,10 @@ export interface Form {
             width?: number | null;
             defaultValue?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'number';
@@ -817,6 +860,10 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'state';
@@ -827,6 +874,10 @@ export interface Form {
             width?: number | null;
             defaultValue?: string | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'text';
@@ -837,12 +888,277 @@ export interface Form {
             width?: number | null;
             defaultValue?: string | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'textarea';
           }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: string | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'date';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'radio';
+          }
       )[]
     | null;
+  /**
+   * Add steps in the order visitors should complete them. Each step uses the native Payload Form Builder field types.
+   */
+  steps?:
+    | {
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * These are the same native field types available in a standard Payload form.
+         */
+        fields?:
+          | (
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  required?: boolean | null;
+                  defaultValue?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'checkbox';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'country';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'email';
+                }
+              | {
+                  message?: {
+                    root: {
+                      type: string;
+                      children: {
+                        type: any;
+                        version: number;
+                        [k: string]: unknown;
+                      }[];
+                      direction: ('ltr' | 'rtl') | null;
+                      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                      indent: number;
+                      version: number;
+                    };
+                    [k: string]: unknown;
+                  } | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'message';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  defaultValue?: number | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'number';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  defaultValue?: string | null;
+                  placeholder?: string | null;
+                  options?:
+                    | {
+                        label: string;
+                        value: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  required?: boolean | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'select';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'state';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  defaultValue?: string | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'text';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  defaultValue?: string | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'textarea';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  required?: boolean | null;
+                  defaultValue?: string | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'date';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  defaultValue?: string | null;
+                  options?:
+                    | {
+                        label: string;
+                        value: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'radio';
+                }
+            )[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Compulsory final stage for multi-step forms where visitors review their answers before submitting.
+   */
+  previewStep?: {
+    /**
+     * Name displayed in the step progress bar and stage header.
+     */
+    title: string;
+    /**
+     * Optional introductory text displayed above the submission summary.
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
   submitButtonLabel?: string | null;
   confirmationType?: ('message' | 'redirect') | null;
   confirmationMessage?: {
@@ -889,82 +1205,22 @@ export interface Form {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Standard forms use the Fields editor. Multi-step forms organize those same Payload Form Builder fields into steps.
+   */
+  formLayout: 'standard' | 'multiStep';
+  privacyConsent?: {
+    /**
+     * Enabled by default. Visitors must accept this consent before submitting the form.
+     */
+    enabled?: boolean | null;
+    /**
+     * Select the published Privacy Policy page linked in the consent statement.
+     */
+    privacyPolicy?: (number | null) | LegalPage;
+  };
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AIBlock".
- */
-export interface AIBlock {
-  /**
-   * Optional. Overrides the default heading on the initial AI screen.
-   */
-  heading?: string | null;
-  /**
-   * Optional. Overrides the default description on the initial AI screen.
-   */
-  description?: string | null;
-  placeholder?: string | null;
-  defaultScope: 'all' | 'pages' | 'posts';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'aiBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CalBookingBlock".
- */
-export interface CalBookingBlock {
-  /**
-   * Add up to three event types. Header and description sizes are fixed on the frontend; use Text State colors to adjust their colors.
-   */
-  options?:
-    | {
-        heading: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
-        description: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
-        /**
-         * Example: od-omkar-dalvi/30min
-         */
-        calLink: string;
-        /**
-         * When provided, a fixed “Open Cal.com directly” link appears below the calendar. Leave empty to hide it.
-         */
-        directLink?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'calBooking';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -973,6 +1229,20 @@ export interface CalBookingBlock {
 export interface LegalPage {
   id: number;
   title: string;
+  /**
+   * A unique purpose for this legal page. Assign each type to only one page. Leave blank temporarily on existing documents until classified.
+   */
+  documentType?:
+    | (
+        | 'privacy-policy'
+        | 'terms-of-service'
+        | 'cookie-policy'
+        | 'refund-policy'
+        | 'data-processing-agreement'
+        | 'acceptable-use-policy'
+        | 'other'
+      )
+    | null;
   contentMode: 'richText' | 'externalEmbed';
   content?: {
     root: {
@@ -1052,6 +1322,80 @@ export interface LegalPage {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AIBlock".
+ */
+export interface AIBlock {
+  /**
+   * Optional. Overrides the default heading on the initial AI screen.
+   */
+  heading?: string | null;
+  /**
+   * Optional. Overrides the default description on the initial AI screen.
+   */
+  description?: string | null;
+  placeholder?: string | null;
+  defaultScope: 'all' | 'pages' | 'posts';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aiBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CalBookingBlock".
+ */
+export interface CalBookingBlock {
+  /**
+   * Add up to three event types. Header and description sizes are fixed on the frontend; use Text State colors to adjust their colors.
+   */
+  options?:
+    | {
+        heading: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        description: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        /**
+         * Example: od-omkar-dalvi/30min
+         */
+        calLink: string;
+        /**
+         * When provided, a fixed “Open Cal.com directly” link appears below the calendar. Leave empty to hide it.
+         */
+        directLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'calBooking';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1740,9 +2084,17 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
  * via the `definition` "FormBlock_select".
  */
 export interface FormBlockSelect<T extends boolean = true> {
-  form?: T;
+  variant?: T;
   enableIntro?: T;
   introContent?: T;
+  singleForm?: T;
+  multiForms?:
+    | T
+    | {
+        form?: T;
+        description?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1813,6 +2165,7 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface LegalPagesSelect<T extends boolean = true> {
   title?: T;
+  documentType?: T;
   contentMode?: T;
   content?: T;
   embed?:
@@ -2033,6 +2386,7 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               required?: T;
               defaultValue?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2043,6 +2397,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2053,6 +2408,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2071,6 +2427,7 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2100,6 +2457,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2111,6 +2469,7 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2122,9 +2481,196 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
+        date?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              defaultValue?: T;
+              placeholder?: T;
+              id?: T;
+              blockName?: T;
+            };
+        radio?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              options?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              required?: T;
+              placeholder?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        fields?:
+          | T
+          | {
+              checkbox?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    required?: T;
+                    defaultValue?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              country?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              email?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              message?:
+                | T
+                | {
+                    message?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              number?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    defaultValue?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              select?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    defaultValue?: T;
+                    placeholder?: T;
+                    options?:
+                      | T
+                      | {
+                          label?: T;
+                          value?: T;
+                          id?: T;
+                        };
+                    required?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              state?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              text?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    defaultValue?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              textarea?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    defaultValue?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              date?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    required?: T;
+                    defaultValue?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              radio?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    defaultValue?: T;
+                    options?:
+                      | T
+                      | {
+                          label?: T;
+                          value?: T;
+                          id?: T;
+                        };
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+            };
+        id?: T;
+      };
+  previewStep?:
+    | T
+    | {
+        title?: T;
+        description?: T;
       };
   submitButtonLabel?: T;
   confirmationType?: T;
@@ -2145,6 +2691,13 @@ export interface FormsSelect<T extends boolean = true> {
         subject?: T;
         message?: T;
         id?: T;
+      };
+  formLayout?: T;
+  privacyConsent?:
+    | T
+    | {
+        enabled?: T;
+        privacyPolicy?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -2408,6 +2961,49 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-socials".
+ */
+export interface ContactSocial {
+  id: number;
+  /**
+   * Actions displayed in the contact form sidebar, megamenu, or footer. Select an internal page or provide an external custom URL (such as mailto: or a Cal.com link).
+   */
+  contactActions?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        description?: string | null;
+        enabled?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  socialLinks?:
+    | {
+        profile: 'omkar-dalvi' | 'od-labs';
+        platform: 'linkedin' | 'github' | 'instagram' | 'youtube' | 'x' | 'facebook' | 'threads' | 'website';
+        url: string;
+        enabled?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2446,6 +3042,40 @@ export interface FooterSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-socials_select".
+ */
+export interface ContactSocialsSelect<T extends boolean = true> {
+  contactActions?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        description?: T;
+        enabled?: T;
+        id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        profile?: T;
+        platform?: T;
+        url?: T;
+        enabled?: T;
         id?: T;
       };
   updatedAt?: T;
