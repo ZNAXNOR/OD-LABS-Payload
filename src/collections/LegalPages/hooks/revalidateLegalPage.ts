@@ -16,6 +16,7 @@ export const revalidateLegalPage: CollectionAfterChangeHook<LegalPage> = ({
       payload.logger.info(`Revalidating legal page at path: ${path}`)
 
       revalidatePath(path)
+      revalidatePath('/sitemap')
       revalidateTag('legal-pages-sitemap', 'max')
     }
 
@@ -25,6 +26,7 @@ export const revalidateLegalPage: CollectionAfterChangeHook<LegalPage> = ({
       payload.logger.info(`Revalidating old legal page at path: ${oldPath}`)
 
       revalidatePath(oldPath)
+      revalidatePath('/sitemap')
       revalidateTag('legal-pages-sitemap', 'max')
     }
   }
@@ -38,6 +40,7 @@ export const revalidateDelete: CollectionAfterDeleteHook<LegalPage> = ({
 }) => {
   if (!context.disableRevalidate) {
     revalidatePath(`/${doc.slug}`)
+    revalidatePath('/sitemap')
     revalidateTag('legal-pages-sitemap', 'max')
   }
 

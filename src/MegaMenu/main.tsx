@@ -7,11 +7,12 @@ import { MegaMenu_PageIndex } from './Sections/pageIndex'
 import { MegaMenu_ContextPreview } from './Sections/contextPreview'
 
 import type { PagesData } from '../getPagesData'
+import type { CurrentPageInfo } from './types'
 import type { ContactSocial } from '@/payload-types'
 
 interface MegaMenuMainProps {
   pages: PagesData[]
-  currentPage: PagesData | null
+  currentPage: CurrentPageInfo | PagesData | null
   contactSocials?: ContactSocial | null
 }
 
@@ -44,6 +45,7 @@ export const MegaMenuMain = ({
             <div className="space-y-8">
               <MegaMenu_ContextPreview
                 page={hoveredPage}
+                currentPage={currentPage}
                 contactSocials={contactSocials}
               />
             </div>

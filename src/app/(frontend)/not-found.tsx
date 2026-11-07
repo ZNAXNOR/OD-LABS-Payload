@@ -72,6 +72,13 @@ export default function NotFound() {
               </Link>
             </Button>
 
+            <Button asChild variant="outline">
+              <Link href="/sitemap" className="inline-flex items-center gap-2">
+                <Compass className="size-4 shrink-0" aria-hidden="true" />
+                <span>View Sitemap</span>
+              </Link>
+            </Button>
+
             <div className="sm:ml-auto pt-2 sm:pt-0">
               <ServiceStatus variant="compact" />
             </div>

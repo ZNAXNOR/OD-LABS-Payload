@@ -110,6 +110,12 @@ export async function Footer({
                 className="max-w-full [&_a:hover]:text-zinc-200"
               />
             )}
+            <Link
+              href="/sitemap"
+              className="text-zinc-400 hover:text-white transition-colors"
+            >
+              Sitemap
+            </Link>
             <ReportIssue
               variant="link"
               label="Report an Issue"
