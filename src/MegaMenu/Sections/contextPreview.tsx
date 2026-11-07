@@ -57,7 +57,7 @@ export const MegaMenu_ContextPreview = ({
                 <div className="space-y-2 font-mono text-xs">
                   {page.sections.map((section, index) => (
                     <div
-                      key={section.href ?? section.label}
+                      key={section.id || `${section.href}-${index}`}
                       className="flex h-9 border border-zinc-700 bg-zinc-900 p-2 text-white"
                     >
                       <span className="mr-2 text-odl select-none">

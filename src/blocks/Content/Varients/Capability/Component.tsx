@@ -102,23 +102,21 @@ export const Capabilities_ContentBlock: React.FC<Props> = (props) => {
             )
 
             return (
-              <div className="divide-y divide-zinc-800 lg:col-span-7">
-                <div key={column.id ?? index}>
-                  {column.enableLink && column.link ? (
-                    <CMSLink
-                      {...column.link}
-                      label={undefined}
-                      appearance="inline"
-                      className="group focus-visible:outline-odl flex items-baseline gap-6 py-7 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
-                    >
-                      {content}
-                    </CMSLink>
-                  ) : (
-                    <div className="group flex items-baseline gap-6 py-7">
-                      {content}
-                    </div>
-                  )}
-                </div>
+              <div key={column.id ?? index}>
+                {column.enableLink && column.link ? (
+                  <CMSLink
+                    {...column.link}
+                    label={undefined}
+                    appearance="inline"
+                    className="group focus-visible:outline-odl flex items-baseline gap-6 py-7 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+                  >
+                    {content}
+                  </CMSLink>
+                ) : (
+                  <div className="group flex items-baseline gap-6 py-7">
+                    {content}
+                  </div>
+                )}
               </div>
             )
           })}

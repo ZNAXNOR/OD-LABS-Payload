@@ -56,6 +56,7 @@ export const ReportIssue: React.FC<ReportIssueProps> = ({
           target="_blank"
           rel="noreferrer"
           aria-label="Report issue on GitHub (opens in a new tab)"
+          suppressHydrationWarning
         >
           <Bug className="size-4 shrink-0 text-odl" aria-hidden="true" />
           <span>{displayLabel}</span>
@@ -71,6 +72,7 @@ export const ReportIssue: React.FC<ReportIssueProps> = ({
       target="_blank"
       rel="noreferrer"
       aria-label="Report an issue on GitHub (opens in a new tab)"
+      suppressHydrationWarning
       className={cn(
         'group inline-flex items-center gap-1 font-mono transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl',
         className,
