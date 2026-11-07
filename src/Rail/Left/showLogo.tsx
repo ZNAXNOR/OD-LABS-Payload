@@ -6,16 +6,20 @@ export const useShowLogo = () => {
   const [showLogo, setShowLogo] = useState(false)
 
   useEffect(() => {
+    let ticking = false
+
     const handleScroll = () => {
-      if (window.scrollY > 68) {
-        setShowLogo(true)
-      } else {
-        setShowLogo(false)
-      }
+      if (ticking) return
+      ticking = true
+
+      requestAnimationFrame(() => {
+        ticking = false
+        setShowLogo(window.scrollY > 68)
+      })
     }
 
     // Check on mount
-    handleScroll()
+    setShowLogo(window.scrollY > 68)
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
