@@ -18,7 +18,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
 
   return (
     <div
-      className="relative mt-[-10.4rem] flex items-center justify-center text-white"
+      className="relative mt-[-10.4rem] flex items-center justify-center text-white min-h-[80vh] isolate"
       data-theme="dark" id="hero"
     >
       <div className="container mb-8 z-10 relative flex items-center justify-center">
@@ -38,7 +38,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
           )}
         </div>
       </div>
-      <div className="min-h-[80vh] select-none">
+      <div className="absolute inset-0 select-none -z-10">
         {media && typeof media === 'object' && (
           <Media fill imgClassName="-z-10 object-cover" priority resource={media} />
         )}
