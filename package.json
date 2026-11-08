@@ -6,9 +6,9 @@
   "type": "module",
   "packageManager": "pnpm@12.16.1",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
-    "ci": "pnpm generate:importmap && pnpm build",
-    "ci_migrate": "pnpm payload migrate && pnpm generate:importmap && pnpm build",
+    "build": "pnpm generate:importmap && cross-env NODE_OPTIONS=--no-deprecation next build",
+    "ci": "pnpm build",
+    "ci_migrate": "pnpm generate:importmap && pnpm build",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
