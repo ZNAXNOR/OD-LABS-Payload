@@ -5,6 +5,7 @@ import { RightRail } from '@/Rail/Right'
 import { MegaMenu } from '@/MegaMenu'
 import type { PagesData } from '@/getPagesData'
 import type { LegalPagesData } from '@/getLegalPagesData'
+import type { PostsData } from '@/getPostsData'
 import type { ContactSocial } from '@/payload-types'
 import { MegaMenuProvider, useMegaMenu } from '@/providers/MegaMenu'
 import { usePathname } from 'next/navigation'
@@ -16,6 +17,7 @@ const LayoutClientContent = ({
   leftRail,
   pagesData,
   legalPagesData,
+  postsData,
   contactSocials,
 }: {
   children: React.ReactNode
@@ -24,6 +26,7 @@ const LayoutClientContent = ({
   leftRail: React.ReactNode
   pagesData?: PagesData[]
   legalPagesData?: LegalPagesData[]
+  postsData?: PostsData[]
   contactSocials?: ContactSocial | null
 }) => {
   const { isOpen, openMenu, closeMenu } = useMegaMenu()
@@ -54,6 +57,7 @@ const LayoutClientContent = ({
         onClose={closeMenu}
         pages={pagesData ?? []}
         legalPages={legalPagesData ?? []}
+        posts={postsData ?? []}
         contactSocials={contactSocials}
       />
     </>
@@ -67,6 +71,7 @@ export const LayoutClient = (props: {
   leftRail: React.ReactNode
   pagesData?: PagesData[]
   legalPagesData?: LegalPagesData[]
+  postsData?: PostsData[]
   contactSocials?: ContactSocial | null
 }) => {
   return (

@@ -1,11 +1,14 @@
 import type { PagesData } from '@/getPagesData'
 import type { LegalPagesData } from '@/getLegalPagesData'
+import type { PostsData } from '@/getPostsData'
 import type { CurrentPageInfo, ErrorRecoveryAction } from '../types'
 
 interface ResolveCurrentPageArgs {
   pathname: string | null
   pages: PagesData[]
   legalPages?: LegalPagesData[]
+  posts?: PostsData[]
+  activePost?: PostsData | null
 }
 
 const DEFAULT_404_RECOVERY_ACTIONS: ErrorRecoveryAction[] = [
@@ -56,6 +59,8 @@ export function resolveCurrentPage({
   pathname,
   pages = [],
   legalPages = [],
+  posts = [],
+  activePost,
 }: ResolveCurrentPageArgs): CurrentPageInfo {
   const path = pathname ? pathname.replace(/\/$/, '') || '/' : '/'
   const currentSlug = path === '/' ? 'home' : path.split('/')[1] || 'home'
@@ -143,7 +148,61 @@ export function resolveCurrentPage({
     }
   }
 
-  // Tier 3: Check known standalone Next.js routes
+  // Tier 2b: Check Payload CMS posts collection (for individual post /posts/[slug])
+  const isPostArticle =
+    path.startsWith('/posts/') &&
+    path !== '/posts' &&
+    !path.startsWith('/posts/page/')
+
+  if (isPostArticle) {
+    const postSlug = decodeURIComponent(
+      path.replace(/^\/posts\//, '').split('/')[0] || '',
+    )
+
+    const matchedPost =
+      activePost && activePost.slug === postSlug
+        ? activePost
+        : posts.find((p) => p.slug === postSlug || p.href === path) || activePost
+
+    if (matchedPost) {
+      const seoTitle = matchedPost.metaTitle || matchedPost.title
+      const seoDescription =
+        matchedPost.metaDescription ||
+        matchedPost.description ||
+        'Engineering publication, research breakdown, or technical archive page.'
+
+      return {
+        title: seoTitle,
+        slug: matchedPost.slug,
+        href: matchedPost.href || path,
+        description: seoDescription,
+        isPayloadDoc: true,
+        source: 'payload-posts',
+        seo: {
+          title: matchedPost.metaTitle || matchedPost.title,
+          description:
+            matchedPost.metaDescription || matchedPost.description || null,
+        },
+      }
+    }
+
+    // Dynamic fallback when post article is accessed before client/SSR post data loads
+    const formattedTitle = postSlug
+      .replace(/[-_]/g, ' ')
+      .replace(/\b\w/g, (c) => c.toUpperCase())
+
+    return {
+      title: formattedTitle || 'Publication Article',
+      slug: postSlug,
+      href: path,
+      description:
+        'Engineering publication, research breakdown, or technical archive page.',
+      isPayloadDoc: true,
+      source: 'payload-posts',
+    }
+  }
+
+  // Tier 3: Check known standalone Next.js routes (e.g. /sitemap, /search, /posts index)
   const known = KNOWN_SYSTEM_ROUTES[currentSlug]
   if (known) {
     return {
@@ -151,19 +210,6 @@ export function resolveCurrentPage({
       slug: currentSlug,
       href: path,
       description: known.description,
-      isPayloadDoc: false,
-      source: 'system-raw',
-    }
-  }
-
-  // Tier 3b: Handle post articles (/posts/[slug] or /posts/page/[pageNumber])
-  if (path.startsWith('/posts/')) {
-    return {
-      title: 'Publication Article',
-      slug: currentSlug,
-      href: path,
-      description:
-        'Engineering publication, research breakdown, or technical archive page.',
       isPayloadDoc: false,
       source: 'system-raw',
     }

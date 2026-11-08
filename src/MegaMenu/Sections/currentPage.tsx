@@ -107,20 +107,27 @@ export const MegaMenu_CurrentPage = ({
     )
   }
 
-  // 2. Standard Payload CMS Documents (Pages or Legal Pages)
+  // 2. Standard Payload CMS Documents (Pages, Legal Pages, or Posts)
   const isCmsDoc = page ? ('isPayloadDoc' in page ? page.isPayloadDoc : true) : false
 
   if (page && isCmsDoc) {
     const isLegalDoc = 'source' in page && page.source === 'payload-legal'
+    const isPostDoc = 'source' in page && page.source === 'payload-posts'
 
     return (
       <section className="space-y-4">
-        <div className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase text-zinc-500">
-          <span>Current Page</span>
+        <div className="flex flex-wrap items-center gap-2 font-mono text-xs tracking-widest uppercase text-zinc-500">
+          <span>{isPostDoc ? 'Current Post' : 'Current Page'}</span>
           {isLegalDoc && (
             <>
               <span className="text-zinc-700">//</span>
               <span className="text-zinc-400 font-mono">[LEGAL_DOCUMENT]</span>
+            </>
+          )}
+          {isPostDoc && (
+            <>
+              <span className="text-zinc-700">//</span>
+              <span className="text-odl font-mono">[POST]</span>
             </>
           )}
         </div>
