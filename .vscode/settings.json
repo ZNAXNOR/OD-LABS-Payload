@@ -37,5 +37,10 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit"
     }
+  },
+  "editor.formatOnPaste": true,
+  "editor.cursorBlinking": "smooth",
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
   }
 }

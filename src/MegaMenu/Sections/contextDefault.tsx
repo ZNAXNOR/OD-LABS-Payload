@@ -1,92 +1,121 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { ServiceStatus } from '@/components/ServiceStatus'
+import { ContactActions } from '@/components/Contact/ContactActions'
+import { SocialLinks } from '@/components/Contact/SocialLinks'
+import { formatContactActions, formatSocialLinks } from '@/components/Contact/utils'
+import type { ContactSocial } from '@/payload-types'
 
 const Time_Zone = 'Asia/Kolkata'
 const Locale = 'en-IN'
 
-const formatTime = (date: Date) => {
-  return new Intl.DateTimeFormat(Locale, {
+const formatTime = (date: Date) =>
+  new Intl.DateTimeFormat(Locale, {
     timeZone: Time_Zone,
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
     hour12: true,
   }).format(date)
-}
 
-const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat(Locale, {
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat(Locale, {
     timeZone: Time_Zone,
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: '2-digit',
   }).format(date)
-}
 
-export const MegaMenu_ContextDefault = () => {
+export const MegaMenu_ContextDefault = ({
+  contactSocials: initialContactSocials,
+}: {
+  contactSocials?: ContactSocial | null
+}) => {
   const [now, setNow] = useState<Date | null>(null)
+  const [contactSocials, setContactSocials] = useState<ContactSocial | null | undefined>(
+    initialContactSocials,
+  )
+
+  useEffect(() => {
+    if (initialContactSocials !== undefined) {
+      setContactSocials(initialContactSocials)
+      return
+    }
+    let cancelled = false
+    fetch('/api/globals/contact-socials?depth=1')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data) setContactSocials(data)
+      })
+      .catch(() => undefined)
+    return () => {
+      cancelled = true
+    }
+  }, [initialContactSocials])
 
   useEffect(() => {
     const updateTime = () => setNow(new Date())
     updateTime()
-
     const interval = setInterval(updateTime, 1000)
-
     return () => clearInterval(interval)
   }, [])
+
+  const contactActions = formatContactActions(contactSocials?.contactActions)
+  const socialLinks = formatSocialLinks(contactSocials?.socialLinks)
 
   return (
     <aside className="flex flex-col justify-between pt-8 lg:pt-0">
       <div className="space-y-8">
         {/* Local Time */}
         <section className="space-y-4">
-          <div className="font-mono text-xs tracking-widest uppercase text-zinc-400">
+          <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
             Local time
           </div>
-
           <div
-            className="font-mono text-3xl sm:text-4xl font-semibold text-white tracking-tight tabular-nums"
+            className="font-mono text-3xl font-semibold tracking-tight text-white tabular-nums sm:text-4xl"
             aria-live="off"
           >
             {now ? formatTime(now) : '--:--:-- --'}
-            <span className="text-white hidden sm:inline"> IST</span>
+            <span className="hidden text-white sm:inline"> IST</span>
           </div>
-
-          <div className="font-mono text-xs text-zinc-300 tracking-wide" aria-live="off">
+          <div
+            className="font-mono text-xs tracking-wide text-zinc-300"
+            aria-live="off"
+          >
             {now ? formatDate(now) : 'Loading date...'}
           </div>
-
-          <div className="text-xs font-mono text-zinc-500">Asia / Kolkata (UTC +05:30)</div>
+          <div className="font-mono text-xs text-zinc-500">
+            Asia / Kolkata (UTC +05:30)
+          </div>
         </section>
 
-        {/* Availability */}
-        <section className="space-y-3 pt-6 border-t border-zinc-600/60">
-          <div className="font-mono text-[11px] text-zinc-400 tracking-widest uppercase">
-            Availability
-          </div>
-          <div className="font-mono text-xs text-white tracking-wide flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse uppercase"></span>
-            Open for Projects
-          </div>
-          <p className="text-xs font-sans text-zinc-400 leading-relaxed pt-1">
-            I’m currently available for freelance and contract work. If you’d like to collaborate,
-            say hi.
-          </p>
-        </section>
+        {/* Contact actions & Socials */}
+        {(contactActions.length > 0 || socialLinks.length > 0) && (
+          <div className="space-y-6 border-t border-zinc-600/60 pt-6">
+            {contactActions.length > 0 && (
+              <section className="space-y-3">
+                <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
+                  Contacts
+                </div>
+                <ContactActions actions={contactActions} />
+              </section>
+            )}
 
-        {/* Contact & Dorect Inquiries */}
-        <a
-          href="mailto:omkar@odtechlab.com"
-          className="group text-xs font-mono text-zinc-400 hover:text-white transition-colors flex items-center gap-2"
-        >
-          <span
-            aria-hidden="true"
-            className="group w-1 h-1 bg-red-500 inline-block transition-transform duration-200 group-hover:scale-150"
-          />
-          <span> omkar@odtechlab.com </span>
-        </a>
+            {socialLinks.length > 0 && (
+              <section className="space-y-3">
+                <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
+                  Socials
+                </div>
+                <SocialLinks links={socialLinks} />
+              </section>
+            )}
+          </div>
+        )}
+
+        {/* Public service status */}
+        <ServiceStatus variant="block" />
       </div>
     </aside>
   )

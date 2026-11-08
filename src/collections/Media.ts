@@ -34,7 +34,11 @@ export const Media: CollectionConfig = {
       type: 'richText',
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
-          return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
+          return [
+            ...rootFeatures,
+            FixedToolbarFeature(),
+            InlineToolbarFeature(),
+          ]
         },
       }),
     },
@@ -44,6 +48,12 @@ export const Media: CollectionConfig = {
     staticDir: path.resolve(dirname, '../../public/media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
+    formatOptions: {
+      format: 'webp',
+      options: {
+        quality: 82,
+      },
+    },
     imageSizes: [
       {
         name: 'thumbnail',

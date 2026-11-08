@@ -33,10 +33,17 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [headerTheme])
 
   return (
-    <header className="relative z-20" {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-5 px-6 flex justify-between items-center border-b border-[#4B525F]">
+    <header
+      className="relative z-20"
+      {...(theme ? { 'data-theme': theme } : {})}
+    >
+      <div className="flex items-center justify-between border-b border-[#4B525F] px-6 py-5">
         <Link href="/" className="flex items-center gap-2">
-          <Logo loading="eager" priority="high" className="invert dark:invert-0 h-[18px]" />
+          <Logo
+            loading="eager"
+            priority="high"
+            className="h-[18px] invert dark:invert-0"
+          />
         </Link>
 
         <div className="hidden lg:block">
@@ -46,10 +53,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         <button
           type="button"
           onClick={openMenu}
-          className="group flex items-center p-1.5 text-zinc-400 focus:outline-none cursor-pointer lg:hidden"
+          className="group flex cursor-pointer items-center p-1.5 text-zinc-400 focus:outline-none lg:hidden"
           aria-label="Explore Site"
         >
-          <MenuIcon className="group-hover:text-[#FF3B30] transition-colors duration-200" />
+          <MenuIcon className="transition-colors duration-200 group-hover:text-odl" />
         </button>
       </div>
     </header>

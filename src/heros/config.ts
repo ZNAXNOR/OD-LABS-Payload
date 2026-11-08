@@ -4,10 +4,15 @@ import {
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
+  TextStateFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
 import { linkGroup } from '@/fields/linkGroup'
+import { textStateConfig } from '@/fields/textStateConfig'
+
+import { introductionFields } from './Introduction/config'
+import { lowImpactFields } from './LowImpact/config'
 
 export const hero: Field = {
   name: 'hero',
@@ -35,6 +40,10 @@ export const hero: Field = {
           label: 'Low Impact',
           value: 'lowImpact',
         },
+        {
+          label: 'Introduction',
+          value: 'introduction',
+        },
       ],
       required: true,
     },
@@ -46,13 +55,31 @@ export const hero: Field = {
           return [
             ...rootFeatures,
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            TextStateFeature({ state: textStateConfig }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
           ]
         },
       }),
       label: false,
+      admin: {
+        condition: (_, siblingData) => siblingData.type !== 'introduction',
+      },
     },
+    {
+      name: 'eyebrow',
+      type: 'text',
+      label: 'Eyebrow',
+      hasMany: true,
+      minRows: 1,
+      admin: {
+        condition: (_, siblingData) =>
+          ['highImpact', 'mediumImpact', 'lowImpact'].includes(siblingData?.type),
+        description: 'Short eyebrow phrases. The first phrase receives the automatic section number.',
+      },
+    },
+    ...lowImpactFields,
+    ...introductionFields,
     linkGroup({
       overrides: {
         maxRows: 2,
@@ -62,7 +89,8 @@ export const hero: Field = {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        condition: (_, { type } = {}) =>
+          ['highImpact', 'mediumImpact'].includes(type),
       },
       relationTo: 'media',
       required: true,

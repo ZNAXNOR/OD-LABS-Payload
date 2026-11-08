@@ -10,8 +10,12 @@ export const SizeSliderPreview: React.FC<SizeSliderPreviewProps> = ({
   currentValueKey,
   currentLabel,
 }) => {
-  const currentCols = currentValueKey ? CANONICAL_POINTS[currentValueKey].cols : 0
-  const currentPercent = currentValueKey ? CANONICAL_POINTS[currentValueKey].percent : 0
+  const currentCols = currentValueKey
+    ? CANONICAL_POINTS[currentValueKey].cols
+    : 0
+  const currentPercent = currentValueKey
+    ? CANONICAL_POINTS[currentValueKey].percent
+    : 0
 
   return (
     <div className="size-slider-field__preview">
@@ -30,7 +34,9 @@ export const SizeSliderPreview: React.FC<SizeSliderPreviewProps> = ({
         }`}
       >
         {currentCols > 0 && currentValueKey && (
-          <span className="size-slider-field__preview-label">{currentLabel}</span>
+          <span className="size-slider-field__preview-label">
+            {currentLabel}
+          </span>
         )}
       </div>
 

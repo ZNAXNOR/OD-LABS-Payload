@@ -21,6 +21,8 @@ import type {
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { cn } from '@/utilities/ui'
+import { textStateConfig } from '@/fields/textStateConfig'
+import type { CSSProperties } from 'react'
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -35,9 +37,52 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
 }
 
+type TextNodeWithState = {
+  text: string
+  $?: Record<string, string>
+}
+
+type TextStyleConfig = {
+  [stateKey: string]: {
+    [stateValue: string]: {
+      css: Record<string, string>
+    }
+  }
+}
+
+const hyphenToCamel = (property: string) =>
+  property.replace(/-([a-z])/g, (_, letter: string) => letter.toUpperCase())
+
+const stateValues = textStateConfig as TextStyleConfig
+
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
+  text: (args) => {
+    const { node } = args
+    const defaultText =
+      typeof defaultConverters.text === 'function'
+        ? defaultConverters.text(args)
+        : (node as TextNodeWithState).text
+
+    const state = (node as TextNodeWithState).$
+    if (!state) return defaultText
+
+    const styles: CSSProperties = {}
+    for (const [stateKey, stateValue] of Object.entries(state)) {
+      const css = stateValues[stateKey]?.[stateValue]?.css
+      if (css) {
+        Object.assign(
+          styles,
+          Object.fromEntries(
+            Object.entries(css).map(([property, value]) => [hyphenToCamel(property), value]),
+          ),
+        )
+      }
+    }
+
+    return Object.keys(styles).length ? <span style={styles}>{defaultText}</span> : defaultText
+  },
   blocks: {
     banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
     mediaBlock: ({ node }) => (

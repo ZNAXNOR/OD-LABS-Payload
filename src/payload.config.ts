@@ -1,24 +1,37 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import pg from 'pg'
+import { resendAdapter } from '@payloadcms/email-resend'
+
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
+import { LegalPages } from './collections/LegalPages'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
-import { plugins } from './plugins'
+import { ContactSocials } from './ContactSocials/config'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+
+import { TestDocuments } from './collections/AI_Knowledgebase/TestDocments'
+import { vectorIntegration } from './vectorize/config'
+import { plugins } from './plugins'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  email: resendAdapter({
+    defaultFromAddress: 'omkar@notifications.odtechlab.com',
+    defaultFromName: 'Omkar Dalvi',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -61,11 +74,15 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    pg,
+    extensions: ['vector'],
+    push: false,
+    afterSchemaInit: [vectorIntegration.afterSchemaInitHook],
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, LegalPages, Media, Categories, Users, TestDocuments],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
-  plugins,
+  globals: [Header, Footer, ContactSocials],
+  plugins: [...plugins],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
@@ -81,12 +98,19 @@ export default buildConfig({
         if (!secret) return false
 
         // If there is no logged in user, then check
-        // for the Vercel Cron secret to be present as an
-        // Authorization header:
+        // for the Vercel Cron secret to be present in the Authorization header:
         const authHeader = req.headers.get('authorization')
         return authHeader === `Bearer ${secret}`
       },
     },
     tasks: [],
+    autoRun: [
+      // Vectorize 1.1.0 queues per-collection bulk preparation jobs on the
+      // default queue, so keep the default Payload queue runner active too.
+      { cron: '* * * * *', limit: 10 },
+      { cron: '* * * * *', queue: 'odlabs-vectorize-realtime', limit: 10 },
+      { cron: '* * * * *', queue: 'odlabs-vectorize-bulk-prepare', limit: 5 },
+      { cron: '* * * * *', queue: 'odlabs-vectorize-bulk-poll', limit: 10 },
+    ],
   },
 })

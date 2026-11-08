@@ -6,15 +6,22 @@ import { MegaMenu_CurrentPage } from './Sections/currentPage'
 import { MegaMenu_PageIndex } from './Sections/pageIndex'
 import { MegaMenu_ContextPreview } from './Sections/contextPreview'
 
-import type { MegaMenuPage } from './Sections/pageData'
+import type { PagesData } from '../getPagesData'
+import type { CurrentPageInfo } from './types'
+import type { ContactSocial } from '@/payload-types'
 
 interface MegaMenuMainProps {
-  pages: MegaMenuPage[]
-  currentPage: MegaMenuPage | null
+  pages: PagesData[]
+  currentPage: CurrentPageInfo | PagesData | null
+  contactSocials?: ContactSocial | null
 }
 
-export const MegaMenuMain = ({ pages, currentPage }: MegaMenuMainProps) => {
-  const [hoveredPage, setHoveredPage] = useState<MegaMenuPage | null>(null)
+export const MegaMenuMain = ({
+  pages,
+  currentPage,
+  contactSocials,
+}: MegaMenuMainProps) => {
+  const [hoveredPage, setHoveredPage] = useState<PagesData | null>(null)
 
   return (
     <main className="flex-1 min-h-0 overflow-y-auto">
@@ -36,7 +43,11 @@ export const MegaMenuMain = ({ pages, currentPage }: MegaMenuMainProps) => {
           {/* Context Section */}
           <aside className="lg:col-span-3 flex flex-col justify-between h-full">
             <div className="space-y-8">
-              <MegaMenu_ContextPreview page={hoveredPage} />
+              <MegaMenu_ContextPreview
+                page={hoveredPage}
+                currentPage={currentPage}
+                contactSocials={contactSocials}
+              />
             </div>
           </aside>
         </div>

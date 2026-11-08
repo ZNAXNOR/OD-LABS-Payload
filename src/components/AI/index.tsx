@@ -1,0 +1,104 @@
+'use client'
+
+import { useState } from 'react'
+
+import { useAIInterface } from './useAIInterface'
+import { Header } from './Header/Component'
+import { Initial } from './ConversationContainer/Initial'
+import { Active } from './ConversationContainer/Active'
+import { Composer } from './Composer/Component'
+import { suggestions } from './suggestions'
+import { TooltipProvider } from '@/components/ui/tooltip'
+import { DEFAULT_CONTENT_SCOPE, type ContentScope } from './contentScopes'
+
+type AIMode = 'initial' | 'conversation'
+
+type AIInterfaceProps = {
+  heading?: string
+  description?: string
+  placeholder?: string
+  defaultScope?: ContentScope
+}
+
+export const AIInterface = ({
+  heading,
+  description,
+  placeholder,
+  defaultScope = DEFAULT_CONTENT_SCOPE,
+}: AIInterfaceProps) => {
+  const [input, setInput] = useState('')
+  const [mode, setMode] = useState<AIMode>('initial')
+  const [scope, setScope] = useState<ContentScope>(defaultScope)
+
+  const { messages, sendMessage, status, setMessages, stop, regenerate } =
+    useAIInterface(scope)
+
+  const isGenerating = status === 'submitted' || status === 'streaming'
+
+  const submitMessage = (text: string) => {
+    const prompt = text.trim()
+
+    if (!prompt || isGenerating) return
+
+    setMode('conversation')
+    setInput('')
+
+    void sendMessage({ text: prompt })
+  }
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    submitMessage(input)
+  }
+
+  const newConversation = () => {
+    if (isGenerating) void stop()
+
+    setMessages([])
+    setInput('')
+    setMode('initial')
+  }
+
+  return (
+    <TooltipProvider delayDuration={150}>
+      <section
+        id="ai-chat-workspace"
+        aria-label="OD LABS AI assistant"
+        className="mx-auto my-8 flex h-[78svh] min-h-[70svh] max-h-[95svh] w-[calc(100%-2rem)] max-w-6xl min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-zinc-800 bg-black text-white shadow-2xl shadow-black/30 sm:my-10 sm:w-[calc(100%-3rem)]"
+      >
+        <Header mode={mode} newConversation={newConversation} />
+
+        <div className="relative flex min-h-0 flex-1 flex-col">
+          {mode === 'initial' ? (
+            <Initial
+              suggestedPrompts={suggestions}
+              submit={submitMessage}
+              heading={heading}
+              description={description}
+            />
+          ) : (
+            <Active
+              messages={messages}
+              status={status}
+              regenerate={regenerate}
+              submitSuggestion={submitMessage}
+              scope={scope}
+            />
+          )}
+        </div>
+
+        <Composer
+          input={input}
+          setInput={setInput}
+          onSubmit={handleSubmit}
+          status={status}
+          stop={stop}
+          sticky
+          placeholder={placeholder}
+          scope={scope}
+          setScope={setScope}
+        />
+      </section>
+    </TooltipProvider>
+  )
+}

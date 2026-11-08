@@ -1,4 +1,5 @@
 import { withPayload } from '@payloadcms/next/withPayload'
+import { withSentryConfig } from '@sentry/nextjs/config'
 import type { NextConfig } from 'next'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -12,6 +13,10 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
 
 const nextConfig: NextConfig = {
+  // The PostgreSQL vector adapter keeps its registered Drizzle tables in module
+  // state. Keep the adapter external so the Payload config and route handlers
+  // resolve the same Node module instance instead of separate Next bundles.
+  serverExternalPackages: ['payloadcms-vectorize', '@payloadcms-vectorize/pg'],
   // Temporarily required on Windows until Next.js fixes Turbopack Sass resolution.
   // See: https://github.com/vercel/next.js/issues/86431
   sassOptions: {
@@ -51,4 +56,13 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+export default withSentryConfig(
+  withPayload(nextConfig, { devBundleServerPackages: false }),
+  {
+    org: process.env.SENTRY_ORG,
+    project: process.env.SENTRY_PROJECT,
+    authToken: process.env.SENTRY_AUTH_TOKEN,
+    silent: !process.env.CI,
+    widenClientFileUpload: true,
+  },
+)

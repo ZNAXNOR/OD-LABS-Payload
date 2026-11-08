@@ -6,18 +6,29 @@ import { useEffect } from 'react'
 import { MegaMenuMain } from './main'
 import { usePathname } from 'next/navigation'
 
-import type { MegaMenuPage } from './Sections/pageData'
+import { resolveCurrentPage } from './utils/resolveCurrentPage'
+
+import type { PagesData } from '../getPagesData'
+import type { LegalPagesData } from '../getLegalPagesData'
+import type { ContactSocial } from '@/payload-types'
 
 interface MegaMenuProps {
   open: boolean
   onClose: () => void
-  pages: MegaMenuPage[]
+  pages: PagesData[]
+  legalPages: LegalPagesData[]
+  contactSocials?: ContactSocial | null
 }
 
-export const MegaMenu = ({ open, onClose, pages }: MegaMenuProps) => {
+export const MegaMenu = ({
+  open,
+  onClose,
+  pages,
+  legalPages,
+  contactSocials,
+}: MegaMenuProps) => {
   const pathname = usePathname()
-  const currentSlug = pathname === '/' ? 'home' : pathname.split('/')[1] || 'home'
-  const currentPage = pages.find((page) => page.slug === currentSlug) || null
+  const currentPage = resolveCurrentPage({ pathname, pages, legalPages })
 
   useEffect(() => {
     if (!open) return
@@ -36,7 +47,7 @@ export const MegaMenu = ({ open, onClose, pages }: MegaMenuProps) => {
   useEffect(() => {
     if (!open) return
 
-    //Disable scroll on body when megamenu opens
+    // Disable scroll on body when the mega menu opens.
     const originalStyle = document.body.style.overflow
 
     document.body.style.overflow = 'hidden'
@@ -59,9 +70,13 @@ export const MegaMenu = ({ open, onClose, pages }: MegaMenuProps) => {
     >
       <MegaMenuHeader onClose={onClose} />
 
-      <MegaMenuMain pages={pages} currentPage={currentPage} />
+      <MegaMenuMain
+        pages={pages}
+        currentPage={currentPage}
+        contactSocials={contactSocials}
+      />
 
-      <MegaMenuFooter />
+      <MegaMenuFooter legalPages={legalPages} />
     </div>
   )
 }

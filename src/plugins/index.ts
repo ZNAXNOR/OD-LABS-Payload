@@ -1,20 +1,24 @@
-import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+import * as Sentry from '@sentry/nextjs'
+import { sentryPlugin } from '@payloadcms/plugin-sentry'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
-import { Plugin } from 'payload'
+import { s3Storage } from '@payloadcms/storage-s3'
+import type { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
-import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
-import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import type { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 
-import { Page, Post } from '@/payload-types'
+import type { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
+import { formBuilder } from './formBuilder'
+import { vectorizePlugins } from './vectorize'
+
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | OD LABS` : 'OD LABS'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
@@ -24,6 +28,10 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 }
 
 export const plugins: Plugin[] = [
+  sentryPlugin({
+    Sentry,
+    enabled: process.env.NODE_ENV === 'production',
+  }),
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
@@ -34,7 +42,8 @@ export const plugins: Plugin[] = [
             return {
               ...field,
               admin: {
-                description: 'You will need to rebuild the website when changing this field.',
+                description:
+                  'You will need to rebuild the website when changing this field.',
               },
             }
           }
@@ -53,33 +62,22 @@ export const plugins: Plugin[] = [
   seoPlugin({
     generateTitle,
     generateURL,
-  }),
-  formBuilderPlugin({
-    fields: {
-      payment: false,
-    },
-    formOverrides: {
-      fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
-          if ('name' in field && field.name === 'confirmationMessage') {
-            return {
-              ...field,
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    FixedToolbarFeature(),
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                  ]
-                },
-              }),
-            }
-          }
-          return field
-        })
+
+    fields: ({ defaultFields }) => [
+      ...defaultFields,
+      {
+        name: 'excludeFromIndex',
+        type: 'checkbox',
+        label: 'Exclude from AI Index',
+        defaultValue: false,
+        admin: {
+          description:
+            'Exclude this content from the OD LABS AI knowledgebase. This setting does not control search-engine indexing.',
+        },
       },
-    },
+    ],
   }),
+  formBuilder,
   searchPlugin({
     collections: ['posts'],
     beforeSync: beforeSyncWithSearch,
@@ -89,4 +87,29 @@ export const plugins: Plugin[] = [
       },
     },
   }),
+  ...vectorizePlugins,
+  s3Storage({
+    enabled: Boolean(process.env.AWS_S3_BUCKET),
+    collections: {
+      media: true,
+    },
+    bucket: process.env.AWS_S3_BUCKET!,
+    config: {
+      endpoint: process.env.AWS_ENDPOINT_URL_S3,
+      region: process.env.AWS_REGION,
+      forcePathStyle: true,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+      },
+    },
+  }),
 ]
+
+export { formBuilder, formBuilderPluginConfig } from './formBuilder'
+export {
+  vectorizePlugin,
+  vectorizeHooksPlugin,
+  vectorizeAdminEndpointsPlugin,
+  vectorizePlugins,
+} from './vectorize'

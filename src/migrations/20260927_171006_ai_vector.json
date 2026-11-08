@@ -5092,6 +5092,82 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.test_documents": {
+      "name": "test_documents",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "test_documents_updated_at_idx": {
+          "name": "test_documents_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "test_documents_created_at_idx": {
+          "name": "test_documents_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.redirects": {
       "name": "redirects",
       "schema": "",
@@ -7376,6 +7452,801 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.vector_bulk_embeddings_runs": {
+      "name": "vector_bulk_embeddings_runs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "pool": {
+          "name": "pool",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "embedding_version": {
+          "name": "embedding_version",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "enum_vector_bulk_embeddings_runs_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'queued'"
+        },
+        "total_batches": {
+          "name": "total_batches",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "inputs": {
+          "name": "inputs",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "succeeded": {
+          "name": "succeeded",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "failed": {
+          "name": "failed",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "submitted_at": {
+          "name": "submitted_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "error": {
+          "name": "error",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "failed_chunk_data": {
+          "name": "failed_chunk_data",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "vector_bulk_embeddings_runs_updated_at_idx": {
+          "name": "vector_bulk_embeddings_runs_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "vector_bulk_embeddings_runs_created_at_idx": {
+          "name": "vector_bulk_embeddings_runs_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pool_idx": {
+          "name": "pool_idx",
+          "columns": [
+            {
+              "expression": "pool",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "status_idx": {
+          "name": "status_idx",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.vector_bulk_embedding_input_metadata": {
+      "name": "vector_bulk_embedding_input_metadata",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "run_id": {
+          "name": "run_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "batch_id": {
+          "name": "batch_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "input_id": {
+          "name": "input_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "text": {
+          "name": "text",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_collection": {
+          "name": "source_collection",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "doc_id": {
+          "name": "doc_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chunk_index": {
+          "name": "chunk_index",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "embedding_version": {
+          "name": "embedding_version",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "extension_fields": {
+          "name": "extension_fields",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "vector_bulk_embedding_input_metadata_run_idx": {
+          "name": "vector_bulk_embedding_input_metadata_run_idx",
+          "columns": [
+            {
+              "expression": "run_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "vector_bulk_embedding_input_metadata_batch_idx": {
+          "name": "vector_bulk_embedding_input_metadata_batch_idx",
+          "columns": [
+            {
+              "expression": "batch_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "vector_bulk_embedding_input_metadata_updated_at_idx": {
+          "name": "vector_bulk_embedding_input_metadata_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "vector_bulk_embedding_input_metadata_created_at_idx": {
+          "name": "vector_bulk_embedding_input_metadata_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "run_inputId_idx": {
+          "name": "run_inputId_idx",
+          "columns": [
+            {
+              "expression": "run_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "input_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "run_idx": {
+          "name": "run_idx",
+          "columns": [
+            {
+              "expression": "run_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "batch_idx": {
+          "name": "batch_idx",
+          "columns": [
+            {
+              "expression": "batch_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "sourceCollection_docId_idx": {
+          "name": "sourceCollection_docId_idx",
+          "columns": [
+            {
+              "expression": "source_collection",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "doc_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "vector_bulk_embedding_input_metadata_run_id_vector_bulk_embeddings_runs_id_fk": {
+          "name": "vector_bulk_embedding_input_metadata_run_id_vector_bulk_embeddings_runs_id_fk",
+          "tableFrom": "vector_bulk_embedding_input_metadata",
+          "tableTo": "vector_bulk_embeddings_runs",
+          "columnsFrom": [
+            "run_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "vector_bulk_embedding_input_metadata_batch_id_vector_bulk_embeddings_batches_id_fk": {
+          "name": "vector_bulk_embedding_input_metadata_batch_id_vector_bulk_embeddings_batches_id_fk",
+          "tableFrom": "vector_bulk_embedding_input_metadata",
+          "tableTo": "vector_bulk_embeddings_batches",
+          "columnsFrom": [
+            "batch_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.vector_bulk_embeddings_batches": {
+      "name": "vector_bulk_embeddings_batches",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "run_id": {
+          "name": "run_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "batch_index": {
+          "name": "batch_index",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider_batch_id": {
+          "name": "provider_batch_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "enum_vector_bulk_embeddings_batches_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'queued'"
+        },
+        "input_count": {
+          "name": "input_count",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "succeeded_count": {
+          "name": "succeeded_count",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "failed_count": {
+          "name": "failed_count",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "submitted_at": {
+          "name": "submitted_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "error": {
+          "name": "error",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "failed_chunk_data": {
+          "name": "failed_chunk_data",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "retried_batch_id": {
+          "name": "retried_batch_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "vector_bulk_embeddings_batches_run_idx": {
+          "name": "vector_bulk_embeddings_batches_run_idx",
+          "columns": [
+            {
+              "expression": "run_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "vector_bulk_embeddings_batches_retried_batch_idx": {
+          "name": "vector_bulk_embeddings_batches_retried_batch_idx",
+          "columns": [
+            {
+              "expression": "retried_batch_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "vector_bulk_embeddings_batches_updated_at_idx": {
+          "name": "vector_bulk_embeddings_batches_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "vector_bulk_embeddings_batches_created_at_idx": {
+          "name": "vector_bulk_embeddings_batches_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "run_1_idx": {
+          "name": "run_1_idx",
+          "columns": [
+            {
+              "expression": "run_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "providerBatchId_idx": {
+          "name": "providerBatchId_idx",
+          "columns": [
+            {
+              "expression": "provider_batch_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "status_1_idx": {
+          "name": "status_1_idx",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "vector_bulk_embeddings_batches_run_id_vector_bulk_embeddings_runs_id_fk": {
+          "name": "vector_bulk_embeddings_batches_run_id_vector_bulk_embeddings_runs_id_fk",
+          "tableFrom": "vector_bulk_embeddings_batches",
+          "tableTo": "vector_bulk_embeddings_runs",
+          "columnsFrom": [
+            "run_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "vector_bulk_embeddings_batches_retried_batch_id_vector_bulk_embeddings_batches_id_fk": {
+          "name": "vector_bulk_embeddings_batches_retried_batch_id_vector_bulk_embeddings_batches_id_fk",
+          "tableFrom": "vector_bulk_embeddings_batches",
+          "tableTo": "vector_bulk_embeddings_batches",
+          "columnsFrom": [
+            "retried_batch_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.odlabs_knowledge": {
+      "name": "odlabs_knowledge",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "source_collection": {
+          "name": "source_collection",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "doc_id": {
+          "name": "doc_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chunk_index": {
+          "name": "chunk_index",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chunk_text": {
+          "name": "chunk_text",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "embedding_version": {
+          "name": "embedding_version",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "embedding": {
+          "name": "embedding",
+          "type": "vector(1536)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "odlabs_knowledge_updated_at_idx": {
+          "name": "odlabs_knowledge_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "odlabs_knowledge_created_at_idx": {
+          "name": "odlabs_knowledge_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "sourceCollection_docId_1_idx": {
+          "name": "sourceCollection_docId_1_idx",
+          "columns": [
+            {
+              "expression": "source_collection",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "doc_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "odlabs_knowledge_embedding_ivfflat": {
+          "name": "odlabs_knowledge_embedding_ivfflat",
+          "columns": [
+            {
+              "expression": "embedding",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last",
+              "opclass": "vector_cosine_ops"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "ivfflat",
+          "with": {
+            "lists": 100
+          }
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.payload_kv": {
       "name": "payload_kv",
       "schema": "",
@@ -8123,6 +8994,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "test_documents_id": {
+          "name": "test_documents_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "redirects_id": {
           "name": "redirects_id",
           "type": "integer",
@@ -8143,6 +9020,30 @@
         },
         "search_id": {
           "name": "search_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vector_bulk_embeddings_runs_id": {
+          "name": "vector_bulk_embeddings_runs_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vector_bulk_embedding_input_metadata_id": {
+          "name": "vector_bulk_embedding_input_metadata_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vector_bulk_embeddings_batches_id": {
+          "name": "vector_bulk_embeddings_batches_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "odlabs_knowledge_id": {
+          "name": "odlabs_knowledge_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -8275,6 +9176,21 @@
           "method": "btree",
           "with": {}
         },
+        "payload_locked_documents_rels_test_documents_id_idx": {
+          "name": "payload_locked_documents_rels_test_documents_id_idx",
+          "columns": [
+            {
+              "expression": "test_documents_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "payload_locked_documents_rels_redirects_id_idx": {
           "name": "payload_locked_documents_rels_redirects_id_idx",
           "columns": [
@@ -8325,6 +9241,66 @@
           "columns": [
             {
               "expression": "search_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_vector_bulk_embeddings_run_idx": {
+          "name": "payload_locked_documents_rels_vector_bulk_embeddings_run_idx",
+          "columns": [
+            {
+              "expression": "vector_bulk_embeddings_runs_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_vector_bulk_embedding_inpu_idx": {
+          "name": "payload_locked_documents_rels_vector_bulk_embedding_inpu_idx",
+          "columns": [
+            {
+              "expression": "vector_bulk_embedding_input_metadata_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_vector_bulk_embeddings_bat_idx": {
+          "name": "payload_locked_documents_rels_vector_bulk_embeddings_bat_idx",
+          "columns": [
+            {
+              "expression": "vector_bulk_embeddings_batches_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_odlabs_knowledge_id_idx": {
+          "name": "payload_locked_documents_rels_odlabs_knowledge_id_idx",
+          "columns": [
+            {
+              "expression": "odlabs_knowledge_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -8430,6 +9406,19 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "payload_locked_documents_rels_test_documents_fk": {
+          "name": "payload_locked_documents_rels_test_documents_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "test_documents",
+          "columnsFrom": [
+            "test_documents_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "payload_locked_documents_rels_redirects_fk": {
           "name": "payload_locked_documents_rels_redirects_fk",
           "tableFrom": "payload_locked_documents_rels",
@@ -8475,6 +9464,58 @@
           "tableTo": "search",
           "columnsFrom": [
             "search_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_vector_bulk_embeddings_runs_fk": {
+          "name": "payload_locked_documents_rels_vector_bulk_embeddings_runs_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "vector_bulk_embeddings_runs",
+          "columnsFrom": [
+            "vector_bulk_embeddings_runs_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_vector_bulk_embedding_input_fk": {
+          "name": "payload_locked_documents_rels_vector_bulk_embedding_input_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "vector_bulk_embedding_input_metadata",
+          "columnsFrom": [
+            "vector_bulk_embedding_input_metadata_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_vector_bulk_embeddings_batc_fk": {
+          "name": "payload_locked_documents_rels_vector_bulk_embeddings_batc_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "vector_bulk_embeddings_batches",
+          "columnsFrom": [
+            "vector_bulk_embeddings_batches_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_odlabs_knowledge_fk": {
+          "name": "payload_locked_documents_rels_odlabs_knowledge_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "odlabs_knowledge",
+          "columnsFrom": [
+            "odlabs_knowledge_id"
           ],
           "columnsTo": [
             "id"
@@ -9614,11 +10655,37 @@
         "redirect"
       ]
     },
+    "public.enum_vector_bulk_embeddings_runs_status": {
+      "name": "enum_vector_bulk_embeddings_runs_status",
+      "schema": "public",
+      "values": [
+        "queued",
+        "running",
+        "succeeded",
+        "failed",
+        "canceled"
+      ]
+    },
+    "public.enum_vector_bulk_embeddings_batches_status": {
+      "name": "enum_vector_bulk_embeddings_batches_status",
+      "schema": "public",
+      "values": [
+        "queued",
+        "running",
+        "succeeded",
+        "failed",
+        "canceled",
+        "retried"
+      ]
+    },
     "public.enum_payload_jobs_log_task_slug": {
       "name": "enum_payload_jobs_log_task_slug",
       "schema": "public",
       "values": [
         "inline",
+        "payloadcms-vectorize:vectorize",
+        "payloadcms-vectorize:prepare-bulk-embedding",
+        "payloadcms-vectorize:poll-or-complete-single-batch",
         "schedulePublish"
       ]
     },
@@ -9635,6 +10702,9 @@
       "schema": "public",
       "values": [
         "inline",
+        "payloadcms-vectorize:vectorize",
+        "payloadcms-vectorize:prepare-bulk-embedding",
+        "payloadcms-vectorize:poll-or-complete-single-batch",
         "schedulePublish"
       ]
     },
@@ -9672,6 +10742,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "2151ee68-143a-4bec-a7b3-c33f5d42561a",
+  "id": "3f13e1cb-0f02-4f2d-869c-abd0788c0569",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

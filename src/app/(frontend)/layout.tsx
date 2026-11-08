@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
@@ -17,20 +18,45 @@ import { draftMode } from 'next/headers'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { LayoutClient } from './LayoutClient'
-import { getMegaMenuData } from '@/MegaMenu/getMegaMenuData'
+import { getPagesData } from '@/getPagesData'
+import { getLegalPagesData } from '@/getLegalPagesData'
+import { getContactSocials } from '@/utilities/getContactSocials'
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const { isEnabled } = await draftMode()
 
-  let megaMenuData
+  let pagesData
+  let legalPagesData
+  let contactSocials
+
   try {
-    megaMenuData = await getMegaMenuData()
+    pagesData = await getPagesData()
   } catch (error) {
-    console.error('Failed to fetch mega menu data:', error)
+    console.error('Failed to fetch pages data:', error)
+  }
+
+  try {
+    legalPagesData = await getLegalPagesData()
+  } catch (error) {
+    console.error('Failed to fetch published legal pages:', error)
+  }
+
+  try {
+    contactSocials = await getContactSocials()
+  } catch (error) {
+    console.error('Failed to fetch contact socials:', error)
   }
 
   return (
-    <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html
+      className={cn(GeistSans.variable, GeistMono.variable)}
+      lang="en"
+      suppressHydrationWarning
+    >
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
@@ -46,9 +72,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
           <LayoutClient
             header={<Header />}
-            footer={<Footer />}
+            footer={
+              <Footer
+                pagesData={pagesData}
+                legalPagesData={legalPagesData}
+                contactSocials={contactSocials}
+              />
+            }
             leftRail={<LeftRail />}
-            megaMenuData={megaMenuData}
+            pagesData={pagesData}
+            legalPagesData={legalPagesData}
+            contactSocials={contactSocials}
           >
             {children}
           </LayoutClient>

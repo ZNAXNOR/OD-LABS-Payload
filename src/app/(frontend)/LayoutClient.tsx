@@ -3,46 +3,58 @@
 import React from 'react'
 import { RightRail } from '@/Rail/Right'
 import { MegaMenu } from '@/MegaMenu'
-import type { MegaMenuPage } from '@/MegaMenu/Sections/pageData'
+import type { PagesData } from '@/getPagesData'
+import type { LegalPagesData } from '@/getLegalPagesData'
+import type { ContactSocial } from '@/payload-types'
 import { MegaMenuProvider, useMegaMenu } from '@/providers/MegaMenu'
+import { usePathname } from 'next/navigation'
 
 const LayoutClientContent = ({
   children,
   header,
   footer,
   leftRail,
-  megaMenuData,
+  pagesData,
+  legalPagesData,
+  contactSocials,
 }: {
   children: React.ReactNode
   header: React.ReactNode
   footer: React.ReactNode
   leftRail: React.ReactNode
-  megaMenuData?: MegaMenuPage[]
+  pagesData?: PagesData[]
+  legalPagesData?: LegalPagesData[]
+  contactSocials?: ContactSocial | null
 }) => {
   const { isOpen, openMenu, closeMenu } = useMegaMenu()
+  const pathname = usePathname()
+  const normalizedPath = pathname ? pathname.replace(/\/$/, '') || '/' : '/'
+  const currentPage = pagesData?.find(
+    (page) => page.href === pathname || page.href === normalizedPath,
+  )
 
   return (
     <>
-      <div className="mx-auto w-full max-w-380 grid grid-cols-1 lg:grid-cols-[64px_minmax(0,1fr)_64px]">
-        {/* Left rail */}
+      <div className="mx-auto grid w-full max-w-380 grid-cols-1 lg:grid-cols-[72px_minmax(0,1fr)_72px]">
         {leftRail}
 
-        {/* Main Site */}
-        <div className="flex flex-col min-h-screen">
+        <div className="flex min-h-screen min-w-0 flex-col">
           {header}
-          {children}
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
           {footer}
         </div>
 
-        {/* Right rail */}
-        <RightRail onMenuOpen={openMenu} />
+        <RightRail onMenuOpen={openMenu} sections={currentPage?.sections ?? []} />
       </div>
 
-      {/* Mega menu */}
       <MegaMenu
         open={isOpen}
         onClose={closeMenu}
-        pages={megaMenuData ?? []}
+        pages={pagesData ?? []}
+        legalPages={legalPagesData ?? []}
+        contactSocials={contactSocials}
       />
     </>
   )
@@ -53,7 +65,9 @@ export const LayoutClient = (props: {
   header: React.ReactNode
   footer: React.ReactNode
   leftRail: React.ReactNode
-  megaMenuData?: MegaMenuPage[]
+  pagesData?: PagesData[]
+  legalPagesData?: LegalPagesData[]
+  contactSocials?: ContactSocial | null
 }) => {
   return (
     <MegaMenuProvider>

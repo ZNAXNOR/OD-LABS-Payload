@@ -69,13 +69,19 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    'legal-pages': LegalPage;
     media: Media;
     categories: Category;
     users: User;
+    'test-documents': TestDocument;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
     search: Search;
+    'vector-bulk-embeddings-runs': VectorBulkEmbeddingsRun;
+    'vector-bulk-embedding-input-metadata': VectorBulkEmbeddingInputMetadatum;
+    'vector-bulk-embeddings-batches': VectorBulkEmbeddingsBatch;
+    odlabs_knowledge: OdlabsKnowledge;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-folders': FolderInterface;
@@ -91,13 +97,19 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    'legal-pages': LegalPagesSelect<false> | LegalPagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'test-documents': TestDocumentsSelect<false> | TestDocumentsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
+    'vector-bulk-embeddings-runs': VectorBulkEmbeddingsRunsSelect<false> | VectorBulkEmbeddingsRunsSelect<true>;
+    'vector-bulk-embedding-input-metadata': VectorBulkEmbeddingInputMetadataSelect<false> | VectorBulkEmbeddingInputMetadataSelect<true>;
+    'vector-bulk-embeddings-batches': VectorBulkEmbeddingsBatchesSelect<false> | VectorBulkEmbeddingsBatchesSelect<true>;
+    odlabs_knowledge: OdlabsKnowledgeSelect<false> | OdlabsKnowledgeSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -112,10 +124,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'contact-socials': ContactSocial;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'contact-socials': ContactSocialsSelect<false> | ContactSocialsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -124,6 +138,9 @@ export interface Config {
   user: User;
   jobs: {
     tasks: {
+      'payloadcms-vectorize:vectorize': TaskPayloadcmsVectorizeVectorize;
+      'payloadcms-vectorize:prepare-bulk-embedding': TaskPayloadcmsVectorizePrepareBulkEmbedding;
+      'payloadcms-vectorize:poll-or-complete-single-batch': TaskPayloadcmsVectorizePollOrCompleteSingleBatch;
       schedulePublish: TaskSchedulePublish;
       inline: {
         input: unknown;
@@ -159,7 +176,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'introduction';
     richText?: {
       root: {
         type: string;
@@ -175,6 +192,39 @@ export interface Page {
       };
       [k: string]: unknown;
     } | null;
+    /**
+     * Short eyebrow phrases. The first phrase receives the automatic section number.
+     */
+    eyebrow?: string[] | null;
+    addPadding?: boolean | null;
+    /**
+     * Padding in px
+     */
+    paddingX?: number | null;
+    /**
+     * Padding in px
+     */
+    paddingY?: number | null;
+    /**
+     * Short phrases displayed in the hero eyebrow. First phrase unique & introductory.
+     */
+    introductionEyebrow?: string[] | null;
+    introductionHeader?: string | null;
+    introductionPhrases?: string[] | null;
+    introductionDescription?: string | null;
+    /**
+     * Displayed beside the location icon below the hero.
+     */
+    introductionLocation?: string | null;
+    introductionPortrait?: (number | null) | Media;
+    introductionAICTA?: {
+      label: string;
+      description?: string | null;
+      link: {
+        url: string;
+        newTab?: boolean | null;
+      };
+    };
     links?:
       | {
           link: {
@@ -194,14 +244,14 @@ export interface Page {
             /**
              * Choose how the link should be rendered.
              */
-            appearance?: ('default' | 'outline') | null;
+            appearance?: ('underline' | 'default' | 'outline') | null;
           };
           id?: string | null;
         }[]
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | AIBlock | CalBookingBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -209,58 +259,12 @@ export interface Page {
      */
     image?: (number | null) | Media;
     description?: string | null;
-  };
-  publishedAt?: string | null;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: number;
-  title: string;
-  heroImage?: (number | null) | Media;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
-  meta?: {
-    title?: string | null;
     /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     * Exclude this page from the OD LABS AI knowledgebase. This setting does not control search-engine indexing.
      */
-    image?: (number | null) | Media;
-    description?: string | null;
+    excludeFromIndex?: boolean | null;
   };
   publishedAt?: string | null;
-  authors?: (number | User)[] | null;
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-      }[]
-    | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -292,6 +296,7 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
+  _objectKey?: string | null;
   folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
@@ -391,6 +396,60 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  heroImage?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  relatedPosts?: (number | Post)[] | null;
+  categories?: (number | Category)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+    /**
+     * Exclude this post from the OD LABS AI knowledgebase while keeping it published on the website.
+     */
+    excludeFromIndex?: boolean | null;
+  };
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -427,6 +486,7 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
   sessions?:
@@ -444,6 +504,13 @@ export interface User {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
+  /**
+   * Eyebrow tags. The block position prefix (e.g. "02 —") is automatically prepended to the first tag. Multiple tags are separated by "•".
+   */
+  eyebrow?: string[] | null;
+  /**
+   * CTA heading and supporting copy. Use a heading block followed by a paragraph.
+   */
   richText?: {
     root: {
       type: string;
@@ -459,6 +526,9 @@ export interface CallToActionBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Add the primary action and optional secondary links. Use Fill for the primary action and Underline for secondary links.
+   */
   links?:
     | {
         link: {
@@ -478,7 +548,7 @@ export interface CallToActionBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ('default' | 'outline') | null;
+          appearance?: ('default' | 'outline' | 'underline') | null;
         };
         id?: string | null;
       }[]
@@ -492,6 +562,53 @@ export interface CallToActionBlock {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
+  layout: 'default' | 'capabilities' | 'testimonial';
+  /**
+   * Eyebrow tags. The block position prefix (e.g. "02 —") is automatically prepended to the first tag. Multiple tags are separated by "•".
+   */
+  eyebrow?: string[] | null;
+  /**
+   * Use a heading block for the main statement and paragraph blocks for supporting text.
+   */
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  linkGroup?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('underline' | 'default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   columns?:
     | {
         size?: ('zero' | 'oneThird' | 'half' | 'twoThirds' | 'full') | null;
@@ -510,6 +627,13 @@ export interface ContentBlock {
           };
           [k: string]: unknown;
         } | null;
+        clientName?: string | null;
+        clientPosition?: string | null;
+        clientCompany?: string | null;
+        /**
+         * Optional. If omitted, the testimonial displays without a photo.
+         */
+        clientMedia?: (number | null) | Media;
         enableLink?: boolean | null;
         link?: {
           type?: ('reference' | 'custom') | null;
@@ -528,7 +652,7 @@ export interface ContentBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ('default' | 'outline') | null;
+          appearance?: ('underline' | 'default' | 'outline') | null;
         };
         id?: string | null;
       }[]
@@ -586,7 +710,7 @@ export interface ArchiveBlock {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
-  form: number | Form;
+  variant: 'single' | 'multi';
   enableIntro?: boolean | null;
   introContent?: {
     root: {
@@ -603,6 +727,31 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  singleForm?: (number | null) | Form;
+  /**
+   * Add 2–3 forms. Each entry becomes a selectable tab on the page. Reorder entries to change tab order.
+   */
+  multiForms?:
+    | {
+        form: number | Form;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -622,6 +771,10 @@ export interface Form {
             width?: number | null;
             required?: boolean | null;
             defaultValue?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'checkbox';
@@ -631,6 +784,10 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'country';
@@ -640,6 +797,10 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'email';
@@ -670,6 +831,10 @@ export interface Form {
             width?: number | null;
             defaultValue?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'number';
@@ -697,6 +862,10 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'state';
@@ -707,6 +876,10 @@ export interface Form {
             width?: number | null;
             defaultValue?: string | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'text';
@@ -717,12 +890,277 @@ export interface Form {
             width?: number | null;
             defaultValue?: string | null;
             required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'textarea';
           }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: string | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'date';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            /**
+             * Placeholder text displayed inside the field when empty.
+             */
+            placeholder?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'radio';
+          }
       )[]
     | null;
+  /**
+   * Add steps in the order visitors should complete them. Each step uses the native Payload Form Builder field types.
+   */
+  steps?:
+    | {
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * These are the same native field types available in a standard Payload form.
+         */
+        fields?:
+          | (
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  required?: boolean | null;
+                  defaultValue?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'checkbox';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'country';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'email';
+                }
+              | {
+                  message?: {
+                    root: {
+                      type: string;
+                      children: {
+                        type: any;
+                        version: number;
+                        [k: string]: unknown;
+                      }[];
+                      direction: ('ltr' | 'rtl') | null;
+                      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                      indent: number;
+                      version: number;
+                    };
+                    [k: string]: unknown;
+                  } | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'message';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  defaultValue?: number | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'number';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  defaultValue?: string | null;
+                  placeholder?: string | null;
+                  options?:
+                    | {
+                        label: string;
+                        value: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  required?: boolean | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'select';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'state';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  defaultValue?: string | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'text';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  defaultValue?: string | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'textarea';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  required?: boolean | null;
+                  defaultValue?: string | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'date';
+                }
+              | {
+                  name: string;
+                  label?: string | null;
+                  width?: number | null;
+                  defaultValue?: string | null;
+                  options?:
+                    | {
+                        label: string;
+                        value: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  required?: boolean | null;
+                  /**
+                   * Placeholder text displayed inside the field when empty.
+                   */
+                  placeholder?: string | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'radio';
+                }
+            )[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Compulsory final stage for multi-step forms where visitors review their answers before submitting.
+   */
+  previewStep?: {
+    /**
+     * Name displayed in the step progress bar and stage header.
+     */
+    title: string;
+    /**
+     * Optional introductory text displayed above the submission summary.
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
   submitButtonLabel?: string | null;
   confirmationType?: ('message' | 'redirect') | null;
   confirmationMessage?: {
@@ -769,6 +1207,206 @@ export interface Form {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Standard forms use the Fields editor. Multi-step forms organize those same Payload Form Builder fields into steps.
+   */
+  formLayout: 'standard' | 'multiStep';
+  privacyConsent?: {
+    /**
+     * Enabled by default. Visitors must accept this consent before submitting the form.
+     */
+    enabled?: boolean | null;
+    /**
+     * Select the published Privacy Policy page linked in the consent statement.
+     */
+    privacyPolicy?: (number | null) | LegalPage;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal-pages".
+ */
+export interface LegalPage {
+  id: number;
+  title: string;
+  /**
+   * A unique purpose for this legal page. Assign each type to only one page. Leave blank temporarily on existing documents until classified.
+   */
+  documentType?:
+    | (
+        | 'privacy-policy'
+        | 'terms-of-service'
+        | 'cookie-policy'
+        | 'refund-policy'
+        | 'data-processing-agreement'
+        | 'acceptable-use-policy'
+        | 'other'
+      )
+    | null;
+  contentMode: 'richText' | 'externalEmbed';
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  embed?: {
+    preset?: ('cookiebot' | 'usercentrics' | 'custom') | null;
+    /**
+     * e.g. a6dbdbc7-4e29-4581-8033-e195c7bb3d0b
+     */
+    cookiebotDomainGroupID?: string | null;
+    cookiebotBlockingMode?: ('auto' | 'manual') | null;
+    /**
+     * e.g. bb7dc8b9-fa9a-4ce5-8af5-646cff58b79a
+     */
+    usercentricsPrivacyPolicyID?: string | null;
+    /**
+     * e.g. en, de, fr
+     */
+    usercentricsLanguage?: string | null;
+    scripts?:
+      | {
+          src: string;
+          /**
+           * Optional HTML id attribute for the script tag.
+           */
+          id?: string | null;
+          /**
+           * Key-value attributes (e.g. data-cbid, privacy-policy-id, async, type).
+           */
+          attributes?:
+            | {
+                name: string;
+                /**
+                 * Value for attribute, or "true" / blank for boolean flags.
+                 */
+                value?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+        }[]
+      | null;
+    containerID?: string | null;
+    /**
+     * For example: uc-privacy-policy
+     */
+    containerClass?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+    /**
+     * Exclude this page from search engines and the OD LABS AI knowledgebase
+     */
+    excludeFromIndex?: boolean | null;
+  };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AIBlock".
+ */
+export interface AIBlock {
+  /**
+   * Optional. Overrides the default heading on the initial AI screen.
+   */
+  heading?: string | null;
+  /**
+   * Optional. Overrides the default description on the initial AI screen.
+   */
+  description?: string | null;
+  placeholder?: string | null;
+  defaultScope: 'all' | 'pages' | 'posts';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aiBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CalBookingBlock".
+ */
+export interface CalBookingBlock {
+  /**
+   * Add up to three event types. Header and description sizes are fixed on the frontend; use Text State colors to adjust their colors.
+   */
+  options?:
+    | {
+        heading: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        description: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        /**
+         * Example: od-omkar-dalvi/30min
+         */
+        calLink: string;
+        /**
+         * When provided, a fixed “Open Cal.com directly” link appears below the calendar. Leave empty to hide it.
+         */
+        directLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'calBooking';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "test-documents".
+ */
+export interface TestDocument {
+  id: number;
+  title: string;
+  content: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -847,6 +1485,196 @@ export interface Search {
   createdAt: string;
 }
 /**
+ * Bulk embedding run records. Created automatically when the Embed all action is triggered.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embeddings-runs".
+ */
+export interface VectorBulkEmbeddingsRun {
+  id: number;
+  /**
+   * Knowledge pool slug
+   */
+  pool: string;
+  /**
+   * Embedding version at submission time
+   */
+  embeddingVersion: string;
+  status: 'queued' | 'running' | 'succeeded' | 'failed' | 'canceled';
+  /**
+   * Total number of batches in this run
+   */
+  totalBatches?: number | null;
+  inputs?: number | null;
+  succeeded?: number | null;
+  failed?: number | null;
+  /**
+   * Timestamp when the batch was submitted
+   */
+  submittedAt?: string | null;
+  /**
+   * Timestamp when the batch finished
+   */
+  completedAt?: string | null;
+  /**
+   * Failure reason if the run ended in error
+   */
+  error?: string | null;
+  /**
+   * Data about chunks that failed during completion (collection, documentId, chunkIndex)
+   */
+  failedChunkData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Stores per-input metadata for bulk embedding runs.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embedding-input-metadata".
+ */
+export interface VectorBulkEmbeddingInputMetadatum {
+  id: number;
+  /**
+   * Bulk run this input belongs to
+   */
+  run: number | VectorBulkEmbeddingsRun;
+  /**
+   * Batch this input belongs to
+   */
+  batch: number | VectorBulkEmbeddingsBatch;
+  inputId: string;
+  /**
+   * Original chunk text
+   */
+  text: string;
+  sourceCollection: string;
+  docId: string;
+  chunkIndex: number;
+  embeddingVersion: string;
+  /**
+   * Extension field values for this chunk
+   */
+  extensionFields?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Individual batches within a bulk embedding run. Created when input count exceeds file limits.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embeddings-batches".
+ */
+export interface VectorBulkEmbeddingsBatch {
+  id: number;
+  /**
+   * Parent bulk embedding run
+   */
+  run: number | VectorBulkEmbeddingsRun;
+  /**
+   * Zero-based index of this batch within the run
+   */
+  batchIndex: number;
+  /**
+   * Provider-specific batch identifier
+   */
+  providerBatchId: string;
+  status: 'queued' | 'running' | 'succeeded' | 'failed' | 'canceled' | 'retried';
+  /**
+   * Number of inputs in this batch
+   */
+  inputCount: number;
+  /**
+   * Number of successful embeddings
+   */
+  succeededCount?: number | null;
+  /**
+   * Number of failed embeddings
+   */
+  failedCount?: number | null;
+  /**
+   * Timestamp when the batch was submitted to provider
+   */
+  submittedAt?: string | null;
+  /**
+   * Timestamp when the batch finished
+   */
+  completedAt?: string | null;
+  /**
+   * Error message if the batch failed
+   */
+  error?: string | null;
+  /**
+   * Collection, documentId and chunkIndex for each chunk that failed in this batch
+   */
+  failedChunkData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * The new batch created when this batch was retried
+   */
+  retriedBatch?: (number | null) | VectorBulkEmbeddingsBatch;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Vector embeddings for search and similarity queries. Created by the payloadcms-vectorize plugin. Embeddings cannot be added or modified, only deleted, through the admin panel. No other restrictions enforced.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "odlabs_knowledge".
+ */
+export interface OdlabsKnowledge {
+  id: number;
+  /**
+   * The collection that this embedding belongs to
+   */
+  sourceCollection: string;
+  /**
+   * The ID of the source document
+   */
+  docId: string;
+  /**
+   * The index of this chunk
+   */
+  chunkIndex: number;
+  /**
+   * The original text that was vectorized
+   */
+  chunkText?: string | null;
+  /**
+   * The version of the embedding model used
+   */
+  embeddingVersion?: string | null;
+  pageTitle?: string | null;
+  pageSlug?: string | null;
+  section?: string | null;
+  blockType?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -915,7 +1743,12 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'schedulePublish';
+        taskSlug:
+          | 'inline'
+          | 'payloadcms-vectorize:vectorize'
+          | 'payloadcms-vectorize:prepare-bulk-embedding'
+          | 'payloadcms-vectorize:poll-or-complete-single-batch'
+          | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -948,7 +1781,15 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'schedulePublish') | null;
+  taskSlug?:
+    | (
+        | 'inline'
+        | 'payloadcms-vectorize:vectorize'
+        | 'payloadcms-vectorize:prepare-bulk-embedding'
+        | 'payloadcms-vectorize:poll-or-complete-single-batch'
+        | 'schedulePublish'
+      )
+    | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -971,6 +1812,10 @@ export interface PayloadLockedDocument {
         value: number | Post;
       } | null)
     | ({
+        relationTo: 'legal-pages';
+        value: number | LegalPage;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -981,6 +1826,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'test-documents';
+        value: number | TestDocument;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -997,6 +1846,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'search';
         value: number | Search;
+      } | null)
+    | ({
+        relationTo: 'vector-bulk-embeddings-runs';
+        value: number | VectorBulkEmbeddingsRun;
+      } | null)
+    | ({
+        relationTo: 'vector-bulk-embedding-input-metadata';
+        value: number | VectorBulkEmbeddingInputMetadatum;
+      } | null)
+    | ({
+        relationTo: 'vector-bulk-embeddings-batches';
+        value: number | VectorBulkEmbeddingsBatch;
+      } | null)
+    | ({
+        relationTo: 'odlabs_knowledge';
+        value: number | OdlabsKnowledge;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -1055,6 +1920,28 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         type?: T;
         richText?: T;
+        eyebrow?: T;
+        addPadding?: T;
+        paddingX?: T;
+        paddingY?: T;
+        introductionEyebrow?: T;
+        introductionHeader?: T;
+        introductionPhrases?: T;
+        introductionDescription?: T;
+        introductionLocation?: T;
+        introductionPortrait?: T;
+        introductionAICTA?:
+          | T
+          | {
+              label?: T;
+              description?: T;
+              link?:
+                | T
+                | {
+                    url?: T;
+                    newTab?: T;
+                  };
+            };
         links?:
           | T
           | {
@@ -1080,6 +1967,8 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        aiBlock?: T | AIBlockSelect<T>;
+        calBooking?: T | CalBookingBlockSelect<T>;
       };
   meta?:
     | T
@@ -1087,6 +1976,7 @@ export interface PagesSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        excludeFromIndex?: T;
       };
   publishedAt?: T;
   generateSlug?: T;
@@ -1100,6 +1990,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   richText?: T;
   links?:
     | T
@@ -1124,11 +2015,33 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
  * via the `definition` "ContentBlock_select".
  */
 export interface ContentBlockSelect<T extends boolean = true> {
+  layout?: T;
+  eyebrow?: T;
+  richText?: T;
+  linkGroup?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
   columns?:
     | T
     | {
         size?: T;
         richText?: T;
+        clientName?: T;
+        clientPosition?: T;
+        clientCompany?: T;
+        clientMedia?: T;
         enableLink?: T;
         link?:
           | T
@@ -1173,9 +2086,46 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
  * via the `definition` "FormBlock_select".
  */
 export interface FormBlockSelect<T extends boolean = true> {
-  form?: T;
+  variant?: T;
   enableIntro?: T;
   introContent?: T;
+  singleForm?: T;
+  multiForms?:
+    | T
+    | {
+        form?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AIBlock_select".
+ */
+export interface AIBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  placeholder?: T;
+  defaultScope?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CalBookingBlock_select".
+ */
+export interface CalBookingBlockSelect<T extends boolean = true> {
+  options?:
+    | T
+    | {
+        heading?: T;
+        description?: T;
+        calLink?: T;
+        directLink?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1195,6 +2145,7 @@ export interface PostsSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        excludeFromIndex?: T;
       };
   publishedAt?: T;
   authors?: T;
@@ -1212,11 +2163,59 @@ export interface PostsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal-pages_select".
+ */
+export interface LegalPagesSelect<T extends boolean = true> {
+  title?: T;
+  documentType?: T;
+  contentMode?: T;
+  content?: T;
+  embed?:
+    | T
+    | {
+        preset?: T;
+        cookiebotDomainGroupID?: T;
+        cookiebotBlockingMode?: T;
+        usercentricsPrivacyPolicyID?: T;
+        usercentricsLanguage?: T;
+        scripts?:
+          | T
+          | {
+              src?: T;
+              id?: T;
+              attributes?:
+                | T
+                | {
+                    name?: T;
+                    value?: T;
+                    id?: T;
+                  };
+            };
+        containerID?: T;
+        containerClass?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+        excludeFromIndex?: T;
+      };
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  _objectKey?: T;
   folder?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1337,6 +2336,7 @@ export interface UsersSelect<T extends boolean = true> {
   resetPasswordExpiration?: T;
   salt?: T;
   hash?: T;
+  resetPasswordRequestedAt?: T;
   loginAttempts?: T;
   lockUntil?: T;
   sessions?:
@@ -1346,6 +2346,16 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "test-documents_select".
+ */
+export interface TestDocumentsSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1380,6 +2390,7 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               required?: T;
               defaultValue?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -1390,6 +2401,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -1400,6 +2412,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -1418,6 +2431,7 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -1447,6 +2461,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -1458,6 +2473,7 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
@@ -1469,9 +2485,196 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
               id?: T;
               blockName?: T;
             };
+        date?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              defaultValue?: T;
+              placeholder?: T;
+              id?: T;
+              blockName?: T;
+            };
+        radio?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              options?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              required?: T;
+              placeholder?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        fields?:
+          | T
+          | {
+              checkbox?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    required?: T;
+                    defaultValue?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              country?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              email?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              message?:
+                | T
+                | {
+                    message?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              number?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    defaultValue?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              select?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    defaultValue?: T;
+                    placeholder?: T;
+                    options?:
+                      | T
+                      | {
+                          label?: T;
+                          value?: T;
+                          id?: T;
+                        };
+                    required?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              state?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              text?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    defaultValue?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              textarea?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    defaultValue?: T;
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              date?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    required?: T;
+                    defaultValue?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              radio?:
+                | T
+                | {
+                    name?: T;
+                    label?: T;
+                    width?: T;
+                    defaultValue?: T;
+                    options?:
+                      | T
+                      | {
+                          label?: T;
+                          value?: T;
+                          id?: T;
+                        };
+                    required?: T;
+                    placeholder?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+            };
+        id?: T;
+      };
+  previewStep?:
+    | T
+    | {
+        title?: T;
+        description?: T;
       };
   submitButtonLabel?: T;
   confirmationType?: T;
@@ -1492,6 +2695,13 @@ export interface FormsSelect<T extends boolean = true> {
         subject?: T;
         message?: T;
         id?: T;
+      };
+  formLayout?: T;
+  privacyConsent?:
+    | T
+    | {
+        enabled?: T;
+        privacyPolicy?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1536,6 +2746,79 @@ export interface SearchSelect<T extends boolean = true> {
         title?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embeddings-runs_select".
+ */
+export interface VectorBulkEmbeddingsRunsSelect<T extends boolean = true> {
+  pool?: T;
+  embeddingVersion?: T;
+  status?: T;
+  totalBatches?: T;
+  inputs?: T;
+  succeeded?: T;
+  failed?: T;
+  submittedAt?: T;
+  completedAt?: T;
+  error?: T;
+  failedChunkData?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embedding-input-metadata_select".
+ */
+export interface VectorBulkEmbeddingInputMetadataSelect<T extends boolean = true> {
+  run?: T;
+  batch?: T;
+  inputId?: T;
+  text?: T;
+  sourceCollection?: T;
+  docId?: T;
+  chunkIndex?: T;
+  embeddingVersion?: T;
+  extensionFields?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vector-bulk-embeddings-batches_select".
+ */
+export interface VectorBulkEmbeddingsBatchesSelect<T extends boolean = true> {
+  run?: T;
+  batchIndex?: T;
+  providerBatchId?: T;
+  status?: T;
+  inputCount?: T;
+  succeededCount?: T;
+  failedCount?: T;
+  submittedAt?: T;
+  completedAt?: T;
+  error?: T;
+  failedChunkData?: T;
+  retriedBatch?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "odlabs_knowledge_select".
+ */
+export interface OdlabsKnowledgeSelect<T extends boolean = true> {
+  sourceCollection?: T;
+  docId?: T;
+  chunkIndex?: T;
+  chunkText?: T;
+  embeddingVersion?: T;
+  pageTitle?: T;
+  pageSlug?: T;
+  section?: T;
+  blockType?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1682,6 +2965,49 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-socials".
+ */
+export interface ContactSocial {
+  id: number;
+  /**
+   * Actions displayed in the contact form sidebar, megamenu, or footer. Select an internal page or provide an external custom URL (such as mailto: or a Cal.com link).
+   */
+  contactActions?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        description?: string | null;
+        enabled?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  socialLinks?:
+    | {
+        profile: 'omkar-dalvi' | 'od-labs';
+        platform: 'linkedin' | 'github' | 'instagram' | 'youtube' | 'x' | 'facebook' | 'threads' | 'website';
+        url: string;
+        enabled?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1728,6 +3054,40 @@ export interface FooterSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-socials_select".
+ */
+export interface ContactSocialsSelect<T extends boolean = true> {
+  contactActions?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        description?: T;
+        enabled?: T;
+        id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        profile?: T;
+        platform?: T;
+        url?: T;
+        enabled?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -1735,6 +3095,30 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskPayloadcms-vectorize:vectorize".
+ */
+export interface TaskPayloadcmsVectorizeVectorize {
+  input?: unknown;
+  output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskPayloadcms-vectorize:prepare-bulk-embedding".
+ */
+export interface TaskPayloadcmsVectorizePrepareBulkEmbedding {
+  input?: unknown;
+  output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskPayloadcms-vectorize:poll-or-complete-single-batch".
+ */
+export interface TaskPayloadcmsVectorizePollOrCompleteSingleBatch {
+  input?: unknown;
+  output?: unknown;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1752,9 +3136,16 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'legal-pages';
+          value: number | LegalPage;
         } | null);
     global?: string | null;
-    user?: (number | null) | User;
+    user?: {
+      relationTo: 'users';
+      value: number | User;
+    } | null;
   };
   output?: unknown;
 }
