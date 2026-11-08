@@ -1,8 +1,10 @@
 import type { PagesData } from '@/getPagesData'
+import type { PostsData } from '@/getPostsData'
 
 export type RouteSource =
   | 'payload-pages'
   | 'payload-legal'
+  | 'payload-posts'
   | 'system-raw'
   | 'error-404'
   | 'error-500'
@@ -28,4 +30,12 @@ export interface CurrentPageInfo {
   errorEyebrow?: string[]
   recoveryActions?: ErrorRecoveryAction[]
   sections?: PagesData['sections']
+  seo?: {
+    title?: string | null
+    description?: string | null
+    image?: any
+  }
 }
+
+export type { PostsData }
+

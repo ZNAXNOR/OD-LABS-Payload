@@ -20,6 +20,7 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { LayoutClient } from './LayoutClient'
 import { getPagesData } from '@/getPagesData'
 import { getLegalPagesData } from '@/getLegalPagesData'
+import { getPostsData } from '@/getPostsData'
 import { getContactSocials } from '@/utilities/getContactSocials'
 
 export default async function RootLayout({
@@ -31,6 +32,7 @@ export default async function RootLayout({
 
   let pagesData
   let legalPagesData
+  let postsData
   let contactSocials
 
   try {
@@ -43,6 +45,12 @@ export default async function RootLayout({
     legalPagesData = await getLegalPagesData()
   } catch (error) {
     console.error('Failed to fetch published legal pages:', error)
+  }
+
+  try {
+    postsData = await getPostsData()
+  } catch (error) {
+    console.error('Failed to fetch published posts:', error)
   }
 
   try {
@@ -82,6 +90,7 @@ export default async function RootLayout({
             leftRail={<LeftRail />}
             pagesData={pagesData}
             legalPagesData={legalPagesData}
+            postsData={postsData}
             contactSocials={contactSocials}
           >
             {children}
