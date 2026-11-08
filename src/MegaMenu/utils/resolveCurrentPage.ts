@@ -165,14 +165,13 @@ export function resolveCurrentPage({
         : posts.find((p) => p.slug === postSlug || p.href === path) || activePost
 
     if (matchedPost) {
-      const seoTitle = matchedPost.metaTitle || matchedPost.title
       const seoDescription =
         matchedPost.metaDescription ||
         matchedPost.description ||
         'Engineering publication, research breakdown, or technical archive page.'
 
       return {
-        title: seoTitle,
+        title: matchedPost.title,
         slug: matchedPost.slug,
         href: matchedPost.href || path,
         description: seoDescription,
