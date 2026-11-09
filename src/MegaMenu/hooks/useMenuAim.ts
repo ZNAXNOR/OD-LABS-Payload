@@ -85,6 +85,7 @@ export const useMenuAim = ({ panelRef, onActivate, enabled }: UseMenuAimOptions)
     if (triangle.isMovingTowardPanel(point) && pointInTriangle(point, anchor, triangle.first, triangle.second)) {
       pendingPageRef.current = page
       if (!timerRef.current) {
+        let previousPoint = point
         const activateIfPointerStops = () => {
           const pending = pendingPageRef.current
           const currentPoint = pointerRef.current
@@ -93,12 +94,16 @@ export const useMenuAim = ({ panelRef, onActivate, enabled }: UseMenuAimOptions)
             return
           }
 
-          const movement = Math.hypot(currentPoint.x - point.x, currentPoint.y - point.y)
+          const movement = Math.hypot(
+            currentPoint.x - previousPoint.x,
+            currentPoint.y - previousPoint.y,
+          )
           if (movement < 8) {
             activate(pending, currentPoint)
             return
           }
 
+          previousPoint = currentPoint
           timerRef.current = setTimeout(activateIfPointerStops, 320)
         }
 
