@@ -5,7 +5,7 @@ import Link from 'next/link'
 import {
   ArrowRight,
   BookOpen,
-  ExternalLink,
+  SquareArrowOutUpRight,
   FileCode,
   Hash,
   Home,
@@ -171,7 +171,7 @@ export const SitemapView: React.FC<SitemapViewProps> = ({ data }) => {
                 >
                   <FileCode className="size-4 shrink-0" aria-hidden="true" />
                   <span>Raw XML Index</span>
-                  <ExternalLink
+                  <SquareArrowOutUpRight
                     className="size-3 text-zinc-500"
                     aria-hidden="true"
                   />
@@ -576,7 +576,7 @@ export const SitemapView: React.FC<SitemapViewProps> = ({ data }) => {
                             </div>
 
                             <div className="group-hover:text-odl shrink-0 border border-zinc-800 bg-zinc-900/60 p-1.5 text-zinc-400 transition-colors group-hover:border-zinc-700">
-                              <ExternalLink
+                              <SquareArrowOutUpRight
                                 className="size-4"
                                 aria-hidden="true"
                               />
