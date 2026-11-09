@@ -3,15 +3,25 @@ import { ArrowUpRight, Scale } from 'lucide-react'
 import type { LegalContextData } from '../../types'
 import { ContextImage } from '../ContextImage'
 
-export const LegalContext = ({ context }: { context: LegalContextData }) => (
+export const LegalContext = ({
+  context,
+  mode = 'current',
+}: {
+  context: LegalContextData
+  mode?: 'current' | 'panel'
+}) => (
   <aside className="space-y-5">
-    <ContextImage image={context.seoImage} title={context.title} />
+    {mode === 'current' && <ContextImage image={context.seoImage} title={context.title} />}
     <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase">
       <Scale className="size-3.5 text-odl" aria-hidden="true" />
       Legal Document
     </div>
-    <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{context.title}</h2>
-    <p className="font-sans text-xs leading-relaxed text-zinc-400">{context.description}</p>
+    {mode === 'current' && (
+      <>
+        <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{context.title}</h2>
+        <p className="font-sans text-xs leading-relaxed text-zinc-400">{context.description}</p>
+      </>
+    )}
     {context.documentType && (
       <div className="font-mono text-xs text-zinc-500">
         TYPE // <span className="text-zinc-300">{context.documentType.replaceAll('-', ' ')}</span>
