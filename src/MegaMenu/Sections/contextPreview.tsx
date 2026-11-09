@@ -33,11 +33,11 @@ export const MegaMenu_ContextPreview = ({ page, currentPage, contactSocials, ope
     case 'error':
       return <ErrorContext context={currentPage} />
     case 'post':
-      return <PostContext context={currentPage} />
+      return <PostContext context={currentPage} mode="panel" />
     case 'legal':
-      return <LegalContext context={currentPage} />
+      return <LegalContext context={currentPage} mode="panel" />
     case 'posts-index':
-      return <PostsIndexContext context={currentPage} />
+      return <PostsIndexContext context={currentPage} mode="panel" />
     default:
       return <MegaMenu_ContextDefault contactSocials={contactSocials} active={open} />
   }
