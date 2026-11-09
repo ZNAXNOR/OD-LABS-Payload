@@ -15,11 +15,11 @@ export const MegaMenu_CurrentPage = ({ page }: MegaMenuCurrentPageProps) => {
     case 'page':
       return <PageContext context={page} mode="current" />
     case 'post':
-      return <PostContext context={page} />
+      return <PostContext context={page} mode="current" />
     case 'legal':
-      return <LegalContext context={page} />
+      return <LegalContext context={page} mode="current" />
     case 'posts-index':
-      return <PostsIndexContext context={page} />
+      return <PostsIndexContext context={page} mode="current" />
     case 'standalone':
       return <StandaloneContext context={page} />
     case 'error':
