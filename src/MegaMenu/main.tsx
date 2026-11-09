@@ -27,9 +27,11 @@ export const MegaMenuMain = ({ pages, currentPage, contactSocials, open }: MegaM
 
   const handlePageFocus = useCallback((page: PagesData) => {
     menuAim.onPageFocus(page)
-    if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
-      setMobileContextOpen(true)
-    }
+  }, [menuAim.onPageFocus])
+
+  const handlePageSelect = useCallback((page: PagesData) => {
+    menuAim.onPageFocus(page)
+    setMobileContextOpen(true)
   }, [menuAim.onPageFocus])
 
   useEffect(() => {
@@ -51,6 +53,7 @@ export const MegaMenuMain = ({ pages, currentPage, contactSocials, open }: MegaM
               previewPage={previewPage}
               onPagePointerEnter={menuAim.onPagePointerEnter}
               onPageFocus={handlePageFocus}
+              onPageSelect={handlePageSelect}
             />
           </div>
 
