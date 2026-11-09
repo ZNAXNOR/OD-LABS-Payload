@@ -157,7 +157,13 @@ export function resolveCurrentPage({
         relatedPosts: post.relatedPosts,
       }
     }
-    return createErrorContext('404', path)
+    return {
+      type: 'standalone',
+      title: 'Loading publication',
+      slug,
+      href: path,
+      description: 'Loading publication metadata for the current route.',
+    }
   }
 
   const systemRoute = SYSTEM_ROUTES[path.slice(1)]
