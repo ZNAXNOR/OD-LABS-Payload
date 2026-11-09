@@ -30,7 +30,7 @@ export const MegaMenuMain = ({ pages, currentPage, contactSocials, open }: MegaM
     if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
       setMobileContextOpen(true)
     }
-  }, [menuAim])
+  }, [menuAim.onPageFocus])
 
   useEffect(() => {
     if (!open) {
@@ -43,7 +43,7 @@ export const MegaMenuMain = ({ pages, currentPage, contactSocials, open }: MegaM
     <main className="min-h-0 flex-1 overflow-y-auto" onPointerMove={menuAim.onPointerMove}>
       <div className="mx-auto w-full max-w-380 px-6 py-10 lg:px-12 lg:py-16">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-10 lg:gap-16">
-          <div className={[ 'flex flex-col space-y-12 lg:col-span-7 lg:space-y-16', mobileContextOpen ? 'hidden lg:flex' : 'flex' ].join(' ')}>
+          <div className={['flex flex-col space-y-12 lg:col-span-7 lg:space-y-16', mobileContextOpen ? 'hidden lg:flex' : 'flex'].join(' ')}>
             <MegaMenu_CurrentPage page={currentPage} />
             <MegaMenu_PageIndex
               pages={pages}
@@ -57,11 +57,11 @@ export const MegaMenuMain = ({ pages, currentPage, contactSocials, open }: MegaM
           <aside
             ref={contextPanelRef}
             onPointerEnter={menuAim.onPanelPointerEnter}
-            className={[ 'h-full flex-col justify-between lg:col-span-3', mobileContextOpen ? 'flex' : 'hidden lg:flex' ].join(' ')}
+            className={['h-full flex-col justify-between lg:col-span-3', mobileContextOpen ? 'flex' : 'hidden lg:flex'].join(' ')}
             aria-label="Navigation context"
           >
             {mobileContextOpen && (
-              <Button type="button" variant="ghost" size="sm" className="mb-6 self-start px-0 text-zinc-400 hover:text-white lg:hidden" onClick={() => setMobileContextOpen(false)}>
+              <Button type="button" variant="ghost" size="sm" className="mb-6 self-start px-0! py-0! text-zinc-400 hover:text-white lg:hidden" onClick={() => setMobileContextOpen(false)}>
                 <ArrowLeft aria-hidden="true" /> Back to pages
               </Button>
             )}
