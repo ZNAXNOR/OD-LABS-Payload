@@ -12,13 +12,10 @@ interface MegaMenuContextPreviewProps {
   page: PagesData | null
   currentPage: CurrentPageInfo
   contactSocials?: ContactSocial | null
+  open: boolean
 }
 
-export const MegaMenu_ContextPreview = ({
-  page,
-  currentPage,
-  contactSocials,
-}: MegaMenuContextPreviewProps) => {
+export const MegaMenu_ContextPreview = ({ page, currentPage, contactSocials, open }: MegaMenuContextPreviewProps) => {
   if (page) {
     const previewContext: PageContextData = {
       type: 'page',
@@ -42,6 +39,6 @@ export const MegaMenu_ContextPreview = ({
     case 'posts-index':
       return <PostsIndexContext context={currentPage} />
     default:
-      return <MegaMenu_ContextDefault contactSocials={contactSocials} />
+      return <MegaMenu_ContextDefault contactSocials={contactSocials} active={open} />
   }
 }
