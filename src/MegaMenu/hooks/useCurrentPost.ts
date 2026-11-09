@@ -87,9 +87,7 @@ export const useCurrentPost = (pathname: string | null, posts: PostsData[]) => {
           ),
         })
       })
-      .catch((error: unknown) => {
-        // The article route remains responsible for its own not-found/error state.
-      })
+      .catch(() => undefined)
 
     return () => controller.abort()
   }, [pathname, posts])
