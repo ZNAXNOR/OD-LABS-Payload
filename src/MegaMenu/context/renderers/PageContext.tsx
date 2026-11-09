@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { PageContextData } from '../../types'
+import { ContextBreadcrumb } from '../ContextBreadcrumb'
 import { ContextImage } from '../ContextImage'
 
 interface PageContextProps {
@@ -11,27 +12,22 @@ interface PageContextProps {
 
 export const PageContext = ({ context, mode }: PageContextProps) => (
   <aside className="space-y-6">
+    <ContextBreadcrumb items={context.href === '/' ? [{ label: 'Home' }] : [{ label: 'Home', href: '/' }, { label: context.title }]} />
     <ContextImage image={context.seoImage} title={context.title} />
 
     <section className="space-y-3">
       <div className="font-mono text-[11px] tracking-widest text-odl uppercase">
         {mode === 'current' ? 'Current Page' : 'Page Preview'} // OD LABS
       </div>
-      <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">
-        {context.title}
-      </h2>
+      <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{context.title}</h2>
       {context.description && (
-        <p className="max-w-2xl font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">
-          {context.description}
-        </p>
+        <p className="max-w-2xl font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">{context.description}</p>
       )}
     </section>
 
     {mode === 'preview' && context.sections.length > 0 && (
       <section className="space-y-3">
-        <div className="border-b border-zinc-700/60 pb-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase">
-          On This Page
-        </div>
+        <div className="border-b border-zinc-700/60 pb-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase">On This Page</div>
         <nav aria-label={`${context.title} page sections`} className="space-y-1.5">
           {context.sections.map((section, index) => (
             <Link
@@ -52,9 +48,7 @@ export const PageContext = ({ context, mode }: PageContextProps) => (
 
     {mode === 'preview' && (
       <Button asChild variant="outline" className="w-full sm:w-auto">
-        <Link href={context.href}>
-          View page <ArrowUpRight aria-hidden="true" />
-        </Link>
+        <Link href={context.href}>View page <ArrowUpRight aria-hidden="true" /></Link>
       </Button>
     )}
   </aside>
