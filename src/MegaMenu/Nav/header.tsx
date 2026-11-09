@@ -13,9 +13,9 @@ export const MegaMenuHeader = ({ onClose }: MegaMenuHeaderProps) => (
       <span className="hidden select-none text-zinc-600 sm:inline">//</span>
       <span className="hidden font-mono text-md text-zinc-400 sm:inline">Navigation</span>
     </Link>
-
     <button
       type="button"
+      data-menu-close
       onClick={onClose}
       aria-label="Close navigation"
       className="group flex cursor-pointer items-center text-zinc-400 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl"
