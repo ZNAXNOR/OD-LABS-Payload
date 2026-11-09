@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import { MegaMenuHeader } from './Nav/header'
 import { MegaMenuFooter } from './Nav/footer'
@@ -26,15 +26,50 @@ export const MegaMenu = ({
   open, onClose, pages, legalPages, posts = [], contactSocials, runtimeError,
 }: MegaMenuProps) => {
   const pathname = usePathname()
+  const menuRef = useRef<HTMLDivElement>(null)
   const currentPage = resolveCurrentPage({ pathname, pages, legalPages, posts, runtimeError })
 
   useEffect(() => {
     if (!open) return
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
+
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    menuRef.current?.querySelector<HTMLElement>('[data-menu-close]')?.focus()
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        onClose()
+        return
+      }
+
+      if (event.key !== 'Tab' || !menuRef.current) return
+      const focusable = Array.from(
+        menuRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => !element.hasAttribute('hidden') && element.getAttribute('aria-hidden') !== 'true')
+
+      if (focusable.length === 0) {
+        event.preventDefault()
+        return
+      }
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
     }
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      previousFocus?.focus()
+    }
   }, [open, onClose])
 
   useEffect(() => {
@@ -46,10 +81,12 @@ export const MegaMenu = ({
 
   return (
     <div
+      ref={menuRef}
       role="dialog"
       aria-label="OD LABS navigation"
       aria-modal={open}
       aria-hidden={!open}
+      inert={!open}
       className={[
         'fixed inset-0 z-50 flex flex-col bg-[#0A0A0A]',
         'transition-opacity duration-300',
