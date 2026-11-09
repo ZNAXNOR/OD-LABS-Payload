@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import {
   Dialog,
@@ -32,7 +33,15 @@ export const MegaMenu = ({
   open, onClose, pages, legalPages, posts = [], contactSocials, runtimeError,
 }: MegaMenuProps) => {
   const pathname = usePathname()
+  const previousPathname = useRef(pathname)
   const activePost = useCurrentPost(pathname, posts, open)
+
+  useEffect(() => {
+    if (previousPathname.current !== pathname) {
+      previousPathname.current = pathname
+      if (open) onClose()
+    }
+  }, [pathname, open, onClose])
   const currentPage = resolveCurrentPage({ pathname, pages, legalPages, posts, activePost, runtimeError })
 
   return (
