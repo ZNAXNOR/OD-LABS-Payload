@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import Link from 'next/link'
 import {
   Breadcrumb,
@@ -22,18 +23,20 @@ export const ContextBreadcrumb = ({ items }: { items: ContextBreadcrumbItem[] })
         {items.map((item, index) => {
           const isCurrent = index === items.length - 1
           return (
-            <BreadcrumbItem key={`${item.label}-${index}`}>
-              {isCurrent ? (
-                <BreadcrumbPage className="max-w-40 truncate text-zinc-300">{item.label}</BreadcrumbPage>
-              ) : item.href ? (
-                <BreadcrumbLink asChild className="text-zinc-500 hover:text-white">
-                  <Link href={item.href}>{item.label}</Link>
-                </BreadcrumbLink>
-              ) : (
-                <span className="text-zinc-500">{item.label}</span>
-              )}
+            <Fragment key={`${item.label}-${index}`}>
+              <BreadcrumbItem>
+                {isCurrent ? (
+                  <BreadcrumbPage className="max-w-40 truncate text-zinc-300">{item.label}</BreadcrumbPage>
+                ) : item.href ? (
+                  <BreadcrumbLink asChild className="text-zinc-500 hover:text-white">
+                    <Link href={item.href}>{item.label}</Link>
+                  </BreadcrumbLink>
+                ) : (
+                  <span className="text-zinc-500">{item.label}</span>
+                )}
+              </BreadcrumbItem>
               {!isCurrent && <BreadcrumbSeparator className="text-zinc-700" />}
-            </BreadcrumbItem>
+            </Fragment>
           )
         })}
       </BreadcrumbList>
