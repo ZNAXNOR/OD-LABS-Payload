@@ -1,7 +1,7 @@
 import Link from 'next/link'
+import type { PointerEvent } from 'react'
 import type { PagesData } from '../../getPagesData'
 import type { CurrentPageInfo } from '../types'
-import type { PointerEvent } from 'react'
 
 interface MegaMenuPageIndexProps {
   pages: PagesData[]
@@ -20,7 +20,6 @@ export const MegaMenu_PageIndex = ({
 }: MegaMenuPageIndexProps) => (
   <section className="mt-12 space-y-6 lg:mt-16">
     <div className="font-mono text-xs tracking-widest text-zinc-500 uppercase">Pages</div>
-
     <nav aria-label="Primary pages" className="grid grid-cols-1 sm:grid-cols-2">
       {pages.map((page, index) => {
         const isCurrent = activePage?.href === page.href
@@ -34,7 +33,7 @@ export const MegaMenu_PageIndex = ({
             onPointerEnter={(event) => onPagePointerEnter(page, event)}
             onFocus={() => onPageFocus(page)}
             onClick={(event) => {
-              if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches && !isPreviewed) {
+              if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
                 event.preventDefault()
                 onPageFocus(page)
               }
@@ -52,7 +51,6 @@ export const MegaMenu_PageIndex = ({
               </span>
               <span aria-hidden="true" className={['ml-1.5 text-odl transition-opacity duration-150', isCurrent || isPreviewed ? 'opacity-100' : 'opacity-0'].join(' ')}>]</span>
             </span>
-
             <span className={['pr-4 font-mono text-xs font-normal transition-colors duration-200 sm:pr-15', isCurrent || isPreviewed ? 'text-odl' : 'text-zinc-500'].join(' ')}>
               {String(index + 1).padStart(2, '0')}
             </span>
