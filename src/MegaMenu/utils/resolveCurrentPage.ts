@@ -14,6 +14,7 @@ interface ResolveCurrentPageArgs {
   pages: PagesData[]
   legalPages?: LegalPagesData[]
   posts?: PostsData[]
+  activePost?: PostsData | null
   runtimeError?: RuntimeErrorState | null
 }
 
@@ -59,13 +60,9 @@ const createErrorContext = (
   runtimeError?: RuntimeErrorState | null,
 ): CurrentPageInfo => {
   const title =
-    code === '404'
-      ? 'Resource Not Found'
-      : code === '500'
-        ? 'Internal Execution Error'
-        : code === '503'
-          ? 'Service Unavailable'
-          : 'Unexpected Error'
+    code === '404' ? 'Resource Not Found' :
+    code === '500' ? 'Internal Execution Error' :
+    code === '503' ? 'Service Unavailable' : 'Unexpected Error'
 
   const description =
     code === '404'
@@ -94,18 +91,13 @@ export function resolveCurrentPage({
   pages = [],
   legalPages = [],
   posts = [],
+  activePost,
   runtimeError,
 }: ResolveCurrentPageArgs): CurrentPageInfo {
   const path = pathname ? pathname.replace(/\/$/, '') || '/' : '/'
 
-  // Runtime errors are supplied by the Next.js error boundary, not inferred from URL.
-  if (runtimeError) {
-    return createErrorContext(runtimeError.code, path, runtimeError)
-  }
-
-  if (path === '/404' || path === '/not-found') {
-    return createErrorContext('404', path)
-  }
+  if (runtimeError) return createErrorContext(runtimeError.code, path, runtimeError)
+  if (path === '/404' || path === '/not-found') return createErrorContext('404', path)
   if (path === '/500') return createErrorContext('500', path)
   if (path === '/503' || path === '/maintenance' || path === '/error') {
     return createErrorContext('503', path)
@@ -151,7 +143,7 @@ export function resolveCurrentPage({
 
   if (path.startsWith('/posts/')) {
     const slug = decodeURIComponent(path.slice('/posts/'.length).split('/')[0] || '')
-    const post = posts.find((item) => item.slug === slug)
+    const post = activePost?.slug === slug ? activePost : posts.find((item) => item.slug === slug)
     if (post) {
       return {
         type: 'post',
