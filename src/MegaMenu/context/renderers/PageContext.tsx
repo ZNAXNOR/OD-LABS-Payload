@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
+import { SquareArrowOutUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { PageContextData } from '../../types'
 import { ContextBreadcrumb } from '../ContextBreadcrumb'
@@ -39,7 +39,7 @@ export const PageContext = ({ context, mode }: PageContextProps) => (
                 <span className="shrink-0 text-odl">{String(index + 1).padStart(2, '0')}</span>
                 <span className="truncate">{section.label}</span>
               </span>
-              <ArrowUpRight className="size-3.5 shrink-0 text-zinc-500 transition-colors group-hover:text-odl" aria-hidden="true" />
+              <SquareArrowOutUpRight className="size-3.5 shrink-0 text-zinc-500 transition-colors group-hover:text-odl" aria-hidden="true" />
             </Link>
           ))}
         </nav>
@@ -48,7 +48,7 @@ export const PageContext = ({ context, mode }: PageContextProps) => (
 
     {mode === 'preview' && (
       <Button asChild variant="outline" className="w-full sm:w-auto">
-        <Link href={context.href}>View page <ArrowUpRight aria-hidden="true" /></Link>
+        <Link href={context.href}>View page <SquareArrowOutUpRight aria-hidden="true" /></Link>
       </Button>
     )}
   </aside>
