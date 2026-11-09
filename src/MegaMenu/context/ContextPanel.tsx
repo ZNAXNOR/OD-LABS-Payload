@@ -19,17 +19,17 @@ export const MegaMenu_ContextPanel = ({ currentPage, preview }: Props) => {
   const publishedAt = preview?.publishedAt ?? (currentPage.type === 'post' ? currentPage.publishedAt : null)
   const categories = preview?.categories ?? (currentPage.type === 'post' ? currentPage.categories : [])
   const crumbs = preview
-    ? (preview.kind === 'post' ? [{label:'Home',href:'/'},{label:'Insights',href:'/posts'},{label:title}] : href === '/' ? [{label:'Home'}] : [{label:'Home',href:'/'},{label:title}])
+    ? (preview.kind === 'post' ? [{label:'Home',href:'/'},{label:preview?.breadcrumbLabel ?? 'Insights',href:'/posts'},{label:title}] : href === '/' ? [{label:'Home'}] : [{label:'Home',href:'/'},{label:title}])
     : (currentPage.type === 'post' ? [{label:'Home',href:'/'},{label:'Insights',href:'/posts'},{label:title}] : href === '/' ? [{label:'Home'}] : [{label:'Home',href:'/'},{label:title}])
-  return <section className="grid min-w-0 grid-cols-1 gap-6 border-b border-zinc-800/80 pb-7 sm:grid-cols-[minmax(180px,0.8fr)_minmax(0,1.7fr)] sm:gap-8 lg:pb-8">
+  return <section className="grid min-w-0 shrink-0 grid-cols-1 gap-6 border-b border-zinc-800/80 pb-7 sm:grid-cols-[minmax(180px,0.8fr)_minmax(0,1.7fr)] sm:gap-8 lg:pb-8">
     {image ? <div className="min-w-0"><ContextImage image={image} title={title} compact /></div> : <div className="hidden min-h-36 border border-zinc-800 bg-zinc-950 sm:block" aria-hidden="true" />}
     <div className="flex min-w-0 flex-col items-start">
       <ContextBreadcrumb items={crumbs} />
-      <div className="mb-2 font-mono text-[11px] tracking-widest text-odl uppercase">{isPreview ? 'Page Preview' : currentPage.type === 'post' ? 'Current Post' : 'Current Page'} // {title}</div>
+      <div className="mb-2 font-mono text-[11px] tracking-widest text-odl uppercase">{isPreview ? preview?.previewLabel : currentPage.type === 'post' ? 'Current Post' : 'Current Page'} // {title}</div>
       <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{title}</h2>
       {description && <p className="mt-2 max-w-3xl font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">{description}</p>}
       <div className="mt-4 flex flex-wrap items-center gap-3">
-        {isPreview && <Button asChild variant="outline" size="sm"><Link href={href}>View {preview?.kind === 'post' ? 'post' : 'page'} <SquareArrowOutUpRight aria-hidden="true" /></Link></Button>}
+        {isPreview && <Button asChild variant="outline" size="sm"><Link href={href}>View {preview?.destinationLabel ?? 'page'} <SquareArrowOutUpRight aria-hidden="true" /></Link></Button>}
         {publishedAt && <span className="inline-flex items-center gap-2 font-mono text-[11px] text-zinc-500"><CalendarDays className="size-3.5" aria-hidden="true" />
           <time dateTime={publishedAt}>{new Intl.DateTimeFormat('en-IN', {dateStyle:'medium',timeZone:'Asia/Kolkata'}).format(new Date(publishedAt))}</time></span>}
         {categories.map((category) => <span key={category} className="border border-zinc-800 px-2 py-1 font-mono text-[10px] tracking-wide text-zinc-400 uppercase">{category}</span>)}
