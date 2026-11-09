@@ -50,6 +50,7 @@ export const useCurrentPost = (pathname: string | null, posts: PostsData[], enab
     const controller = new AbortController()
     const params = new URLSearchParams({
       'where[slug][equals]': slug,
+      'where[_status][equals]': 'published',
       depth: '1',
       limit: '1',
       'select[title]': 'true',
