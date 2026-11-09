@@ -5,6 +5,11 @@ import type { PointerEvent, RefObject } from 'react'
 import type { PagesData } from '@/getPagesData'
 
 interface Point { x: number; y: number }
+interface SafeTriangle {
+  first: Point
+  second: Point
+  isMovingTowardPanel: (point: Point) => boolean
+}
 interface UseMenuAimOptions {
   panelRef: RefObject<HTMLElement | null>
   onActivate: (page: PagesData) => void
@@ -20,6 +25,24 @@ const pointInTriangle = (point: Point, a: Point, b: Point, c: Point) => {
   const hasNegative = d1 < 0 || d2 < 0 || d3 < 0
   const hasPositive = d1 > 0 || d2 > 0 || d3 > 0
   return !(hasNegative && hasPositive)
+}
+
+const getSafeTriangle = (anchor: Point, rect: DOMRect): SafeTriangle => {
+  // Desktop: the context panel sits to the right of the Pages index.
+  if (rect.left > anchor.x + 48) {
+    return {
+      first: { x: rect.left - 12, y: rect.top - 24 },
+      second: { x: rect.left - 12, y: rect.bottom + 24 },
+      isMovingTowardPanel: (point) => point.x >= anchor.x,
+    }
+  }
+
+  // Tablet layouts stack the context panel below the Pages index.
+  return {
+    first: { x: rect.left - 24, y: rect.top - 12 },
+    second: { x: rect.right + 24, y: rect.top - 12 },
+    isMovingTowardPanel: (point) => point.y >= anchor.y,
+  }
 }
 
 /** Protects a selected preview while the pointer crosses adjacent links toward the context panel. */
@@ -58,10 +81,8 @@ export const useMenuAim = ({ panelRef, onActivate, enabled }: UseMenuAimOptions)
       return
     }
 
-    const rect = panel.getBoundingClientRect()
-    const safeTop = { x: rect.left - 12, y: rect.top - 24 }
-    const safeBottom = { x: rect.left - 12, y: rect.bottom + 24 }
-    if (point.x >= anchor.x && pointInTriangle(point, anchor, safeTop, safeBottom)) {
+    const triangle = getSafeTriangle(anchor, panel.getBoundingClientRect())
+    if (triangle.isMovingTowardPanel(point) && pointInTriangle(point, anchor, triangle.first, triangle.second)) {
       pendingPageRef.current = page
       if (!timerRef.current) {
         timerRef.current = setTimeout(() => {
@@ -71,6 +92,7 @@ export const useMenuAim = ({ panelRef, onActivate, enabled }: UseMenuAimOptions)
       }
       return
     }
+
     activate(page, point)
   }, [activate, enabled, panelRef])
 
@@ -85,12 +107,12 @@ export const useMenuAim = ({ panelRef, onActivate, enabled }: UseMenuAimOptions)
     const anchor = anchorRef.current
     const panel = panelRef.current
     if (!pending || !anchor || !panel) return
-    const rect = panel.getBoundingClientRect()
-    const insideSafeRegion = point.x >= anchor.x && pointInTriangle(
-      point, anchor,
-      { x: rect.left - 12, y: rect.top - 24 },
-      { x: rect.left - 12, y: rect.bottom + 24 },
-    )
+
+    const triangle = getSafeTriangle(anchor, panel.getBoundingClientRect())
+    const insideSafeRegion =
+      triangle.isMovingTowardPanel(point) &&
+      pointInTriangle(point, anchor, triangle.first, triangle.second)
+
     if (!insideSafeRegion) activate(pending, point)
   }, [activate, panelRef])
 
