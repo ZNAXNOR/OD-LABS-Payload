@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { MegaMenuHeader } from './Nav/header'
 import { MegaMenuFooter } from './Nav/footer'
 import { MegaMenuMain } from './main'
+import { useCurrentPost } from './hooks/useCurrentPost'
 import { resolveCurrentPage } from './utils/resolveCurrentPage'
 import type { PagesData } from '../getPagesData'
 import type { LegalPagesData } from '../getLegalPagesData'
@@ -27,11 +28,11 @@ export const MegaMenu = ({
 }: MegaMenuProps) => {
   const pathname = usePathname()
   const menuRef = useRef<HTMLDivElement>(null)
-  const currentPage = resolveCurrentPage({ pathname, pages, legalPages, posts, runtimeError })
+  const activePost = useCurrentPost(pathname, posts)
+  const currentPage = resolveCurrentPage({ pathname, pages, legalPages, posts, activePost, runtimeError })
 
   useEffect(() => {
     if (!open) return
-
     const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null
     menuRef.current?.querySelector<HTMLElement>('[data-menu-close]')?.focus()
 
@@ -41,19 +42,16 @@ export const MegaMenu = ({
         onClose()
         return
       }
-
       if (event.key !== 'Tab' || !menuRef.current) return
       const focusable = Array.from(
         menuRef.current.querySelectorAll<HTMLElement>(
           'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
         ),
       ).filter((element) => !element.hasAttribute('hidden') && element.getAttribute('aria-hidden') !== 'true')
-
       if (focusable.length === 0) {
         event.preventDefault()
         return
       }
-
       const first = focusable[0]
       const last = focusable[focusable.length - 1]
       if (event.shiftKey && document.activeElement === first) {
