@@ -39,7 +39,7 @@ export const MegaMenu = ({
     <Dialog open={open} onOpenChange={(nextOpen) => { if (!nextOpen) onClose() }}>
       <DialogContent
         showCloseButton={false}
-        className="!fixed !inset-0 !left-0 !top-0 !block !h-dvh !w-screen !max-w-none !translate-x-0 !translate-y-0 !gap-0 !overflow-hidden !rounded-none !border-0 !bg-[#0A0A0A] !p-0 !text-white !shadow-none sm:!rounded-none"
+        className="fixed inset-0 left-0 top-0 block h-dvh w-screen max-w-none translate-x-0 translate-y-0 gap-0 overflow-hidden rounded-none border-0 bg-[#0A0A0A] p-0 text-white shadow-none sm:rounded-none"
       >
         <DialogTitle className="sr-only">OD LABS navigation</DialogTitle>
         <DialogDescription className="sr-only">
