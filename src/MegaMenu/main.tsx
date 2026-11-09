@@ -25,9 +25,10 @@ export const MegaMenuMain = ({ pages, posts, currentPage, open }: Props) => {
     return clearTimer
   }, [open, resetPreview, clearTimer])
   return <main className="min-h-0 flex-1 overflow-y-auto lg:overflow-hidden" onPointerEnter={clearTimer} onPointerLeave={scheduleHoverReset}
-    onClick={(event) => { if (event.target === event.currentTarget) resetPreview() }}>
-    <div className="mx-auto flex min-h-full w-full max-w-380 flex-col px-6 py-7 lg:h-full lg:min-h-0 lg:px-12 lg:py-8"
-      onClick={(event) => { if (event.target === event.currentTarget) resetPreview() }}>
+    onClick={(event) => {
+      if (!(event.target instanceof Element) || !event.target.closest('button,a,input,select,textarea,[role="tab"]')) resetPreview()
+    }}>
+    <div className="mx-auto flex min-h-full w-full max-w-380 flex-col px-6 py-7 lg:h-full lg:min-h-0 lg:px-12 lg:py-8">
       <div className="flex min-h-0 flex-1 flex-col gap-2">
         <MegaMenu_ContextPanel currentPage={currentPage} preview={previewEntry} />
         <MegaMenu_PageIndex categories={categories} activeCategory={activeCategory} previewEntry={previewEntry} currentHref={currentPage.href}
