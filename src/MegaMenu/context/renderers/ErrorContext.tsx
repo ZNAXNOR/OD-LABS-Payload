@@ -30,27 +30,27 @@ export const ErrorContext = ({ context, compact = false }: ErrorContextProps) =>
       )}
     </div>
 
-    {!compact && (
-      <>
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase">
-            <MessageSquareWarning className="size-3.5 text-odl" aria-hidden="true" />
-            Issue reporting
-          </div>
-          <ReportIssue
-            variant="button"
-            label="Report this issue"
-            error={context.error}
-            digest={context.error?.digest}
-            className="w-full justify-center"
-          />
-          {context.retry && (
-            <Button type="button" variant="outline" className="w-full" onClick={context.retry}>
-              <RefreshCw aria-hidden="true" /> Retry request
-            </Button>
-          )}
+    {compact ? (
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase">
+          <MessageSquareWarning className="size-3.5 text-odl" aria-hidden="true" />
+          Issue reporting
         </div>
-
+        <ReportIssue
+          variant="button"
+          label="Report this issue"
+          error={context.error}
+          digest={context.error?.digest}
+          className="w-full justify-center"
+        />
+      </div>
+    ) : (
+      <>
+        {context.retry && (
+          <Button type="button" variant="outline" className="w-full" onClick={context.retry}>
+            <RefreshCw aria-hidden="true" /> Retry request
+          </Button>
+        )}
         <nav aria-label="Error recovery" className="space-y-1 border-t border-zinc-800 pt-3">
           {context.recoveryActions.map((action) => (
             <Link key={action.href} href={action.href} className="group flex items-center justify-between gap-3 py-2 font-mono text-xs text-zinc-400 transition-colors hover:text-white">
