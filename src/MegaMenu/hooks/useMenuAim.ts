@@ -39,7 +39,7 @@ export const useMenuAim = ({ panelRef, onActivate, enabled }: UseMenuAimOptions)
   const activate = useCallback((page: PagesData, point?: Point) => {
     clearPending()
     activePageRef.current = page
-    if (point) anchorRef.current = point
+    anchorRef.current = point ?? null
     onActivate(page)
   }, [clearPending, onActivate])
 
@@ -75,7 +75,7 @@ export const useMenuAim = ({ panelRef, onActivate, enabled }: UseMenuAimOptions)
   }, [activate, enabled, panelRef])
 
   const onPageFocus = useCallback((page: PagesData) => {
-    activate(page, pointerRef.current || undefined)
+    activate(page)
   }, [activate])
 
   const onPointerMove = useCallback((event: PointerEvent<HTMLElement>) => {
