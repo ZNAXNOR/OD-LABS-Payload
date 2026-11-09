@@ -32,7 +32,7 @@ export const LegalContext = ({
       <div className="font-mono text-xs text-zinc-500">TYPE // <span className="text-zinc-300">{context.documentType.replaceAll('-', ' ')}</span></div>
     )}
     <div className="font-mono text-xs text-zinc-500">
-      UPDATED // <time dateTime={context.updatedAt}>{new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium' }).format(new Date(context.updatedAt))}</time>
+      UPDATED // <time dateTime={context.updatedAt}>{new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium', timeZone: 'Asia/Kolkata' }).format(new Date(context.updatedAt))}</time>
     </div>
     <Link href={context.href} className="inline-flex items-center gap-2 font-mono text-xs text-zinc-300 transition-colors hover:text-white">
       Open document <ArrowUpRight className="size-3.5 text-odl" aria-hidden="true" />
