@@ -49,7 +49,7 @@ export const PostContext = ({
       {context.publishedAt && (
         <div className="flex items-center gap-2 font-mono text-xs text-zinc-500">
           <CalendarDays className="size-3.5" aria-hidden="true" />
-          <time dateTime={context.publishedAt}>{new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium' }).format(new Date(context.publishedAt))}</time>
+          <time dateTime={context.publishedAt}>{new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium', timeZone: 'Asia/Kolkata' }).format(new Date(context.publishedAt))}</time>
         </div>
       )}
       {context.categories.length > 0 && (
