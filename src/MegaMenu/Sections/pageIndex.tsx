@@ -29,6 +29,7 @@ export const MegaMenu_PageIndex = ({
           <Link
             key={page.slug}
             href={page.href}
+            prefetch={false}
             aria-current={isCurrent ? 'page' : undefined}
             onPointerEnter={(event) => onPagePointerEnter(page, event)}
             onFocus={() => onPageFocus(page)}
