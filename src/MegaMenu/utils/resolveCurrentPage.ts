@@ -1,58 +1,92 @@
 import type { PagesData } from '@/getPagesData'
 import type { LegalPagesData } from '@/getLegalPagesData'
 import type { PostsData } from '@/getPostsData'
-import type { CurrentPageInfo, ErrorRecoveryAction } from '../types'
+import type { CurrentPageInfo, ErrorRecoveryAction, ErrorStateCode } from '../types'
+
+export interface RuntimeErrorState {
+  code: ErrorStateCode
+  error?: Error & { digest?: string }
+  retry?: () => void
+}
 
 interface ResolveCurrentPageArgs {
   pathname: string | null
   pages: PagesData[]
   legalPages?: LegalPagesData[]
   posts?: PostsData[]
-  activePost?: PostsData | null
+  runtimeError?: RuntimeErrorState | null
 }
 
-const DEFAULT_404_RECOVERY_ACTIONS: ErrorRecoveryAction[] = [
-  { number: '01', label: 'Main Terminal', href: '/' },
-  { number: '02', label: 'Sitemap Directory', href: '/sitemap' },
-  { number: '03', label: 'Knowledge Search', href: '/search' },
-  { number: '04', label: 'Browse Posts', href: '/posts' },
-]
+const RECOVERY_ACTIONS: Record<ErrorStateCode, ErrorRecoveryAction[]> = {
+  '404': [
+    { number: '01', label: 'Return Home', href: '/' },
+    { number: '02', label: 'View Sitemap', href: '/sitemap' },
+    { number: '03', label: 'Knowledge Search', href: '/search' },
+  ],
+  '500': [
+    { number: '01', label: 'Return Home', href: '/' },
+    { number: '02', label: 'View Sitemap', href: '/sitemap' },
+  ],
+  '503': [
+    { number: '01', label: 'Return Home', href: '/' },
+    { number: '02', label: 'View Sitemap', href: '/sitemap' },
+  ],
+  ERR: [{ number: '01', label: 'Return Home', href: '/' }],
+}
 
-const DEFAULT_500_RECOVERY_ACTIONS: ErrorRecoveryAction[] = [
-  { number: '01', label: 'Return Home', href: '/' },
-  { number: '02', label: 'Sitemap Directory', href: '/sitemap' },
-  { number: '03', label: 'Knowledge Search', href: '/search' },
-]
-
-const DEFAULT_503_RECOVERY_ACTIONS: ErrorRecoveryAction[] = [
-  { number: '01', label: 'Main Terminal', href: '/' },
-  { number: '02', label: 'Sitemap Directory', href: '/sitemap' },
-]
-
-const KNOWN_SYSTEM_ROUTES: Record<
-  string,
-  { title: string; description: string }
-> = {
+const SYSTEM_ROUTES: Record<string, { title: string; description: string }> = {
   sitemap: {
     title: 'Sitemap',
-    description:
-      'System routing directory and topology map of all public application routes, specifications, and feeds.',
+    description: 'Browse the public pages and content available across OD LABS.',
   },
   search: {
     title: 'Knowledge Search',
-    description:
-      'Full-text search interface querying articles, documentation, topics, and knowledgebase records.',
+    description: 'Search published articles, documentation and topics.',
   },
   posts: {
     title: 'Insights & Posts',
-    description:
-      'Technical engineering publications, architecture breakdowns, research notes, and updates.',
+    description: 'Engineering publications, research notes and updates.',
   },
   'sentry-example-page': {
     title: 'Telemetry Diagnostic Page',
-    description:
-      'Diagnostic testing suite verifying real-time Sentry exception capture and monitoring pipelines.',
+    description: 'Diagnostic page for testing the Sentry monitoring integration.',
   },
+}
+
+const createErrorContext = (
+  code: ErrorStateCode,
+  href: string,
+  runtimeError?: RuntimeErrorState | null,
+): CurrentPageInfo => {
+  const title =
+    code === '404'
+      ? 'Resource Not Found'
+      : code === '500'
+        ? 'Internal Execution Error'
+        : code === '503'
+          ? 'Service Unavailable'
+          : 'Unexpected Error'
+
+  const description =
+    code === '404'
+      ? 'The requested page could not be found. It may have moved, been unpublished or never existed.'
+      : code === '500'
+        ? 'An unexpected error occurred while processing this request. Recovery options are available.'
+        : code === '503'
+          ? 'The requested service is temporarily unavailable. Please try again later.'
+          : 'An unexpected condition prevented this page from loading.'
+
+  return {
+    type: 'error',
+    code,
+    title,
+    slug: code,
+    href,
+    description,
+    recoveryActions: RECOVERY_ACTIONS[code],
+    error: runtimeError?.error,
+    retry: runtimeError?.retry,
+  }
 }
 
 export function resolveCurrentPage({
@@ -60,171 +94,90 @@ export function resolveCurrentPage({
   pages = [],
   legalPages = [],
   posts = [],
-  activePost,
+  runtimeError,
 }: ResolveCurrentPageArgs): CurrentPageInfo {
   const path = pathname ? pathname.replace(/\/$/, '') || '/' : '/'
-  const currentSlug = path === '/' ? 'home' : path.split('/')[1] || 'home'
 
-  // Tier 0: Explicit Error Routes (404, 500, 503 / maintenance)
-  if (currentSlug === '404' || path.includes('not-found')) {
+  // Runtime errors are supplied by the Next.js error boundary, not inferred from URL.
+  if (runtimeError) {
+    return createErrorContext(runtimeError.code, path, runtimeError)
+  }
+
+  if (path === '/404' || path === '/not-found') {
+    return createErrorContext('404', path)
+  }
+  if (path === '/500') return createErrorContext('500', path)
+  if (path === '/503' || path === '/maintenance' || path === '/error') {
+    return createErrorContext('503', path)
+  }
+
+  const page = pages.find((item) => item.href === path)
+  if (page) {
     return {
-      title: 'Resource Not Found',
-      slug: '404',
-      href: path,
-      description:
-        'The requested endpoint does not exist, has migrated, or is temporarily unavailable in the routing table.',
-      isPayloadDoc: false,
-      source: 'error-404',
-      errorCode: '404',
-      errorEyebrow: ['ERROR', 'ROUTE_RESOLUTION_FAILURE'],
-      recoveryActions: DEFAULT_404_RECOVERY_ACTIONS,
+      type: 'page',
+      title: page.title,
+      slug: page.slug,
+      href: page.href,
+      description: page.description || 'Published OD LABS page.',
+      seoImage: page.seoImage,
+      sections: page.sections,
     }
   }
 
-  if (currentSlug === '500') {
+  const legalPage = legalPages.find((item) => item.href === path)
+  if (legalPage) {
     return {
-      title: 'Internal Execution Error',
-      slug: '500',
-      href: path,
-      description:
-        'An unexpected runtime error occurred while processing the request. Our telemetry monitors have been alerted and recovery options are ready.',
-      isPayloadDoc: false,
-      source: 'error-500',
-      errorCode: '500',
-      errorEyebrow: ['SYSTEM EXCEPTION', 'UNHANDLED_RUNTIME_ERROR'],
-      recoveryActions: DEFAULT_500_RECOVERY_ACTIONS,
+      type: 'legal',
+      title: legalPage.title,
+      slug: legalPage.slug,
+      href: legalPage.href,
+      description: legalPage.description,
+      documentType: legalPage.documentType,
+      updatedAt: legalPage.updatedAt,
+      seoImage: legalPage.seoImage,
     }
   }
 
-  if (
-    currentSlug === '503' ||
-    currentSlug === 'maintenance' ||
-    path === '/error'
-  ) {
+  if (path === '/posts' || path.startsWith('/posts/page/')) {
     return {
-      title: 'Service Anomaly Detected',
-      slug: currentSlug,
-      href: path,
-      description:
-        'System telemetry detected a non-standard runtime or maintenance condition. Health monitors are actively polling.',
-      isPayloadDoc: false,
-      source: 'error-something',
-      errorCode: '503',
-      errorEyebrow: ['SERVICE ALERT', 'ANOMALY_DETECTED'],
-      recoveryActions: DEFAULT_503_RECOVERY_ACTIONS,
+      type: 'posts-index',
+      title: 'Insights & Posts',
+      slug: 'posts',
+      href: '/posts',
+      description: SYSTEM_ROUTES.posts.description,
+      latestPosts: posts.slice(0, 4),
     }
   }
 
-  // Tier 1: Check Payload CMS pages collection
-  const matchedPage = pages.find(
-    (page) => page.slug === currentSlug || page.href === path,
-  )
-  if (matchedPage) {
-    return {
-      title: matchedPage.title,
-      slug: matchedPage.slug,
-      href: matchedPage.href,
-      description: matchedPage.description || 'Payload CMS page document.',
-      isPayloadDoc: true,
-      source: 'payload-pages',
-      sections: matchedPage.sections,
-    }
-  }
-
-  // Tier 2: Check Payload CMS legal-pages collection
-  const matchedLegal = legalPages.find(
-    (lp) =>
-      lp.slug === currentSlug || lp.href === path || `/${lp.slug}` === path,
-  )
-  if (matchedLegal) {
-    return {
-      title: matchedLegal.title,
-      slug: matchedLegal.slug,
-      href: matchedLegal.href,
-      description:
-        'Governance, legal terms, and compliance specification document.',
-      isPayloadDoc: true,
-      source: 'payload-legal',
-    }
-  }
-
-  // Tier 2b: Check Payload CMS posts collection (for individual post /posts/[slug])
-  const isPostArticle =
-    path.startsWith('/posts/') &&
-    path !== '/posts' &&
-    !path.startsWith('/posts/page/')
-
-  if (isPostArticle) {
-    const postSlug = decodeURIComponent(
-      path.replace(/^\/posts\//, '').split('/')[0] || '',
-    )
-
-    const matchedPost =
-      activePost && activePost.slug === postSlug
-        ? activePost
-        : posts.find((p) => p.slug === postSlug || p.href === path) || activePost
-
-    if (matchedPost) {
-      const seoDescription =
-        matchedPost.metaDescription ||
-        matchedPost.description ||
-        'Engineering publication, research breakdown, or technical archive page.'
-
+  if (path.startsWith('/posts/')) {
+    const slug = decodeURIComponent(path.slice('/posts/'.length).split('/')[0] || '')
+    const post = posts.find((item) => item.slug === slug)
+    if (post) {
       return {
-        title: matchedPost.title,
-        slug: matchedPost.slug,
-        href: matchedPost.href || path,
-        description: seoDescription,
-        isPayloadDoc: true,
-        source: 'payload-posts',
-        seo: {
-          title: matchedPost.metaTitle || matchedPost.title,
-          description:
-            matchedPost.metaDescription || matchedPost.description || null,
-        },
+        type: 'post',
+        title: post.title,
+        slug: post.slug,
+        href: post.href,
+        description: post.metaDescription || post.description || 'Published OD LABS article.',
+        seoImage: post.seoImage,
+        publishedAt: post.publishedAt,
+        categories: post.categories,
+        relatedPosts: post.relatedPosts,
       }
     }
+    return createErrorContext('404', path)
+  }
 
-    // Dynamic fallback when post article is accessed before client/SSR post data loads
-    const formattedTitle = postSlug
-      .replace(/[-_]/g, ' ')
-      .replace(/\b\w/g, (c) => c.toUpperCase())
-
+  const systemRoute = SYSTEM_ROUTES[path.slice(1)]
+  if (systemRoute) {
     return {
-      title: formattedTitle || 'Publication Article',
-      slug: postSlug,
+      type: 'standalone',
+      title: systemRoute.title,
+      slug: path.slice(1),
       href: path,
-      description:
-        'Engineering publication, research breakdown, or technical archive page.',
-      isPayloadDoc: true,
-      source: 'payload-posts',
+      description: systemRoute.description,
     }
   }
 
-  // Tier 3: Check known standalone Next.js routes (e.g. /sitemap, /search, /posts index)
-  const known = KNOWN_SYSTEM_ROUTES[currentSlug]
-  if (known) {
-    return {
-      title: known.title,
-      slug: currentSlug,
-      href: path,
-      description: known.description,
-      isPayloadDoc: false,
-      source: 'system-raw',
-    }
-  }
-
-  // Tier 4: Unmatched route on site -> Triggers Next.js 404 (Resource Not Found)
-  return {
-    title: 'Resource Not Found',
-    slug: currentSlug,
-    href: path,
-    description:
-      'The requested endpoint does not exist, has migrated, or is temporarily unavailable in the routing table.',
-    isPayloadDoc: false,
-    source: 'error-404',
-    errorCode: '404',
-    errorEyebrow: ['ERROR', 'ROUTE_RESOLUTION_FAILURE'],
-    recoveryActions: DEFAULT_404_RECOVERY_ACTIONS,
-  }
+  return createErrorContext('404', path)
 }
