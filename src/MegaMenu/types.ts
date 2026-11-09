@@ -1,15 +1,7 @@
+import type { Media } from '@/payload-types'
 import type { PagesData } from '@/getPagesData'
+import type { LegalPagesData } from '@/getLegalPagesData'
 import type { PostsData } from '@/getPostsData'
-
-export type RouteSource =
-  | 'payload-pages'
-  | 'payload-legal'
-  | 'payload-posts'
-  | 'system-raw'
-  | 'error-404'
-  | 'error-500'
-  | 'error-something'
-  | 'unindexed'
 
 export type ErrorStateCode = '404' | '500' | '503' | 'ERR'
 
@@ -19,23 +11,57 @@ export interface ErrorRecoveryAction {
   href: string
 }
 
-export interface CurrentPageInfo {
+interface ContextBase {
   title: string
   slug: string
   href: string
   description: string
-  isPayloadDoc: boolean
-  source: RouteSource
-  errorCode?: ErrorStateCode
-  errorEyebrow?: string[]
-  recoveryActions?: ErrorRecoveryAction[]
-  sections?: PagesData['sections']
-  seo?: {
-    title?: string | null
-    description?: string | null
-    image?: any
-  }
 }
 
-export type { PostsData }
+export interface PageContextData extends ContextBase {
+  type: 'page'
+  seoImage: Media | null
+  sections: PagesData['sections']
+}
 
+export interface PostContextData extends ContextBase {
+  type: 'post'
+  seoImage: Media | null
+  publishedAt: string | null
+  categories: string[]
+  relatedPosts: PostsData['relatedPosts']
+}
+
+export interface PostsIndexContextData extends ContextBase {
+  type: 'posts-index'
+  latestPosts: PostsData[]
+}
+
+export interface LegalContextData extends ContextBase {
+  type: 'legal'
+  documentType: LegalPagesData['documentType']
+  updatedAt: string
+  seoImage: Media | null
+}
+
+export interface StandaloneContextData extends ContextBase {
+  type: 'standalone'
+}
+
+export interface ErrorContextData extends ContextBase {
+  type: 'error'
+  code: ErrorStateCode
+  recoveryActions: ErrorRecoveryAction[]
+  error?: Error & { digest?: string }
+  retry?: () => void
+}
+
+export type CurrentPageInfo =
+  | PageContextData
+  | PostContextData
+  | PostsIndexContextData
+  | LegalContextData
+  | StandaloneContextData
+  | ErrorContextData
+
+export type { PagesData, LegalPagesData, PostsData }
