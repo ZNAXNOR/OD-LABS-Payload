@@ -1,9 +1,9 @@
 import type { MegaMenuCategory, MegaMenuEntry } from '../registry'
 interface Props {
   categories: MegaMenuCategory[]; activeCategory: string; previewEntry: MegaMenuEntry | null; currentHref: string
-  onCategoryChange: (slug: string) => void; onEntryHover: (entry: MegaMenuEntry) => void; onEntrySelect: (entry: MegaMenuEntry) => void
+  onCategoryChange: (slug: string) => void; onEntryHover: (entry: MegaMenuEntry) => void; onEntryLeave: () => void; onEntrySelect: (entry: MegaMenuEntry) => void
 }
-export const MegaMenu_PageIndex = ({ categories, activeCategory, previewEntry, currentHref, onCategoryChange, onEntryHover, onEntrySelect }: Props) => {
+export const MegaMenu_PageIndex = ({ categories, activeCategory, previewEntry, currentHref, onCategoryChange, onEntryHover, onEntryLeave, onEntrySelect }: Props) => {
   const category = categories.find((item) => item.slug === activeCategory) ?? categories[0]
   if (!category) return null
   return <section className="flex min-h-0 flex-1 flex-col pt-5 lg:pt-6">
@@ -26,7 +26,7 @@ export const MegaMenu_PageIndex = ({ categories, activeCategory, previewEntry, c
         {category.entries.map((entry, index) => {
           const selected = previewEntry?.id === entry.id, current = currentHref === entry.href
           return <button key={entry.id} type="button" aria-pressed={selected} aria-current={current ? 'page' : undefined}
-            onPointerEnter={() => onEntryHover(entry)} onFocus={() => onEntryHover(entry)} onClick={() => onEntrySelect(entry)}
+            onPointerEnter={() => onEntryHover(entry)} onPointerLeave={onEntryLeave} onFocus={() => onEntryHover(entry)} onBlur={onEntryLeave} onClick={() => onEntrySelect(entry)}
             className="group flex min-h-16 w-full items-center justify-between gap-5 border-b border-zinc-800/70 py-4 text-left transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl">
             <span className="min-w-0">
               {category.layout === 'editorial' && <span className="mb-1 block font-mono text-[10px] tracking-wide text-zinc-600">
