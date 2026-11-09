@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowUpRight, Newspaper } from 'lucide-react'
 import type { PostsIndexContextData } from '../../types'
+import { ContextBreadcrumb } from '../ContextBreadcrumb'
 
 export const PostsIndexContext = ({
   context,
@@ -10,6 +11,7 @@ export const PostsIndexContext = ({
   mode?: 'current' | 'panel'
 }) => (
   <aside className="space-y-5">
+    {mode === 'current' && <ContextBreadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Posts' }]} />}
     <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase">
       <Newspaper className="size-3.5 text-odl" aria-hidden="true" />
       {mode === 'current' ? 'Current Section' : 'Latest Publications'}
