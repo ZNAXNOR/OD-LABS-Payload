@@ -1,9 +1,8 @@
-import Link from 'next/link'
-import { AlertTriangle, ArrowUpRight, RefreshCw } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { ErrorReporter } from '../../error/ErrorReporter'
 import { ServiceStatus } from '@/components/ServiceStatus'
 import type { ErrorContextData } from '../../types'
+import { ErrorActions } from '../../error/ErrorActions'
+import { ErrorDiagnostic } from '../../error/ErrorDiagnostic'
+import { ErrorReporter } from '../../error/ErrorReporter'
 
 interface ErrorContextProps {
   context: ErrorContextData
@@ -12,41 +11,12 @@ interface ErrorContextProps {
 
 export const ErrorContext = ({ context, compact = false }: ErrorContextProps) => (
   <aside className="space-y-5">
-    <div className="flex items-center justify-between gap-3 font-mono text-[11px] tracking-widest uppercase">
-      <span className="inline-flex items-center gap-2 text-odl">
-        <AlertTriangle className="size-4" aria-hidden="true" />
-        Error context
-      </span>
-      <span className="text-zinc-500">HTTP {context.code}</span>
-    </div>
-
-    <div className="space-y-3">
-      <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{context.title}</h2>
-      <p className="font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">{context.description}</p>
-      {context.error?.digest && (
-        <p className="font-mono text-[11px] text-zinc-500">
-          INCIDENT // <code className="text-zinc-300">{context.error.digest}</code>
-        </p>
-      )}
-    </div>
-
+    <ErrorDiagnostic context={context} />
     {compact ? (
       <ErrorReporter error={context.error} />
     ) : (
       <>
-        {context.retry && (
-          <Button type="button" variant="outline" className="w-full" onClick={context.retry}>
-            <RefreshCw aria-hidden="true" /> Retry request
-          </Button>
-        )}
-        <nav aria-label="Error recovery" className="space-y-1 border-t border-zinc-800 pt-3">
-          {context.recoveryActions.map((action) => (
-            <Link key={action.href} href={action.href} className="group flex items-center justify-between gap-3 py-2 font-mono text-xs text-zinc-400 transition-colors hover:text-white">
-              <span>{action.number} — {action.label}</span>
-              <ArrowUpRight className="size-3.5 text-zinc-500 group-hover:text-odl" aria-hidden="true" />
-            </Link>
-          ))}
-        </nav>
+        <ErrorActions recoveryActions={context.recoveryActions} retry={context.retry} />
         <ServiceStatus variant="compact" />
       </>
     )}
