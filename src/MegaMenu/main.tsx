@@ -61,14 +61,14 @@ export const MegaMenuMain = ({ pages, currentPage, contactSocials, open }: MegaM
           <aside
             ref={contextPanelRef}
             onPointerEnter={menuAim.onPanelPointerEnter}
-            className={['h-full flex-col justify-between lg:col-span-3', mobileContextOpen ? 'flex' : 'hidden lg:flex'].join(' ')}
+            className={['h-full flex-col justify-between lg:col-span-3', mobileContextOpen || previewPage ? 'flex' : 'hidden lg:flex'].join(' ')}
             aria-label="Navigation context"
           >
             {mobileContextOpen && currentPage.type === 'error' && previewPage && (
               <ErrorReporter error={currentPage.error} className="mb-6" />
             )}
             {mobileContextOpen && (
-              <Button type="button" variant="ghost" size="sm" className="mb-6 self-start px-0! py-0! text-zinc-400 hover:text-white lg:hidden" onClick={() => setMobileContextOpen(false)}>
+              <Button type="button" variant="ghost" size="sm" className="mb-6 self-start px-0! py-0! text-zinc-400 hover:text-white lg:hidden" onClick={() => { setMobileContextOpen(false); setPreviewPage(null); menuAim.reset() }}>
                 <ArrowLeft aria-hidden="true" /> Back to pages
               </Button>
             )}
