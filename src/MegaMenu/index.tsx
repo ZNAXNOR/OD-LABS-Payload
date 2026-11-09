@@ -32,7 +32,7 @@ export const MegaMenu = ({
   open, onClose, pages, legalPages, posts = [], contactSocials, runtimeError,
 }: MegaMenuProps) => {
   const pathname = usePathname()
-  const activePost = useCurrentPost(pathname, posts)
+  const activePost = useCurrentPost(pathname, posts, open)
   const currentPage = resolveCurrentPage({ pathname, pages, legalPages, posts, activePost, runtimeError })
 
   return (
