@@ -33,7 +33,7 @@ export const MegaMenuMain = ({ pages, posts, currentPage, open }: Props) => {
         <MegaMenu_ContextPanel currentPage={currentPage} preview={previewEntry} />
         <MegaMenu_PageIndex categories={categories} activeCategory={activeCategory} previewEntry={previewEntry} currentHref={currentPage.href}
           onCategoryChange={(slug) => { setActiveCategory(slug); setHoveredEntry(null); setPinnedEntry(null) }}
-          onEntryHover={handleHover} onEntrySelect={handleSelect} />
+          onEntryHover={handleHover} onEntryLeave={scheduleHoverReset} onEntrySelect={handleSelect} />
       </div>
     </div>
   </main>
