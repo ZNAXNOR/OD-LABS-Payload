@@ -88,9 +88,7 @@ export const useCurrentPost = (pathname: string | null, posts: PostsData[]) => {
         })
       })
       .catch((error: unknown) => {
-        if (error instanceof Error && error.name !== 'AbortError') {
-          console.error('Failed to load current post context:', error)
-        }
+        // The article route remains responsible for its own not-found/error state.
       })
 
     return () => controller.abort()
