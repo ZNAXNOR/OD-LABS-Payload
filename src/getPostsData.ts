@@ -30,7 +30,7 @@ export const getPostsData = async (): Promise<PostsData[]> => {
     where: { _status: { equals: 'published' } },
     sort: '-publishedAt',
     depth: 1,
-    limit: 100,
+    limit: 12,
     pagination: false,
     select: {
       title: true,
