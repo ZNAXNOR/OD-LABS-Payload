@@ -1,7 +1,7 @@
 import Link from 'next/link'
-import { AlertTriangle, ArrowUpRight, MessageSquareWarning, RefreshCw } from 'lucide-react'
+import { AlertTriangle, ArrowUpRight, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { ReportIssue } from '@/components/ReportIssue'
+import { ErrorReporter } from '../../error/ErrorReporter'
 import { ServiceStatus } from '@/components/ServiceStatus'
 import type { ErrorContextData } from '../../types'
 
@@ -31,19 +31,7 @@ export const ErrorContext = ({ context, compact = false }: ErrorContextProps) =>
     </div>
 
     {compact ? (
-      <div className="space-y-2">
-        <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase">
-          <MessageSquareWarning className="size-3.5 text-odl" aria-hidden="true" />
-          Issue reporting
-        </div>
-        <ReportIssue
-          variant="button"
-          label="Report this issue"
-          error={context.error}
-          digest={context.error?.digest}
-          className="w-full justify-center"
-        />
-      </div>
+      <ErrorReporter error={context.error} />
     ) : (
       <>
         {context.retry && (
