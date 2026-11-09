@@ -1,5 +1,6 @@
 import { X } from 'lucide-react'
 import Link from 'next/link'
+import { Logo } from '@/components/Logo/Logo'
 
 interface MegaMenuHeaderProps {
   onClose: () => void
@@ -7,11 +8,8 @@ interface MegaMenuHeaderProps {
 
 export const MegaMenuHeader = ({ onClose }: MegaMenuHeaderProps) => (
   <header className="flex w-full shrink-0 items-center justify-between border-b border-[#4B525F] px-6 py-5 lg:px-12">
-    <Link href="/" className="group flex items-center gap-2.5" onClick={onClose}>
-      <span className="select-none text-odl" aria-hidden="true">■</span>
-      <span className="text-md font-mono font-semibold tracking-tight text-white transition-colors select-none">OD LABS</span>
-      <span className="hidden select-none text-zinc-600 sm:inline">//</span>
-      <span className="hidden font-mono text-md text-zinc-400 sm:inline">Navigation</span>
+    <Link href="/" className="flex items-center gap-2" onClick={onClose} aria-label="OD LABS home">
+      <Logo loading="eager" priority="high" className="h-[18px]" />
     </Link>
     <button
       type="button"
