@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { AlertTriangle, ArrowUpRight, House, MessageSquareWarning, RefreshCw } from 'lucide-react'
+import { AlertTriangle, ArrowUpRight, MessageSquareWarning, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ReportIssue } from '@/components/ReportIssue'
 import { ServiceStatus } from '@/components/ServiceStatus'
@@ -32,7 +32,11 @@ export const ErrorContext = ({ context, compact = false }: ErrorContextProps) =>
 
     {!compact && (
       <>
-        <div className="flex flex-col gap-2">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase">
+            <MessageSquareWarning className="size-3.5 text-odl" aria-hidden="true" />
+            Issue reporting
+          </div>
           <ReportIssue
             variant="button"
             label="Report this issue"
@@ -54,10 +58,6 @@ export const ErrorContext = ({ context, compact = false }: ErrorContextProps) =>
               <ArrowUpRight className="size-3.5 text-zinc-500 group-hover:text-odl" aria-hidden="true" />
             </Link>
           ))}
-          <Link href="/" className="inline-flex items-center gap-2 pt-2 font-mono text-xs text-zinc-300 hover:text-white">
-            <House className="size-3.5 text-odl" aria-hidden="true" />
-            Return Home
-          </Link>
         </nav>
         <ServiceStatus variant="compact" />
       </>
