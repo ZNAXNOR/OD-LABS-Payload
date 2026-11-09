@@ -10,13 +10,12 @@ export const ContextImage = ({ image, title }: ContextImageProps) => {
   if (!image?.url) return null
 
   return (
-    <div className="relative mb-6 aspect-video overflow-hidden border border-zinc-800 bg-zinc-950">
+    <div className="mb-6 w-full overflow-hidden border border-zinc-800 bg-zinc-950">
       <PayloadMedia
         resource={image}
-        fill
         alt={image.alt || title}
-        pictureClassName="absolute inset-0"
-        imgClassName="object-cover"
+        pictureClassName="block w-full"
+        imgClassName="block h-auto w-full"
         size="(max-width: 1024px) 100vw, 40vw"
       />
     </div>
