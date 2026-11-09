@@ -36,7 +36,7 @@ export const MegaMenu_ContextPanel = ({ currentPage, preview }: Props) => {
       </div>
       {sections.length > 0 && <div className="mt-5 w-full space-y-2">
         <div className="font-mono text-[10px] tracking-widest text-zinc-500 uppercase">On This Page</div>
-        <nav aria-label={title + ' page sections'} className="flex flex-wrap gap-2">
+        <nav aria-label={title + ' page sections'} className="flex flex-nowrap gap-2 overflow-x-auto pb-1">
           {sections.map((section,index) => <Link key={section.id} href={section.href} className="border border-zinc-800 px-2.5 py-1.5 font-mono text-[10px] text-zinc-400 transition-colors hover:border-zinc-600 hover:text-white">
             <span className="mr-1.5 text-odl">{String(index+1).padStart(2,'0')}</span>{section.label}</Link>)}
         </nav>
