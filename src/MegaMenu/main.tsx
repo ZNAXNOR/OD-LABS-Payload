@@ -1,13 +1,9 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { ErrorReporter } from './error/ErrorReporter'
 import { MegaMenu_CurrentPage } from './Sections/currentPage'
 import { MegaMenu_PageIndex } from './Sections/pageIndex'
 import { MegaMenu_ContextPreview } from './Sections/contextPreview'
-import { useMenuAim } from './hooks/useMenuAim'
 import type { PagesData } from '../getPagesData'
 import type { CurrentPageInfo } from './types'
 import type { ContactSocial } from '@/payload-types'
@@ -21,60 +17,60 @@ interface MegaMenuMainProps {
 
 export const MegaMenuMain = ({ pages, currentPage, contactSocials, open }: MegaMenuMainProps) => {
   const [previewPage, setPreviewPage] = useState<PagesData | null>(null)
-  const [mobileContextOpen, setMobileContextOpen] = useState(false)
-  const contextPanelRef = useRef<HTMLElement | null>(null)
-  const activatePreview = useCallback((page: PagesData) => setPreviewPage(page), [])
-  const menuAim = useMenuAim({ panelRef: contextPanelRef, onActivate: activatePreview, enabled: open })
+  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const handlePageFocus = useCallback((page: PagesData) => {
-    menuAim.onPageFocus(page)
-  }, [menuAim.onPageFocus])
+  const clearResetTimer = useCallback(() => {
+    if (resetTimerRef.current) clearTimeout(resetTimerRef.current)
+    resetTimerRef.current = null
+  }, [])
 
-  const handlePageSelect = useCallback((page: PagesData) => {
-    menuAim.onPageFocus(page)
-    setMobileContextOpen(true)
-  }, [menuAim.onPageFocus])
+  const resetPreview = useCallback(() => {
+    clearResetTimer()
+    setPreviewPage(null)
+  }, [clearResetTimer])
+
+  const schedulePreviewReset = useCallback(() => {
+    clearResetTimer()
+    resetTimerRef.current = setTimeout(() => setPreviewPage(null), 1800)
+  }, [clearResetTimer])
+
+  const handlePreviewSelect = useCallback((page: PagesData) => {
+    clearResetTimer()
+    setPreviewPage(page)
+  }, [clearResetTimer])
 
   useEffect(() => {
-    if (!open) {
-      setPreviewPage(null)
-      setMobileContextOpen(false)
-    }
-  }, [open])
+    if (!open) resetPreview()
+    return clearResetTimer
+  }, [open, resetPreview, clearResetTimer])
 
   return (
-    <main className="min-h-0 flex-1 overflow-y-auto" onPointerMove={menuAim.onPointerMove}>
-      <div className="mx-auto w-full max-w-380 px-6 py-10 lg:px-12 lg:py-16">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-10 lg:gap-16">
-          <div className={['flex flex-col space-y-12 lg:col-span-7 lg:space-y-16', mobileContextOpen ? 'hidden lg:flex' : 'flex'].join(' ')}>
+    <main
+      className="min-h-0 flex-1 overflow-y-auto lg:overflow-hidden"
+      onPointerEnter={clearResetTimer}
+      onPointerLeave={schedulePreviewReset}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) resetPreview()
+      }}
+    >
+      <div className="mx-auto h-full w-full max-w-380 px-6 py-10 lg:px-12 lg:py-12">
+        <div className="grid grid-cols-1 gap-12 lg:h-full lg:min-h-0 lg:grid-cols-10 lg:gap-16">
+          <section className="flex min-w-0 flex-col space-y-12 lg:col-span-7 lg:h-full lg:min-h-0 lg:overflow-y-auto lg:pr-3 odl-menu-scroll">
             <MegaMenu_CurrentPage page={currentPage} />
             <MegaMenu_PageIndex
               pages={pages}
               activePage={currentPage}
               previewPage={previewPage}
-              onPagePointerEnter={menuAim.onPagePointerEnter}
-              onPageFocus={handlePageFocus}
-              onPageSelect={handlePageSelect}
+              onPageSelect={handlePreviewSelect}
             />
-          </div>
+          </section>
 
           <aside
-            ref={contextPanelRef}
-            onPointerEnter={menuAim.onPanelPointerEnter}
-            className={['h-full flex-col justify-between lg:col-span-3', mobileContextOpen || previewPage ? 'flex' : 'hidden lg:flex'].join(' ')}
+            className="min-w-0 border-t border-zinc-800/80 pt-8 lg:col-span-3 lg:h-full lg:min-h-0 lg:overflow-y-auto lg:border-t-0 lg:border-l lg:pl-8 lg:pt-0 odl-menu-scroll"
             aria-label="Navigation context"
           >
-            {mobileContextOpen && currentPage.type === 'error' && previewPage && (
-              <ErrorReporter error={currentPage.error} className="mb-6" />
-            )}
-            {mobileContextOpen && (
-              <Button type="button" variant="ghost" size="sm" className="mb-6 self-start px-0! py-0! text-zinc-400 hover:text-white lg:hidden" onClick={() => { setMobileContextOpen(false); setPreviewPage(null); menuAim.reset() }}>
-                <ArrowLeft aria-hidden="true" /> Back to pages
-              </Button>
-            )}
             <MegaMenu_ContextPreview
               page={previewPage}
-              currentPage={currentPage}
               contactSocials={contactSocials}
               open={open}
             />
