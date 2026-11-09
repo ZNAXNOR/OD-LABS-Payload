@@ -1,5 +1,6 @@
 import type { PagesData } from '@/getPagesData'
 import type { PostsData } from '@/getPostsData'
+
 export interface MegaMenuEntry {
   id: string
   kind: string
@@ -15,6 +16,7 @@ export interface MegaMenuEntry {
   destinationLabel: string
   breadcrumbLabel: string
 }
+
 export interface MegaMenuCategory {
   slug: string
   label: string
@@ -22,14 +24,16 @@ export interface MegaMenuCategory {
   layout: string
   entries: MegaMenuEntry[]
 }
+
 /**
  * Explicit opt-in registry. Add a collection and a data adapter in buildMegaMenuCategories
  * when it should appear. A tab is rendered only when its collection has published entries.
  */
 export const megaMenuCollectionRegistry = [
   { slug: 'pages', label: 'Pages', order: 1, layout: 'list', enabled: true },
-  { slug: 'posts', label: 'Insights', order: 2, layout: 'editorial', enabled: true },
+  { slug: 'posts', label: 'Posts', order: 2, layout: 'editorial', enabled: true },
 ] as const
+
 export const buildMegaMenuCategories = (pages: PagesData[], posts: PostsData[]): MegaMenuCategory[] => {
   const entriesByCollection: Record<string, MegaMenuEntry[]> = {
     pages: pages.map((page) => ({
@@ -41,9 +45,10 @@ export const buildMegaMenuCategories = (pages: PagesData[], posts: PostsData[]):
       id: 'post:' + post.slug, kind: 'post', title: post.title, slug: post.slug, href: post.href,
       description: post.metaDescription || post.description, image: post.seoImage, sections: [],
       publishedAt: post.publishedAt, categories: post.categories,
-      previewLabel: 'Post Preview', destinationLabel: 'post', breadcrumbLabel: 'Insights',
+      previewLabel: 'Post Preview', destinationLabel: 'post', breadcrumbLabel: 'Posts',
     })),
   }
+
   return megaMenuCollectionRegistry
     .filter((collection) => collection.enabled)
     .map((collection) => ({ ...collection, entries: entriesByCollection[collection.slug] ?? [] }))
