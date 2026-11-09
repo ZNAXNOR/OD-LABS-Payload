@@ -9,6 +9,7 @@ interface MegaMenuPageIndexProps {
   previewPage: PagesData | null
   onPagePointerEnter: (page: PagesData, event: PointerEvent<HTMLElement>) => void
   onPageFocus: (page: PagesData) => void
+  onPageSelect: (page: PagesData) => void
 }
 
 export const MegaMenu_PageIndex = ({
@@ -17,6 +18,7 @@ export const MegaMenu_PageIndex = ({
   previewPage,
   onPagePointerEnter,
   onPageFocus,
+  onPageSelect,
 }: MegaMenuPageIndexProps) => (
   <section className="mt-12 space-y-6 lg:mt-16">
     <div className="font-mono text-xs tracking-widest text-zinc-500 uppercase">Pages</div>
@@ -36,7 +38,7 @@ export const MegaMenu_PageIndex = ({
             onClick={(event) => {
               if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
                 event.preventDefault()
-                onPageFocus(page)
+                onPageSelect(page)
               }
             }}
             className={[
