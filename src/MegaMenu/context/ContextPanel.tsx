@@ -23,14 +23,14 @@ export const MegaMenu_ContextPanel = ({ currentPage, preview }: ContextPanelProp
   const title = preview?.title ?? currentPage.title
   const href = preview?.href ?? currentPage.href
   const description = preview?.description ?? currentPage.description
-  const image = preview?.image ?? (
-    currentPage.type === 'page' || currentPage.type === 'post' || currentPage.type === 'legal'
+  const image = preview
+    ? preview.image
+    : currentPage.type === 'page' || currentPage.type === 'post' || currentPage.type === 'legal'
       ? currentPage.seoImage
       : null
-  )
-  const sections = preview?.sections ?? (currentPage.type === 'page' ? currentPage.sections : [])
-  const publishedAt = preview?.publishedAt ?? (currentPage.type === 'post' ? currentPage.publishedAt : null)
-  const categories = preview?.categories ?? (currentPage.type === 'post' ? currentPage.categories : [])
+  const sections = preview ? preview.sections : currentPage.type === 'page' ? currentPage.sections : []
+  const publishedAt = preview ? preview.publishedAt : currentPage.type === 'post' ? currentPage.publishedAt : null
+  const categories = preview ? preview.categories ?? [] : currentPage.type === 'post' ? currentPage.categories : []
 
   const breadcrumbs = preview?.kind === 'post' || (!preview && currentPage.type === 'post')
     ? [
