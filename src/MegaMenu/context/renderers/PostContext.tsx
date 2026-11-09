@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowUpRight, CalendarDays, Newspaper } from 'lucide-react'
 import type { PostContextData } from '../../types'
+import { ContextBreadcrumb } from '../ContextBreadcrumb'
 import { ContextImage } from '../ContextImage'
 
 export const PostContext = ({
@@ -35,6 +36,7 @@ export const PostContext = ({
 
   return (
     <aside className="space-y-5">
+      <ContextBreadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Posts', href: '/posts' }, { label: context.title }]} />
       <ContextImage image={context.seoImage} title={context.title} />
       <div className="space-y-3">
         <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-odl uppercase">
@@ -47,9 +49,7 @@ export const PostContext = ({
       {context.publishedAt && (
         <div className="flex items-center gap-2 font-mono text-xs text-zinc-500">
           <CalendarDays className="size-3.5" aria-hidden="true" />
-          <time dateTime={context.publishedAt}>
-            {new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium' }).format(new Date(context.publishedAt))}
-          </time>
+          <time dateTime={context.publishedAt}>{new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium' }).format(new Date(context.publishedAt))}</time>
         </div>
       )}
       {context.categories.length > 0 && (
