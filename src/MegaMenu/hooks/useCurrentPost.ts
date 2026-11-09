@@ -22,10 +22,12 @@ interface PostApiDocument {
  * Uses the server-provided navigation index first. A narrow Payload REST query
  * is only made when the current post is outside that preloaded index.
  */
-export const useCurrentPost = (pathname: string | null, posts: PostsData[]) => {
+export const useCurrentPost = (pathname: string | null, posts: PostsData[], enabled: boolean) => {
   const [activePost, setActivePost] = useState<PostsData | null>(null)
 
   useEffect(() => {
+    if (!enabled) return
+
     const path = pathname?.replace(/\/$/, '') || '/'
     const isPostRoute = path.startsWith('/posts/') && !path.startsWith('/posts/page/')
     if (!isPostRoute) {
@@ -90,7 +92,7 @@ export const useCurrentPost = (pathname: string | null, posts: PostsData[]) => {
       .catch(() => undefined)
 
     return () => controller.abort()
-  }, [pathname, posts])
+  }, [pathname, posts, enabled])
 
   return activePost
 }
