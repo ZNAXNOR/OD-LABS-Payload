@@ -10,8 +10,9 @@ import { resolveCurrentPage } from './utils/resolveCurrentPage'
 import type { PagesData } from '../getPagesData'
 import type { LegalPagesData } from '../getLegalPagesData'
 import type { PostsData } from '../getPostsData'
+import type { ContactSocial } from '@/payload-types'
 import type { MegaMenuRuntimeError } from '@/providers/MegaMenu'
-interface Props { open: boolean; onClose: () => void; pages: PagesData[]; legalPages: LegalPagesData[]; posts?: PostsData[]; runtimeError?: MegaMenuRuntimeError | null }
+interface Props { open: boolean; onClose: () => void; pages: PagesData[]; legalPages: LegalPagesData[]; posts?: PostsData[]; contactSocials?: ContactSocial | null; runtimeError?: MegaMenuRuntimeError | null }
 export const MegaMenu = ({open,onClose,pages,legalPages,posts=[],runtimeError}: Props) => {
   const pathname = usePathname(), previousPathname = useRef(pathname)
   const activePost = useCurrentPost(pathname, posts, open)
