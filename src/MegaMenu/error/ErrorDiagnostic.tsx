@@ -3,6 +3,9 @@ import type { ErrorContextData } from '../types'
 
 export const ErrorDiagnostic = ({ context }: { context: ErrorContextData }) => (
   <div className="space-y-3">
+    <div className="font-mono text-6xl font-bold leading-none tracking-tighter text-odl sm:text-7xl" aria-label={`Error ${context.code}`}>
+      [{context.code}]
+    </div>
     <div className="flex items-center justify-between gap-3 font-mono text-[11px] tracking-widest uppercase">
       <span className="inline-flex items-center gap-2 text-odl">
         <AlertTriangle className="size-4" aria-hidden="true" />
