@@ -53,7 +53,12 @@ export const MegaMenuMain = ({ pages, currentPage, contactSocials, open }: MegaM
         if (event.target === event.currentTarget) resetPreview()
       }}
     >
-      <div className="mx-auto h-full w-full max-w-380 px-6 py-10 lg:px-12 lg:py-12">
+      <div
+        className="mx-auto h-full w-full max-w-380 px-6 py-10 lg:px-12 lg:py-12"
+        onClick={(event) => {
+          if (event.target === event.currentTarget) resetPreview()
+        }}
+      >
         <div className="grid grid-cols-1 gap-12 lg:h-full lg:min-h-0 lg:grid-cols-10 lg:gap-16">
           <section className="flex min-w-0 flex-col space-y-12 lg:col-span-7 lg:h-full lg:min-h-0 lg:overflow-y-auto lg:pr-3 odl-menu-scroll">
             <MegaMenu_CurrentPage page={currentPage} />
