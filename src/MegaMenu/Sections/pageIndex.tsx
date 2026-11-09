@@ -21,7 +21,7 @@ export const MegaMenu_PageIndex = ({ categories, activeCategory, previewEntry, c
       })}
     </div>
     <nav id="mega-category-index" role="tabpanel" aria-labelledby={'mega-tab-' + category.slug} aria-label={category.label + ' index'}
-      className="min-h-0 flex-1 overflow-y-auto pr-2 odl-menu-scroll">
+      className="min-h-0 flex-1 overflow-visible pr-2 lg:overflow-y-auto odl-menu-scroll">
       <div className="grid grid-cols-1 gap-x-8 md:grid-cols-2">
         {category.entries.map((entry, index) => {
           const selected = previewEntry?.id === entry.id, current = currentHref === entry.href
