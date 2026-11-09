@@ -154,7 +154,15 @@ export function resolveCurrentPage({
         seoImage: post.seoImage,
         publishedAt: post.publishedAt,
         categories: post.categories,
-        relatedPosts: post.relatedPosts,
+        relatedPosts: post.relatedPosts.length > 0
+          ? post.relatedPosts
+          : posts
+              .filter((candidate) =>
+                candidate.slug !== post.slug &&
+                candidate.categories.some((category) => post.categories.includes(category)),
+              )
+              .slice(0, 4)
+              .map((candidate) => ({ title: candidate.title, href: candidate.href })),
       }
     }
     return {
