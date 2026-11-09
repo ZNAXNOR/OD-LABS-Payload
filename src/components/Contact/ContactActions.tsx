@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowUpRight, Check, Copy } from 'lucide-react'
+import { SquareArrowOutUpRight, Check, Copy } from 'lucide-react'
 import { cn } from '@/utilities/ui'
 import type { FormattedContactAction as ContactAction } from './utils'
 
@@ -52,7 +52,7 @@ export function ContactActions({
               className="flex min-h-14 min-w-0 flex-1 items-center justify-between gap-4 border border-zinc-800 px-4 py-3 text-sm text-zinc-200 transition-colors hover:border-odl hover:bg-odl/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
             >
               <span className="min-w-0">{action.label}</span>
-              <ArrowUpRight aria-hidden="true" className="shrink-0 text-odl" size={16} />
+              <SquareArrowOutUpRight aria-hidden="true" className="shrink-0 text-odl" size={16} />
             </a>
             {isEmail && email ? <CopyEmailButton email={email} /> : null}
           </div>
