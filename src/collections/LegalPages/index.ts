@@ -290,6 +290,23 @@ export const LegalPages: CollectionConfig<'legal-pages'> = {
             }),
             MetaTitleField({ hasGenerateFn: true }),
             MetaImageField({ relationTo: 'media' }),
+            {
+              name: 'showSeoImageInMegaMenu',
+              label: 'Show SEO Image in Megamenu Preview',
+              type: 'checkbox',
+              defaultValue: false,
+              admin: { description: 'Display this document’s SEO image in the Megamenu preview.' },
+            },
+            {
+              name: 'showCssPreviewInMegaMenu',
+              label: 'Enable CSS-Generated Preview',
+              type: 'checkbox',
+              defaultValue: true,
+              admin: {
+                condition: (_, siblingData) => siblingData?.showSeoImageInMegaMenu !== true,
+                description: 'Display the generated OD LABS preview when the SEO image preview is disabled.',
+              },
+            },
             MetaDescriptionField({}),
             {
               name: 'excludeFromIndex',

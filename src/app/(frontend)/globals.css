@@ -248,3 +248,35 @@ html[data-theme='light'] {
 .ai-chat-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--color-odl, #e94235);
 }
+
+
+/* Mega menu: independent, restrained scroll areas. */
+.odl-menu-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #484848 #151515;
+  scrollbar-gutter: stable;
+}
+
+.odl-menu-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.odl-menu-scroll::-webkit-scrollbar-track {
+  background: #151515;
+}
+
+.odl-menu-scroll::-webkit-scrollbar-thumb {
+  background: #484848;
+  border: 1px solid #151515;
+  border-radius: 9999px;
+}
+
+.odl-menu-scroll::-webkit-scrollbar-thumb:hover {
+  background: #777777;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .odl-menu-scroll {
+    scroll-behavior: auto;
+  }
+}

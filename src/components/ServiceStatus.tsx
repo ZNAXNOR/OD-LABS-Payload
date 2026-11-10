@@ -1,6 +1,7 @@
 'use client'
 
 import { useSyncExternalStore } from 'react'
+import { SquareArrowOutUpRight } from 'lucide-react'
 import type { ServiceStatus, UptimeKumaStatus } from '@/lib/uptime-kuma'
 
 type ServiceStatusProps = {
@@ -162,13 +163,13 @@ export function ServiceStatus({ variant = 'compact', className = '' }: ServiceSt
               <span className={'leading-relaxed ' + current.text}>{current.description}</span>
             </span>
           </span>
-          <span aria-hidden="true" className="shrink-0 text-zinc-500 transition-transform group-hover:translate-x-1 group-hover:text-white">↗</span>
+          <SquareArrowOutUpRight aria-hidden="true" className="size-3.5 shrink-0 text-zinc-500 transition-transform group-hover:translate-x-0.5 group-hover:text-white" />
         </>
       ) : (
         <>
           <span aria-hidden="true" className={'h-2 w-2 shrink-0 rounded-full ' + current.dot} />
           <span className={'transition-colors group-hover:text-white ' + current.text}>{current.description}</span>
-          <span aria-hidden="true" className="text-zinc-600 transition-colors group-hover:text-white">↗</span>
+          <SquareArrowOutUpRight aria-hidden="true" className="size-3.5 text-zinc-600 transition-colors group-hover:text-white" />
         </>
       )}
     </a>
