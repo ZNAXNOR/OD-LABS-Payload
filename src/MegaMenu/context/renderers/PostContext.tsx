@@ -37,7 +37,7 @@ export const PostContext = ({
   return (
     <aside className="space-y-5">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1"><span className="font-mono text-[10px] tracking-[0.16em] text-odl uppercase">[CURRENT]</span><ContextBreadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Posts', href: '/posts' }, { label: context.title }]} /></div>
-      <ContextImage image={context.seoImage} title={context.title} />
+      <ContextImage image={context.seoImage} title={context.title} placeholder={false} />
       <div className="space-y-3">
         <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{context.title}</h2>
         <p className="font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">{context.description}</p>

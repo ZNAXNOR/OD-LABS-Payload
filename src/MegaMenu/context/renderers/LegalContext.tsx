@@ -15,7 +15,7 @@ export const LegalContext = ({
     {mode === 'current' && (
       <>
         <ContextBreadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Legal' }, { label: context.title }]} />
-        <ContextImage image={context.seoImage} title={context.title} />
+        <ContextImage image={context.seoImage} title={context.title} placeholder={false} />
       </>
     )}
     <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase">
