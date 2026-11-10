@@ -48,7 +48,9 @@ export const MegaMenuMain = ({ pages, posts, currentPage, contactSocials, open }
               if (!(event.target instanceof Element) || !event.target.closest('button,a,input,select,textarea,[role="tab"]')) resetPreview()
             }}
           >
-            <MegaMenu_ContextPanel currentPage={currentPage} preview={previewEntry} />
+            <div className="min-h-0 lg:h-[42%] lg:min-h-[220px] lg:max-h-[42%] lg:shrink-0 lg:overflow-y-auto lg:pr-2">
+              <MegaMenu_ContextPanel currentPage={currentPage} preview={previewEntry} />
+            </div>
             <MegaMenu_PageIndex
               categories={categories}
               activeCategory={activeCategory}

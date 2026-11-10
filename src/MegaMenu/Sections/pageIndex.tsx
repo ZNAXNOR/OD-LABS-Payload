@@ -20,7 +20,7 @@ export const MegaMenu_PageIndex = ({
   return (
     <section className="mt-8 flex min-h-0 flex-1 flex-col pt-5 lg:mt-10 lg:pt-6">
       <div className="mb-4 flex shrink-0 items-center justify-between gap-4">
-        <div className="font-mono text-xs tracking-widest text-zinc-500 uppercase">{category.label}</div>
+        <div className="font-mono text-xs tracking-widest text-zinc-500 uppercase">Index</div>
         <div className="font-mono text-[10px] text-zinc-600">{String(category.entries.length).padStart(2, '0')} ITEMS</div>
       </div>
 
@@ -54,7 +54,7 @@ export const MegaMenu_PageIndex = ({
         aria-label={category.label + ' index'}
         className="min-h-0 flex-1 overflow-visible pr-2 lg:overflow-y-auto odl-menu-scroll"
       >
-        <div className="grid grid-cols-1 gap-x-8 gap-y-0 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-x-0 gap-y-0 sm:grid-cols-2">
           {category.entries.map((entry, index) => {
             const selected = previewEntry?.id === entry.id
             const current = currentHref === entry.href
