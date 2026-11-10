@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { ServiceStatus } from '@/components/ServiceStatus'
+import { ReportIssue } from '@/components/ReportIssue'
 import { ContactActions } from '@/components/Contact/ContactActions'
 import { SocialLinks } from '@/components/Contact/SocialLinks'
-import { ReportIssue } from '@/components/ReportIssue'
 import { formatContactActions, formatSocialLinks } from '@/components/Contact/utils'
 import { formatZonedDate, formatZonedTime, useZonedClock } from '@/hooks/useZonedClock'
 import type { ContactSocial } from '@/payload-types'
@@ -66,7 +66,7 @@ export const MegaMenu_ContextDefault = ({
           </div>
         )}
         <div className="space-y-4">
-          <ReportIssue variant="link" label="Report a bug" className="text-xs text-zinc-400" />
+          <ReportIssue variant="button" label="Report an Issue" className="w-full justify-center" />
           <ServiceStatus variant="block" />
         </div>
       </div>
