@@ -7,6 +7,7 @@ import type { CurrentPageInfo } from '../types'
 import type { MegaMenuEntry } from '../registry'
 import { ContextBreadcrumb } from './ContextBreadcrumb'
 import { ContextImage } from './ContextImage'
+import { MegaMenu_CurrentPage } from '../Sections/currentPage'
 
 interface ContextPanelProps {
   currentPage: CurrentPageInfo
@@ -14,13 +15,22 @@ interface ContextPanelProps {
 }
 
 export const MegaMenu_ContextPanel = ({ currentPage, preview }: ContextPanelProps) => {
+  if (!preview && currentPage.type === 'error') {
+    return <div className="min-h-0"><MegaMenu_CurrentPage page={currentPage} /></div>
+  }
+
   const isPreview = Boolean(preview)
   const title = preview?.title ?? currentPage.title
   const href = preview?.href ?? currentPage.href
   const description = preview?.description ?? currentPage.description
-  // The idle state describes the page in place. Only an actively previewed
-  // entry receives a visual preview, including the generated fallback tile.
-  const image = preview ? preview.image : null
+  // The current page retains its SEO image. Only hovered/pinned entries receive
+  // preview labels, actions, and the generated fallback when no image exists.
+  const image = preview
+    ? preview.image
+    : currentPage.type === 'page' || currentPage.type === 'post' || currentPage.type === 'legal'
+      ? currentPage.seoImage
+      : null
+  const showImage = Boolean(preview) || Boolean(image)
   const sections = preview ? preview.sections : currentPage.type === 'page' ? currentPage.sections : []
   const publishedAt = preview ? preview.publishedAt : currentPage.type === 'post' ? currentPage.publishedAt : null
   const categories = preview ? preview.categories ?? [] : currentPage.type === 'post' ? currentPage.categories : []
@@ -44,8 +54,8 @@ export const MegaMenu_ContextPanel = ({ currentPage, preview }: ContextPanelProp
         </div>
       </div>
 
-      <div className={['grid min-w-0 grid-cols-1 gap-6 sm:gap-8', isPreview ? 'sm:grid-cols-[minmax(180px,0.8fr)_minmax(0,1.7fr)]' : ''].join(' ')}>
-        {isPreview && (
+      <div className={['grid min-w-0 grid-cols-1 gap-6 sm:gap-8', showImage ? 'sm:grid-cols-[minmax(180px,0.8fr)_minmax(0,1.7fr)]' : ''].join(' ')}>
+        {showImage && (
           <div className="min-w-0">
             <ContextImage image={image} title={title} compact />
           </div>

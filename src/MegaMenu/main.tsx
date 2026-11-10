@@ -24,7 +24,13 @@ export const MegaMenuMain = ({ pages, posts, currentPage, contactSocials, open }
   const [hoveredEntry, setHoveredEntry] = useState<MegaMenuEntry | null>(null)
   const [pinnedEntry, setPinnedEntry] = useState<MegaMenuEntry | null>(null)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const previewEntry = hoveredEntry ?? pinnedEntry
+  const selectedEntry = hoveredEntry ?? pinnedEntry
+  const normalizeHref = (href: string) => href.length > 1 ? href.replace(/\\/+$/, '') : href
+  // The current route remains the current-page context, even when its index
+  // entry is hovered or pinned. It must not switch into preview treatment.
+  const previewEntry = selectedEntry && normalizeHref(selectedEntry.href) !== normalizeHref(currentPage.href)
+    ? selectedEntry
+    : null
   const clearTimer = useCallback(() => { if (timer.current) clearTimeout(timer.current); timer.current = null }, [])
   const resetPreview = useCallback(() => { clearTimer(); setHoveredEntry(null); setPinnedEntry(null) }, [clearTimer])
   const scheduleHoverReset = useCallback(() => { clearTimer(); timer.current = setTimeout(() => setHoveredEntry(null), 250) }, [clearTimer])
