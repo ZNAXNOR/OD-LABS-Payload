@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ArrowUpRight, CalendarDays, Newspaper } from 'lucide-react'
 import type { PostContextData } from '../../types'
 import { ContextBreadcrumb } from '../ContextBreadcrumb'
-import { ContextImage } from '../ContextImage'
+import { ContextImage } from '../../PreviewTemplate/ContextImage'
 
 export const PostContext = ({
   context,

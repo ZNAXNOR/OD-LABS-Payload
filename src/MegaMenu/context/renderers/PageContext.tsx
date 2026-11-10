@@ -3,7 +3,7 @@ import { SquareArrowOutUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { PageContextData } from '../../types'
 import { ContextBreadcrumb } from '../ContextBreadcrumb'
-import { ContextImage } from '../ContextImage'
+import { ContextImage } from '../../PreviewTemplate/ContextImage'
 
 interface PageContextProps {
   context: PageContextData
