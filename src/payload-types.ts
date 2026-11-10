@@ -431,6 +431,8 @@ export interface Post {
     /**
      * Exclude this post from the OD LABS AI knowledgebase while keeping it published on the website.
      */
+    showSeoImageInMegaMenu?: boolean | null;
+    showCssPreviewInMegaMenu?: boolean | null;
     excludeFromIndex?: boolean | null;
   };
   publishedAt?: string | null;
@@ -1316,6 +1318,8 @@ export interface LegalPage {
     /**
      * Exclude this page from search engines and the OD LABS AI knowledgebase
      */
+    showSeoImageInMegaMenu?: boolean | null;
+    showCssPreviewInMegaMenu?: boolean | null;
     excludeFromIndex?: boolean | null;
   };
   /**
