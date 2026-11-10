@@ -12,6 +12,8 @@ interface PostApiDocument {
     title?: string | null
     description?: string | null
     image?: number | Media | null
+    showSeoImageInMegaMenu?: boolean | null
+    showCssPreviewInMegaMenu?: boolean | null
   }
   publishedAt?: string | null
   categories?: Array<number | { title: string } | null> | null
@@ -58,6 +60,8 @@ export const useCurrentPost = (pathname: string | null, posts: PostsData[], enab
       'select[meta][title]': 'true',
       'select[meta][description]': 'true',
       'select[meta][image]': 'true',
+      'select[meta][showSeoImageInMegaMenu]': 'true',
+      'select[meta][showCssPreviewInMegaMenu]': 'true',
       'select[publishedAt]': 'true',
       'select[categories]': 'true',
       'select[relatedPosts]': 'true',
@@ -79,6 +83,8 @@ export const useCurrentPost = (pathname: string | null, posts: PostsData[], enab
           metaTitle: doc.meta?.title || null,
           metaDescription: doc.meta?.description || null,
           seoImage: getPopulatedMedia(doc.meta?.image),
+          showSeoImageInMegaMenu: doc.meta?.showSeoImageInMegaMenu ?? true,
+          showCssPreviewInMegaMenu: doc.meta?.showCssPreviewInMegaMenu ?? true,
           publishedAt: doc.publishedAt || null,
           categories: (doc.categories ?? []).flatMap((category) =>
             category && typeof category === 'object' ? [category.title] : [],
