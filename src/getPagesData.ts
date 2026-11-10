@@ -9,6 +9,8 @@ export interface PagesData {
   href: string
   description: string
   seoImage: Media | null
+  showSeoImageInMegaMenu: boolean
+  showCssPreviewInMegaMenu: boolean
   sections: {
     id: string
     label: string
@@ -32,7 +34,7 @@ export const getPagesData = async (): Promise<PagesData[]> => {
       slug: true,
       hero: { type: true },
       layout: true,
-      meta: { description: true, image: true },
+      meta: { description: true, image: true, showSeoImageInMegaMenu: true, showCssPreviewInMegaMenu: true },
     },
   })
 
@@ -62,6 +64,8 @@ export const getPagesData = async (): Promise<PagesData[]> => {
         href: pageHref,
         description: page.meta?.description ?? '',
         seoImage: getPopulatedMedia(page.meta?.image),
+        showSeoImageInMegaMenu: page.meta?.showSeoImageInMegaMenu ?? false,
+        showCssPreviewInMegaMenu: page.meta?.showCssPreviewInMegaMenu ?? true,
         sections,
       }
     })

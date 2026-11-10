@@ -11,6 +11,8 @@ export interface LegalPagesData {
   documentType: string | null
   updatedAt: string
   seoImage: Media | null
+  showSeoImageInMegaMenu: boolean
+  showCssPreviewInMegaMenu: boolean
 }
 
 /** Returns published legal document metadata for the footer and Megamenu. */
@@ -29,7 +31,7 @@ export const getLegalPagesData = async (): Promise<LegalPagesData[]> => {
       slug: true,
       documentType: true,
       updatedAt: true,
-      meta: { description: true, image: true },
+      meta: { description: true, image: true, showSeoImageInMegaMenu: true, showCssPreviewInMegaMenu: true },
     },
   })
 
@@ -41,5 +43,7 @@ export const getLegalPagesData = async (): Promise<LegalPagesData[]> => {
     documentType: page.documentType || null,
     updatedAt: page.updatedAt,
     seoImage: getPopulatedMedia(page.meta?.image),
+    showSeoImageInMegaMenu: page.meta?.showSeoImageInMegaMenu ?? false,
+    showCssPreviewInMegaMenu: page.meta?.showCssPreviewInMegaMenu ?? true,
   }))
 }

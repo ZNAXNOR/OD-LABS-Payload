@@ -16,6 +16,8 @@ export interface PostsData {
   metaTitle: string | null
   metaDescription: string | null
   seoImage: Media | null
+  showSeoImageInMegaMenu: boolean
+  showCssPreviewInMegaMenu: boolean
   publishedAt: string | null
   categories: string[]
   relatedPosts: RelatedPostData[]
@@ -35,7 +37,7 @@ export const getPostsData = async (): Promise<PostsData[]> => {
     select: {
       title: true,
       slug: true,
-      meta: { title: true, image: true, description: true },
+      meta: { title: true, image: true, description: true, showSeoImageInMegaMenu: true, showCssPreviewInMegaMenu: true },
       publishedAt: true,
       categories: true,
       relatedPosts: true,
@@ -50,6 +52,8 @@ export const getPostsData = async (): Promise<PostsData[]> => {
     metaTitle: post.meta?.title || null,
     metaDescription: post.meta?.description || null,
     seoImage: getPopulatedMedia(post.meta?.image),
+    showSeoImageInMegaMenu: post.meta?.showSeoImageInMegaMenu ?? true,
+    showCssPreviewInMegaMenu: post.meta?.showCssPreviewInMegaMenu ?? true,
     publishedAt: post.publishedAt || null,
     categories: (post.categories ?? []).flatMap((category) =>
       typeof category === 'object' && category !== null ? [category.title] : [],
