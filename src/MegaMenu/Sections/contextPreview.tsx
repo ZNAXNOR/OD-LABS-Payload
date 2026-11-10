@@ -19,6 +19,8 @@ export const MegaMenu_ContextPreview = ({ page, contactSocials, open }: MegaMenu
       href: page.href,
       description: page.description,
       seoImage: page.seoImage,
+      showSeoImageInMegaMenu: page.showSeoImageInMegaMenu,
+      showCssPreviewInMegaMenu: page.showCssPreviewInMegaMenu,
       sections: page.sections,
     }
     return <PageContext context={previewContext} mode="preview" />

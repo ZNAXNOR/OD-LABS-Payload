@@ -21,6 +21,8 @@ interface ContextBase {
 export interface PageContextData extends ContextBase {
   type: 'page'
   seoImage: Media | null
+  showSeoImageInMegaMenu: boolean
+  showCssPreviewInMegaMenu: boolean
   sections: PagesData['sections']
 }
 
