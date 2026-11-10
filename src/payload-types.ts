@@ -258,12 +258,18 @@ export interface Page {
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
     image?: (number | null) | Media;
+    /**
+     * Display this document’s SEO image in the Megamenu preview.
+     */
+    showSeoImageInMegaMenu?: boolean | null;
+    /**
+     * Display the generated OD LABS preview when the SEO image preview is disabled.
+     */
+    showCssPreviewInMegaMenu?: boolean | null;
     description?: string | null;
     /**
      * Exclude this page from the OD LABS AI knowledgebase. This setting does not control search-engine indexing.
      */
-    showSeoImageInMegaMenu?: boolean | null;
-    showCssPreviewInMegaMenu?: boolean | null;
     excludeFromIndex?: boolean | null;
   };
   publishedAt?: string | null;
@@ -427,12 +433,18 @@ export interface Post {
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
     image?: (number | null) | Media;
+    /**
+     * Display this document’s SEO image in the Megamenu preview.
+     */
+    showSeoImageInMegaMenu?: boolean | null;
+    /**
+     * Display the generated OD LABS preview when the SEO image preview is disabled.
+     */
+    showCssPreviewInMegaMenu?: boolean | null;
     description?: string | null;
     /**
      * Exclude this post from the OD LABS AI knowledgebase while keeping it published on the website.
      */
-    showSeoImageInMegaMenu?: boolean | null;
-    showCssPreviewInMegaMenu?: boolean | null;
     excludeFromIndex?: boolean | null;
   };
   publishedAt?: string | null;
@@ -1314,12 +1326,18 @@ export interface LegalPage {
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
     image?: (number | null) | Media;
+    /**
+     * Display this document’s SEO image in the Megamenu preview.
+     */
+    showSeoImageInMegaMenu?: boolean | null;
+    /**
+     * Display the generated OD LABS preview when the SEO image preview is disabled.
+     */
+    showCssPreviewInMegaMenu?: boolean | null;
     description?: string | null;
     /**
      * Exclude this page from search engines and the OD LABS AI knowledgebase
      */
-    showSeoImageInMegaMenu?: boolean | null;
-    showCssPreviewInMegaMenu?: boolean | null;
     excludeFromIndex?: boolean | null;
   };
   /**
@@ -1981,9 +1999,9 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         title?: T;
         image?: T;
-        description?: T;
         showSeoImageInMegaMenu?: T;
         showCssPreviewInMegaMenu?: T;
+        description?: T;
         excludeFromIndex?: T;
       };
   publishedAt?: T;
@@ -2152,9 +2170,9 @@ export interface PostsSelect<T extends boolean = true> {
     | {
         title?: T;
         image?: T;
-        description?: T;
         showSeoImageInMegaMenu?: T;
         showCssPreviewInMegaMenu?: T;
+        description?: T;
         excludeFromIndex?: T;
       };
   publishedAt?: T;
@@ -2209,9 +2227,9 @@ export interface LegalPagesSelect<T extends boolean = true> {
     | {
         title?: T;
         image?: T;
-        description?: T;
         showSeoImageInMegaMenu?: T;
         showCssPreviewInMegaMenu?: T;
+        description?: T;
         excludeFromIndex?: T;
       };
   generateSlug?: T;
