@@ -55,7 +55,7 @@ export const MegaMenu = ({ open, onClose, pages, legalPages, posts = [], contact
         <DialogDescription className="sr-only">Primary site navigation and contextual information for the current route.</DialogDescription>
         <div className="flex h-full min-h-0 flex-col">
           <MegaMenuHeader onClose={onClose} />
-          <MegaMenuMain pages={pages} posts={posts} currentPage={currentPage} contactSocials={contactSocials} open={open} />
+          <MegaMenuMain pages={pages} posts={posts} legalPages={legalPages} currentPage={currentPage} contactSocials={contactSocials} open={open} />
           <MegaMenuFooter legalPages={legalPages} />
         </div>
       </DialogContent>

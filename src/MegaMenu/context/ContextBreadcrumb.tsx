@@ -18,15 +18,15 @@ export const ContextBreadcrumb = ({ items }: { items: ContextBreadcrumbItem[] })
   if (items.length === 0) return null
 
   return (
-    <Breadcrumb className="mb-4">
-      <BreadcrumbList className="gap-1.5 font-mono text-[10px] tracking-wide text-zinc-500 sm:gap-2">
+    <Breadcrumb className="min-w-0">
+      <BreadcrumbList className="flex-wrap gap-1.5 font-mono text-[10px] tracking-wide text-zinc-500 sm:gap-2">
         {items.map((item, index) => {
           const isCurrent = index === items.length - 1
           return (
             <Fragment key={`${item.label}-${index}`}>
               <BreadcrumbItem>
                 {isCurrent ? (
-                  <BreadcrumbPage className="max-w-40 truncate text-zinc-300">{item.label}</BreadcrumbPage>
+                  <BreadcrumbPage className="whitespace-normal break-words text-zinc-300">{item.label}</BreadcrumbPage>
                 ) : item.href ? (
                   <BreadcrumbLink asChild className="text-zinc-500 hover:text-white">
                     <Link href={item.href}>{item.label}</Link>

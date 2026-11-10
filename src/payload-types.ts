@@ -262,6 +262,8 @@ export interface Page {
     /**
      * Exclude this page from the OD LABS AI knowledgebase. This setting does not control search-engine indexing.
      */
+    showSeoImageInMegaMenu?: boolean | null;
+    showCssPreviewInMegaMenu?: boolean | null;
     excludeFromIndex?: boolean | null;
   };
   publishedAt?: string | null;

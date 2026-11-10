@@ -5,6 +5,7 @@ import { MegaMenu_ContextPanel } from './context/ContextPanel'
 import { MegaMenu_ContextDefault } from './Sections/contextDefault'
 import type { PagesData } from '../getPagesData'
 import type { PostsData } from '../getPostsData'
+import type { LegalPagesData } from '../getLegalPagesData'
 import type { ContactSocial } from '@/payload-types'
 import type { CurrentPageInfo } from './types'
 import { buildMegaMenuCategories } from './registry'
@@ -13,13 +14,14 @@ import type { MegaMenuEntry } from './registry'
 interface Props {
   pages: PagesData[]
   posts: PostsData[]
+  legalPages: LegalPagesData[]
   currentPage: CurrentPageInfo
   contactSocials?: ContactSocial | null
   open: boolean
 }
 
-export const MegaMenuMain = ({ pages, posts, currentPage, contactSocials, open }: Props) => {
-  const categories = useMemo(() => buildMegaMenuCategories(pages, posts), [pages, posts])
+export const MegaMenuMain = ({ pages, posts, legalPages, currentPage, contactSocials, open }: Props) => {
+  const categories = useMemo(() => buildMegaMenuCategories(pages, posts, legalPages), [pages, posts, legalPages])
   const [activeCategory, setActiveCategory] = useState('pages')
   const [hoveredEntry, setHoveredEntry] = useState<MegaMenuEntry | null>(null)
   const [pinnedEntry, setPinnedEntry] = useState<MegaMenuEntry | null>(null)
@@ -54,7 +56,7 @@ export const MegaMenuMain = ({ pages, posts, currentPage, contactSocials, open }
               if (!(event.target instanceof Element) || !event.target.closest('button,a,input,select,textarea,[role="tab"]')) resetPreview()
             }}
           >
-            <div className="min-h-0 lg:h-[42%] lg:min-h-[220px] lg:max-h-[42%] lg:shrink-0 lg:overflow-y-auto lg:pr-2">
+            <div className="min-h-0 lg:h-[42%] lg:min-h-[220px] lg:max-h-[42%] lg:shrink-0 lg:overflow-hidden lg:pr-2">
               <MegaMenu_ContextPanel currentPage={currentPage} preview={previewEntry} />
             </div>
             <MegaMenu_PageIndex
