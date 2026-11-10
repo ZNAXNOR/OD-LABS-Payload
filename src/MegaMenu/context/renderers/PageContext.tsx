@@ -17,7 +17,7 @@ export const PageContext = ({ context, mode }: PageContextProps) => {
   return (
   <aside className="space-y-6">
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1"><span className="font-mono text-[10px] tracking-[0.16em] text-odl uppercase">[{mode === 'current' ? 'CURRENT' : 'PREVIEW'}]</span><ContextBreadcrumb items={context.href === '/' ? [{ label: 'Home' }] : [{ label: 'Home', href: '/' }, { label: context.title }]} /></div>
-    {(showSeoImage || showCssPreview) && <ContextImage image={showSeoImage ? context.seoImage : null} title={context.title} placeholder={showCssPreview} />
+    {(showSeoImage || showCssPreview) && <ContextImage image={showSeoImage ? context.seoImage : null} title={context.title} placeholder={showCssPreview} />}
 
     <section className="space-y-3">
       <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{context.title}</h2>
