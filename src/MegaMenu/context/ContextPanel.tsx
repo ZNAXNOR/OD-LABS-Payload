@@ -7,7 +7,6 @@ import type { CurrentPageInfo } from '../types'
 import type { MegaMenuEntry } from '../registry'
 import { ContextBreadcrumb } from './ContextBreadcrumb'
 import { ContextImage } from './ContextImage'
-import { MegaMenu_CurrentPage } from '../Sections/currentPage'
 
 interface ContextPanelProps {
   currentPage: CurrentPageInfo
@@ -15,19 +14,13 @@ interface ContextPanelProps {
 }
 
 export const MegaMenu_ContextPanel = ({ currentPage, preview }: ContextPanelProps) => {
-  if (!preview && currentPage.type === 'error') {
-    return <div className="min-h-0"><MegaMenu_CurrentPage page={currentPage} /></div>
-  }
-
   const isPreview = Boolean(preview)
   const title = preview?.title ?? currentPage.title
   const href = preview?.href ?? currentPage.href
   const description = preview?.description ?? currentPage.description
-  const image = preview
-    ? preview.image
-    : currentPage.type === 'page' || currentPage.type === 'post' || currentPage.type === 'legal'
-      ? currentPage.seoImage
-      : null
+  // The idle state describes the page in place. Only an actively previewed
+  // entry receives a visual preview, including the generated fallback tile.
+  const image = preview ? preview.image : null
   const sections = preview ? preview.sections : currentPage.type === 'page' ? currentPage.sections : []
   const publishedAt = preview ? preview.publishedAt : currentPage.type === 'post' ? currentPage.publishedAt : null
   const categories = preview ? preview.categories ?? [] : currentPage.type === 'post' ? currentPage.categories : []
@@ -51,17 +44,17 @@ export const MegaMenu_ContextPanel = ({ currentPage, preview }: ContextPanelProp
         </div>
       </div>
 
-      <div className={['grid min-w-0 grid-cols-1 gap-6 sm:gap-8', image ? 'sm:grid-cols-[minmax(180px,0.8fr)_minmax(0,1.7fr)]' : ''].join(' ')}>
-        {image && (
+      <div className={['grid min-w-0 grid-cols-1 gap-6 sm:gap-8', isPreview ? 'sm:grid-cols-[minmax(180px,0.8fr)_minmax(0,1.7fr)]' : ''].join(' ')}>
+        {isPreview && (
           <div className="min-w-0">
             <ContextImage image={image} title={title} compact />
           </div>
         )}
 
         <div className="flex min-w-0 flex-col items-start">
-          <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{title}</h2>
+          <h2 className="line-clamp-3 font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{title}</h2>
           {description && (
-            <p className="mt-2 max-w-3xl font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">{description}</p>
+            <p className="mt-2 line-clamp-2 max-w-3xl font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">{description}</p>
           )}
 
           <div className="mt-4 flex flex-wrap items-center gap-3">

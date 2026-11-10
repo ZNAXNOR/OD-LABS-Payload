@@ -8,7 +8,28 @@ interface ContextImageProps {
 }
 
 export const ContextImage = ({ image, title, compact = false }: ContextImageProps) => {
-  if (!image?.url) return null
+  if (!image?.url) {
+    return (
+      <div
+        aria-label={`Generated preview placeholder for ${title}`}
+        className="relative flex aspect-[4/3] min-h-44 w-full max-w-full flex-col justify-between overflow-hidden border border-zinc-800 bg-black p-4 sm:p-5"
+      >
+        <div className="flex items-center justify-between gap-3 font-mono text-[9px] tracking-[0.2em] text-zinc-500 uppercase">
+          <span>OD LABS</span>
+          <span>Preview / 00</span>
+        </div>
+        <div className="relative z-10">
+          <div className="mb-2 h-px w-8 bg-odl" />
+          <p className="line-clamp-4 font-mono text-base font-medium leading-snug tracking-tight text-white sm:text-lg">
+            {title}
+          </p>
+        </div>
+        <div aria-hidden="true" className="pointer-events-none absolute -bottom-10 -right-6 size-40 rounded-full border border-zinc-800/80" />
+        <div aria-hidden="true" className="pointer-events-none absolute -bottom-5 -right-1 size-28 rounded-full border border-zinc-800/60" />
+        <div className="font-mono text-[9px] tracking-widest text-zinc-600 uppercase">No preview image available</div>
+      </div>
+    )
+  }
 
   return (
     <div
