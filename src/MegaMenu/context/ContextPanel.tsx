@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import type { CurrentPageInfo } from '../types'
 import type { MegaMenuEntry } from '../registry'
 import { ContextBreadcrumb } from './ContextBreadcrumb'
-import { ContextImage } from './ContextImage'
+import { ContextImage } from '../PreviewTemplate/ContextImage'
 import { MegaMenu_CurrentPage } from '../Sections/currentPage'
 
 interface ContextPanelProps {

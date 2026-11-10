@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ArrowUpRight, Scale } from 'lucide-react'
 import type { LegalContextData } from '../../types'
 import { ContextBreadcrumb } from '../ContextBreadcrumb'
-import { ContextImage } from '../ContextImage'
+import { ContextImage } from '../../PreviewTemplate/ContextImage'
 
 export const LegalContext = ({
   context,

@@ -26,7 +26,7 @@ export const ContextImage = ({ image, title, compact = false }: ContextImageProp
         </div>
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-10 -right-6 size-40 rounded-full border border-zinc-800/80" />
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-5 -right-1 size-28 rounded-full border border-zinc-800/60" />
-        <div className="font-mono text-[9px] tracking-widest text-zinc-600 uppercase">No preview image available</div>
+        <div className="font-mono text-[9px] tracking-widest text-zinc-600 uppercase"></div>
       </div>
     )
   }
