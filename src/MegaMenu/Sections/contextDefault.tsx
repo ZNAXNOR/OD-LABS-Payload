@@ -4,21 +4,10 @@ import { useEffect, useState } from 'react'
 import { ServiceStatus } from '@/components/ServiceStatus'
 import { ContactActions } from '@/components/Contact/ContactActions'
 import { SocialLinks } from '@/components/Contact/SocialLinks'
+import { ReportIssue } from '@/components/ReportIssue'
 import { formatContactActions, formatSocialLinks } from '@/components/Contact/utils'
+import { formatZonedDate, formatZonedTime, useZonedClock } from '@/hooks/useZonedClock'
 import type { ContactSocial } from '@/payload-types'
-
-const Time_Zone = 'Asia/Kolkata'
-const Locale = 'en-IN'
-
-const formatTime = (date: Date) =>
-  new Intl.DateTimeFormat(Locale, {
-    timeZone: Time_Zone, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true,
-  }).format(date)
-
-const formatDate = (date: Date) =>
-  new Intl.DateTimeFormat(Locale, {
-    timeZone: Time_Zone, weekday: 'long', year: 'numeric', month: 'long', day: '2-digit',
-  }).format(date)
 
 export const MegaMenu_ContextDefault = ({
   contactSocials: initialContactSocials,
@@ -27,7 +16,7 @@ export const MegaMenu_ContextDefault = ({
   contactSocials?: ContactSocial | null
   active: boolean
 }) => {
-  const [now, setNow] = useState<Date | null>(null)
+  const { now } = useZonedClock({ enabled: active, intervalMs: 1000 })
   const [contactSocials, setContactSocials] = useState<ContactSocial | null | undefined>(initialContactSocials)
 
   useEffect(() => {
@@ -43,14 +32,6 @@ export const MegaMenu_ContextDefault = ({
     return () => { cancelled = true }
   }, [initialContactSocials])
 
-  useEffect(() => {
-    if (!active) return
-    const updateTime = () => setNow(new Date())
-    updateTime()
-    const interval = setInterval(updateTime, 1000)
-    return () => clearInterval(interval)
-  }, [active])
-
   const contactActions = formatContactActions(contactSocials?.contactActions)
   const socialLinks = formatSocialLinks(contactSocials?.socialLinks)
 
@@ -59,11 +40,11 @@ export const MegaMenu_ContextDefault = ({
       <div className="space-y-8">
         <section className="space-y-4">
           <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">Local time</div>
-          <div className="font-mono text-3xl font-semibold tracking-tight text-white tabular-nums sm:text-4xl" aria-live="off">
-            {now ? formatTime(now) : '--:--:-- --'}<span className="hidden text-white sm:inline"> IST</span>
+          <div className="font-mono text-2xl font-semibold tracking-tight text-white tabular-nums sm:text-3xl" aria-live="off">
+            {now ? formatZonedTime(now, { second: '2-digit' }) : '--:--:-- --'}<span className="hidden text-white sm:inline"> IST</span>
           </div>
           <div className="font-mono text-xs tracking-wide text-zinc-300" aria-live="off">
-            {now ? formatDate(now) : 'Loading date...'}
+            {now ? formatZonedDate(now) : 'Loading date...'}
           </div>
           <div className="font-mono text-xs text-zinc-500">Asia / Kolkata (UTC +05:30)</div>
         </section>
@@ -84,7 +65,10 @@ export const MegaMenu_ContextDefault = ({
             )}
           </div>
         )}
-        <ServiceStatus variant="block" />
+        <div className="space-y-4">
+          <ReportIssue variant="link" label="Report a bug" className="text-xs text-zinc-400" />
+          <ServiceStatus variant="block" />
+        </div>
       </div>
     </aside>
   )
