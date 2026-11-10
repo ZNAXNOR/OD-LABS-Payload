@@ -112,6 +112,8 @@ export function resolveCurrentPage({
       href: page.href,
       description: page.description || 'Published OD LABS page.',
       seoImage: page.seoImage,
+      showSeoImageInMegaMenu: page.showSeoImageInMegaMenu,
+      showCssPreviewInMegaMenu: page.showCssPreviewInMegaMenu,
       sections: page.sections,
     }
   }
