@@ -258,6 +258,14 @@ export interface Page {
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
     image?: (number | null) | Media;
+    /**
+     * Display this document’s SEO image in the Megamenu preview.
+     */
+    showSeoImageInMegaMenu?: boolean | null;
+    /**
+     * Display the generated OD LABS preview when the SEO image preview is disabled.
+     */
+    showCssPreviewInMegaMenu?: boolean | null;
     description?: string | null;
     /**
      * Exclude this page from the OD LABS AI knowledgebase. This setting does not control search-engine indexing.
@@ -425,6 +433,14 @@ export interface Post {
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
     image?: (number | null) | Media;
+    /**
+     * Display this document’s SEO image in the Megamenu preview.
+     */
+    showSeoImageInMegaMenu?: boolean | null;
+    /**
+     * Display the generated OD LABS preview when the SEO image preview is disabled.
+     */
+    showCssPreviewInMegaMenu?: boolean | null;
     description?: string | null;
     /**
      * Exclude this post from the OD LABS AI knowledgebase while keeping it published on the website.
@@ -1310,6 +1326,14 @@ export interface LegalPage {
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
     image?: (number | null) | Media;
+    /**
+     * Display this document’s SEO image in the Megamenu preview.
+     */
+    showSeoImageInMegaMenu?: boolean | null;
+    /**
+     * Display the generated OD LABS preview when the SEO image preview is disabled.
+     */
+    showCssPreviewInMegaMenu?: boolean | null;
     description?: string | null;
     /**
      * Exclude this page from search engines and the OD LABS AI knowledgebase
@@ -1975,6 +1999,8 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         title?: T;
         image?: T;
+        showSeoImageInMegaMenu?: T;
+        showCssPreviewInMegaMenu?: T;
         description?: T;
         excludeFromIndex?: T;
       };
@@ -2144,6 +2170,8 @@ export interface PostsSelect<T extends boolean = true> {
     | {
         title?: T;
         image?: T;
+        showSeoImageInMegaMenu?: T;
+        showCssPreviewInMegaMenu?: T;
         description?: T;
         excludeFromIndex?: T;
       };
@@ -2199,6 +2227,8 @@ export interface LegalPagesSelect<T extends boolean = true> {
     | {
         title?: T;
         image?: T;
+        showSeoImageInMegaMenu?: T;
+        showCssPreviewInMegaMenu?: T;
         description?: T;
         excludeFromIndex?: T;
       };

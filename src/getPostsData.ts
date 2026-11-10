@@ -1,36 +1,46 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import type { Media } from '@/payload-types'
+import { getPopulatedMedia } from '@/utilities/getPopulatedMedia'
+
+export interface RelatedPostData {
+  title: string
+  href: string
+}
 
 export interface PostsData {
   title: string
   slug: string
   href: string
-  description?: string
-  metaTitle?: string | null
-  metaDescription?: string | null
+  description: string
+  metaTitle: string | null
+  metaDescription: string | null
+  seoImage: Media | null
+  showSeoImageInMegaMenu: boolean
+  showCssPreviewInMegaMenu: boolean
+  publishedAt: string | null
+  categories: string[]
+  relatedPosts: RelatedPostData[]
 }
 
-/**
- * Returns published posts with their title and SEO metadata for site navigation and MegaMenu.
- */
+/** Fetches only published post metadata required by the site navigation and Megamenu. */
 export const getPostsData = async (): Promise<PostsData[]> => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
+  const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
     collection: 'posts',
-    where: {
-      _status: { equals: 'published' },
-    },
+    where: { _status: { equals: 'published' } },
     sort: '-publishedAt',
-    depth: 0,
-    limit: 100,
+    depth: 1,
+    limit: 12,
     pagination: false,
     select: {
       title: true,
       slug: true,
-      meta: true,
+      meta: { title: true, image: true, description: true, showSeoImageInMegaMenu: true, showCssPreviewInMegaMenu: true },
+      publishedAt: true,
+      categories: true,
+      relatedPosts: true,
     },
   })
 
@@ -41,5 +51,17 @@ export const getPostsData = async (): Promise<PostsData[]> => {
     description: post.meta?.description || '',
     metaTitle: post.meta?.title || null,
     metaDescription: post.meta?.description || null,
+    seoImage: getPopulatedMedia(post.meta?.image),
+    showSeoImageInMegaMenu: post.meta?.showSeoImageInMegaMenu ?? true,
+    showCssPreviewInMegaMenu: post.meta?.showCssPreviewInMegaMenu ?? true,
+    publishedAt: post.publishedAt || null,
+    categories: (post.categories ?? []).flatMap((category) =>
+      typeof category === 'object' && category !== null ? [category.title] : [],
+    ),
+    relatedPosts: (post.relatedPosts ?? []).flatMap((relatedPost) =>
+      typeof relatedPost === 'object' && relatedPost !== null && relatedPost.slug
+        ? [{ title: relatedPost.title, href: `/posts/${relatedPost.slug}` }]
+        : [],
+    ),
   }))
 }
