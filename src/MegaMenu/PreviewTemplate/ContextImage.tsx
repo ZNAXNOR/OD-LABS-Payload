@@ -15,7 +15,7 @@ export const ContextImage = ({ image, title, compact = false, placeholder = true
       <div
         aria-label={`Generated preview placeholder for ${title}`}
         onDragStart={(event) => event.preventDefault()}
-        className="relative flex aspect-[1200/630] w-full max-w-full select-none flex-col justify-between overflow-hidden border border-zinc-800 bg-black p-4 sm:p-5"
+        className="relative flex aspect-[1200/630] max-h-72 w-full max-w-full select-none flex-col justify-between overflow-hidden border border-zinc-800 bg-black p-4 sm:p-5"
       >
         <div className="flex items-center justify-between gap-3 font-mono text-[9px] tracking-[0.2em] text-zinc-500 uppercase">
           <span>OD LABS</span><span>Preview / 00</span>

@@ -1978,6 +1978,8 @@ export interface PagesSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        showSeoImageInMegaMenu?: T;
+        showCssPreviewInMegaMenu?: T;
         excludeFromIndex?: T;
       };
   publishedAt?: T;
@@ -2147,6 +2149,8 @@ export interface PostsSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        showSeoImageInMegaMenu?: T;
+        showCssPreviewInMegaMenu?: T;
         excludeFromIndex?: T;
       };
   publishedAt?: T;
@@ -2202,6 +2206,8 @@ export interface LegalPagesSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        showSeoImageInMegaMenu?: T;
+        showCssPreviewInMegaMenu?: T;
         excludeFromIndex?: T;
       };
   generateSlug?: T;

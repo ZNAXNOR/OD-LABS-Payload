@@ -12,13 +12,10 @@ interface PageContextProps {
 
 export const PageContext = ({ context, mode }: PageContextProps) => (
   <aside className="space-y-6">
-    <ContextBreadcrumb items={context.href === '/' ? [{ label: 'Home' }] : [{ label: 'Home', href: '/' }, { label: context.title }]} />
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1"><span className="font-mono text-[10px] tracking-[0.16em] text-odl uppercase">[{mode === 'current' ? 'CURRENT' : 'PREVIEW'}]</span><ContextBreadcrumb items={context.href === '/' ? [{ label: 'Home' }] : [{ label: 'Home', href: '/' }, { label: context.title }]} /></div>
     <ContextImage image={context.seoImage} title={context.title} />
 
     <section className="space-y-3">
-      <div className="font-mono text-[11px] tracking-widest text-odl uppercase">
-        {mode === 'current' ? 'Current Page' : 'Page Preview'} // {context.title}
-      </div>
       <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{context.title}</h2>
       {context.description && (
         <p className="max-w-2xl font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">{context.description}</p>

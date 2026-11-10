@@ -56,7 +56,7 @@ export const MegaMenuMain = ({ pages, posts, legalPages, currentPage, contactSoc
               if (!(event.target instanceof Element) || !event.target.closest('button,a,input,select,textarea,[role="tab"]')) resetPreview()
             }}
           >
-            <div className="min-h-0 lg:h-[42%] lg:min-h-[220px] lg:max-h-[42%] lg:shrink-0 lg:overflow-hidden lg:pr-2">
+            <div className="min-h-0 lg:flex-[0_1_55%] lg:min-h-0 lg:max-h-[55%] lg:overflow-hidden lg:pr-2">
               <MegaMenu_ContextPanel currentPage={currentPage} preview={previewEntry} />
             </div>
             <MegaMenu_PageIndex
