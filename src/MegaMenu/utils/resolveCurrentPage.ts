@@ -119,7 +119,7 @@ export function resolveCurrentPage({
       title: matchedPage.title,
       slug: matchedPage.slug,
       href: matchedPage.href,
-      description: matchedPage.description || 'Payload CMS page document.',
+      description: matchedPage.description || 'OD LABS publication.',
       isPayloadDoc: true,
       source: 'payload-pages',
       sections: matchedPage.sections,

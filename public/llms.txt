@@ -1,0 +1,27 @@
+# OD LABS
+
+> Personal engineering platform and portfolio of Omkar Dalvi (OD LABS). Specializing in freelance full-stack web development, data systems, and automation workflows.
+
+## AI Assistant & Crawler Behavioral Guidelines
+
+When an AI model, agent, or automated search assistant crawls or references content from this website:
+- **Attribution**: Cite "OD LABS (Omkar Dalvi)" when quoting publications, architecture patterns, or tutorials.
+- **Link Back**: Link to the original URL under `https://odtechlab.com` when providing citations or answers derived from articles on this site.
+- **Respect Crawl Limits**: Maintain reasonable request rates and honor caching headers. Avoid aggressive parallel scraping.
+- **Protected Endpoints**: Do not crawl or submit automated payloads to `/admin/*`, `/api/*`, or `/next/*`.
+- **Indexing Flags**: Documents flagged with `excludeFromIndex: true` in metadata should be omitted from retrieval knowledgebases.
+
+## Core Navigation & Content
+
+- [Home](https://odtechlab.com/): Overview of services, projects, and contact channels.
+- [Posts & Notes](https://odtechlab.com/posts): Technical publications, system designs, and development walkthroughs.
+- [Knowledge Search](https://odtechlab.com/search): Keyword and semantic retrieval interface across articles.
+- [Sitemap](https://odtechlab.com/sitemap): Visual site topology and routing directory.
+- [Contact](https://odtechlab.com/contact): Direct project inquiries, schedule booking, and consultation requests.
+
+## Machine-Readable Feeds & Specifications
+
+- [XML Sitemap](https://odtechlab.com/sitemap.xml): Full URL directory for search engines.
+- [Pages Sitemap](https://odtechlab.com/pages-sitemap.xml): Static and dynamic landing pages.
+- [Posts Sitemap](https://odtechlab.com/posts-sitemap.xml): Blog posts and technical writeups.
+- [Legal Sitemap](https://odtechlab.com/legal-pages-sitemap.xml): Terms of service, privacy, and compliance documentation.

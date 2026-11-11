@@ -3,6 +3,8 @@ node_modules
 .git
 .github
 tests
+playwright-report
+test-results
 graphify-out
 .env
 .env*.local

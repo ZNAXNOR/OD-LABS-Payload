@@ -397,17 +397,9 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Source Code',
+              label: 'GitHub',
               newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/3.x/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
+              url: 'https://github.com/ZNAXNOR/OD-LABS-Payload',
             },
           },
         ],

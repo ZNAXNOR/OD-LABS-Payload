@@ -7,10 +7,16 @@ cmds = [
   "npm install -g pnpm@12.16.1 && mkdir -p /usr/local/bin && ln -sf $(npm config get prefix)/bin/pnpm /usr/local/bin/pnpm && ln -sf $(npm config get prefix)/bin/pnpm /usr/bin/pnpm",
   "pnpm i --frozen-lockfile"
 ]
+cacheDirectories = [
+  "/root/.local/share/pnpm/store"
+]
 
 [phases.build]
 cmds = [
   "pnpm run build"
+]
+cacheDirectories = [
+  ".next/cache"
 ]
 
 [start]

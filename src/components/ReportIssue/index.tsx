@@ -74,25 +74,12 @@ export const ReportIssue: React.FC<ReportIssueProps> = ({
       aria-label="Report an issue on GitHub (opens in a new tab)"
       suppressHydrationWarning
       className={cn(
-        'group inline-flex items-center gap-1 font-mono transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl',
+        'group flex cursor-pointer items-center gap-1.5 border border-transparent px-3 py-2 font-mono text-xs transition-all duration-300 ease-in-out hover:border-odl hover:bg-zinc-950 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl',
         className,
       )}
     >
-      <span
-        aria-hidden="true"
-        className="text-odl opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-      >
-        {'['}
-      </span>
-      <span className="transition-colors group-hover:text-white">
-        {displayLabel}
-      </span>
-      <span
-        aria-hidden="true"
-        className="text-odl opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-      >
-        {']'}
-      </span>
+      <Bug className="h-3 w-3 text-odl shrink-0 transition-transform duration-200 group-hover:scale-110" aria-hidden="true" />
+      <span>{displayLabel}</span>
       <span
         aria-hidden="true"
         className="text-zinc-500 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-white"

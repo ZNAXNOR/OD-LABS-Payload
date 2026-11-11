@@ -1,27 +1,16 @@
-# Payload Website Template
+# OD LABS
 
-This is the official [Payload Website Template](https://github.com/payloadcms/payload/blob/3.x/templates/website). Use it to power websites, blogs, or portfolios from small to enterprise. This repo includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website.
+Personal platform, engineering portfolio, and content publishing system for **Omkar Dalvi** (OD LABS). Built with Next.js 15, Payload CMS 3.x, Tailwind CSS, PostgreSQL with pgvector semantic search, and self-hosted on Dokploy via Nixpacks.
 
-This template is right for you if you are working on:
+## Capabilities & Stack
 
-- A personal or enterprise-grade website, blog, or portfolio
-- A content publishing platform with a fully featured publication workflow
-- Exploring the capabilities of Payload
-
-Core features:
-
-- [Pre-configured Payload Config](#how-it-works)
-- [Authentication](#users-authentication)
-- [Access Control](#access-control)
-- [Layout Builder](#layout-builder)
-- [Draft Preview](#draft-preview)
-- [Live Preview](#live-preview)
-- [On-demand Revalidation](#on-demand-revalidation)
-- [SEO](#seo)
-- [Search](#search)
-- [Redirects](#redirects)
-- [Jobs and Scheduled Publishing](#jobs-and-scheduled-publish)
-- [Website](#website)
+- **Frontend**: Next.js 15 App Router, React 19, Tailwind CSS, Geist Mono/Sans
+- **Backend / CMS**: Payload CMS 3.x with Lexical RichText
+- **Database & Search**: PostgreSQL with `pgvector` for semantic document retrieval
+- **Email**: Resend adapter with transactional templates
+- **Monitoring**: Sentry for real-time exception capture and performance telemetry
+- **Analytics**: Google Analytics (GA4) via `@next/third-parties/google`
+- **Deployment**: Dokploy on an Oracle Cloud VPS with Nixpacks incremental caching
 
 ## Quick Start
 
