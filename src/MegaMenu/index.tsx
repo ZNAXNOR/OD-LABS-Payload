@@ -1,82 +1,64 @@
 'use client'
-
+import { useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { MegaMenuHeader } from './Nav/header'
 import { MegaMenuFooter } from './Nav/footer'
-import { useEffect } from 'react'
 import { MegaMenuMain } from './main'
-import { usePathname } from 'next/navigation'
-
+import { useCurrentPost } from './hooks/useCurrentPost'
 import { resolveCurrentPage } from './utils/resolveCurrentPage'
-
 import type { PagesData } from '../getPagesData'
 import type { LegalPagesData } from '../getLegalPagesData'
+import type { PostsData } from '../getPostsData'
 import type { ContactSocial } from '@/payload-types'
+import type { MegaMenuRuntimeError } from '@/providers/MegaMenu'
 
-interface MegaMenuProps {
+interface Props {
   open: boolean
   onClose: () => void
   pages: PagesData[]
   legalPages: LegalPagesData[]
+  posts?: PostsData[]
   contactSocials?: ContactSocial | null
+  runtimeError?: MegaMenuRuntimeError | null
 }
 
-export const MegaMenu = ({
-  open,
-  onClose,
-  pages,
-  legalPages,
-  contactSocials,
-}: MegaMenuProps) => {
+export const MegaMenu = ({ open, onClose, pages, legalPages, posts = [], contactSocials, runtimeError }: Props) => {
   const pathname = usePathname()
-  const currentPage = resolveCurrentPage({ pathname, pages, legalPages })
+  const previousPathname = useRef(pathname)
+  const activePost = useCurrentPost(pathname, posts, open)
 
   useEffect(() => {
-    if (!open) return
-
-    const handleESC = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose()
-      }
+    if (previousPathname.current !== pathname) {
+      previousPathname.current = pathname
+      if (open) onClose()
     }
+  }, [pathname, open, onClose])
 
-    document.addEventListener('keydown', handleESC)
-
-    return () => document.removeEventListener('keydown', handleESC)
-  }, [open, onClose])
-
-  useEffect(() => {
-    if (!open) return
-
-    // Disable scroll on body when the mega menu opens.
-    const originalStyle = document.body.style.overflow
-
-    document.body.style.overflow = 'hidden'
-
-    return () => {
-      document.body.style.overflow = originalStyle
-    }
-  }, [open])
+  const currentPage = resolveCurrentPage({ pathname, pages, legalPages, posts, activePost, runtimeError })
 
   return (
-    <div
-      className={[
-        'fixed inset-0 z-50 bg-[#0A0A0A]',
-        'flex flex-col',
-        'transition-opacity duration-300',
-        open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
-      ].join(' ')}
-      aria-hidden={!open}
-      aria-modal="true"
-    >
-      <MegaMenuHeader onClose={onClose} />
-
-      <MegaMenuMain
-        pages={pages}
-        currentPage={currentPage}
-        contactSocials={contactSocials}
-      />
-
-      <MegaMenuFooter legalPages={legalPages} />
-    </div>
+    <Dialog open={open} onOpenChange={(nextOpen) => { if (!nextOpen) onClose() }}>
+      <DialogContent
+        showCloseButton={false}
+        overlayClassName="!animate-none transition-opacity duration-300 data-[state=open]:opacity-100 data-[state=closed]:opacity-0"
+        onClick={(event) => {
+          if (event.defaultPrevented || !(event.target instanceof Element)) return
+          const link = event.target.closest<HTMLAnchorElement>('a[href]')
+          if (!link || link.target === '_blank') return
+          const destination = new URL(link.href, window.location.href)
+          if (destination.origin === window.location.origin) onClose()
+        }}
+        className="fixed inset-0 left-0 top-0 block h-dvh w-screen max-w-none translate-x-0 translate-y-0 gap-0 overflow-hidden rounded-none border-0 bg-[#0A0A0A] p-0 text-white shadow-none !animate-none transition-opacity duration-300 data-[state=open]:opacity-100 data-[state=closed]:opacity-0 sm:rounded-none"
+      >
+        <DialogTitle className="sr-only">OD LABS navigation</DialogTitle>
+        <DialogDescription className="sr-only">Primary site navigation and contextual information for the current route.</DialogDescription>
+        <div className="flex h-full min-h-0 flex-col">
+          <MegaMenuHeader onClose={onClose} />
+          <MegaMenuMain pages={pages} posts={posts} legalPages={legalPages} currentPage={currentPage} contactSocials={contactSocials} open={open} />
+          <MegaMenuFooter legalPages={legalPages} />
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }

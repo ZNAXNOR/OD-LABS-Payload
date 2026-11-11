@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Bug } from 'lucide-react'
+import { Bug, SquareArrowOutUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getGitHubIssueUrl } from '@/utilities/getGitHubIssueUrl'
 import { cn } from '@/utilities/ui'
@@ -60,7 +60,7 @@ export const ReportIssue: React.FC<ReportIssueProps> = ({
         >
           <Bug className="size-4 shrink-0 text-odl" aria-hidden="true" />
           <span>{displayLabel}</span>
-          <span aria-hidden="true" className="text-zinc-500">↗</span>
+          <SquareArrowOutUpRight aria-hidden="true" className="size-3.5 text-zinc-500" />
         </a>
       </Button>
     )

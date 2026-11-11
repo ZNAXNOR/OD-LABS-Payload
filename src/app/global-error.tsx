@@ -2,6 +2,7 @@
 
 import * as Sentry from '@sentry/nextjs'
 import React, { useEffect } from 'react'
+import { SquareArrowOutUpRight } from 'lucide-react'
 import { getGitHubIssueUrl } from '@/utilities/getGitHubIssueUrl'
 
 export default function GlobalError({
@@ -247,7 +248,7 @@ export default function GlobalError({
               }}
             >
               <span>Report Issue</span>
-              <span style={{ color: '#71717a' }}>↗</span>
+              <SquareArrowOutUpRight aria-hidden="true" size={14} style={{ color: '#71717a' }} />
             </a>
 
             <a
@@ -262,7 +263,7 @@ export default function GlobalError({
                 textDecoration: 'none',
               }}
             >
-              System Status ↗
+              System Status <SquareArrowOutUpRight aria-hidden="true" size={12} style={{ display: 'inline', marginLeft: 4 }} />
             </a>
           </div>
         </div>
