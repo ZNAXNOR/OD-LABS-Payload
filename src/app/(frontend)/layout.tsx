@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import Script from 'next/script'
 
 import { cn } from '@/utilities/ui'
@@ -22,6 +23,7 @@ import { getPagesData } from '@/getPagesData'
 import { getLegalPagesData } from '@/getLegalPagesData'
 import { getPostsData } from '@/getPostsData'
 import { getContactSocials } from '@/utilities/getContactSocials'
+import { resolveTwitterHandle } from '@/utilities/resolveTwitterHandle'
 
 export default async function RootLayout({
   children,
@@ -59,6 +61,8 @@ export default async function RootLayout({
     console.error('Failed to fetch contact socials:', error)
   }
 
+  const gaId = process.env.NEXT_PUBLIC_GA_ID
+
   return (
     <html
       className={cn(GeistSans.variable, GeistMono.variable)}
@@ -69,6 +73,7 @@ export default async function RootLayout({
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
       </head>
       <body>
         <Providers>
@@ -96,16 +101,28 @@ export default async function RootLayout({
             {children}
           </LayoutClient>
         </Providers>
+        {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
       </body>
     </html>
   )
 }
 
-export const metadata: Metadata = {
-  metadataBase: new URL(getServerSideURL()),
-  openGraph: mergeOpenGraph(),
-  twitter: {
-    card: 'summary_large_image',
-    creator: '@payloadcms',
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  let contactSocials = null
+  try {
+    contactSocials = await getContactSocials()
+  } catch {
+    // Contact socials unavailable during build or error fallback
+  }
+
+  const twitterCreator = resolveTwitterHandle(contactSocials)
+
+  return {
+    metadataBase: new URL(getServerSideURL()),
+    openGraph: mergeOpenGraph(),
+    twitter: {
+      card: 'summary_large_image',
+      creator: twitterCreator,
+    },
+  }
 }

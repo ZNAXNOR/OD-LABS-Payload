@@ -1,12 +1,61 @@
 # *
 User-agent: *
+Allow: /
 Disallow: /admin/*
+Disallow: /api/*
+Disallow: /next/*
+
+# AI Bots Directives
+User-agent: GPTBot
+Allow: /
+Allow: /posts/*
+Allow: /legal/*
+Allow: /llms.txt
+Disallow: /admin/*
+Disallow: /api/*
+Disallow: /next/*
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /posts/*
+Allow: /legal/*
+Allow: /llms.txt
+Disallow: /admin/*
+Disallow: /api/*
+Disallow: /next/*
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /posts/*
+Allow: /legal/*
+Allow: /llms.txt
+Disallow: /admin/*
+Disallow: /api/*
+Disallow: /next/*
+
+User-agent: Applebot-Extended
+Allow: /
+Allow: /posts/*
+Allow: /legal/*
+Allow: /llms.txt
+Disallow: /admin/*
+Disallow: /api/*
+Disallow: /next/*
+
+User-agent: Google-Extended
+Allow: /
+Allow: /posts/*
+Allow: /legal/*
+Allow: /llms.txt
+Disallow: /admin/*
+Disallow: /api/*
+Disallow: /next/*
 
 # Host
-Host: http://localhost:3000
+Host: https://odtechlab.com
 
 # Sitemaps
-Sitemap: http://localhost:3000/sitemap.xml
-Sitemap: http://localhost:3000/pages-sitemap.xml
-Sitemap: http://localhost:3000/posts-sitemap.xml
-Sitemap: http://localhost:3000/legal-pages-sitemap.xml
+Sitemap: https://odtechlab.com/sitemap.xml
+Sitemap: https://odtechlab.com/pages-sitemap.xml
+Sitemap: https://odtechlab.com/posts-sitemap.xml
+Sitemap: https://odtechlab.com/legal-pages-sitemap.xml
