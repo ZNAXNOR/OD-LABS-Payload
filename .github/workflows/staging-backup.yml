@@ -28,6 +28,11 @@ jobs:
       AWS_EC2_METADATA_DISABLED: "true"
 
     steps:
+      - name: Check out staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: staging
+
       - name: Validate required secrets
         shell: bash
         run: |
@@ -44,11 +49,6 @@ jobs:
               exit 1
             fi
           done
-
-      - name: Check out staging branch
-        uses: actions/checkout@v4
-        with:
-          ref: staging
 
       - name: Install PostgreSQL 18 client, AWS CLI, and boto3
         shell: bash
