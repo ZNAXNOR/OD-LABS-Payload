@@ -32,34 +32,26 @@ export default async function RootLayout({
 }) {
   const { isEnabled } = await draftMode()
 
-  let pagesData
-  let legalPagesData
-  let postsData
-  let contactSocials
-
-  try {
-    pagesData = await getPagesData()
-  } catch (error) {
-    console.error('Failed to fetch pages data:', error)
-  }
-
-  try {
-    legalPagesData = await getLegalPagesData()
-  } catch (error) {
-    console.error('Failed to fetch published legal pages:', error)
-  }
-
-  try {
-    postsData = await getPostsData()
-  } catch (error) {
-    console.error('Failed to fetch published posts:', error)
-  }
-
-  try {
-    contactSocials = await getContactSocials()
-  } catch (error) {
-    console.error('Failed to fetch contact socials:', error)
-  }
+  // These independent reads should run concurrently. Sequential reads here delay
+  // the entire frontend layout, including the page's primary content.
+  const [pagesData, legalPagesData, postsData, contactSocials] = await Promise.all([
+    getPagesData().catch((error) => {
+      console.error('Failed to fetch pages data:', error)
+      return undefined
+    }),
+    getLegalPagesData().catch((error) => {
+      console.error('Failed to fetch published legal pages:', error)
+      return undefined
+    }),
+    getPostsData().catch((error) => {
+      console.error('Failed to fetch published posts:', error)
+      return undefined
+    }),
+    getContactSocials().catch((error) => {
+      console.error('Failed to fetch contact socials:', error)
+      return null
+    }),
+  ])
 
   const gaId = process.env.NEXT_PUBLIC_GA_ID
 
