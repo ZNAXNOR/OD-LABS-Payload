@@ -158,7 +158,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          pg_restore --verbose --clean --if-exists --no-owner --no-acl \
+          pg_restore --verbose --clean --if-exists --no-owner --no-acl --single-transaction \\
             --exit-on-error --dbname="$STAGING_DATABASE_URL" restore-work/database.dump
 
       - name: Verify restored staging database contains application data
