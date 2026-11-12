@@ -140,7 +140,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "Refreshing the backup database mirror from the verified staging dump."
-          pg_restore --verbose --clean --if-exists --no-owner --no-acl --single-transaction \\
+          pg_restore --verbose --clean --if-exists --no-owner --no-acl --single-transaction \
             --exit-on-error --dbname="$BACKUP_DATABASE_URL" backup-work/database.dump
 
           psql "$BACKUP_DATABASE_URL" -v ON_ERROR_STOP=1 -X -q -c "
