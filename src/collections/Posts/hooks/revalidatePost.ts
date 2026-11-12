@@ -1,8 +1,17 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
-
 import { revalidatePath, revalidateTag } from 'next/cache'
-
 import type { Post } from '../../../payload-types'
+import { CACHE_TAGS } from '../../../utilities/cacheTags'
+
+const getPostPath = (slug?: string | null) => `/posts/${slug}`
+
+const revalidatePostCaches = () => {
+  revalidateTag(CACHE_TAGS.posts, { expire: 0 })
+  revalidateTag(CACHE_TAGS.postsNavigation, { expire: 0 })
+  revalidateTag('posts-sitemap', { expire: 0 })
+  revalidatePath('/posts')
+  revalidatePath('/sitemap')
+}
 
 export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   doc,
@@ -10,37 +19,39 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
-    if (doc._status === 'published') {
-      const path = `/posts/${doc.slug}`
+    const wasPublished = previousDoc?._status === 'published'
+    const isPublished = doc._status === 'published'
+    const slugChanged = Boolean(
+      wasPublished && previousDoc?.slug && previousDoc.slug !== doc.slug,
+    )
 
-      payload.logger.info(`Revalidating post at path: ${path}`)
+    if (isPublished || wasPublished) {
+      if (isPublished) {
+        const currentPath = getPostPath(doc.slug)
+        payload.logger.info(`Revalidating post at path: ${currentPath}`)
+        revalidatePath(currentPath)
+      }
 
-      revalidatePath(path)
-      revalidatePath('/sitemap')
-      revalidateTag('posts-sitemap', 'max')
-    }
+      if (wasPublished && (slugChanged || !isPublished)) {
+        const previousPath = getPostPath(previousDoc?.slug)
+        payload.logger.info(`Revalidating previous post path: ${previousPath}`)
+        revalidatePath(previousPath)
+      }
 
-    // If the post was previously published, we need to revalidate the old path
-    if (previousDoc._status === 'published' && doc._status !== 'published') {
-      const oldPath = `/posts/${previousDoc.slug}`
-
-      payload.logger.info(`Revalidating old post at path: ${oldPath}`)
-
-      revalidatePath(oldPath)
-      revalidatePath('/sitemap')
-      revalidateTag('posts-sitemap', 'max')
+      revalidatePostCaches()
     }
   }
+
   return doc
 }
 
-export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { context } }) => {
+export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({
+  doc,
+  req: { context },
+}) => {
   if (!context.disableRevalidate) {
-    const path = `/posts/${doc?.slug}`
-
-    revalidatePath(path)
-    revalidatePath('/sitemap')
-    revalidateTag('posts-sitemap', 'max')
+    revalidatePath(getPostPath(doc.slug))
+    revalidatePostCaches()
   }
 
   return doc
