@@ -30,3 +30,6 @@ tsconfig.tsbuildinfo
 
 # Graphify
 graphify-out/
+
+# Lighthouse CI reports
+.lighthouseci/
