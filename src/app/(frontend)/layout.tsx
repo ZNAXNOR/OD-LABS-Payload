@@ -32,33 +32,36 @@ export default async function RootLayout({
 }) {
   const { isEnabled } = await draftMode()
 
-  let pagesData
-  let legalPagesData
-  let postsData
-  let contactSocials
+  // These datasets are independent; fetch them concurrently instead of
+  // serially extending the critical path for every page request.
+  const [pagesResult, legalPagesResult, postsResult, socialsResult] =
+    await Promise.allSettled([
+      getPagesData(),
+      getLegalPagesData(),
+      getPostsData(),
+      getContactSocials(),
+    ])
 
-  try {
-    pagesData = await getPagesData()
-  } catch (error) {
-    console.error('Failed to fetch pages data:', error)
+  const pagesData =
+    pagesResult.status === 'fulfilled' ? pagesResult.value : undefined
+  const legalPagesData =
+    legalPagesResult.status === 'fulfilled' ? legalPagesResult.value : undefined
+  const postsData =
+    postsResult.status === 'fulfilled' ? postsResult.value : undefined
+  const contactSocials =
+    socialsResult.status === 'fulfilled' ? socialsResult.value : undefined
+
+  if (pagesResult.status === 'rejected') {
+    console.error('Failed to fetch pages data:', pagesResult.reason)
   }
-
-  try {
-    legalPagesData = await getLegalPagesData()
-  } catch (error) {
-    console.error('Failed to fetch published legal pages:', error)
+  if (legalPagesResult.status === 'rejected') {
+    console.error('Failed to fetch published legal pages:', legalPagesResult.reason)
   }
-
-  try {
-    postsData = await getPostsData()
-  } catch (error) {
-    console.error('Failed to fetch published posts:', error)
+  if (postsResult.status === 'rejected') {
+    console.error('Failed to fetch published posts:', postsResult.reason)
   }
-
-  try {
-    contactSocials = await getContactSocials()
-  } catch (error) {
-    console.error('Failed to fetch contact socials:', error)
+  if (socialsResult.status === 'rejected') {
+    console.error('Failed to fetch contact socials:', socialsResult.reason)
   }
 
   const gaId = process.env.NEXT_PUBLIC_GA_ID
