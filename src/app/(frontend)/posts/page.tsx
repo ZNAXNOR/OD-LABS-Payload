@@ -4,28 +4,40 @@ import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
 import configPromise from '@payload-config'
+import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
+import { CACHE_TAGS } from '@/utilities/cacheTags'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
 
-export default async function Page() {
-  const payload = await getPayload({ config: configPromise })
+const getPublishedPostsArchive = unstable_cache(
+  async () => {
+    const payload = await getPayload({ config: configPromise })
 
-  const posts = await payload.find({
-    collection: 'posts',
-    depth: 1,
-    limit: 12,
-    overrideAccess: false,
-    select: {
-      title: true,
-      slug: true,
-      categories: true,
-      meta: true,
-    },
-  })
+    return payload.find({
+      collection: 'posts',
+      draft: false,
+      depth: 1,
+      limit: 12,
+      overrideAccess: false,
+      pagination: true,
+      select: {
+        title: true,
+        slug: true,
+        categories: true,
+        meta: true,
+      },
+    })
+  },
+  ['published-posts-archive-v1'],
+  { tags: [CACHE_TAGS.posts] },
+)
+
+export default async function Page() {
+  const posts = await getPublishedPostsArchive()
 
   return (
     <div className="pt-24 pb-24">
