@@ -98,7 +98,13 @@ jobs:
             --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
           aws s3 sync "$SOURCE/media/" restore-work/media/ \
             --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
-          (cd restore-work && sha256sum --check database.sha256)
+          EXPECTED_SHA256="$(awk '{print $1}' restore-work/database.sha256)"
+          ACTUAL_SHA256="$(sha256sum restore-work/database.dump | awk '{print $1}')"
+          if [[ -z "$EXPECTED_SHA256" || "$ACTUAL_SHA256" != "$EXPECTED_SHA256" ]]; then
+            echo "::error::Database dump checksum verification failed."
+            exit 1
+          fi
+          echo "Database dump checksum verified."
 
       - name: Create pre-restore safety snapshot
         shell: bash
