@@ -86,6 +86,10 @@ jobs:
           source "$RUNNER_TEMP/backup-storage.env"
           set +a
           export AWS_DEFAULT_REGION="$AWS_REGION"
+          # The latest step returns a prefix ending in "/". Normalize it so
+          # the S3 URI does not contain a double slash before object keys.
+          BACKUP_PREFIX="${BACKUP_PREFIX#/}"
+          BACKUP_PREFIX="${BACKUP_PREFIX%/}"
           SOURCE="s3://$AWS_S3_BUCKET/$BACKUP_PREFIX"
 
           aws s3 cp "$SOURCE/database.dump" restore-work/database.dump \
