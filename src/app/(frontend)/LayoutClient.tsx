@@ -1,14 +1,21 @@
 'use client'
 
 import React from 'react'
+import dynamic from 'next/dynamic'
 import { RightRail } from '@/Rail/Right'
-import { MegaMenu } from '@/MegaMenu'
 import type { PagesData } from '@/getPagesData'
 import type { LegalPagesData } from '@/getLegalPagesData'
 import type { PostsData } from '@/getPostsData'
 import type { ContactSocial } from '@/payload-types'
 import { MegaMenuProvider, useMegaMenu } from '@/providers/MegaMenu'
 import { usePathname } from 'next/navigation'
+
+// Keep the large navigation experience out of the initial client bundle.
+// It is mounted only after the visitor opens the menu.
+const MegaMenu = dynamic(
+  () => import('@/MegaMenu').then((module) => module.MegaMenu),
+  { ssr: false },
+)
 
 const LayoutClientContent = ({
   children, header, footer, leftRail, pagesData, legalPagesData, postsData, contactSocials,
@@ -38,15 +45,17 @@ const LayoutClientContent = ({
         </div>
         <RightRail onMenuOpen={openMenu} sections={currentPage?.sections ?? []} />
       </div>
-      <MegaMenu
-        open={isOpen}
-        onClose={closeMenu}
-        pages={pagesData ?? []}
-        legalPages={legalPagesData ?? []}
-        posts={postsData ?? []}
-        contactSocials={contactSocials}
-        runtimeError={runtimeError}
-      />
+      {isOpen ? (
+        <MegaMenu
+          open={isOpen}
+          onClose={closeMenu}
+          pages={pagesData ?? []}
+          legalPages={legalPagesData ?? []}
+          posts={postsData ?? []}
+          contactSocials={contactSocials}
+          runtimeError={runtimeError}
+        />
+      ) : null}
     </>
   )
 }
