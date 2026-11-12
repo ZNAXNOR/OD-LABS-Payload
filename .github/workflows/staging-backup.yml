@@ -73,7 +73,7 @@ jobs:
           echo "backup_id=$BACKUP_ID" >> "$GITHUB_OUTPUT"
           mkdir -p backup-work/media
           pg_dump --format=custom --no-owner --no-acl --verbose --file=backup-work/database.dump "$STAGING_DATABASE_URL"
-          sha256sum backup-work/database.dump > backup-work/database.sha256
+          (cd backup-work && sha256sum database.dump > database.sha256)
           du -h backup-work/database.dump
 
       - name: Download staging media bucket
