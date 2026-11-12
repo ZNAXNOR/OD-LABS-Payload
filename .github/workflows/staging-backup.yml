@@ -20,8 +20,10 @@ jobs:
     timeout-minutes: 180
     env:
       STAGING_DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+      BACKUP_DATABASE_URL: ${{ secrets.BACKUP_DATABASE_URL }}
       STAGING_STORAGE_ENV: ${{ secrets.STAGING_STORAGE_ENV }}
       BACKUP_STORAGE_ENV: ${{ secrets.BACKUP_STORAGE_ENV }}
+      RESEND_ENV: ${{ secrets.RESEND_ENV }}
       BACKUP_RETENTION: "10"
       AWS_EC2_METADATA_DISABLED: "true"
 
@@ -30,7 +32,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for name in STAGING_DATABASE_URL STAGING_STORAGE_ENV BACKUP_STORAGE_ENV; do
+          for name in STAGING_DATABASE_URL BACKUP_DATABASE_URL STAGING_STORAGE_ENV BACKUP_STORAGE_ENV; do
             if [[ -z "${!name:-}" ]]; then
               echo "::error::Required GitHub Actions secret is missing: $name"
               exit 1
@@ -64,6 +66,39 @@ jobs:
           pg_dump --version
           aws --version
 
+      - name: Verify staging database contains application data
+        id: validate_database
+        shell: bash
+        run: |
+          set -euo pipefail
+          psql "$STAGING_DATABASE_URL" -v ON_ERROR_STOP=1 -X -q -c "
+          DO \$\$
+          DECLARE
+            item record;
+            has_rows boolean;
+          BEGIN
+            FOR item IN
+              SELECT n.nspname AS schema_name, c.relname AS table_name
+              FROM pg_class c
+              JOIN pg_namespace n ON n.oid = c.relnamespace
+              WHERE c.relkind IN ('r', 'p')
+                AND n.nspname NOT IN ('pg_catalog', 'information_schema')
+                AND n.nspname NOT LIKE 'pg_toast%'
+                AND n.nspname NOT LIKE 'pg_temp_%'
+            LOOP
+              EXECUTE format('SELECT EXISTS (SELECT 1 FROM %I.%I LIMIT 1)',
+                item.schema_name, item.table_name) INTO has_rows;
+              IF has_rows THEN
+                RAISE NOTICE 'Application data found in %.%',
+                  item.schema_name, item.table_name;
+                RETURN;
+              END IF;
+            END LOOP;
+            RAISE EXCEPTION 'Staging database contains no rows in non-system tables; refusing to create an empty backup.';
+          END
+          \$\$;
+          "
+
       - name: Create database dump and checksum
         id: dump
         shell: bash
@@ -73,10 +108,17 @@ jobs:
           echo "backup_id=$BACKUP_ID" >> "$GITHUB_OUTPUT"
           mkdir -p backup-work/media
           pg_dump --format=custom --no-owner --no-acl --verbose --file=backup-work/database.dump "$STAGING_DATABASE_URL"
+          test -s backup-work/database.dump
+          pg_restore --list backup-work/database.dump > backup-work/database.toc
+          grep -q 'TABLE DATA' backup-work/database.toc || {
+            echo "::error::Database dump contains no table data."
+            exit 1
+          }
           (cd backup-work && sha256sum database.dump > database.sha256)
           du -h backup-work/database.dump
 
-      - name: Download staging media bucket
+      - name: Download and validate staging media bucket
+        id: media
         shell: bash
         run: |
           set -euo pipefail
@@ -87,8 +129,50 @@ jobs:
           export AWS_DEFAULT_REGION="$AWS_REGION"
           aws s3 sync "s3://$AWS_S3_BUCKET/" backup-work/media/ \
             --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
+          if ! find backup-work/media -type f -print -quit | grep -q .; then
+            echo "::error::Staging media bucket is empty; refusing to create an empty backup."
+            exit 1
+          fi
+
+      - name: Refresh backup PostgreSQL mirror
+        id: mirror
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Refreshing the backup database mirror from the verified staging dump."
+          pg_restore --verbose --clean --if-exists --no-owner --no-acl \
+            --exit-on-error --dbname="$BACKUP_DATABASE_URL" backup-work/database.dump
+
+          psql "$BACKUP_DATABASE_URL" -v ON_ERROR_STOP=1 -X -q -c "
+          DO \$\$
+          DECLARE
+            item record;
+            has_rows boolean;
+          BEGIN
+            FOR item IN
+              SELECT n.nspname AS schema_name, c.relname AS table_name
+              FROM pg_class c
+              JOIN pg_namespace n ON n.oid = c.relnamespace
+              WHERE c.relkind IN ('r', 'p')
+                AND n.nspname NOT IN ('pg_catalog', 'information_schema')
+                AND n.nspname NOT LIKE 'pg_toast%'
+                AND n.nspname NOT LIKE 'pg_temp_%'
+            LOOP
+              EXECUTE format('SELECT EXISTS (SELECT 1 FROM %I.%I LIMIT 1)',
+                item.schema_name, item.table_name) INTO has_rows;
+              IF has_rows THEN
+                RAISE NOTICE 'Backup mirror data verified in %.%',
+                  item.schema_name, item.table_name;
+                RETURN;
+              END IF;
+            END LOOP;
+            RAISE EXCEPTION 'Backup database mirror contains no application rows after restore.';
+          END
+          \$\$;
+          "
 
       - name: Upload complete backup set
+        id: archive
         shell: bash
         env:
           BACKUP_ID: ${{ steps.dump.outputs.backup_id }}
@@ -114,6 +198,7 @@ jobs:
             --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
 
       - name: Enforce maximum of 10 complete backup sets
+        id: retention
         shell: bash
         run: |
           set -euo pipefail
@@ -132,3 +217,21 @@ jobs:
           path: backup-work/database.sha256
           if-no-files-found: ignore
           retention-days: 7
+
+      - name: Email backup failure alert
+        if: failure()
+        continue-on-error: true
+        shell: bash
+        env:
+          FAILED_STEPS: ${{ toJSON(steps) }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${RESEND_ENV:-}" ]]; then
+            echo "::warning::RESEND_ENV is not configured; failure email was not sent."
+            exit 0
+          fi
+          printf '%s\n' "$RESEND_ENV" > "$RUNNER_TEMP/resend.env"
+          set -a
+          source "$RUNNER_TEMP/resend.env"
+          set +a
+          python scripts/backup/notify.py
