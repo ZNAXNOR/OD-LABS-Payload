@@ -1,66 +1,74 @@
 # OD LABS database and media backups
 
-These workflows run only from the staging branch. They are GitHub Actions workflows and are independent of Dokploy deployments and application startup.
+Both workflows run only from the `staging` branch and are independent of Dokploy deployments and application startup.
 
 ## Workflows
 
-- **Staging Database and Media Backup**: runs daily at 00:00 IST (18:30 UTC) and can also be started manually.
-- **Restore Latest Database and Media Backup**: manual only. It restores the newest complete backup set and requires the exact confirmation text RESTORE.
+- **Staging Database and Media Backup**: daily at 00:00 IST (18:30 UTC), plus manual trigger.
+- **Restore Latest Database and Media Backup**: manual only; requires typing `RESTORE`.
 
-A backup set is written under backups/<UTC timestamp>/ in the backup bucket. It contains:
-- database.dump: PostgreSQL custom-format dump.
-- database.sha256: SHA-256 checksum.
-- media/: full copy of the staging media bucket.
-- manifest.json: written last; its presence marks the backup set complete.
+Each completed backup set is stored at `backups/<UTC timestamp>/` inside the backup Object Storage bucket:
+- `database.dump`: PostgreSQL custom-format dump of the staging database.
+- `database.sha256`: checksum.
+- `media/`: copy of the staging media bucket.
+- `manifest.json`: written last to mark the set complete.
 
-Retention keeps the newest 10 complete backup sets. Older complete sets are deleted from the backups/ prefix only. Other objects in the backup bucket (including existing Dokploy backups) are not touched.
+The newest 10 complete backup sets are retained. Older sets under `backups/` are deleted; other objects such as Dokploy backups and `pre-restore/` safety snapshots are not touched.
 
-## GitHub Actions repository secrets
+## Exactly four GitHub Actions secrets
 
-Configure these under Repository → Settings → Secrets and variables → Actions → Secrets. Do not commit credentials or put them in the application's runtime environment.
+Create these under **Repository → Settings → Secrets and variables → Actions → Repository secrets**.
 
-### Staging database
-- STAGING_DATABASE_URL: direct/unpooled PostgreSQL connection string for the staging database.
+### 1. `STAGING_DATABASE_URL`
+One direct/unpooled PostgreSQL connection string for the staging source database. Use the Neon direct endpoint (hostname without `-pooler`).
 
-### Staging media source
-- STAGING_MEDIA_ENDPOINT: S3 endpoint for the Neon branch containing the staging media bucket.
-- STAGING_MEDIA_ACCESS_KEY_ID: Neon Object Storage access key with storage:read.
-- STAGING_MEDIA_SECRET_ACCESS_KEY: matching Neon Object Storage secret.
-- STAGING_MEDIA_REGION: storage region, for example us-east-2.
-- STAGING_MEDIA_BUCKET: staging media bucket name, for example payloadcms-staging-media.
+### 2. `BACKUP_DATABASE_URL`
+One direct/unpooled PostgreSQL connection string for the backup project's database. The manual restore workflow restores the selected dump into this database. It is not used by the nightly backup upload itself.
 
-### Backup destination
-- BACKUP_STORAGE_ENDPOINT: S3 endpoint for the Neon branch containing the backup bucket.
-- BACKUP_STORAGE_ACCESS_KEY_ID: Neon Object Storage access key with storage:read and storage:write.
-- BACKUP_STORAGE_SECRET_ACCESS_KEY: matching Neon Object Storage secret.
-- BACKUP_STORAGE_REGION: storage region, for example us-east-2.
-- BACKUP_STORAGE_BUCKET: backup bucket name, for example dokploy-backup.
+### 3. `STAGING_STORAGE_ENV`
+A multiline secret containing the staging media bucket configuration. Use this format:
 
-### Restore destination
-- RESTORE_DATABASE_URL: direct/unpooled connection string for the database to be replaced.
-- RESTORE_MEDIA_ENDPOINT: S3 endpoint for the Neon branch containing the destination media bucket.
-- RESTORE_MEDIA_ACCESS_KEY_ID: Neon Object Storage access key with storage:read and storage:write.
-- RESTORE_MEDIA_SECRET_ACCESS_KEY: matching Neon Object Storage secret.
-- RESTORE_MEDIA_REGION: destination storage region.
-- RESTORE_MEDIA_BUCKET: destination media bucket name.
+```dotenv
+AWS_ENDPOINT_URL_S3="https://YOUR-STAGING-ENDPOINT"
+AWS_ACCESS_KEY_ID="YOUR-STAGING-ACCESS-KEY"
+AWS_SECRET_ACCESS_KEY="YOUR-STAGING-SECRET"
+AWS_REGION="us-east-2"
+AWS_S3_BUCKET="payloadcms-staging-media"
+```
 
-The staging source, backup destination, and restore destination can be different Neon projects or branches. Each endpoint must match the credential and bucket's owning branch.
+The key must have permission to list and read objects in the staging bucket. During restore, this same bucket is the destination for the media snapshot and is replaced.
 
-## Important restore behavior
+### 4. `BACKUP_STORAGE_ENV`
+A multiline secret containing the backup archive bucket configuration:
 
-The restore action is destructive:
-- pg_restore --clean --if-exists drops existing database objects before recreating them.
-- aws s3 sync --delete removes destination media objects that are not present in the selected backup.
+```dotenv
+AWS_ENDPOINT_URL_S3="https://YOUR-BACKUP-ENDPOINT"
+AWS_ACCESS_KEY_ID="YOUR-BACKUP-ACCESS-KEY"
+AWS_SECRET_ACCESS_KEY="YOUR-BACKUP-SECRET"
+AWS_REGION="us-east-2"
+AWS_S3_BUCKET="dokploy-backup"
+```
 
-The restore workflow therefore requires typing RESTORE in the manual workflow input. Before making changes, it creates a safety snapshot of the destination database and destination media bucket under pre-restore/<UTC timestamp>/ in the backup bucket. This safety snapshot is separate from the 10 rolling nightly backup sets and is not automatically deleted. Configure the restore secrets only for the intended destination. The workflow is restricted to the staging branch; it cannot be dispatched from production or preview branches.
+The key needs list, read, write, and delete permissions on the backup bucket. Retention deletes only objects inside `backups/`; safety snapshots under `pre-restore/` are kept separately.
 
-Before the first production recovery, test the restore against a disposable Neon project and bucket. The restore does not recreate Neon project settings, database roles, secrets, Payload environment variables, or infrastructure configuration. It restores PostgreSQL database contents and bucket objects.
+The two storage secrets are sourced as shell environment files by the workflows. Keep the five variable names exactly as shown.
+
+## Restore behavior and safety
+
+The manual restore action:
+1. Finds the latest complete backup set.
+2. Downloads the database dump and media files.
+3. Verifies the database SHA-256 checksum.
+4. Creates a pre-restore snapshot of the current `BACKUP_DATABASE_URL` database and current staging media bucket under `pre-restore/<UTC timestamp>/`.
+5. Runs `pg_restore --clean --if-exists` against `BACKUP_DATABASE_URL`.
+6. Replaces the staging media bucket using `aws s3 sync --delete`.
+
+This is destructive to the destination database and staging media bucket. The action requires the exact confirmation input `RESTORE`. Test it against disposable Neon resources before relying on it for recovery.
+
+The dump restores database objects and data, not Neon project settings, roles, secrets, Payload environment variables, or infrastructure. Use direct/unpooled Neon database connection strings for both database secrets.
 
 ## Operational notes
 
-- Neon pg_dump/pg_restore operations should use direct, unpooled database connection strings.
-- PostgreSQL 18 client tools are installed in the runner.
-- The backup set is marked complete only after both the database and media have uploaded.
-- An interrupted upload without manifest.json is ignored by retention and restore selection.
-- GitHub scheduled workflows are not guaranteed to start at the exact minute; GitHub may delay scheduled jobs during periods of high load.
-- Rotate any Neon credentials previously exposed in chats or elsewhere, then store replacements only as GitHub Actions secrets.
+- Keep `staging` as the repository default branch because GitHub scheduled workflows run from the default branch. The job also checks that its ref is exactly `staging`.
+- GitHub may delay scheduled jobs during periods of high load.
+- Rotate any Neon credentials previously exposed in chats or elsewhere. Store replacement credentials only in GitHub Actions secrets.
