@@ -14,7 +14,18 @@ import { usePathname } from 'next/navigation'
 // It is mounted only after the visitor opens the menu.
 const MegaMenu = dynamic(
   () => import('@/MegaMenu').then((module) => module.MegaMenu),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0A0A0A] text-sm font-mono tracking-widest text-zinc-400 uppercase"
+        role="status"
+        aria-live="polite"
+      >
+        Loading navigation…
+      </div>
+    ),
+  },
 )
 
 const LayoutClientContent = ({
