@@ -1,0 +1,121 @@
+name: Restore Latest Database and Media Backup
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Type RESTORE to replace the destination database and media bucket"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: staging-restore
+  cancel-in-progress: false
+
+jobs:
+  restore:
+    name: Restore latest complete backup
+    if: github.ref == 'refs/heads/staging' && inputs.confirmation == 'RESTORE'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      RESTORE_DATABASE_URL: ${{ secrets.RESTORE_DATABASE_URL }}
+      RESTORE_MEDIA_ENDPOINT: ${{ secrets.RESTORE_MEDIA_ENDPOINT }}
+      RESTORE_MEDIA_ACCESS_KEY_ID: ${{ secrets.RESTORE_MEDIA_ACCESS_KEY_ID }}
+      RESTORE_MEDIA_SECRET_ACCESS_KEY: ${{ secrets.RESTORE_MEDIA_SECRET_ACCESS_KEY }}
+      RESTORE_MEDIA_REGION: ${{ secrets.RESTORE_MEDIA_REGION }}
+      RESTORE_MEDIA_BUCKET: ${{ secrets.RESTORE_MEDIA_BUCKET }}
+      BACKUP_STORAGE_ENDPOINT: ${{ secrets.BACKUP_STORAGE_ENDPOINT }}
+      BACKUP_STORAGE_ACCESS_KEY_ID: ${{ secrets.BACKUP_STORAGE_ACCESS_KEY_ID }}
+      BACKUP_STORAGE_SECRET_ACCESS_KEY: ${{ secrets.BACKUP_STORAGE_SECRET_ACCESS_KEY }}
+      BACKUP_STORAGE_REGION: ${{ secrets.BACKUP_STORAGE_REGION }}
+      BACKUP_STORAGE_BUCKET: ${{ secrets.BACKUP_STORAGE_BUCKET }}
+      AWS_EC2_METADATA_DISABLED: "true"
+
+    steps:
+      - name: Validate required secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          for name in RESTORE_DATABASE_URL RESTORE_MEDIA_ENDPOINT RESTORE_MEDIA_ACCESS_KEY_ID RESTORE_MEDIA_SECRET_ACCESS_KEY RESTORE_MEDIA_REGION RESTORE_MEDIA_BUCKET BACKUP_STORAGE_ENDPOINT BACKUP_STORAGE_ACCESS_KEY_ID BACKUP_STORAGE_SECRET_ACCESS_KEY BACKUP_STORAGE_REGION BACKUP_STORAGE_BUCKET; do
+            if [[ -z "${!name:-}" ]]; then
+              echo "::error::Required GitHub Actions secret is missing: $name"
+              exit 1
+            fi
+          done
+
+      - name: Check out staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - name: Install PostgreSQL 18 client, AWS CLI, and boto3
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-18
+          python -m pip install --user awscli boto3
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          echo "/usr/lib/postgresql/18/bin" >> "$GITHUB_PATH"
+          pg_restore --version
+          aws --version
+
+      - name: Locate latest complete backup
+        id: latest
+        shell: bash
+        run: |
+          set -euo pipefail
+          PREFIX="$(python scripts/backup/storage.py latest)"
+          echo "prefix=$PREFIX" >> "$GITHUB_OUTPUT"
+          echo "Selected backup: $PREFIX"
+
+      - name: Download and verify database and media
+        shell: bash
+        env:
+          BACKUP_PREFIX: ${{ steps.latest.outputs.prefix }}
+        run: |
+          set -euo pipefail
+          mkdir -p restore-work/media
+          export AWS_ACCESS_KEY_ID="$BACKUP_STORAGE_ACCESS_KEY_ID"
+          export AWS_SECRET_ACCESS_KEY="$BACKUP_STORAGE_SECRET_ACCESS_KEY"
+          export AWS_DEFAULT_REGION="$BACKUP_STORAGE_REGION"
+          SOURCE="s3://$BACKUP_STORAGE_BUCKET/$BACKUP_PREFIX"
+
+          aws s3 cp "$SOURCE/database.dump" restore-work/database.dump \
+            --endpoint-url "$BACKUP_STORAGE_ENDPOINT" --no-progress
+          aws s3 cp "$SOURCE/database.sha256" restore-work/database.sha256 \
+            --endpoint-url "$BACKUP_STORAGE_ENDPOINT" --no-progress
+          aws s3 sync "$SOURCE/media/" restore-work/media/ \
+            --endpoint-url "$BACKUP_STORAGE_ENDPOINT" --no-progress
+          (cd restore-work && sha256sum --check database.sha256)
+
+      - name: Restore destination PostgreSQL database
+        shell: bash
+        run: |
+          set -euo pipefail
+          pg_restore --verbose --clean --if-exists --no-owner --no-acl \
+            --exit-on-error --dbname="$RESTORE_DATABASE_URL" restore-work/database.dump
+
+      - name: Replace destination media bucket
+        shell: bash
+        run: |
+          set -euo pipefail
+          export AWS_ACCESS_KEY_ID="$RESTORE_MEDIA_ACCESS_KEY_ID"
+          export AWS_SECRET_ACCESS_KEY="$RESTORE_MEDIA_SECRET_ACCESS_KEY"
+          export AWS_DEFAULT_REGION="$RESTORE_MEDIA_REGION"
+          aws s3 sync restore-work/media/ "s3://$RESTORE_MEDIA_BUCKET/" \
+            --endpoint-url "$RESTORE_MEDIA_ENDPOINT" --delete --no-progress
+
+      - name: Restore summary
+        env:
+          BACKUP_PREFIX: ${{ steps.latest.outputs.prefix }}
+        run: |
+          echo "Restoration completed from $BACKUP_PREFIX"
+          echo "Database restore and media bucket replacement both succeeded."
