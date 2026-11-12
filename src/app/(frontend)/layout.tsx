@@ -32,26 +32,37 @@ export default async function RootLayout({
 }) {
   const { isEnabled } = await draftMode()
 
-  // These independent reads should run concurrently. Sequential reads here delay
-  // the entire frontend layout, including the page's primary content.
-  const [pagesData, legalPagesData, postsData, contactSocials] = await Promise.all([
-    getPagesData().catch((error) => {
-      console.error('Failed to fetch pages data:', error)
-      return undefined
-    }),
-    getLegalPagesData().catch((error) => {
-      console.error('Failed to fetch published legal pages:', error)
-      return undefined
-    }),
-    getPostsData().catch((error) => {
-      console.error('Failed to fetch published posts:', error)
-      return undefined
-    }),
-    getContactSocials().catch((error) => {
-      console.error('Failed to fetch contact socials:', error)
-      return null
-    }),
-  ])
+  // These datasets are independent; fetch them concurrently instead of
+  // serially extending the critical path for every page request.
+  const [pagesResult, legalPagesResult, postsResult, socialsResult] =
+    await Promise.allSettled([
+      getPagesData(),
+      getLegalPagesData(),
+      getPostsData(),
+      getContactSocials(),
+    ])
+
+  const pagesData =
+    pagesResult.status === 'fulfilled' ? pagesResult.value : undefined
+  const legalPagesData =
+    legalPagesResult.status === 'fulfilled' ? legalPagesResult.value : undefined
+  const postsData =
+    postsResult.status === 'fulfilled' ? postsResult.value : undefined
+  const contactSocials =
+    socialsResult.status === 'fulfilled' ? socialsResult.value : undefined
+
+  if (pagesResult.status === 'rejected') {
+    console.error('Failed to fetch pages data:', pagesResult.reason)
+  }
+  if (legalPagesResult.status === 'rejected') {
+    console.error('Failed to fetch published legal pages:', legalPagesResult.reason)
+  }
+  if (postsResult.status === 'rejected') {
+    console.error('Failed to fetch published posts:', postsResult.reason)
+  }
+  if (socialsResult.status === 'rejected') {
+    console.error('Failed to fetch contact socials:', socialsResult.reason)
+  }
 
   const gaId = process.env.NEXT_PUBLIC_GA_ID
 
