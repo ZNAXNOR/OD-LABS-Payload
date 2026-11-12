@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""List complete backup sets and enforce retention in Neon Object Storage."""
+"""Select complete backup sets and enforce retention in Neon Object Storage."""
 import os
 import sys
 import boto3
@@ -7,17 +7,16 @@ from botocore.config import Config
 
 
 def client():
-    names = ("BACKUP_STORAGE_ENDPOINT", "BACKUP_STORAGE_ACCESS_KEY_ID",
-             "BACKUP_STORAGE_SECRET_ACCESS_KEY", "BACKUP_STORAGE_REGION")
+    names = ("AWS_ENDPOINT_URL_S3", "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_REGION")
     missing = [name for name in names if not os.getenv(name)]
     if missing:
-        raise SystemExit("Missing environment variables: " + ", ".join(missing))
+        raise SystemExit("Missing storage environment variables: " + ", ".join(missing))
     return boto3.client(
         "s3",
-        endpoint_url=os.environ["BACKUP_STORAGE_ENDPOINT"],
-        region_name=os.environ["BACKUP_STORAGE_REGION"],
-        aws_access_key_id=os.environ["BACKUP_STORAGE_ACCESS_KEY_ID"],
-        aws_secret_access_key=os.environ["BACKUP_STORAGE_SECRET_ACCESS_KEY"],
+        endpoint_url=os.environ["AWS_ENDPOINT_URL_S3"],
+        region_name=os.environ["AWS_REGION"],
+        aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
+        aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
         config=Config(s3={"addressing_style": "path"}),
     )
 
@@ -55,9 +54,9 @@ def delete_prefix(s3, bucket, prefix):
 def main():
     if len(sys.argv) != 2 or sys.argv[1] not in ("latest", "prune"):
         raise SystemExit("Usage: storage.py latest|prune")
-    bucket = os.environ.get("BACKUP_STORAGE_BUCKET")
+    bucket = os.environ.get("AWS_S3_BUCKET")
     if not bucket:
-        raise SystemExit("Missing BACKUP_STORAGE_BUCKET")
+        raise SystemExit("Missing AWS_S3_BUCKET")
     s3 = client()
     prefixes = complete_prefixes(s3, bucket)
 
