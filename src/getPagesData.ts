@@ -29,10 +29,14 @@ export const getPagesData = async (): Promise<PagesData[]> => {
     sort: 'id',
     depth: 1,
     limit: 100,
+    pagination: false,
     select: {
       title: true,
       slug: true,
       hero: { type: true },
+      // Payload's generated block-select union does not expose block metadata
+      // (id, blockName, blockType) as selectable fields. Keep the typed full
+      // block selection until a schema-supported minimal selection is available.
       layout: true,
       meta: { description: true, image: true, showSeoImageInMegaMenu: true, showCssPreviewInMegaMenu: true },
     },
