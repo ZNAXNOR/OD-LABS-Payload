@@ -59,8 +59,9 @@ jobs:
           sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
           sudo apt-get update
           sudo apt-get install -y postgresql-client-18
-          python -m pip install --user awscli boto3
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          python -m venv "$RUNNER_TEMP/backup-venv"
+          "$RUNNER_TEMP/backup-venv/bin/pip" install --disable-pip-version-check awscli boto3
+          echo "$RUNNER_TEMP/backup-venv/bin" >> "$GITHUB_PATH"
           echo "/usr/lib/postgresql/18/bin" >> "$GITHUB_PATH"
           pg_dump --version
           aws --version
