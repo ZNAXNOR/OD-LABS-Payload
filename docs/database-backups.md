@@ -52,7 +52,7 @@ The restore action is destructive:
 - pg_restore --clean --if-exists drops existing database objects before recreating them.
 - aws s3 sync --delete removes destination media objects that are not present in the selected backup.
 
-The restore workflow therefore requires typing RESTORE in the manual workflow input. Configure the restore secrets only for the intended destination. The workflow is restricted to the staging branch; it cannot be dispatched from production or preview branches.
+The restore workflow therefore requires typing RESTORE in the manual workflow input. Before making changes, it creates a safety snapshot of the destination database and destination media bucket under pre-restore/<UTC timestamp>/ in the backup bucket. This safety snapshot is separate from the 10 rolling nightly backup sets and is not automatically deleted. Configure the restore secrets only for the intended destination. The workflow is restricted to the staging branch; it cannot be dispatched from production or preview branches.
 
 Before the first production recovery, test the restore against a disposable Neon project and bucket. The restore does not recreate Neon project settings, database roles, secrets, Payload environment variables, or infrastructure configuration. It restores PostgreSQL database contents and bucket objects.
 
