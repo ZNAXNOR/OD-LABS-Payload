@@ -34,8 +34,10 @@ export const getPagesData = async (): Promise<PagesData[]> => {
       title: true,
       slug: true,
       hero: { type: true },
-      // The navigation only needs section identifiers and labels, not full block data.
-      layout: { id: true, blockName: true, blockType: true },
+      // Payload's generated block-select union does not expose block metadata
+      // (id, blockName, blockType) as selectable fields. Keep the typed full
+      // block selection until a schema-supported minimal selection is available.
+      layout: true,
       meta: { description: true, image: true, showSeoImageInMegaMenu: true, showCssPreviewInMegaMenu: true },
     },
   })
