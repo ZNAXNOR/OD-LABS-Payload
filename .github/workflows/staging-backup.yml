@@ -1,0 +1,126 @@
+name: Staging Database and Media Backup
+
+on:
+  schedule:
+    - cron: "30 18 * * *" # 00:00 IST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: staging-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    name: Back up staging database and media
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      STAGING_DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+      STAGING_MEDIA_ENDPOINT: ${{ secrets.STAGING_MEDIA_ENDPOINT }}
+      STAGING_MEDIA_ACCESS_KEY_ID: ${{ secrets.STAGING_MEDIA_ACCESS_KEY_ID }}
+      STAGING_MEDIA_SECRET_ACCESS_KEY: ${{ secrets.STAGING_MEDIA_SECRET_ACCESS_KEY }}
+      STAGING_MEDIA_REGION: ${{ secrets.STAGING_MEDIA_REGION }}
+      STAGING_MEDIA_BUCKET: ${{ secrets.STAGING_MEDIA_BUCKET }}
+      BACKUP_STORAGE_ENDPOINT: ${{ secrets.BACKUP_STORAGE_ENDPOINT }}
+      BACKUP_STORAGE_ACCESS_KEY_ID: ${{ secrets.BACKUP_STORAGE_ACCESS_KEY_ID }}
+      BACKUP_STORAGE_SECRET_ACCESS_KEY: ${{ secrets.BACKUP_STORAGE_SECRET_ACCESS_KEY }}
+      BACKUP_STORAGE_REGION: ${{ secrets.BACKUP_STORAGE_REGION }}
+      BACKUP_STORAGE_BUCKET: ${{ secrets.BACKUP_STORAGE_BUCKET }}
+      BACKUP_RETENTION: "10"
+      AWS_EC2_METADATA_DISABLED: "true"
+
+    steps:
+      - name: Validate required secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          for name in STAGING_DATABASE_URL STAGING_MEDIA_ENDPOINT STAGING_MEDIA_ACCESS_KEY_ID STAGING_MEDIA_SECRET_ACCESS_KEY STAGING_MEDIA_REGION STAGING_MEDIA_BUCKET BACKUP_STORAGE_ENDPOINT BACKUP_STORAGE_ACCESS_KEY_ID BACKUP_STORAGE_SECRET_ACCESS_KEY BACKUP_STORAGE_REGION BACKUP_STORAGE_BUCKET; do
+            if [[ -z "${!name:-}" ]]; then
+              echo "::error::Required GitHub Actions secret is missing: $name"
+              exit 1
+            fi
+          done
+
+      - name: Check out staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - name: Install PostgreSQL 18 client, AWS CLI, and boto3
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-18
+          python -m pip install --user awscli boto3
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          echo "/usr/lib/postgresql/18/bin" >> "$GITHUB_PATH"
+          pg_dump --version
+          aws --version
+
+      - name: Create database dump and checksum
+        id: dump
+        shell: bash
+        run: |
+          set -euo pipefail
+          BACKUP_ID="$(date -u +'%Y-%m-%dT%H-%M-%SZ')"
+          echo "backup_id=$BACKUP_ID" >> "$GITHUB_OUTPUT"
+          mkdir -p backup-work/media
+          pg_dump --format=custom --no-owner --no-acl --verbose --file=backup-work/database.dump "$STAGING_DATABASE_URL"
+          sha256sum backup-work/database.dump > backup-work/database.sha256
+          du -h backup-work/database.dump
+
+      - name: Download staging media bucket
+        shell: bash
+        run: |
+          set -euo pipefail
+          export AWS_ACCESS_KEY_ID="$STAGING_MEDIA_ACCESS_KEY_ID"
+          export AWS_SECRET_ACCESS_KEY="$STAGING_MEDIA_SECRET_ACCESS_KEY"
+          export AWS_DEFAULT_REGION="$STAGING_MEDIA_REGION"
+          aws s3 sync "s3://$STAGING_MEDIA_BUCKET/" backup-work/media/ \
+            --endpoint-url "$STAGING_MEDIA_ENDPOINT" --no-progress
+
+      - name: Upload complete backup set
+        shell: bash
+        env:
+          BACKUP_ID: ${{ steps.dump.outputs.backup_id }}
+        run: |
+          set -euo pipefail
+          export AWS_ACCESS_KEY_ID="$BACKUP_STORAGE_ACCESS_KEY_ID"
+          export AWS_SECRET_ACCESS_KEY="$BACKUP_STORAGE_SECRET_ACCESS_KEY"
+          export AWS_DEFAULT_REGION="$BACKUP_STORAGE_REGION"
+          DEST="s3://$BACKUP_STORAGE_BUCKET/backups/$BACKUP_ID"
+
+          aws s3 cp backup-work/database.dump "$DEST/database.dump" \
+            --endpoint-url "$BACKUP_STORAGE_ENDPOINT" --no-progress
+          aws s3 cp backup-work/database.sha256 "$DEST/database.sha256" \
+            --endpoint-url "$BACKUP_STORAGE_ENDPOINT" --no-progress
+          aws s3 sync backup-work/media/ "$DEST/media/" \
+            --endpoint-url "$BACKUP_STORAGE_ENDPOINT" --no-progress
+
+          printf '{"backup_id":"%s","created_at_utc":"%s","database_file":"database.dump","media_prefix":"media/","format":"pg_dump-custom"}\n' \
+            "$BACKUP_ID" "$BACKUP_ID" > backup-work/manifest.json
+          aws s3 cp backup-work/manifest.json "$DEST/manifest.json" \
+            --endpoint-url "$BACKUP_STORAGE_ENDPOINT" --no-progress
+
+      - name: Enforce maximum of 10 complete backup sets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/backup/storage.py prune
+
+      - name: Upload backup checksum as workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-backup-checksum-${{ github.run_id }}
+          path: backup-work/database.sha256
+          if-no-files-found: ignore
+          retention-days: 7
