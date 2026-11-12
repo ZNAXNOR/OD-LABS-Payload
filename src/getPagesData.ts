@@ -29,11 +29,13 @@ export const getPagesData = async (): Promise<PagesData[]> => {
     sort: 'id',
     depth: 1,
     limit: 100,
+    pagination: false,
     select: {
       title: true,
       slug: true,
       hero: { type: true },
-      layout: true,
+      // The navigation only needs section identifiers and labels, not full block data.
+      layout: { id: true, blockName: true, blockType: true },
       meta: { description: true, image: true, showSeoImageInMegaMenu: true, showCssPreviewInMegaMenu: true },
     },
   })
