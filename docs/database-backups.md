@@ -36,7 +36,7 @@ AWS_REGION="us-east-2"
 AWS_S3_BUCKET="payloadcms-staging-media"
 ```
 
-The key must have permission to list and read objects in the staging bucket. During restore, this same bucket is the destination for the media snapshot and is replaced.
+The key needs list, read, write, and delete permissions on the staging media bucket. The nightly backup reads it; the manual restore replaces its contents using `aws s3 sync --delete`.
 
 ### 4. `BACKUP_STORAGE_ENV`
 A multiline secret containing the backup archive bucket configuration:
