@@ -59,6 +59,11 @@ jobs:
         run: |
           echo "PAYLOAD_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
 
+      # Next.js generates next-env.d.ts, including its built-in declarations
+      # for static asset imports. Generate it before invoking tsc directly.
+      - name: Generate Next.js types
+        run: pnpm exec next typegen
+
       - name: Type-check
         run: pnpm exec tsc --noEmit
 
