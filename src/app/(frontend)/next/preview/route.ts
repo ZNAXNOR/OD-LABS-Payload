@@ -14,22 +14,37 @@ export type PreviewSearchParams = {
 
 export async function GET(req: NextRequest): Promise<Response> {
   const payload = await getPayload({ config: configPromise })
-
   const { searchParams } = new URL(req.url)
 
   const path = searchParams.get('path')
   const previewSecret = searchParams.get('previewSecret')
+  const configuredSecret = process.env.PREVIEW_SECRET
 
-  if (previewSecret !== process.env.PREVIEW_SECRET) {
+  // Fail closed if the preview secret is missing or does not match.
+  if (!configuredSecret || !previewSecret || previewSecret !== configuredSecret) {
     return new Response('You are not allowed to preview this page', { status: 403 })
   }
 
   if (!path) {
-    return new Response('Insufficient search params', { status: 404 })
+    return new Response('Insufficient search params', { status: 400 })
   }
 
-  if (!path.startsWith('/')) {
-    return new Response('This endpoint can only be used for relative previews', { status: 500 })
+  // Only allow same-origin relative paths. Reject protocol-relative URLs,
+  // backslashes, control characters, and paths that normalize outside the site.
+  if (
+    !path.startsWith('/') ||
+    path.startsWith('//') ||
+    path.includes('\\') ||
+    /[\\u0000-\\u001F\\u007F]/.test(path)
+  ) {
+    return new Response('This endpoint only accepts safe relative preview paths', {
+      status: 400,
+    })
+  }
+
+  const target = new URL(path, req.nextUrl.origin)
+  if (target.origin !== req.nextUrl.origin) {
+    return new Response('Invalid preview path', { status: 400 })
   }
 
   let user
@@ -52,9 +67,6 @@ export async function GET(req: NextRequest): Promise<Response> {
     return new Response('You are not allowed to preview this page', { status: 403 })
   }
 
-  // You can add additional checks here to see if the user is allowed to preview this page
-
   draft.enable()
-
-  redirect(path)
+  redirect(target.pathname + target.search + target.hash)
 }
