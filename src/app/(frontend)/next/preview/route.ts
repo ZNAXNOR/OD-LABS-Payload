@@ -35,7 +35,7 @@ export async function GET(req: NextRequest): Promise<Response> {
     !path.startsWith('/') ||
     path.startsWith('//') ||
     path.includes('\\') ||
-    /[\\u0000-\\u001F\\u007F]/.test(path)
+    /[\u0000-\u001F\u007F]/.test(path)
   ) {
     return new Response('This endpoint only accepts safe relative preview paths', {
       status: 400,
