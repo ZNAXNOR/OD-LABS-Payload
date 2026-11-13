@@ -5,7 +5,7 @@ import type { PayloadAdminBarProps, PayloadMeUser } from '@payloadcms/admin-bar'
 import { cn } from '@/utilities/ui'
 import { useSelectedLayoutSegments } from 'next/navigation'
 import { PayloadAdminBar } from '@payloadcms/admin-bar'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import './index.scss'
@@ -37,10 +37,32 @@ export const AdminBar: React.FC<{
   const { adminBarProps } = props || {}
   const segments = useSelectedLayoutSegments()
   const [show, setShow] = useState(false)
+  const [isPreview, setIsPreview] = useState(false)
   const collection = (
     collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages'
   ) as keyof typeof collectionLabels
   const router = useRouter()
+
+  useEffect(() => {
+    let active = true
+
+    const refreshPreviewStatus = async () => {
+      try {
+        const response = await fetch('/next/preview-status', { cache: 'no-store' })
+        if (!response.ok) return
+        const result = (await response.json()) as { isEnabled?: boolean }
+        if (active) setIsPreview(Boolean(result.isEnabled))
+      } catch {
+        // Preview status is optional UI state; content rendering remains server-controlled.
+      }
+    }
+
+    void refreshPreviewStatus()
+
+    return () => {
+      active = false
+    }
+  }, [])
 
   const onAuthChange = React.useCallback((user: PayloadMeUser) => {
     setShow(Boolean(user?.id))
@@ -56,6 +78,7 @@ export const AdminBar: React.FC<{
       <div className="container">
         <PayloadAdminBar
           {...adminBarProps}
+          preview={isPreview}
           className="py-2 text-white"
           classNames={{
             controls: 'font-medium text-white',
@@ -72,6 +95,7 @@ export const AdminBar: React.FC<{
           onAuthChange={onAuthChange}
           onPreviewExit={() => {
             fetch('/next/exit-preview').then(() => {
+              setIsPreview(false)
               router.push('/')
               router.refresh()
             })
