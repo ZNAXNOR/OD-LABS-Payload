@@ -14,7 +14,6 @@ import { LeftRail } from '@/Rail/Left'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -30,8 +29,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { isEnabled } = await draftMode()
-
   // These datasets are independent; fetch them concurrently instead of
   // serially extending the critical path for every page request.
   const [pagesResult, legalPagesResult, postsResult, socialsResult] =
@@ -80,11 +77,7 @@ export default async function RootLayout({
       </head>
       <body>
         <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
+          <AdminBar />
 
           <LayoutClient
             header={<Header />}
