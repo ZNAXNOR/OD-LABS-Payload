@@ -1,0 +1,71 @@
+name: Performance Branch Build Verification
+
+on:
+  push:
+    branches:
+      - perf/initial-render-optimizations
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: performance-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: TypeScript and production build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+      NEXT_PUBLIC_SERVER_URL: http://localhost:3000
+      # S3 storage is intentionally disabled in CI; the build only needs Payload
+      # read access for generateStaticParams.
+    steps:
+      - name: Check out performance branch
+        uses: actions/checkout@v4
+        with:
+          ref: perf/initial-render-optimizations
+
+      - name: Validate database secret
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${DATABASE_URL:-}" ]]; then
+            echo "::error::STAGING_DATABASE_URL repository secret is required for Payload static parameter generation."
+            exit 1
+          fi
+
+      # Install pnpm before setup-node configures its pnpm cache.
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.16.1
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Configure build-only Payload secret
+        shell: bash
+        run: |
+          echo "PAYLOAD_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+
+      # Next.js generates next-env.d.ts, including its built-in declarations
+      # for static asset imports. Generate it before invoking tsc directly.
+      - name: Generate Next.js types
+        run: pnpm exec next typegen
+
+      - name: Type-check
+        run: pnpm exec tsc --noEmit
+
+      - name: Production build
+        run: pnpm build

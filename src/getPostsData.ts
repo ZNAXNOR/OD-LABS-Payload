@@ -1,6 +1,8 @@
 import configPromise from '@payload-config'
+import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 import type { Media } from '@/payload-types'
+import { CACHE_TAGS } from '@/utilities/cacheTags'
 import { getPopulatedMedia } from '@/utilities/getPopulatedMedia'
 
 export interface RelatedPostData {
@@ -24,7 +26,7 @@ export interface PostsData {
 }
 
 /** Fetches only published post metadata required by the site navigation and Megamenu. */
-export const getPostsData = async (): Promise<PostsData[]> => {
+const getPostsDataUncached = async (): Promise<PostsData[]> => {
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
@@ -65,3 +67,8 @@ export const getPostsData = async (): Promise<PostsData[]> => {
     ),
   }))
 }
+
+/** Persistent cache for published post navigation metadata. */
+export const getPostsData = unstable_cache(getPostsDataUncached, ['posts-navigation-v1'], {
+  tags: [CACHE_TAGS.posts, CACHE_TAGS.postsNavigation],
+})

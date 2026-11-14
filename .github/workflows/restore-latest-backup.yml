@@ -1,0 +1,233 @@
+name: Restore Latest Database and Media Backup
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Type RESTORE to replace the staging database and media bucket"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: staging-restore
+  cancel-in-progress: false
+
+jobs:
+  restore:
+    name: Restore latest complete backup into staging
+    if: github.ref == 'refs/heads/staging' && inputs.confirmation == 'RESTORE'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      STAGING_DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+      STAGING_STORAGE_ENV: ${{ secrets.STAGING_STORAGE_ENV }}
+      BACKUP_STORAGE_ENV: ${{ secrets.BACKUP_STORAGE_ENV }}
+      RESEND_ENV: ${{ secrets.RESEND_ENV }}
+      AWS_EC2_METADATA_DISABLED: "true"
+
+    steps:
+      - name: Check out staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - name: Validate required secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          for name in STAGING_DATABASE_URL STAGING_STORAGE_ENV BACKUP_STORAGE_ENV; do
+            if [[ -z "${!name:-}" ]]; then
+              echo "::error::Required GitHub Actions secret is missing: $name"
+              exit 1
+            fi
+          done
+
+      - name: Install PostgreSQL 18 client, AWS CLI, and boto3
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-18
+          python -m venv "$RUNNER_TEMP/backup-venv"
+          "$RUNNER_TEMP/backup-venv/bin/pip" install --disable-pip-version-check awscli boto3
+          echo "$RUNNER_TEMP/backup-venv/bin" >> "$GITHUB_PATH"
+          echo "/usr/lib/postgresql/18/bin" >> "$GITHUB_PATH"
+          pg_restore --version
+          aws --version
+
+      - name: Locate latest complete backup
+        id: latest
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$BACKUP_STORAGE_ENV" > "$RUNNER_TEMP/backup-storage.env"
+          set -a
+          source "$RUNNER_TEMP/backup-storage.env"
+          set +a
+          export AWS_DEFAULT_REGION="$AWS_REGION"
+          PREFIX="$(python scripts/backup/storage.py latest)"
+          echo "prefix=$PREFIX" >> "$GITHUB_OUTPUT"
+          echo "Selected backup: $PREFIX"
+
+      - name: Download and verify database and media
+        id: download
+        shell: bash
+        env:
+          BACKUP_PREFIX: ${{ steps.latest.outputs.prefix }}
+        run: |
+          set -euo pipefail
+          mkdir -p restore-work/media
+          printf '%s\n' "$BACKUP_STORAGE_ENV" > "$RUNNER_TEMP/backup-storage.env"
+          set -a
+          source "$RUNNER_TEMP/backup-storage.env"
+          set +a
+          export AWS_DEFAULT_REGION="$AWS_REGION"
+          BACKUP_PREFIX="${BACKUP_PREFIX#/}"
+          BACKUP_PREFIX="${BACKUP_PREFIX%/}"
+          SOURCE="s3://$AWS_S3_BUCKET/$BACKUP_PREFIX"
+
+          aws s3 cp "$SOURCE/database.dump" restore-work/database.dump \
+            --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
+          aws s3 cp "$SOURCE/database.sha256" restore-work/database.sha256 \
+            --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
+          aws s3 sync "$SOURCE/media/" restore-work/media/ \
+            --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
+
+          EXPECTED_SHA256="$(awk '{print $1}' restore-work/database.sha256)"
+          ACTUAL_SHA256="$(sha256sum restore-work/database.dump | awk '{print $1}')"
+          if [[ -z "$EXPECTED_SHA256" || "$ACTUAL_SHA256" != "$EXPECTED_SHA256" ]]; then
+            echo "::error::Database dump checksum verification failed."
+            exit 1
+          fi
+          pg_restore --list restore-work/database.dump > restore-work/database.toc
+          grep -q 'TABLE DATA' restore-work/database.toc || {
+            echo "::error::Selected database dump contains no table data."
+            exit 1
+          }
+          if ! find restore-work/media -type f -print -quit | grep -q .; then
+            echo "::error::Selected backup contains no media files; refusing destructive restore."
+            exit 1
+          fi
+          echo "Database dump checksum, table data, and media contents verified."
+
+      - name: Create pre-restore safety snapshot of staging
+        id: safety
+        shell: bash
+        run: |
+          set -euo pipefail
+          SAFETY_ID="$(date -u +'%Y-%m-%dT%H-%M-%SZ')"
+          mkdir -p restore-work/pre-restore-media
+          pg_dump --format=custom --no-owner --no-acl --verbose \
+            --file=restore-work/pre-restore-database.dump "$STAGING_DATABASE_URL"
+          test -s restore-work/pre-restore-database.dump
+          sha256sum restore-work/pre-restore-database.dump > restore-work/pre-restore-database.sha256
+
+          printf '%s\n' "$STAGING_STORAGE_ENV" > "$RUNNER_TEMP/staging-storage.env"
+          set -a
+          source "$RUNNER_TEMP/staging-storage.env"
+          set +a
+          export AWS_DEFAULT_REGION="$AWS_REGION"
+          aws s3 sync "s3://$AWS_S3_BUCKET/" restore-work/pre-restore-media/ \
+            --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
+
+          printf '%s\n' "$BACKUP_STORAGE_ENV" > "$RUNNER_TEMP/backup-storage.env"
+          set -a
+          source "$RUNNER_TEMP/backup-storage.env"
+          set +a
+          export AWS_DEFAULT_REGION="$AWS_REGION"
+          DEST="s3://$AWS_S3_BUCKET/pre-restore/$SAFETY_ID"
+          aws s3 cp restore-work/pre-restore-database.dump "$DEST/database.dump" \
+            --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
+          aws s3 cp restore-work/pre-restore-database.sha256 "$DEST/database.sha256" \
+            --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
+          aws s3 sync restore-work/pre-restore-media/ "$DEST/media/" \
+            --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
+          printf '{"created_at_utc":"%s","type":"pre-restore-safety-snapshot"}\n' \
+            "$SAFETY_ID" > restore-work/pre-restore-manifest.json
+          aws s3 cp restore-work/pre-restore-manifest.json "$DEST/manifest.json" \
+            --endpoint-url "$AWS_ENDPOINT_URL_S3" --no-progress
+
+      - name: Restore staging PostgreSQL database
+        id: restore_database
+        shell: bash
+        run: |
+          set -euo pipefail
+          pg_restore --verbose --clean --if-exists --no-owner --no-acl --single-transaction \
+            --exit-on-error --dbname="$STAGING_DATABASE_URL" restore-work/database.dump
+
+      - name: Verify restored staging database contains application data
+        id: verify_database
+        shell: bash
+        run: |
+          set -euo pipefail
+          psql "$STAGING_DATABASE_URL" -v ON_ERROR_STOP=1 -X -q -c "
+          DO \$\$
+          DECLARE
+            item record;
+            has_rows boolean;
+          BEGIN
+            FOR item IN
+              SELECT n.nspname AS schema_name, c.relname AS table_name
+              FROM pg_class c
+              JOIN pg_namespace n ON n.oid = c.relnamespace
+              WHERE c.relkind IN ('r', 'p')
+                AND n.nspname NOT IN ('pg_catalog', 'information_schema')
+                AND n.nspname NOT LIKE 'pg_toast%'
+                AND n.nspname NOT LIKE 'pg_temp_%'
+            LOOP
+              EXECUTE format('SELECT EXISTS (SELECT 1 FROM %I.%I LIMIT 1)',
+                item.schema_name, item.table_name) INTO has_rows;
+              IF has_rows THEN
+                RAISE NOTICE 'Restored application data verified in %.%',
+                  item.schema_name, item.table_name;
+                RETURN;
+              END IF;
+            END LOOP;
+            RAISE EXCEPTION 'Restored staging database contains no application rows.';
+          END
+          \$\$;
+          "
+
+      - name: Replace staging media bucket
+        id: restore_media
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$STAGING_STORAGE_ENV" > "$RUNNER_TEMP/staging-storage.env"
+          set -a
+          source "$RUNNER_TEMP/staging-storage.env"
+          set +a
+          export AWS_DEFAULT_REGION="$AWS_REGION"
+          aws s3 sync restore-work/media/ "s3://$AWS_S3_BUCKET/" \
+            --endpoint-url "$AWS_ENDPOINT_URL_S3" --delete --no-progress
+
+      - name: Restore summary
+        env:
+          BACKUP_PREFIX: ${{ steps.latest.outputs.prefix }}
+        run: |
+          echo "Restoration completed from $BACKUP_PREFIX"
+          echo "Staging database and media bucket were restored and database data was verified."
+
+      - name: Email restore failure alert
+        if: failure()
+        continue-on-error: true
+        shell: bash
+        env:
+          FAILED_STEPS: ${{ toJSON(steps) }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${RESEND_ENV:-}" ]]; then
+            echo "::warning::RESEND_ENV is not configured; failure email was not sent."
+            exit 0
+          fi
+          printf '%s\n' "$RESEND_ENV" > "$RUNNER_TEMP/resend.env"
+          set -a
+          source "$RUNNER_TEMP/resend.env"
+          set +a
+          python scripts/backup/notify.py

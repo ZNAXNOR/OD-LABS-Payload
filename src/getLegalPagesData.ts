@@ -1,6 +1,8 @@
 import configPromise from '@payload-config'
+import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 import type { Media } from '@/payload-types'
+import { CACHE_TAGS } from '@/utilities/cacheTags'
 import { getPopulatedMedia } from '@/utilities/getPopulatedMedia'
 
 export interface LegalPagesData {
@@ -16,7 +18,7 @@ export interface LegalPagesData {
 }
 
 /** Returns published legal document metadata for the footer and Megamenu. */
-export const getLegalPagesData = async (): Promise<LegalPagesData[]> => {
+const getLegalPagesDataUncached = async (): Promise<LegalPagesData[]> => {
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
@@ -47,3 +49,10 @@ export const getLegalPagesData = async (): Promise<LegalPagesData[]> => {
     showCssPreviewInMegaMenu: page.meta?.showCssPreviewInMegaMenu ?? true,
   }))
 }
+
+/** Persistent cache for published legal navigation metadata. */
+export const getLegalPagesData = unstable_cache(
+  getLegalPagesDataUncached,
+  ['legal-pages-navigation-v1'],
+  { tags: [CACHE_TAGS.legalPages, CACHE_TAGS.legalPagesNavigation] },
+)

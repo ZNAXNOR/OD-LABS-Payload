@@ -1,6 +1,8 @@
 import configPromise from '@payload-config'
+import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 import type { Media } from '@/payload-types'
+import { CACHE_TAGS } from '@/utilities/cacheTags'
 import { getPopulatedMedia } from '@/utilities/getPopulatedMedia'
 
 export interface PagesData {
@@ -20,7 +22,8 @@ export interface PagesData {
 
 const getPageHref = (slug: string) => (slug === 'home' ? '/' : `/${slug}`)
 
-export const getPagesData = async (): Promise<PagesData[]> => {
+/** Fetches published page metadata used by the shared navigation. */
+const getPagesDataUncached = async (): Promise<PagesData[]> => {
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
@@ -29,10 +32,14 @@ export const getPagesData = async (): Promise<PagesData[]> => {
     sort: 'id',
     depth: 1,
     limit: 100,
+    pagination: false,
     select: {
       title: true,
       slug: true,
       hero: { type: true },
+      // Payload's generated block-select union does not expose block metadata
+      // (id, blockName, blockType) as selectable fields. Keep the typed full
+      // block selection until a schema-supported minimal selection is available.
       layout: true,
       meta: { description: true, image: true, showSeoImageInMegaMenu: true, showCssPreviewInMegaMenu: true },
     },
@@ -70,3 +77,8 @@ export const getPagesData = async (): Promise<PagesData[]> => {
       }
     })
 }
+
+/** Persistent cache for published navigation metadata; invalidated by page hooks. */
+export const getPagesData = unstable_cache(getPagesDataUncached, ['pages-navigation-v1'], {
+  tags: [CACHE_TAGS.pages, CACHE_TAGS.pagesNavigation],
+})
