@@ -120,14 +120,18 @@ export const ThemeSelector: React.FC = () => {
             ] as const).map(({ value, label, description }) => {
               const selected = selectedVariant === value
               return (
-                <button
-                  aria-checked={selected}
-                  className="flex items-center justify-between gap-2 rounded-sm border border-border-default px-3 py-2 text-left transition-colors hover:border-brand-hover aria-checked:border-brand-hover aria-checked:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
+                <label
+                  className="flex cursor-pointer items-center justify-between gap-2 rounded-sm border border-border-default px-3 py-2 text-left transition-colors hover:border-brand-hover has-[:checked]:border-brand-hover has-[:checked]:bg-brand-subtle focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus-ring"
                   key={value}
-                  onClick={() => selectVariant(value)}
-                  role="radio"
-                  type="button"
                 >
+                  <input
+                    checked={selected}
+                    className="sr-only"
+                    name="od-appearance-contrast"
+                    onChange={() => selectVariant(value)}
+                    type="radio"
+                    value={value}
+                  />
                   <span>
                     <span className="block text-xs font-medium text-text-primary">{label}</span>
                     <span className="mt-0.5 block text-[10px] text-text-muted">{description}</span>
@@ -138,7 +142,7 @@ export const ThemeSelector: React.FC = () => {
                   >
                     {selected ? <span className="size-1.5 rounded-full bg-brand-hover" /> : null}
                   </span>
-                </button>
+                </label>
               )
             })}
           </div>
