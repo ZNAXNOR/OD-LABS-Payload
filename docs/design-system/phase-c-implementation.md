@@ -30,6 +30,10 @@
 ### Initial component migration
 - Migrated footer and right rail to semantic tokens.
 - Migrated AI workspace outer shell to semantic tokens.
+- Added light/dark SVG wordmark and square-logo variants; logo visibility follows the active root or header theme.
+- Migrated header surface and navigation text, including its image-hero dark override.
+- Migrated service-status presentation to semantic state colours and button/calendar variants to contrast-aware action tokens.
+- Added dedicated chart palettes for the dark and high-contrast presets.
 - Migrated legal page and scoped Usercentrics/Cookiebot styling from fixed dark colours to theme variables.
 - Migrated form controls and common overlay primitives (popover, calendar, command, dialog, dropdown, hover-card) where direct dark palette utilities were present.
 - Updated image-led hero wrappers to use the new dark theme ID for their intentionally dark image-overlay context.
