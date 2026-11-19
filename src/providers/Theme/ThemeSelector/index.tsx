@@ -31,12 +31,12 @@ export const ThemeSelector: React.FC = () => {
         Appearance
       </legend>
       <p className="mb-3 text-xs text-text-secondary">Choose how OD LABS looks.</p>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {themeOptions.map(({ value, label, description, preview }) => {
           const selected = preference === value
           return (
             <label
-              className="group flex min-w-0 cursor-pointer flex-col gap-2 rounded-md border border-border-default bg-surface-raised p-2 transition-colors hover:border-brand has-[:checked]:border-brand has-[:checked]:bg-brand-subtle focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus-ring"
+              className="group flex min-w-0 cursor-pointer flex-col gap-3 rounded-md border border-border-default bg-surface-raised p-3 transition-colors hover:border-brand has-[:checked]:border-brand has-[:checked]:bg-brand-subtle focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus-ring"
               key={value}
             >
               <input
