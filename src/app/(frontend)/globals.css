@@ -563,3 +563,8 @@ html[data-reading-width='wide'] .reading-content { --reading-width: 60rem; }
   left: clamp(1rem, calc((100vw - 95rem) / 2 + 5.5rem), calc(100vw - 17rem));
   width: 16rem;
 }
+
+/* SVG wordmarks use the same artwork with theme-appropriate text fills. */
+.odl-logo-dark { display: none; }
+html[data-theme^='od-dark'] .odl-logo-light { display: none; }
+html[data-theme^='od-dark'] .odl-logo-dark { display: block; }
