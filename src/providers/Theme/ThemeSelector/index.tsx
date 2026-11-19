@@ -12,9 +12,9 @@ const themeOptions: {
   preview: 'auto' | 'light' | 'dark' | 'dark-contrast' | 'light-contrast'
 }[] = [
   { value: 'auto', label: 'System', description: 'Follow device setting', preview: 'auto' },
-  { value: 'od-light', label: 'Light', description: 'Original light palette', preview: 'light' },
-  { value: 'od-dark', label: 'Dark', description: 'Original charcoal palette', preview: 'dark' },
-  { value: 'od-light-contrast', label: 'Light contrast', description: 'Higher contrast', preview: 'light-contrast' },
+  { value: 'od-light', label: 'Light', description: 'Balanced neutral palette', preview: 'light' },
+  { value: 'od-dark', label: 'Dark', description: 'Charcoal surfaces and bright text', preview: 'dark' },
+  { value: 'od-light-contrast', label: 'Light contrast', description: 'Stronger text and surface contrast', preview: 'light-contrast' },
   { value: 'od-dark-contrast', label: 'Dark contrast', description: 'Higher contrast', preview: 'dark-contrast' },
 ]
 
