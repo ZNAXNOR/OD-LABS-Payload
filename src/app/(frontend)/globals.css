@@ -600,7 +600,9 @@ html[data-reading-width='wide'] .payload-richtext.reading-content { --reading-wi
 html[data-theme^='od-dark'] .odl-logo-dark,
 [data-theme='od-dark'] .odl-logo-dark { display: none; }
 html[data-theme^='od-dark'] .odl-logo-light,
-[data-theme='od-dark'] .odl-logo-light { display: block; }
+[data-theme='od-dark'] .odl-logo-light,
+.site-header[data-theme='od-dark'] .odl-logo-light { display: block; }
+.site-header[data-theme='od-dark'] .odl-logo-dark { display: none; }
 
 /* Payload rich text / typography plugin inherits the active semantic palette. */
 .payload-richtext.prose {
