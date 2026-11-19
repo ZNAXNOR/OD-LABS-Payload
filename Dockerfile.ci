@@ -25,10 +25,12 @@ ENV NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
 
 COPY . .
 
-RUN --mount=type=secret,id=DATABASE_URL,env=DATABASE_URL,required=true \
-    --mount=type=secret,id=PAYLOAD_SECRET,env=PAYLOAD_SECRET,required=true \
+RUN --mount=type=secret,id=DATABASE_URL,target=/run/secrets/DATABASE_URL,required=true \
+    --mount=type=secret,id=PAYLOAD_SECRET,target=/run/secrets/PAYLOAD_SECRET,required=true \
     --mount=type=cache,id=odlabs-next-cache,target=/app/.next/cache \
-    pnpm run build
+    sh -ec 'export DATABASE_URL="$(cat /run/secrets/DATABASE_URL)"; \
+      export PAYLOAD_SECRET="$(cat /run/secrets/PAYLOAD_SECRET)"; \
+      pnpm run build'
 
 FROM base AS runner
 WORKDIR /app
