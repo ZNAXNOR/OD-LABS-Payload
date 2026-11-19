@@ -7,45 +7,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import React, { useState } from 'react'
+import React from 'react'
 
-import type { Theme } from './types'
-
+import type { Theme } from '../types'
 import { useTheme } from '..'
-import { themeLocalStorageKey } from './types'
+
+const themeOptions: { value: Theme; label: string }[] = [
+  { value: 'od-dark', label: 'OD Dark' },
+  { value: 'od-light', label: 'OD Light' },
+  { value: 'od-dark-contrast', label: 'OD Dark High Contrast' },
+  { value: 'od-light-contrast', label: 'OD Light High Contrast' },
+]
 
 export const ThemeSelector: React.FC = () => {
-  const { setTheme } = useTheme()
-  const [value, setValue] = useState('')
+  const { setTheme, preference } = useTheme()
 
-  const onThemeChange = (themeToSet: Theme & 'auto') => {
-    if (themeToSet === 'auto') {
+  const onThemeChange = (value: string) => {
+    if (value === 'auto') {
       setTheme(null)
-      setValue('auto')
-    } else {
-      setTheme(themeToSet)
-      setValue(themeToSet)
+      return
     }
+
+    setTheme(value as Theme)
   }
 
-  React.useEffect(() => {
-    const preference = window.localStorage.getItem(themeLocalStorageKey)
-    setValue(preference ?? 'auto')
-  }, [])
-
   return (
-    <Select onValueChange={onThemeChange} value={value}>
-      <SelectTrigger
-        aria-label="Select a theme"
-        className="w-auto bg-transparent gap-2 pl-0 md:pl-3 border-none"
-      >
-        <SelectValue placeholder="Theme" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="auto">Auto</SelectItem>
-        <SelectItem value="light">Light</SelectItem>
-        <SelectItem value="dark">Dark</SelectItem>
-      </SelectContent>
-    </Select>
+    <div className="flex flex-col gap-1.5">
+      <label className="text-xs font-medium text-text-secondary" id="theme-select-label">
+        Appearance
+      </label>
+      <Select onValueChange={onThemeChange} value={preference}>
+        <SelectTrigger aria-labelledby="theme-select-label" className="w-full">
+          <SelectValue placeholder="Select theme" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="auto">Auto (system)</SelectItem>
+          {themeOptions.map(({ value, label }) => (
+            <SelectItem key={value} value={value}>
+              {label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   )
 }
