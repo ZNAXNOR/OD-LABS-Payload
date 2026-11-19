@@ -16,11 +16,11 @@ export const ErrorActions = ({ recoveryActions, retry }: ErrorActionsProps) => (
         Retry request
       </Button>
     )}
-    <nav aria-label="Error recovery" className="space-y-1 border-t border-zinc-800 pt-3">
+    <nav aria-label="Error recovery" className="space-y-1 border-t border-border-default pt-3">
       {recoveryActions.map((action) => (
-        <Link key={action.href} href={action.href} className="group flex items-center justify-between gap-3 py-2 font-mono text-xs text-zinc-400 transition-colors hover:text-white">
+        <Link key={action.href} href={action.href} className="group flex items-center justify-between gap-3 py-2 font-mono text-xs text-text-secondary transition-colors hover:text-text-primary">
           <span>{action.number} — {action.label}</span>
-          <ArrowUpRight className="size-3.5 text-zinc-500 group-hover:text-odl" aria-hidden="true" />
+          <ArrowUpRight className="size-3.5 text-text-muted group-hover:text-odl" aria-hidden="true" />
         </Link>
       ))}
     </nav>
