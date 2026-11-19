@@ -38,7 +38,6 @@
 @source inline('bg-warning/30');
 
 @theme {
-  --color-odl: #e94235;
   --breakpoint-sm: 40rem;
   --breakpoint-md: 48rem;
   --breakpoint-lg: 64rem;
@@ -382,6 +381,7 @@
 }
 
 @theme inline {
+  --color-odl: var(--brand);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
