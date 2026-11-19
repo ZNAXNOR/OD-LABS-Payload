@@ -9,6 +9,7 @@ import { Menu as MenuIcon } from 'lucide-react'
 import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
+import { AppearanceControls } from '@/components/AppearanceControls'
 import { HeaderNav } from './Nav'
 
 interface HeaderClientProps {
@@ -50,6 +51,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <HeaderNav data={data} />
         </div>
 
+        <div className="flex items-center gap-2 lg:hidden">
+        <AppearanceControls />
         <button
           type="button"
           onClick={openMenu}
@@ -58,6 +61,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         >
           <MenuIcon className="transition-colors duration-200 group-hover:text-odl" />
         </button>
+        </div>
       </div>
     </header>
   )
