@@ -545,18 +545,18 @@ html[data-theme^='od-dark'] { color-scheme: dark; }
 }
 
 /* Editorial reading controls are intentionally scoped to RichText wrappers. */
-.reading-content {
+.payload-richtext.reading-content {
   width: 100%;
   max-width: var(--reading-width, 48rem);
   margin-inline: auto;
   font-size: var(--reading-font-size, 1rem);
 }
-html[data-reading-size='small'] .reading-content { --reading-font-size: 0.9375rem; }
-html[data-reading-size='standard'] .reading-content { --reading-font-size: 1rem; }
-html[data-reading-size='large'] .reading-content { --reading-font-size: 1.125rem; }
-html[data-reading-width='narrow'] .reading-content { --reading-width: 40rem; }
-html[data-reading-width='standard'] .reading-content { --reading-width: 48rem; }
-html[data-reading-width='wide'] .reading-content { --reading-width: 60rem; }
+html[data-reading-size='small'] .payload-richtext.reading-content { --reading-font-size: 0.9375rem; }
+html[data-reading-size='standard'] .payload-richtext.reading-content { --reading-font-size: 1rem; }
+html[data-reading-size='large'] .payload-richtext.reading-content { --reading-font-size: 1.125rem; }
+html[data-reading-width='narrow'] .payload-richtext.reading-content { --reading-width: 40rem; }
+html[data-reading-width='standard'] .payload-richtext.reading-content { --reading-width: 48rem; }
+html[data-reading-width='wide'] .payload-richtext.reading-content { --reading-width: 60rem; }
 
 :where(button, a, input, select, textarea, summary, [tabindex]:not([tabindex='-1'])):focus-visible {
   outline: 2px solid var(--focus-ring);
