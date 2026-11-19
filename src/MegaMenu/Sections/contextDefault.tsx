@@ -40,8 +40,8 @@ export const MegaMenu_ContextDefault = ({
       <div className="space-y-8">
         <section className="space-y-4">
           <div className="font-mono text-xs tracking-widest text-text-secondary uppercase">Local time</div>
-          <div className="font-mono text-2xl font-semibold tracking-tight text-white tabular-nums sm:text-3xl" aria-live="off">
-            {now ? formatZonedTime(now, { second: '2-digit' }) : '--:--:-- --'}<span className="hidden text-white sm:inline"> IST</span>
+          <div className="font-mono text-2xl font-semibold tracking-tight text-text-primary tabular-nums sm:text-3xl" aria-live="off">
+            {now ? formatZonedTime(now, { second: '2-digit' }) : '--:--:-- --'}<span className="hidden text-text-primary sm:inline"> IST</span>
           </div>
           <div className="font-mono text-xs tracking-wide text-text-secondary" aria-live="off">
             {now ? formatZonedDate(now) : 'Loading date...'}
