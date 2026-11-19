@@ -668,3 +668,32 @@ html[data-theme$='-contrast'] .site-header[data-theme='od-light'] {
 }
 [data-theme='od-light'] .odl-logo-light { display: none; }
 [data-theme='od-light'] .odl-logo-dark { display: block; }
+
+/* Image-led dark hero regions retain high-contrast values when the site preset is high contrast. */
+html[data-theme$='-contrast'] [data-theme='od-dark'] {
+  --background: #000000;
+  --foreground: #FFFFFF;
+  --surface: #080808;
+  --surface-raised: #171717;
+  --surface-overlay: #080808;
+  --surface-subtle: #171717;
+  --surface-inset: #000000;
+  --text-primary: #FFFFFF;
+  --text-secondary: #F0F0F0;
+  --text-muted: #D6D6D6;
+  --text-disabled: #B8B8B8;
+  --border-subtle: #D6D6D6;
+  --border-default: #FFFFFF;
+  --border-strong: #FFFFFF;
+  --border-interactive: #FFB4AA;
+  --focus-ring: #FFB4AA;
+  --brand: #FF6B5F;
+  --brand-hover: #FFB4AA;
+  --brand-subtle: #42110D;
+  --link: #FFB4AA;
+  --link-hover: #FFFFFF;
+  --action-primary: #FFFFFF;
+  --action-primary-foreground: #000000;
+  --action-secondary: #171717;
+  --action-secondary-foreground: #FFFFFF;
+}
