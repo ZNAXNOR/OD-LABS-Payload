@@ -1,15 +1,9 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
-import React, { useEffect } from 'react'
 
-const PageClient: React.FC = () => {
-  /* Force the header to be dark mode while we have an image behind it */
-  const { setHeaderTheme } = useHeaderTheme()
+import React from 'react'
 
-  useEffect(() => {
-    setHeaderTheme('od-light')
-  }, [setHeaderTheme])
-  return <React.Fragment />
-}
+// Standard CMS pages inherit the active site theme. Image-led heroes can
+// request their own contrasting header theme from the hero component.
+const PageClient: React.FC = () => <React.Fragment />
 
 export default PageClient
