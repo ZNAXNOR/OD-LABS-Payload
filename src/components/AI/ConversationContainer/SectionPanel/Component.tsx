@@ -39,7 +39,7 @@ export const SectionPanel = ({
           'w-[min(24rem,82vw)]',
           'overflow-hidden',
           'border-l border-border-default/40',
-          'bg-surface-inset/75',
+          'bg-surface-overlay/95',
           'shadow-[-20px_0_60px_rgba(0,0,0,0.45)]',
           'backdrop-blur-xl',
 
