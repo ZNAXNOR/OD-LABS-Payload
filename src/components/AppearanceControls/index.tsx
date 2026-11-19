@@ -78,7 +78,7 @@ export const AppearanceControls: React.FC = () => {
       </PopoverTrigger>
       <PopoverContent
         align="start"
-        className="z-[1000] max-h-[min(80vh,42rem)] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto rounded-md border border-border-default bg-surface-overlay p-4 text-text-primary shadow-2xl"
+        className="z-[1000] max-h-[min(82vh,48rem)] w-[min(58rem,75vw)] max-w-[calc(100vw-2rem)] overflow-y-auto rounded-md border border-border-default bg-surface-overlay p-5 sm:p-6 text-text-primary shadow-2xl"
         side="right"
         sideOffset={12}
       >
