@@ -568,3 +568,33 @@ html[data-reading-width='wide'] .reading-content { --reading-width: 60rem; }
 .odl-logo-dark { display: none; }
 html[data-theme^='od-dark'] .odl-logo-light { display: none; }
 html[data-theme^='od-dark'] .odl-logo-dark { display: block; }
+
+/* The header can deliberately use a contrasting theme over image-led heroes. */
+.site-header[data-theme='od-dark'] {
+  --background: #0B0F14;
+  --foreground: #F4F7FA;
+  --surface: #111820;
+  --surface-raised: #1A2430;
+  --surface-subtle: #202A36;
+  --text-primary: #F4F7FA;
+  --text-secondary: #C7D0DA;
+  --text-muted: #AAB6C3;
+  --border-default: #718096;
+  --focus-ring: #FF9B90;
+}
+.site-header[data-theme='od-light'] {
+  --background: #FFFFFF;
+  --foreground: #171C24;
+  --surface: #F7F9FC;
+  --surface-raised: #FFFFFF;
+  --surface-subtle: #EEF2F6;
+  --text-primary: #171C24;
+  --text-secondary: #3D4856;
+  --text-muted: #3D4856;
+  --border-default: #566273;
+  --focus-ring: #B52A22;
+}
+html[data-theme^='od-dark'] .odl-logo-light,
+[data-theme='od-dark'] .odl-logo-light { display: none; }
+html[data-theme^='od-dark'] .odl-logo-dark,
+[data-theme='od-dark'] .odl-logo-dark { display: block; }
