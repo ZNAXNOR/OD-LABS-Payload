@@ -509,7 +509,7 @@ html[data-theme^='od-dark'] { color-scheme: dark; }
 }
 
 .ai-chat-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--color-odl, #e94235);
+  background: var(--brand);
 }
 
 
