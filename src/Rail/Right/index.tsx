@@ -16,17 +16,17 @@ export const RightRail = ({ onMenuOpen, sections }: RightRailProps) => {
 
   return (
     <aside
-      className="sticky top-0 z-40 hidden h-screen w-18 flex-col items-center border-l border-zinc-600 lg:flex"
+      className="sticky top-0 z-40 hidden h-screen w-18 flex-col items-center border-l border-border-default lg:flex"
       aria-label="Site navigation"
     >
       {/* MegaMenu */}
       <button
         onClick={onMenuOpen}
-        className="group sticky top-6 mt-6 flex cursor-pointer flex-col items-center p-1.5 text-zinc-400 focus:outline-none"
+        className="group sticky top-6 mt-6 flex cursor-pointer flex-col items-center p-1.5 text-text-secondary focus:outline-none"
         aria-label="Explore Site"
       >
         <MenuIcon className="transition-colors duration-200 group-hover:text-odl" />
-        <span className="rotate-180 pb-2 font-mono text-sm tracking-wide uppercase transition-colors duration-300 [writing-mode:vertical-rl] group-hover:text-white">
+        <span className="rotate-180 pb-2 font-mono text-sm tracking-wide uppercase transition-colors duration-300 [writing-mode:vertical-rl] group-hover:text-text-primary">
           Explore Site
         </span>
       </button>
@@ -44,7 +44,7 @@ export const RightRail = ({ onMenuOpen, sections }: RightRailProps) => {
                   aria-current={activeSection === section.id ? 'location' : undefined}
                   className="group relative flex items-center justify-center p-1.5 focus:outline-none"
                 >
-                  <span className="pointer-events-none absolute right-full mr-2 -translate-x-1 border border-zinc-700 bg-zinc-900 px-2 py-1 font-mono text-xs tracking-widest whitespace-nowrap text-zinc-300 uppercase opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
+                  <span className="pointer-events-none absolute right-full mr-2 -translate-x-1 border border-border-default bg-surface-raised px-2 py-1 font-mono text-xs tracking-widest whitespace-nowrap text-text-primary uppercase opacity-0 transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
                     {String(index + 1).padStart(2, '0')} / {section.label}
                   </span>
 
@@ -52,11 +52,11 @@ export const RightRail = ({ onMenuOpen, sections }: RightRailProps) => {
                     className={[
                       'block rounded-full border transition-all duration-200',
                       isCompressed
-                        ? 'size-1.5 border-zinc-700 bg-zinc-900 opacity-100'
+                        ? 'size-1.5 border-border-default bg-surface-raised opacity-100'
                         : 'size-2',
                       activeSection === section.id
                         ? 'border-odl bg-odl'
-                        : 'border-zinc-700 bg-zinc-900',
+                        : 'border-border-default bg-surface-raised',
                     ].join(' ')}
                   />
                 </a>

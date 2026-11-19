@@ -41,7 +41,7 @@ export const Testimonial_ContentBlock: React.FC<Props> = ({
 
   if (!items.length) {
     return (
-      <section className="border-b border-zinc-800 px-6 py-10 lg:px-12 lg:py-14">
+      <section className="border-b border-border-default px-6 py-10 lg:px-12 lg:py-14">
         <Eyebrow eyebrow={eyebrow} blockIndex={blockIndex} />
         <Header richText={richText} linkGroup={linkGroup} />
       </section>
@@ -58,7 +58,7 @@ export const Testimonial_ContentBlock: React.FC<Props> = ({
   }
 
   return (
-    <section className="border-b border-zinc-800 px-6 py-10 lg:px-12 lg:py-14">
+    <section className="border-b border-border-default px-6 py-10 lg:px-12 lg:py-14">
       <Eyebrow eyebrow={eyebrow} blockIndex={blockIndex} />
 
       <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-16">
@@ -91,7 +91,7 @@ export const Testimonial_ContentBlock: React.FC<Props> = ({
 
           <div className="mt-8 flex items-center gap-4 pt-6">
             {photo ? (
-              <div className="relative size-14 shrink-0 overflow-hidden rounded-full border border-zinc-700">
+              <div className="relative size-14 shrink-0 overflow-hidden rounded-full border border-border-default">
                 <Media
                   resource={photo}
                   fill
@@ -104,12 +104,12 @@ export const Testimonial_ContentBlock: React.FC<Props> = ({
 
             <div className="min-w-0">
               {active.clientName ? (
-                <p className="font-mono text-lg font-semibold tracking-wide text-zinc-100 uppercase">
+                <p className="font-mono text-lg font-semibold tracking-wide text-text-primary uppercase">
                   {active.clientName}
                 </p>
               ) : null}
               {(active.clientPosition || active.clientCompany) && (
-                <p className="text-md mt-1 text-zinc-400">
+                <p className="text-md mt-1 text-text-secondary">
                   {[active.clientPosition, active.clientCompany]
                     .filter(Boolean)
                     .join(' at ')}
@@ -120,7 +120,7 @@ export const Testimonial_ContentBlock: React.FC<Props> = ({
 
           {hasMultiple && (
             <div className="mt-8 flex items-center justify-between gap-4">
-              <p className="font-mono text-xs tracking-widest text-zinc-500">
+              <p className="font-mono text-xs tracking-widest text-text-muted">
                 {String(activeIndex + 1).padStart(2, '0')} /{' '}
                 {String(items.length).padStart(2, '0')}
               </p>
@@ -130,8 +130,8 @@ export const Testimonial_ContentBlock: React.FC<Props> = ({
                   onClick={() => move(-1)}
                   aria-label="Previous testimonial"
                   className={cn(
-                    'hover:border-odl hover:text-odl inline-flex size-11 items-center justify-center border border-zinc-700 text-zinc-200 transition-colors',
-                    'focus-visible:outline-odl focus-visible:outline-2 focus-visible:outline-offset-2',
+                    'hover:border-brand hover:text-link inline-flex size-11 items-center justify-center border border-border-default text-text-primary transition-colors',
+                    'focus-visible:outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2',
                   )}
                 >
                   <ArrowLeft className="size-4" aria-hidden="true" />
@@ -141,8 +141,8 @@ export const Testimonial_ContentBlock: React.FC<Props> = ({
                   onClick={() => move(1)}
                   aria-label="Next testimonial"
                   className={cn(
-                    'hover:border-odl hover:text-odl inline-flex size-11 items-center justify-center border border-zinc-700 text-zinc-200 transition-colors',
-                    'focus-visible:outline-odl focus-visible:outline-2 focus-visible:outline-offset-2',
+                    'hover:border-brand hover:text-link inline-flex size-11 items-center justify-center border border-border-default text-text-primary transition-colors',
+                    'focus-visible:outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2',
                   )}
                 >
                   <ArrowRight className="size-4" aria-hidden="true" />

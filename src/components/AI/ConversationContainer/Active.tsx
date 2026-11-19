@@ -42,7 +42,7 @@ const LoadingState = () => {
     <button
       type="button"
       onClick={() => void scrollToBottom()}
-      className="focus-visible:outline-odl inline-flex min-h-8 items-center gap-1.5 rounded-md px-1 text-zinc-500 transition-colors hover:text-zinc-300 focus-visible:outline-2 focus-visible:outline-offset-2"
+      className="focus-visible:outline-focus-ring inline-flex min-h-8 items-center gap-1.5 rounded-md px-1 text-text-muted transition-colors hover:text-text-secondary focus-visible:outline-2 focus-visible:outline-offset-2"
       aria-label="Generating response. Scroll to latest message."
       title="Scroll to latest message"
     >
@@ -51,9 +51,9 @@ const LoadingState = () => {
         aria-label="Generating response"
         className="inline-flex items-center gap-1.5"
       >
-        <span className="size-1.5 animate-pulse rounded-full bg-zinc-500" />
-        <span className="size-1.5 animate-pulse rounded-full bg-zinc-500 [animation-delay:200ms]" />
-        <span className="size-1.5 animate-pulse rounded-full bg-zinc-500 [animation-delay:400ms]" />
+        <span className="size-1.5 animate-pulse rounded-full bg-text-muted" />
+        <span className="size-1.5 animate-pulse rounded-full bg-text-muted [animation-delay:200ms]" />
+        <span className="size-1.5 animate-pulse rounded-full bg-text-muted [animation-delay:400ms]" />
       </span>
     </button>
   )
@@ -61,7 +61,7 @@ const LoadingState = () => {
 
 const ErrorState = () => (
   <div
-    className="flex items-center gap-2 border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-400"
+    className="flex items-center gap-2 border border-error-border/30 bg-error-surface px-4 py-3 text-sm text-error"
     role="alert"
     aria-live="polite"
   >
@@ -249,8 +249,8 @@ export const Active = ({
               <MessageContent
                 className={
                   isUser
-                    ? 'ml-auto max-w-2xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-base leading-7 text-zinc-100'
-                    : 'max-w-4xl bg-transparent p-0 text-base leading-8 text-zinc-100 sm:text-[17px]'
+                    ? 'ml-auto max-w-2xl border border-border-default bg-surface-raised px-4 py-3 text-base leading-7 text-text-primary'
+                    : 'max-w-4xl bg-transparent p-0 text-base leading-8 text-text-primary sm:text-[17px]'
                 }
               >
                 {isUser ? (
@@ -268,16 +268,16 @@ export const Active = ({
               </MessageContent>
 
               {!isGenerating && !isUser && sources.length > 0 && (
-                <Sources className="mt-1 w-full max-w-4xl border-t border-zinc-800 pt-3 text-zinc-400">
+                <Sources className="mt-1 w-full max-w-4xl border-t border-border-default pt-3 text-text-secondary">
                   <SourcesTrigger
                     count={sources.length}
-                    className="text-xs text-zinc-400 transition-colors hover:text-white"
+                    className="text-xs text-text-secondary transition-colors hover:text-text-primary"
                   >
                     <span className="inline-flex items-center gap-2">
                       <span className="font-mono tracking-wider uppercase">
                         Sources
                       </span>
-                      <span className="text-zinc-600">({sources.length})</span>
+                      <span className="text-text-muted">({sources.length})</span>
                     </span>
                   </SourcesTrigger>
                   <SourcesContent className="flex w-full flex-wrap gap-2">
@@ -287,9 +287,9 @@ export const Active = ({
                         href={source.url}
                         target="_self"
                         title={source.title ?? source.url}
-                        className="group focus-visible:outline-odl flex w-fit max-w-full min-w-0 items-center gap-1 border border-zinc-800 bg-zinc-950/60 px-3 py-2.5 pe-3 no-underline transition-colors hover:border-zinc-600 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2"
+                        className="group focus-visible:outline-focus-ring flex w-fit max-w-full min-w-0 items-center gap-1 border border-border-default bg-surface-inset/60 px-3 py-2.5 pe-3 no-underline transition-colors hover:border-border-strong hover:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-2"
                       >
-                        <span className="flex size-8 shrink-0 items-center justify-center text-zinc-400 transition-colors group-hover:text-zinc-200">
+                        <span className="flex size-8 shrink-0 items-center justify-center text-text-secondary transition-colors group-hover:text-text-primary">
                           {(() => {
                             const collection = source.sourceId.split(':', 1)[0]
                             const icon = getContentCategory(collection)?.icon
@@ -320,7 +320,7 @@ export const Active = ({
                             )
                           })()}
                         </span>
-                        <span className="min-w-0 truncate text-xs leading-5 font-medium text-zinc-300 transition-colors group-hover:text-white">
+                        <span className="min-w-0 truncate text-xs leading-5 font-medium text-text-secondary transition-colors group-hover:text-text-primary">
                           {source.title ?? source.url}
                         </span>
                       </Source>
@@ -383,7 +383,7 @@ export const Active = ({
 
         {isGenerating && messages.at(-1)?.role === 'user' && (
           <Message from="assistant" className="max-w-none gap-3">
-            <MessageContent className="w-full max-w-4xl bg-transparent p-0 text-base leading-8 text-zinc-100 sm:text-[17px]">
+            <MessageContent className="w-full max-w-4xl bg-transparent p-0 text-base leading-8 text-text-primary sm:text-[17px]">
               <LoadingState />
             </MessageContent>
           </Message>

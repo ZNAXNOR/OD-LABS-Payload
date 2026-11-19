@@ -5,19 +5,19 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/utilities/ui'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border border-transparent text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
 
-        fill: 'h-auto rounded-none bg-odl px-8 py-4 text-white font-mono text-xs font-semibold uppercase tracking-wider hover:bg-odl/90',
+        fill: 'h-auto rounded-none border border-button-primary bg-button-primary px-8 py-4 font-mono text-xs font-semibold uppercase tracking-wider text-button-primary-foreground hover:border-button-primary-hover hover:bg-button-primary-hover',
 
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
 
         outline:
-          'h-auto rounded-none border border-zinc-700 bg-transparent px-8 py-4 font-mono text-xs font-semibold uppercase tracking-wider text-zinc-200 hover:border-odl hover:bg-odl/5 hover:text-white',
+          'h-auto rounded-none border border-border-default bg-transparent px-8 py-4 font-mono text-xs font-semibold uppercase tracking-wider text-text-primary hover:border-odl hover:bg-brand-subtle hover:text-text-primary',
 
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
@@ -61,6 +61,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             : 'h-auto rounded-none px-8 py-4',
         )}
         ref={ref}
+        data-ui-button="true"
         {...props}
       />
     )

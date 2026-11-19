@@ -13,6 +13,8 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
 
 const nextConfig: NextConfig = {
+  // Required by the production Dockerfile's standalone runtime stage.
+  output: 'standalone',
   // The PostgreSQL vector adapter keeps its registered Drizzle tables in module
   // state. Keep the adapter external so the Payload config and route handlers
   // resolve the same Node module instance instead of separate Next bundles.

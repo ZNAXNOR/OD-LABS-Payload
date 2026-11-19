@@ -67,7 +67,7 @@ type Props = ContentBlockProps & {
 export const Capabilities_ContentBlock: React.FC<Props> = (props) => {
   const { eyebrow, richText, linkGroup, columns, blockIndex = 0 } = props
   return (
-    <section className="border-b border-zinc-800 px-6 py-10 lg:px-12 lg:py-14">
+    <section className="border-b border-border-default px-6 py-10 lg:px-12 lg:py-14">
       <Eyebrow eyebrow={eyebrow} blockIndex={blockIndex} />
 
       <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
@@ -77,7 +77,7 @@ export const Capabilities_ContentBlock: React.FC<Props> = (props) => {
           className="lg:col-span-5"
         />
 
-        <div className="divide-y divide-zinc-800 lg:col-span-7">
+        <div className="divide-y divide-border-default lg:col-span-7">
           {columns?.map((column, index) => {
             const { title, description } = getCapabilityText(column.richText)
             if (!title) return null
@@ -89,11 +89,11 @@ export const Capabilities_ContentBlock: React.FC<Props> = (props) => {
                   {number}
                 </span>
                 <span className="group min-w-0 flex-1 space-y-2.5">
-                  <span className="group-hover:text-odl block font-mono text-xl font-semibold tracking-tight text-zinc-200 uppercase transition-colors sm:text-2xl">
+                  <span className="group-hover:text-odl block font-mono text-xl font-semibold tracking-tight text-text-primary uppercase transition-colors sm:text-2xl">
                     {title}
                   </span>
                   {description ? (
-                    <span className="block font-sans text-base leading-relaxed text-zinc-400 transition-colors group-hover:text-white">
+                    <span className="block font-sans text-base leading-relaxed text-text-secondary transition-colors group-hover:text-text-primary">
                       {description}
                     </span>
                   ) : null}
@@ -108,7 +108,7 @@ export const Capabilities_ContentBlock: React.FC<Props> = (props) => {
                     {...column.link}
                     label={undefined}
                     appearance="inline"
-                    className="group focus-visible:outline-odl flex items-baseline gap-6 py-7 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+                    className="group focus-visible:outline-focus-ring flex items-baseline gap-6 py-7 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
                   >
                     {content}
                   </CMSLink>

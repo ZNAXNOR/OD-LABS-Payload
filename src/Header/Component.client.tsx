@@ -3,12 +3,13 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { useMegaMenu } from '@/providers/MegaMenu'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Menu as MenuIcon } from 'lucide-react'
 
 import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
+import { AppearanceControls } from '@/components/AppearanceControls'
 import { HeaderNav } from './Nav'
 
 interface HeaderClientProps {
@@ -16,28 +17,24 @@ interface HeaderClientProps {
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  /* Storing the value in a useState to avoid hydration errors */
-  const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const { openMenu } = useMegaMenu()
   const pathname = usePathname()
+  const previousPathname = useRef(pathname)
 
   useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
-
-  useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
+    if (previousPathname.current !== pathname) {
+      previousPathname.current = pathname
+      setHeaderTheme(null)
+    }
+  }, [pathname, setHeaderTheme])
 
   return (
     <header
-      className="relative z-20 bg-zinc-950/80 backdrop-blur-md"
-      {...(theme ? { 'data-theme': theme } : {})}
+      className="site-header relative z-20 bg-surface/80 backdrop-blur-md"
+      {...(headerTheme ? { 'data-theme': headerTheme } : {})}
     >
-      <div className="flex items-center justify-between border-b border-[#4B525F] px-6 py-5">
+      <div className="flex items-center justify-between border-b border-border-default px-6 py-5">
         <Link href="/" className="flex items-center gap-2">
           <Logo
             loading="eager"
@@ -50,6 +47,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <HeaderNav data={data} />
         </div>
 
+        <div className="flex items-center gap-2 lg:hidden">
+        <AppearanceControls />
         <button
           type="button"
           onClick={openMenu}
@@ -58,6 +57,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         >
           <MenuIcon className="transition-colors duration-200 group-hover:text-odl" />
         </button>
+        </div>
       </div>
     </header>
   )

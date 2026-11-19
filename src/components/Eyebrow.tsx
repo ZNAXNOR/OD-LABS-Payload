@@ -30,7 +30,7 @@ export const Eyebrow: React.FC<EyebrowProps> = ({
 
   return (
     <div className={cn('mb-8', className)}>
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs font-medium tracking-[0.18em] text-white/45 uppercase">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs font-medium tracking-[0.18em] text-text-muted uppercase">
         <span className="bg-odl size-2 shrink-0" aria-hidden="true" />
 
         {eyebrowPhrases.map((phrase, index) => {
@@ -49,7 +49,7 @@ export const Eyebrow: React.FC<EyebrowProps> = ({
                 </span>
               )}
 
-              <span className={index === 0 ? 'text-odl' : 'text-white/60'}>
+              <span className={index === 0 ? 'text-odl' : 'text-text-secondary'}>
                 {index === 0
                   ? eyebrowPhrases.length > 1
                     ? `${displayPhrase} //`

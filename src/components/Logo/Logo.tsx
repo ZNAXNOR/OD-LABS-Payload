@@ -1,7 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import logoSrc from './ODLABS-full.svg'
+import darkLogoSrc from './ODLABS-full-dark.svg'
 import squareLogoSrc from './OD-small-white.svg'
+import darkSquareLogoSrc from './OD-small-dark.svg'
 
 interface Props {
   className?: string
@@ -9,14 +12,11 @@ interface Props {
   priority?: 'auto' | 'high' | 'low'
 }
 
-export const Logo = (props: Props) => {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
+const imageClass = (className?: string) =>
+  twMerge(clsx('max-w-[9.375rem] w-full h-[34px]', className))
 
-  const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
-
-  return (
-    /* eslint-disable @next/next/no-img-element */
+export const Logo = ({ loading = 'lazy', priority = 'low', className }: Props) => (
+  <>
     <img
       alt="OD LABS Logo"
       width={193}
@@ -24,29 +24,45 @@ export const Logo = (props: Props) => {
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={twMerge(clsx('max-w-[9.375rem] w-full h-[34px]', className))}
+      className={imageClass(className) + ' odl-logo-light'}
       src={logoSrc.src || logoSrc}
     />
-  )
-}
-
-export const SquareLogo = (props: Props) => {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
-
-  const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
-
-  return (
-    /* eslint-disable @next/next/no-img-element */
     <img
-      alt="OD LABS Logo"
+      alt=""
+      aria-hidden="true"
       width={193}
       height={34}
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={twMerge(clsx('max-w-[9.375rem] w-full h-[34px]', className))}
+      className={imageClass(className) + ' odl-logo-dark'}
+      src={darkLogoSrc.src || darkLogoSrc}
+    />
+  </>
+)
+
+export const SquareLogo = ({ loading = 'lazy', priority = 'low', className }: Props) => (
+  <>
+    <img
+      alt="OD LABS"
+      width={193}
+      height={34}
+      loading={loading}
+      fetchPriority={priority}
+      decoding="async"
+      className={imageClass(className) + ' odl-logo-light'}
       src={squareLogoSrc.src || squareLogoSrc}
     />
-  )
-}
+    <img
+      alt=""
+      aria-hidden="true"
+      width={193}
+      height={34}
+      loading={loading}
+      fetchPriority={priority}
+      decoding="async"
+      className={imageClass(className) + ' odl-logo-dark'}
+      src={darkSquareLogoSrc.src || darkSquareLogoSrc}
+    />
+  </>
+)

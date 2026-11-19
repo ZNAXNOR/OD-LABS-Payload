@@ -33,7 +33,7 @@ export const MegaMenu_ContextPanel = ({ currentPage, preview }: ContextPanelProp
         : preview.href === '/' ? [{ label: 'Home' }] : [{ label: 'Home', href: '/' }, { label: preview.title }]
 
     return (
-      <section className="grid min-h-0 min-w-0 grid-cols-1 gap-2 overflow-hidden border-b border-zinc-800/80 pb-4 lg:pb-5">
+      <section className="grid min-h-0 min-w-0 grid-cols-1 gap-2 overflow-hidden border-b border-border-default/80 pb-4 lg:pb-5">
         <StateAndBreadcrumb state="PREVIEW" items={crumbs} />
         {preview.kind === 'page' && <PagePreview entry={preview} />}
         {preview.kind === 'post' && <PostPreview entry={preview} />}
@@ -55,21 +55,21 @@ export const MegaMenu_ContextPanel = ({ currentPage, preview }: ContextPanelProp
   const categories = currentPage.type === 'post' ? currentPage.categories : []
 
   return (
-    <section className="grid min-h-0 min-w-0 grid-cols-1 gap-2 overflow-hidden border-b border-zinc-800/80 pb-4 lg:pb-5">
+    <section className="grid min-h-0 min-w-0 grid-cols-1 gap-2 overflow-hidden border-b border-border-default/80 pb-4 lg:pb-5">
       <StateAndBreadcrumb state="CURRENT" items={crumbs} />
       <div className={['grid min-h-0 min-w-0 grid-cols-1 gap-4 sm:gap-6', image?.url ? 'sm:grid-cols-[minmax(180px,0.8fr)_minmax(0,1.7fr)]' : ''].join(' ')}>
         {image?.url && <div className="min-w-0 select-none"><ContextImage image={image} title={title} compact placeholder={false} /></div>}
         <div className="flex min-w-0 flex-col items-start">
-          <h2 className="line-clamp-3 font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{title}</h2>
-          {currentPage.description && <p className="mt-2 line-clamp-2 max-w-3xl font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">{currentPage.description}</p>}
+          <h2 className="line-clamp-3 font-mono text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">{title}</h2>
+          {currentPage.description && <p className="mt-2 line-clamp-2 max-w-3xl font-sans text-xs leading-relaxed text-text-secondary sm:text-sm">{currentPage.description}</p>}
           {(publishedAt || updatedAt || categories.length || (currentPage.type === 'legal' && currentPage.documentType)) && (
             <div className="mt-3 flex flex-wrap items-center gap-3">
-              {(publishedAt || updatedAt) && <span className="inline-flex items-center gap-2 font-mono text-[11px] text-zinc-500"><CalendarDays className="size-3.5" aria-hidden="true" /><time dateTime={publishedAt ?? updatedAt ?? undefined}>{new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium', timeZone: 'Asia/Kolkata' }).format(new Date(publishedAt ?? updatedAt ?? ''))}</time></span>}
-              {currentPage.type === 'legal' && currentPage.documentType && <span className="border border-zinc-800 px-2 py-1 font-mono text-[10px] tracking-wide text-zinc-400 uppercase">{currentPage.documentType.replaceAll('-', ' ')}</span>}
-              {categories.map((category) => <span key={category} className="border border-zinc-800 px-2 py-1 font-mono text-[10px] tracking-wide text-zinc-400 uppercase">{category}</span>)}
+              {(publishedAt || updatedAt) && <span className="inline-flex items-center gap-2 font-mono text-[11px] text-text-muted"><CalendarDays className="size-3.5" aria-hidden="true" /><time dateTime={publishedAt ?? updatedAt ?? undefined}>{new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium', timeZone: 'Asia/Kolkata' }).format(new Date(publishedAt ?? updatedAt ?? ''))}</time></span>}
+              {currentPage.type === 'legal' && currentPage.documentType && <span className="border border-border-default px-2 py-1 font-mono text-[10px] tracking-wide text-text-secondary uppercase">{currentPage.documentType.replaceAll('-', ' ')}</span>}
+              {categories.map((category) => <span key={category} className="border border-border-default px-2 py-1 font-mono text-[10px] tracking-wide text-text-secondary uppercase">{category}</span>)}
             </div>
           )}
-          {sections.length > 0 && <nav aria-label={title + ' page sections'} className="mt-3 flex max-w-full flex-nowrap gap-2 overflow-x-auto pb-1">{sections.map((section, index) => <span key={section.id} className="shrink-0 border border-zinc-800 px-2.5 py-1.5 font-mono text-[10px] text-zinc-400"><span className="mr-1.5 text-odl">{String(index + 1).padStart(2, '0')}</span>{section.label}</span>)}</nav>}
+          {sections.length > 0 && <nav aria-label={title + ' page sections'} className="mt-3 flex max-w-full flex-nowrap gap-2 overflow-x-auto pb-1">{sections.map((section, index) => <span key={section.id} className="shrink-0 border border-border-default px-2.5 py-1.5 font-mono text-[10px] text-text-secondary"><span className="mr-1.5 text-odl">{String(index + 1).padStart(2, '0')}</span>{section.label}</span>)}</nav>}
         </div>
       </div>
     </section>

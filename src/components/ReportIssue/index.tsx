@@ -74,7 +74,7 @@ export const ReportIssue: React.FC<ReportIssueProps> = ({
       aria-label="Report an issue on GitHub (opens in a new tab)"
       suppressHydrationWarning
       className={cn(
-        'group flex cursor-pointer items-center gap-1.5 border border-transparent px-3 py-2 font-mono text-xs transition-all duration-300 ease-in-out hover:border-odl hover:bg-zinc-950 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl',
+        'group flex cursor-pointer items-center gap-1.5 border border-transparent px-3 py-2 font-mono text-xs transition-all duration-300 ease-in-out hover:border-odl hover:bg-surface-subtle hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl',
         className,
       )}
     >
@@ -82,7 +82,7 @@ export const ReportIssue: React.FC<ReportIssueProps> = ({
       <span>{displayLabel}</span>
       <span
         aria-hidden="true"
-        className="text-zinc-500 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-white"
+        className="text-zinc-500 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-text-primary"
       >
         ↗
       </span>

@@ -64,7 +64,7 @@ export const AIInterface = ({
       <section
         id="ai-chat-workspace"
         aria-label="OD LABS AI assistant"
-        className="mx-auto my-8 flex h-[78svh] min-h-[70svh] max-h-[95svh] w-[calc(100%-2rem)] max-w-6xl min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-zinc-800 bg-black text-white shadow-2xl shadow-black/30 sm:my-10 sm:w-[calc(100%-3rem)]"
+        className="mx-auto my-8 flex h-[78svh] min-h-[70svh] max-h-[95svh] w-[calc(100%-2rem)] max-w-6xl min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-border-default bg-surface text-text-primary shadow-2xl shadow-black/30 sm:my-10 sm:w-[calc(100%-3rem)]"
       >
         <Header mode={mode} newConversation={newConversation} />
 

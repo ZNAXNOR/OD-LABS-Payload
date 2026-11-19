@@ -104,15 +104,17 @@ type Props = {
   data: DefaultTypedEditorState
   enableGutter?: boolean
   enableProse?: boolean
+  readingContent?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 export default function RichText(props: Props) {
-  const { className, enableProse = true, enableGutter = true, ...rest } = props
+  const { className, enableProse = true, enableGutter = true, readingContent = false, ...rest } = props
   return (
     <ConvertRichText
       converters={jsxConverters}
       className={cn(
         'payload-richtext',
+        { 'reading-content': readingContent },
         {
           container: enableGutter,
           'max-w-none': !enableGutter,

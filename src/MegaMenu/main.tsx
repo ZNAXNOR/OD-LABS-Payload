@@ -70,7 +70,7 @@ export const MegaMenuMain = ({ pages, posts, legalPages, currentPage, contactSoc
               onEntrySelect={handleSelect}
             />
           </div>
-          <div className="min-w-0 border-t border-zinc-800/80 pt-7 lg:col-span-3 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
+          <div className="min-w-0 border-t border-border-default/80 pt-7 lg:col-span-3 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
             <MegaMenu_ContextDefault contactSocials={contactSocials} active={open} />
           </div>
         </div>

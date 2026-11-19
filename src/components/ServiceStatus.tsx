@@ -31,23 +31,23 @@ const presentation: Record<
   { dot: string; text: string; description: string }
 > = {
   operational: {
-    dot: 'bg-emerald-400 shadow-[0_0_0_3px_rgba(52,211,153,0.12)]',
-    text: 'text-emerald-300',
+    dot: 'bg-success shadow-[0_0_0_3px_rgba(52,211,153,0.12)]',
+    text: 'text-success-foreground',
     description: 'All systems operational',
   },
   degraded: {
-    dot: 'bg-amber-400 shadow-[0_0_0_3px_rgba(251,191,36,0.12)]',
-    text: 'text-amber-300',
+    dot: 'bg-warning shadow-[0_0_0_3px_rgba(251,191,36,0.12)]',
+    text: 'text-warning-foreground',
     description: 'Some services experiencing issues',
   },
   outage: {
-    dot: 'bg-red-400 shadow-[0_0_0_3px_rgba(248,113,113,0.14)]',
-    text: 'text-red-300',
+    dot: 'bg-error shadow-[0_0_0_3px_rgba(248,113,113,0.14)]',
+    text: 'text-error-foreground',
     description: 'Service disruption detected',
   },
   unknown: {
-    dot: 'bg-zinc-500',
-    text: 'text-zinc-400',
+    dot: 'bg-text-muted',
+    text: 'text-text-secondary',
     description: 'Status currently unavailable',
   },
 }
@@ -145,9 +145,9 @@ export function ServiceStatus({ variant = 'compact', className = '' }: ServiceSt
   const isBlock = variant === 'block'
   const description = isLoading ? 'Checking system status' : current.description
   const dotClass = isLoading
-    ? 'bg-odl shadow-[0_0_0_3px_rgba(233,66,53,0.14)] motion-safe:animate-pulse'
+    ? 'bg-brand shadow-[0_0_0_3px_rgba(233,66,53,0.14)] motion-safe:animate-pulse'
     : current.dot
-  const textClass = isLoading ? 'text-zinc-300' : current.text
+  const textClass = isLoading ? 'text-text-secondary' : current.text
 
   return (
     <a
@@ -156,17 +156,17 @@ export function ServiceStatus({ variant = 'compact', className = '' }: ServiceSt
       rel="noreferrer"
       aria-label={'Service status: ' + description + '. Open OD LABS status page in a new tab.'}
       className={[
-        'group font-mono transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl',
+        'group font-mono transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus-ring',
         isBlock
-          ? 'flex w-full items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs'
-          : 'inline-flex items-center gap-3 rounded-sm border border-white/10 bg-white/[0.02] px-3 py-2 text-[11px] tracking-wide hover:border-odl/50 hover:bg-white/[0.04]',
+          ? 'flex w-full items-center justify-between gap-4 border-t border-border-default pt-6 text-xs'
+          : 'inline-flex items-center gap-3 rounded-sm border border-border-default bg-surface px-3 py-2 text-[11px] tracking-wide hover:border-odl/50 hover:bg-surface-subtle',
         className,
       ].join(' ')}
     >
       {isBlock ? (
         <>
           <span className="flex min-w-0 flex-col gap-2">
-            <span className="text-[10px] tracking-[0.2em] text-zinc-500 uppercase">
+            <span className="text-[10px] tracking-[0.2em] text-text-muted uppercase">
               OD LABS / System status
             </span>
             <span className="flex items-center gap-3">
@@ -176,7 +176,7 @@ export function ServiceStatus({ variant = 'compact', className = '' }: ServiceSt
           </span>
           <SquareArrowOutUpRight
             aria-hidden="true"
-            className="size-3.5 shrink-0 text-zinc-500 transition-transform group-hover:translate-x-0.5 group-hover:text-odl"
+            className="size-3.5 shrink-0 text-text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-odl"
           />
         </>
       ) : (
@@ -185,15 +185,15 @@ export function ServiceStatus({ variant = 'compact', className = '' }: ServiceSt
             aria-hidden="true"
             className={'h-2 w-2 shrink-0 rounded-full ' + dotClass}
           />
-          <span className="text-[10px] tracking-[0.16em] text-zinc-500 uppercase">
+          <span className="text-[10px] tracking-[0.16em] text-text-muted uppercase">
             System
           </span>
-          <span className={'transition-colors group-hover:text-white ' + textClass}>
+          <span className={'transition-colors group-hover:text-text-primary ' + textClass}>
             {description}
           </span>
           <SquareArrowOutUpRight
             aria-hidden="true"
-            className="size-3 text-zinc-600 transition-colors group-hover:text-odl"
+            className="size-3 text-text-muted transition-colors group-hover:text-odl"
           />
         </>
       )}

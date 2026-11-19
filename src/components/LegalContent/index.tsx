@@ -67,6 +67,7 @@ export const LegalContent: React.FC<Props> = ({ legalPage }) => {
                 className="legal-page__rich-text"
                 data={legalPage.content}
                 enableGutter={false}
+                readingContent
               />
             )
           )}

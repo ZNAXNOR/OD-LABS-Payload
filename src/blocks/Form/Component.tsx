@@ -434,16 +434,16 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
         {anyStepHasError ? (
           <div
             role="alert"
-            className="flex items-start gap-3 border border-red-500/50 bg-red-500/10 p-4 text-sm text-red-300"
+            className="flex items-start gap-3 border border-error-border/50 bg-error-surface p-4 text-sm text-error"
           >
-            <span className="font-mono text-xs uppercase tracking-wider text-red-400 font-bold shrink-0 mt-0.5">
+            <span className="font-mono text-xs uppercase tracking-wider text-error font-bold shrink-0 mt-0.5">
               [Attention]
             </span>
             <div className="flex-1">
-              <p className="font-medium text-red-200">
+              <p className="font-medium text-error">
                 Some stages have incomplete or invalid information.
               </p>
-              <p className="mt-0.5 text-xs text-red-300/80">
+              <p className="mt-0.5 text-xs text-error/80">
                 Please review and resolve the highlighted stages before final submission.
               </p>
             </div>
@@ -461,7 +461,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
             <section
               className={`border-t border-border pt-4 first:border-t-0 first:pt-0 transition-colors ${
                 stepHasError
-                  ? 'border-red-500/40 bg-red-500/[0.03] p-4 border'
+                  ? 'border-error-border/50 bg-error-surface/30 p-4 border'
                   : ''
               }`}
               key={step.id || stepIndex}
@@ -469,26 +469,26 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
               <div className="mb-3 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2.5 flex-wrap">
                   <h3 className="font-mono text-xs uppercase tracking-[0.14em]">
-                    <span className="text-odl font-semibold">
+                    <span className="text-link font-semibold">
                       Step {String(stepIndex + 1).padStart(2, '0')}
                     </span>
-                    <span className="text-zinc-600 mx-2">—</span>
-                    <span className="text-zinc-100 font-medium">
+                    <span className="text-text-muted mx-2">—</span>
+                    <span className="text-text-primary font-medium">
                       {step.title}
                     </span>
                   </h3>
                   {stepHasError ? (
-                    <span className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.14em] text-red-400 border border-red-500/40 bg-red-500/10 px-2 py-0.5 font-semibold">
-                      <span className="size-1.5 rounded-full bg-red-500 animate-pulse" />
+                    <span className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.14em] text-error border border-error-border/50 bg-error-surface px-2 py-0.5 font-semibold">
+                      <span className="size-1.5 rounded-full bg-error animate-pulse" />
                       Action Required
                     </span>
                   ) : null}
                 </div>
                 <button
-                  className={`font-mono text-[9px] uppercase tracking-[0.12em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl ${
+                  className={`font-mono text-[9px] uppercase tracking-[0.12em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring ${
                     stepHasError
-                      ? 'text-red-400 hover:text-red-300 font-semibold underline underline-offset-4'
-                      : 'text-zinc-400 hover:text-odl'
+                      ? 'text-error hover:text-error font-semibold underline underline-offset-4'
+                      : 'text-text-secondary hover:text-link'
                   }`}
                   onClick={() => navigateToStep(stepIndex)}
                   type="button"
@@ -498,7 +498,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
               </div>
               <dl
                 className={`divide-y divide-border border-y border-border ${
-                  stepHasError ? 'divide-red-500/20 border-red-500/30' : ''
+                  stepHasError ? 'divide-red-500/20 border-error-border/30' : ''
                 }`}
               >
                 {stepFields.map((field: any) => {
@@ -534,28 +534,28 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                     >
                       <dt
                         className={`text-sm ${
-                          hasFieldErr ? 'text-red-400 font-medium' : 'text-zinc-400'
+                          hasFieldErr ? 'text-error font-medium' : 'text-text-secondary'
                         }`}
                       >
                         {field.label || field.name}
                         {field.required ? (
-                          <span className="ml-1 text-odl">*</span>
+                          <span className="ml-1 text-link">*</span>
                         ) : null}
                       </dt>
                       <dd className="wrap-break-word text-sm">
                         <span
                           className={
                             isEmpty
-                              ? 'text-zinc-600 italic'
+                              ? 'text-text-muted italic'
                               : hasFieldErr
-                                ? 'text-red-200 font-medium'
-                                : 'text-zinc-100'
+                                ? 'text-error font-medium'
+                                : 'text-text-primary'
                           }
                         >
                           {displayValue}
                         </span>
                         {hasFieldErr ? (
-                          <span className="block mt-1 text-xs text-red-400 font-medium">
+                          <span className="block mt-1 text-xs text-error font-medium">
                             {String(fieldError.message || 'This field is required')}
                           </span>
                         ) : null}
@@ -676,21 +676,21 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                     setError(undefined)
                     setHasSubmitted(false)
                   }}
-                  className={`focus-visible:outline-odl flex min-h-24 min-w-0 flex-1 items-center justify-between gap-4 border px-5 py-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 ${isSelected ? 'border-odl bg-odl/5' : 'border-zinc-800 hover:border-zinc-600'}`}
+                  className={`focus-visible:outline-focus-ring flex min-h-24 min-w-0 flex-1 items-center justify-between gap-4 border px-5 py-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 ${isSelected ? 'border-odl bg-odl/5' : 'border-border-default hover:border-border-default'}`}
                 >
                   <span className="min-w-0">
-                    <span className="block text-sm leading-6 font-medium text-zinc-100">
+                    <span className="block text-sm leading-6 font-medium text-text-primary">
                       {tabLabel}
                     </span>
                     {tabDescription ? (
-                      <span className="mt-1 block text-xs leading-5 text-zinc-500">
+                      <span className="mt-1 block text-xs leading-5 text-text-muted">
                         {tabDescription}
                       </span>
                     ) : null}
                   </span>
                   <span
                     aria-hidden="true"
-                    className={`grid size-5 shrink-0 place-items-center rounded-full border text-[9px] ${isSelected ? 'border-odl text-odl' : 'border-zinc-700 text-transparent'}`}
+                    className={`grid size-5 shrink-0 place-items-center rounded-full border text-[9px] ${isSelected ? 'border-odl text-link' : 'border-border-default text-transparent'}`}
                   >
                     {isSelected ? '●' : ''}
                   </span>
@@ -755,26 +755,26 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                             aria-current={viewing ? 'step' : undefined}
                             aria-invalid={hasError ? true : undefined}
                             onClick={() => navigateToStep(index)}
-                            className="group focus-visible:outline-odl w-full text-left focus-visible:outline-2 focus-visible:outline-offset-4 disabled:cursor-default"
+                            className="group focus-visible:outline-focus-ring w-full text-left focus-visible:outline-2 focus-visible:outline-offset-4 disabled:cursor-default"
                           >
                             <span className="flex items-center">
                               <span
                                 className={`grid size-8 shrink-0 place-items-center rounded-full border font-mono text-xs transition-colors ${
                                   hasSubmitted
-                                    ? 'border-emerald-700 bg-emerald-500/10 text-emerald-400'
+                                    ? 'border-success-border bg-success-surface text-success'
                                     : hasError
                                       ? viewing
-                                        ? 'border-red-500 bg-red-500/20 text-red-300 ring-2 ring-red-500/60 font-bold'
-                                        : 'border-red-600 bg-red-500/10 text-red-400 font-semibold'
+                                        ? 'border-error-border bg-error-surface text-error ring-2 ring-focus-ring/60 font-bold'
+                                        : 'border-error-border bg-error-surface text-error font-semibold'
                                       : viewing
-                                        ? 'border-white bg-white/5 text-white'
+                                        ? 'border-border-strong bg-surface-subtle text-text-primary'
                                         : completed
-                                          ? 'border-emerald-700 bg-emerald-500/10 text-emerald-400'
+                                          ? 'border-success-border bg-success-surface text-success'
                                           : pending
-                                            ? 'border-amber-500/70 bg-amber-500/5 text-amber-400'
+                                            ? 'border-warning-border bg-warning-surface text-warning'
                                             : partiallyFilled
-                                              ? 'border-zinc-500 bg-zinc-500/10 text-zinc-300'
-                                              : 'border-zinc-800 text-zinc-600'
+                                              ? 'border-border-strong bg-surface-subtle text-text-secondary'
+                                              : 'border-border-default text-text-muted'
                                 }`}
                               >
                                 {String(index + 1).padStart(2, '0')}
@@ -784,14 +784,14 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                                   aria-hidden="true"
                                   className={`mx-3 h-px flex-1 ${
                                     hasSubmitted || completed
-                                      ? 'bg-emerald-700'
+                                      ? 'bg-success'
                                       : hasError
-                                        ? 'bg-red-500/40'
+                                        ? 'bg-error/40'
                                         : pending
-                                          ? 'bg-amber-500/50'
+                                          ? 'bg-warning-surface0'
                                           : partiallyFilled
-                                            ? 'bg-zinc-700'
-                                            : 'bg-zinc-800'
+                                            ? 'bg-surface-subtle'
+                                            : 'bg-surface-subtle'
                                   }`}
                                 />
                               ) : null}
@@ -799,18 +799,18 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                             <span
                               className={`mt-3 block truncate pr-3 text-sm ${
                                 hasSubmitted
-                                  ? 'text-emerald-400 font-medium'
+                                  ? 'text-success font-medium'
                                   : hasError
-                                    ? 'text-red-400 font-medium group-hover:text-red-300'
+                                    ? 'text-error font-medium group-hover:text-error'
                                     : viewing
-                                      ? 'font-medium text-white'
+                                      ? 'font-medium text-text-primary'
                                       : completed
-                                        ? 'text-emerald-400 group-hover:text-emerald-300'
+                                        ? 'text-success group-hover:text-success'
                                         : pending
-                                          ? 'text-amber-300'
+                                          ? 'text-warning'
                                           : partiallyFilled
-                                            ? 'text-zinc-300 group-hover:text-zinc-100'
-                                            : 'text-zinc-500'
+                                            ? 'text-text-secondary group-hover:text-text-primary'
+                                            : 'text-text-muted'
                               }`}
                             >
                               {step.title}
@@ -818,15 +818,15 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                             <span
                               className={`mt-1 block font-mono text-[9px] uppercase tracking-[0.14em] ${
                                 hasSubmitted
-                                  ? 'text-emerald-500'
+                                  ? 'text-success'
                                   : hasError
-                                    ? 'text-red-500 font-semibold'
+                                    ? 'text-error font-semibold'
                                     : viewing
-                                      ? 'text-zinc-200 font-medium'
+                                      ? 'text-text-primary font-medium'
                                       : completed
-                                        ? 'text-emerald-500'
+                                        ? 'text-success'
                                         : pending
-                                          ? 'text-amber-400'
+                                          ? 'text-warning'
                                           : 'text-transparent'
                               }`}
                             >
@@ -842,25 +842,25 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                   <div className="mb-3 flex items-end justify-between gap-4">
                     <div>
                       <div className="flex items-center gap-2">
-                        <p className="font-mono text-[10px] tracking-[0.16em] text-zinc-500 uppercase">
+                        <p className="font-mono text-[10px] tracking-[0.16em] text-text-muted uppercase">
                           {activeForm?.title || 'Form'}
                         </p>
                         {hasSubmitted ? (
-                          <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-emerald-400 font-semibold">
+                          <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-success font-semibold">
                             • Completed
                           </span>
                         ) : isStepWithError(activeStep) ? (
-                          <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-red-500 font-semibold">
+                          <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-error font-semibold">
                             • Error
                           </span>
                         ) : null}
                       </div>
-                      <h2 className="mt-1 text-base font-medium text-zinc-100">
+                      <h2 className="mt-1 text-base font-medium text-text-primary">
                         {hasSubmitted ? 'Inquiry received' : currentStep?.title}
                       </h2>
                     </div>
-                    <p className="shrink-0 font-mono text-xs text-zinc-500">
-                      <span className="text-zinc-100">
+                    <p className="shrink-0 font-mono text-xs text-text-muted">
+                      <span className="text-text-primary">
                         {String(activeStep + 1).padStart(2, '0')}
                       </span>{' '}
                       / {String(steps.length).padStart(2, '0')}
@@ -897,18 +897,18 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                           aria-current={isViewing ? 'step' : undefined}
                           aria-invalid={stepHasError ? true : undefined}
                           aria-label={`Go to step ${index + 1}: ${step.title}`}
-                          className={`h-1 min-w-0 flex-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl ${
+                          className={`h-1 min-w-0 flex-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring ${
                             hasSubmitted || isCompleted
-                              ? 'bg-emerald-600'
+                              ? 'bg-success'
                               : stepHasError
-                                ? 'bg-red-500'
+                                ? 'bg-error'
                                 : isViewing
                                   ? 'bg-white'
                                   : isPending
-                                    ? 'bg-amber-500'
+                                    ? 'bg-warning'
                                     : isPartiallyFilled
-                                      ? 'bg-zinc-500'
-                                      : 'bg-zinc-800'
+                                      ? 'bg-surface-subtle'
+                                      : 'bg-surface-subtle'
                           }`}
                           disabled={hasSubmitted || isLoading}
                           key={step.id || index}
@@ -918,7 +918,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                       )
                     })}
                   </nav>
-                  <p className="mt-2 text-xs text-zinc-500">
+                  <p className="mt-2 text-xs text-text-muted">
                     {hasSubmitted ? (
                       'All steps completed'
                     ) : (
@@ -945,10 +945,10 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                     <p
                       className={`font-mono text-[10px] uppercase tracking-[0.16em] ${
                         hasSubmitted
-                          ? 'text-emerald-400'
+                          ? 'text-success'
                           : isMultiStep && isStepWithError(activeStep)
-                            ? 'text-red-400'
-                            : 'text-odl'
+                            ? 'text-error'
+                            : 'text-link'
                       }`}
                     >
                       {hasSubmitted
@@ -957,20 +957,20 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                           ? `Step ${String(activeStep + 1).padStart(2, '0')}${isStepWithError(activeStep) ? ' • Error' : ''}`
                           : introEyebrow}
                     </p>
-                    <h2 className="mt-3 text-2xl font-medium leading-tight tracking-tight text-zinc-100 md:text-3xl">
+                    <h2 className="mt-3 text-2xl font-medium leading-tight tracking-tight text-text-primary md:text-3xl">
                       {hasSubmitted
                         ? 'Inquiry received'
                         : introTitle || 'Get in touch'}
                     </h2>
                     {hasSubmitted ? (
-                      <div className="mt-4 max-w-md text-sm leading-6 text-zinc-400">
+                      <div className="mt-4 max-w-md text-sm leading-6 text-text-secondary">
                         <p>
                           We have received your submission and will get back to
                           you shortly.
                         </p>
                       </div>
                     ) : introDescription ? (
-                      <div className="mt-4 max-w-md text-sm leading-6 text-zinc-400 [&_p]:m-0">
+                      <div className="mt-4 max-w-md text-sm leading-6 text-text-secondary [&_p]:m-0">
                         {typeof introDescription === 'string' ? (
                           <p>{introDescription}</p>
                         ) : (
@@ -989,7 +989,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                     <div className="space-y-6">
                       {formattedContactActions.length > 0 && (
                         <div className="space-y-3">
-                          <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
+                          <div className="font-mono text-xs tracking-widest text-text-secondary uppercase">
                             Contacts
                           </div>
                           <ContactActions actions={formattedContactActions} />
@@ -998,7 +998,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
 
                       {formattedSocialLinks.length > 0 && (
                         <div className="space-y-3">
-                          <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
+                          <div className="font-mono text-xs tracking-widest text-text-secondary uppercase">
                             Socials
                           </div>
                           <SocialLinks links={formattedSocialLinks} />
@@ -1011,18 +1011,18 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                 <div className="flex min-h-[34rem] min-w-0 flex-col p-5 md:p-8">
                   {hasSubmitted ? (
                     <div className="my-auto flex flex-col justify-center py-8">
-                      <div className="border border-emerald-500/30 bg-emerald-500/5 p-6 md:p-8">
-                        <div className="mb-4 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-emerald-400 font-semibold">
-                          <span className="size-2 rounded-full bg-emerald-500" />
+                      <div className="border border-emerald-500/30 bg-success/5 p-6 md:p-8">
+                        <div className="mb-4 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-success font-semibold">
+                          <span className="size-2 rounded-full bg-success" />
                           Submission Confirmed
                         </div>
                         {activeForm?.confirmationMessage ? (
                           <RichText
                             data={activeForm.confirmationMessage}
-                            className="text-zinc-200 [&_h1]:text-zinc-100 [&_h2]:text-zinc-100 [&_h3]:text-zinc-100 [&_p]:text-zinc-300"
+                            className="text-text-primary [&_h1]:text-text-primary [&_h2]:text-text-primary [&_h3]:text-text-primary [&_p]:text-text-secondary"
                           />
                         ) : (
-                          <p className="text-zinc-300">
+                          <p className="text-text-secondary">
                             Thank you. Your message has been received.
                           </p>
                         )}
@@ -1033,7 +1033,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                       <div className="flex-1">
                         {isContactPage &&
                         contactSocials?.contactPage?.formIntroduction ? (
-                          <p className="mb-6 max-w-xl text-sm leading-6 text-zinc-400">
+                          <p className="mb-6 max-w-xl text-sm leading-6 text-text-secondary">
                             {contactSocials.contactPage.formIntroduction}
                           </p>
                         ) : null}
@@ -1041,7 +1041,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                           <>
                             {renderFields(activeForm?.fields ?? [])}
                             {privacyConsentEnabled ? (
-                              <label className="mt-8 flex cursor-pointer items-start gap-3 py-3 text-sm leading-6 text-zinc-400">
+                              <label className="mt-8 flex cursor-pointer items-start gap-3 py-3 text-sm leading-6 text-text-secondary">
                                 <input
                                   type="checkbox"
                                   className="accent-odl mt-1 size-4 shrink-0"
@@ -1050,7 +1050,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                                 <span>
                                   By sending this inquiry, you agree to the{' '}
                                   <a
-                                    className="hover:text-odl text-zinc-100 underline underline-offset-4"
+                                    className="hover:text-link text-text-primary underline underline-offset-4"
                                     href={privacyPolicyHref}
                                     target="_blank"
                                     rel="noreferrer"
@@ -1065,7 +1065,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                             {errors.privacyConsentAccepted ? (
                               <p
                                 role="alert"
-                                className="mt-2 text-xs text-red-500"
+                                className="mt-2 text-xs text-error"
                               >
                                 {String(errors.privacyConsentAccepted.message)}
                               </p>
@@ -1073,7 +1073,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                             {error ? (
                               <p
                                 role="alert"
-                                className="mt-5 text-sm text-red-500"
+                                className="mt-5 text-sm text-error"
                               >
                                 {error}
                               </p>
@@ -1085,7 +1085,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                               <>
                                 {renderPreview()}
                                 {privacyConsentEnabled ? (
-                                  <label className="mt-6 flex cursor-pointer items-start gap-3 py-3 text-sm leading-6 text-zinc-400">
+                                  <label className="mt-6 flex cursor-pointer items-start gap-3 py-3 text-sm leading-6 text-text-secondary">
                                     <input
                                       type="checkbox"
                                       className="accent-odl mt-1 size-4 shrink-0"
@@ -1094,7 +1094,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                                     <span>
                                       By sending this inquiry, you agree to the{' '}
                                       <a
-                                        className="hover:text-odl text-zinc-100 underline underline-offset-4"
+                                        className="hover:text-link text-text-primary underline underline-offset-4"
                                         href={privacyPolicyHref}
                                         target="_blank"
                                         rel="noreferrer"
@@ -1109,7 +1109,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                                 {errors.privacyConsentAccepted ? (
                                   <p
                                     role="alert"
-                                    className="mt-2 text-xs text-red-500"
+                                    className="mt-2 text-xs text-error"
                                   >
                                     {String(
                                       errors.privacyConsentAccepted.message,
@@ -1122,7 +1122,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                                 {renderFields(currentStep?.fields ?? [])}
                                 {activeStep === steps.length - 1 &&
                                 privacyConsentEnabled ? (
-                                  <label className="mt-8 flex cursor-pointer items-start gap-3 py-3 text-sm leading-6 text-zinc-400">
+                                  <label className="mt-8 flex cursor-pointer items-start gap-3 py-3 text-sm leading-6 text-text-secondary">
                                     <input
                                       type="checkbox"
                                       className="accent-odl mt-1 size-4 shrink-0"
@@ -1131,7 +1131,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                                     <span>
                                       By sending this inquiry, you agree to the{' '}
                                       <a
-                                        className="hover:text-odl text-zinc-100 underline underline-offset-4"
+                                        className="hover:text-link text-text-primary underline underline-offset-4"
                                         href={privacyPolicyHref}
                                         target="_blank"
                                         rel="noreferrer"
@@ -1147,7 +1147,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                                 errors.privacyConsentAccepted ? (
                                   <p
                                     role="alert"
-                                    className="mt-2 text-xs text-red-500"
+                                    className="mt-2 text-xs text-error"
                                   >
                                     {String(
                                       errors.privacyConsentAccepted.message,
@@ -1159,7 +1159,7 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                             {error ? (
                               <p
                                 role="alert"
-                                className="mt-5 text-sm text-red-500"
+                                className="mt-5 text-sm text-error"
                               >
                                 {error}
                               </p>

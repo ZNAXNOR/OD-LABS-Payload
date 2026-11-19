@@ -23,14 +23,14 @@ export const Checkbox: React.FC<
       <div className="flex items-center gap-2">
         <CheckboxUi
           defaultChecked={defaultValue}
-          className="size-4 rounded-none border-zinc-600 bg-black data-[state=checked]:border-odl data-[state=checked]:bg-odl data-[state=checked]:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl focus-visible:ring-0"
+          className="size-4 rounded-none border-border-default bg-surface-inset data-[state=checked]:border-odl data-[state=checked]:bg-odl data-[state=checked]:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl focus-visible:ring-0"
           id={name}
           {...props}
           onCheckedChange={(checked) => {
             setValue(props.name, checked)
           }}
         />
-        <label htmlFor={name} className="cursor-pointer text-sm font-medium leading-5 text-zinc-300">{label}<span className={`ml-2 font-mono text-[9px] font-normal uppercase tracking-[0.14em] ${required ? 'text-odl' : 'text-zinc-500'}`}>{required ? 'Required' : 'Optional'}</span></label>
+        <label htmlFor={name} className="cursor-pointer text-sm font-medium leading-5 text-text-secondary">{label}<span className={`ml-2 font-mono text-[9px] font-normal uppercase tracking-[0.14em] ${required ? 'text-odl' : 'text-text-muted'}`}>{required ? 'Required' : 'Optional'}</span></label>
       </div>
       {errors[name] && <Error name={name} />}
     </Width>
