@@ -21,7 +21,7 @@ export const Radio: React.FC<
           <label className="group flex cursor-pointer items-center gap-3 text-sm font-normal text-text-secondary" key={value}>
             <input
               type="radio"
-              className="size-4 shrink-0 appearance-none rounded-full border border-border-default bg-surface-inset transition-colors checked:border-odl checked:bg-odl checked:ring-2 checked:ring-odl/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
+              className="size-4 shrink-0 appearance-none rounded-full border border-border-default bg-surface-inset transition-colors checked:border-odl checked:bg-odl checked:ring-2 checked:ring-odl/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
               value={value}
               defaultChecked={defaultValue === value}
               {...register(name, { required })}
