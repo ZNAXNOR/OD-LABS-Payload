@@ -534,13 +534,96 @@ html[data-theme$='-contrast'] [data-theme='od-dark'] {
   --border-strong: #FFFFFF;
   --border-interactive: #FFB4AA;
   --focus-ring: #FFB4AA;
-  --brand: #FF6B5F;
-  --brand-hover: #FFB4AA;
-  --brand-subtle: #42110D;
+  --brand: #E94235;
+  --brand-hover: #FF756A;
+  --brand-subtle: color-mix(in oklab, #E94235 20%, var(--background));
   --link: #FFB4AA;
   --link-hover: #FFFFFF;
   --action-primary: #FFFFFF;
   --action-primary-foreground: #000000;
   --action-secondary: #171717;
   --action-secondary-foreground: #FFFFFF;
+}
+
+
+/* CSS-only theme thumbnails used by the appearance preset selector. */
+.od-theme-preview {
+  --preview-bg: #fff;
+  --preview-panel: #f5f5f5;
+  --preview-line: #a3a3a3;
+  --preview-text: #262626;
+  --preview-border: #d4d4d4;
+  background: var(--preview-bg);
+}
+.od-theme-preview[data-preview='dark'],
+.od-theme-preview[data-preview='dark-contrast'] {
+  --preview-bg: oklch(14.5% 0 0deg);
+  --preview-panel: oklch(17% 0 0deg);
+  --preview-line: oklch(70.8% 0 0deg);
+  --preview-text: #fff;
+  --preview-border: oklch(26.9% 0 0deg);
+}
+.od-theme-preview[data-preview='light-contrast'] {
+  --preview-bg: #fff;
+  --preview-panel: #f0f0f0;
+  --preview-line: #333;
+  --preview-text: #000;
+  --preview-border: #333;
+}
+.od-theme-preview[data-preview='dark-contrast'] {
+  --preview-bg: #000;
+  --preview-panel: #080808;
+  --preview-line: #fff;
+  --preview-text: #fff;
+  --preview-border: #fff;
+}
+.od-theme-preview[data-preview='auto'] {
+  background: linear-gradient(90deg, #fff 0 50%, oklch(14.5% 0 0deg) 50% 100%);
+}
+.od-theme-preview__rail {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 14%;
+  border-right: 1px solid var(--preview-border);
+  background: var(--preview-panel);
+}
+.od-theme-preview__top {
+  position: absolute;
+  inset: 0 0 auto 14%;
+  height: 20%;
+  border-bottom: 1px solid var(--preview-border);
+  background: var(--preview-panel);
+}
+.od-theme-preview__content {
+  position: absolute;
+  inset: 34% 12% auto 25%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.od-theme-preview__content span {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--preview-line);
+  opacity: .75;
+}
+.od-theme-preview__content span:nth-child(2) { width: 72%; }
+.od-theme-preview__content span:nth-child(3) { width: 48%; }
+.od-theme-preview__accent {
+  position: absolute;
+  right: 12%;
+  bottom: 14%;
+  width: 18%;
+  height: 12%;
+  border-radius: 2px;
+  background: #E94235;
+}
+.od-theme-preview[data-preview='auto'] .od-theme-preview__rail,
+.od-theme-preview[data-preview='auto'] .od-theme-preview__top {
+  background: linear-gradient(90deg, #f5f5f5 0 50%, #171717 50% 100%);
+  border-color: #888;
+}
+.od-theme-preview[data-preview='auto'] .od-theme-preview__content span {
+  background: linear-gradient(90deg, #737373 0 50%, #d4d4d4 50% 100%);
 }
