@@ -775,48 +775,61 @@ html[data-theme='od-dark-contrast'] :is(button, [role='button'], [data-ui-button
 }
 
 
+
 /*
  * Light-theme compatibility layer for legacy zinc/white utility classes.
  * New components should use semantic tokens; this keeps existing content
- * readable while those older styles are migrated. Explicit dark hero regions
- * retain their image-overlay palette.
+ * readable while older styles are migrated. Explicit dark hero regions retain
+ * their image-overlay palette.
  */
-html:is([data-theme='od-light'], [data-theme='od-light-contrast']) {
-  & .text-white,
-  & [class*='text-white/'] { color: var(--text-primary); }
-  & .text-zinc-50,
-  & .text-zinc-100,
-  & .text-zinc-200,
-  & .text-zinc-300 { color: var(--text-primary); }
-  & .text-zinc-400,
-  & .text-zinc-500,
-  & .text-zinc-600 { color: var(--text-secondary); }
-  & .border-zinc-700,
-  & .border-zinc-800,
-  & .border-zinc-900 { border-color: var(--border-default); }
-  & .bg-zinc-950,
-  & .bg-zinc-900 { background-color: var(--surface-subtle); }
-  & .bg-zinc-800 { background-color: var(--surface); }
-  & .bg-black\/40,
-  & .bg-black\/50 { background-color: color-mix(in oklab, var(--surface-subtle) 88%, transparent); }
-  & .bg-white\/5,
-  & .bg-white\/10 { background-color: var(--surface-subtle); }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .text-white,
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [class*='text-white/'] {
+  color: var(--text-primary);
+}
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .text-zinc-50,
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .text-zinc-100,
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .text-zinc-200,
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .text-zinc-300 {
+  color: var(--text-primary);
+}
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .text-zinc-400,
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .text-zinc-500,
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .text-zinc-600 {
+  color: var(--text-secondary);
+}
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .border-zinc-700,
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .border-zinc-800,
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .border-zinc-900 {
+  border-color: var(--border-default);
+}
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .bg-zinc-950,
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .bg-zinc-900 {
+  background-color: var(--surface-subtle);
+}
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .bg-zinc-800 {
+  background-color: var(--surface);
+}
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [class~='bg-black/40'],
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [class~='bg-black/50'] {
+  background-color: color-mix(in oklab, var(--surface-subtle) 88%, transparent);
+}
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [class~='bg-white/5'],
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [class~='bg-white/10'] {
+  background-color: var(--surface-subtle);
 }
 
 /* Preserve intentional dark image-led hero treatments inside light site themes. */
-html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] {
-  & .text-white,
-  & [class*='text-white/'] { color: #FFFFFF; }
-  & .text-zinc-50 { color: #FAFAFA; }
-  & .text-zinc-100 { color: #F5F5F5; }
-  & .text-zinc-200 { color: #E5E5E5; }
-  & .text-zinc-300 { color: #D4D4D4; }
-  & .text-zinc-400 { color: #A1A1AA; }
-  & .text-zinc-500 { color: #71717A; }
-  & .border-zinc-700 { border-color: #3F3F46; }
-  & .border-zinc-800 { border-color: #27272A; }
-  & .border-zinc-900 { border-color: #18181B; }
-  & .bg-zinc-950 { background-color: #09090B; }
-  & .bg-zinc-900 { background-color: #18181B; }
-  & .bg-zinc-800 { background-color: #27272A; }
-}
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .text-white,
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] [class*='text-white/'] { color: #FFFFFF; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .text-zinc-50 { color: #FAFAFA; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .text-zinc-100 { color: #F5F5F5; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .text-zinc-200 { color: #E5E5E5; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .text-zinc-300 { color: #D4D4D4; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .text-zinc-400 { color: #A1A1AA; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .text-zinc-500 { color: #71717A; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .border-zinc-700 { border-color: #3F3F46; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .border-zinc-800 { border-color: #27272A; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .border-zinc-900 { border-color: #18181B; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .bg-zinc-950 { background-color: #09090B; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .bg-zinc-900 { background-color: #18181B; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .bg-zinc-800 { background-color: #27272A; }
