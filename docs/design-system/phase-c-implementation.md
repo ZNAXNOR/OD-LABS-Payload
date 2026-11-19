@@ -31,6 +31,7 @@
 - Migrated footer and right rail to semantic tokens.
 - Migrated AI workspace shell, header, composer, transcript, source cards, error states, and conversation navigation to semantic tokens.
 - Migrated content-block headings, capability rows, testimonials, and the Introduction hero to semantic roles.
+- Migrated the MegaMenu shell, navigation header/footer, context panel, page index, context renderers, preview frames, and image placeholders to semantic surfaces and text roles.
 - Bound Tailwind Typography / Payload RichText prose colour variables to the active semantic palette.
 - Added light/dark SVG wordmark and square-logo variants; logo visibility follows the active root or header theme.
 - Migrated header surface and navigation text, including its image-hero dark override.
@@ -80,7 +81,7 @@ The dark default and subtle border pairs exceed the 3:1 non-text contrast thresh
 
 ## Remaining work
 
-This implementation is not yet ready to merge or deploy. The repository still contains fixed palette utilities and literal colours in multiple areas, including portions of MegaMenu, other content blocks, remaining heroes, and shared UI outside the migrated paths. Some fixed colours are intentional (image overlays, logos, code syntax, and explicit CMS-authored inline text formatting) and need explicit classification. Third-party AI element primitives and any nested components not listed above also require a targeted review.
+This implementation is not yet ready to merge or deploy. The repository still contains fixed palette utilities and literal colours in multiple areas, including some remaining MegaMenu preview/image overlays, other content blocks, remaining heroes, and shared UI outside the migrated paths. Some fixed colours are intentional (image overlays, logos, code syntax, and explicit CMS-authored inline text formatting) and need explicit classification. Third-party AI element primitives and any nested components not listed above also require a targeted review.
 
 Outstanding:
 1. Complete the repository-wide component migration based on the Phase A inventory.
