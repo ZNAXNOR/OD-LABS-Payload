@@ -584,11 +584,6 @@ html[data-reading-width='wide'] .payload-richtext.reading-content { --reading-wi
   }
 }
 
-/* SVG wordmarks use the same artwork with theme-appropriate text fills. */
-.odl-logo-dark { display: none; }
-html[data-theme^='od-dark'] .odl-logo-light { display: none; }
-html[data-theme^='od-dark'] .odl-logo-dark { display: block; }
-
 /* The header can deliberately use a contrasting theme over image-led heroes. */
 .site-header[data-theme='od-dark'] {
   --background: #0B0F14;
@@ -614,11 +609,6 @@ html[data-theme^='od-dark'] .odl-logo-dark { display: block; }
   --border-default: #566273;
   --focus-ring: #B52A22;
 }
-html[data-theme^='od-dark'] .odl-logo-light,
-[data-theme='od-dark'] .odl-logo-light { display: none; }
-html[data-theme^='od-dark'] .odl-logo-dark,
-[data-theme='od-dark'] .odl-logo-dark { display: block; }
-
 /* Default to dark artwork on light surfaces; switch to white artwork on dark surfaces. */
 .odl-logo-dark { display: block; }
 .odl-logo-light { display: none; }
@@ -650,3 +640,31 @@ html[data-theme^='od-dark'] .odl-logo-light,
   text-decoration-color: var(--brand);
   text-underline-offset: 0.2em;
 }
+
+/* Preserve high-contrast choices when the header uses its own image-overlay theme. */
+html[data-theme$='-contrast'] .site-header[data-theme='od-dark'] {
+  --background: #000000;
+  --foreground: #FFFFFF;
+  --surface: #080808;
+  --surface-raised: #171717;
+  --surface-subtle: #171717;
+  --text-primary: #FFFFFF;
+  --text-secondary: #F0F0F0;
+  --text-muted: #D6D6D6;
+  --border-default: #FFFFFF;
+  --focus-ring: #FFB4AA;
+}
+html[data-theme$='-contrast'] .site-header[data-theme='od-light'] {
+  --background: #FFFFFF;
+  --foreground: #000000;
+  --surface: #FFFFFF;
+  --surface-raised: #FFFFFF;
+  --surface-subtle: #F0F0F0;
+  --text-primary: #000000;
+  --text-secondary: #171717;
+  --text-muted: #333333;
+  --border-default: #333333;
+  --focus-ring: #A51D16;
+}
+[data-theme='od-light'] .odl-logo-light { display: none; }
+[data-theme='od-light'] .odl-logo-dark { display: block; }
