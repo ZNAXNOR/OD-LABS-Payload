@@ -20,7 +20,7 @@ export const PageContext = ({ context, mode }: PageContextProps) => {
     {(showSeoImage || showCssPreview) && <ContextImage image={showSeoImage ? context.seoImage : null} title={context.title} placeholder={showCssPreview} />}
 
     <section className="space-y-3">
-      <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{context.title}</h2>
+      <h2 className="font-mono text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">{context.title}</h2>
       {context.description && (
         <p className="max-w-2xl font-sans text-xs leading-relaxed text-text-secondary sm:text-sm">{context.description}</p>
       )}
