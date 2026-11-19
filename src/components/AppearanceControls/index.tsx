@@ -70,7 +70,7 @@ export const AppearanceControls: React.FC = () => {
       >
         <BookOpenText aria-hidden="true" className="h-5 w-5" />
       </summary>
-      <div className="fixed bottom-4 left-22 z-[100] w-64 rounded-lg border border-border-default bg-surface-overlay p-4 text-text-primary shadow-xl">
+      <div className="appearance-popover z-[100] w-64 rounded-lg border border-border-default bg-surface-overlay p-4 text-text-primary shadow-xl">
         <div className="mb-4">
           <ThemeSelector />
         </div>
