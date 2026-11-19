@@ -572,11 +572,16 @@ html[data-reading-width='wide'] .reading-content { --reading-width: 60rem; }
   }
 }
 
-.appearance-popover {
+ .appearance-popover {
   position: fixed;
   bottom: 1rem;
-  left: clamp(1rem, calc((100vw - 95rem) / 2 + 5.5rem), calc(100vw - 17rem));
+  left: 1rem;
   width: 16rem;
+}
+@media (min-width: 64rem) {
+  .appearance-popover {
+    left: max(5.5rem, calc((100vw - 95rem) / 2 + 5.5rem));
+  }
 }
 
 /* SVG wordmarks use the same artwork with theme-appropriate text fills. */
