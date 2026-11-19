@@ -17,7 +17,7 @@ export const PostsIndexContext = ({
       {mode === 'current' ? 'Current Section' : 'Latest Publications'}
     </div>
     <div>
-      <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{context.title}</h2>
+      <h2 className="font-mono text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">{context.title}</h2>
       <p className="mt-3 font-sans text-xs leading-relaxed text-text-secondary">{context.description}</p>
     </div>
     {mode === 'panel' && (
