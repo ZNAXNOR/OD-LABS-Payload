@@ -49,7 +49,7 @@ export const MegaMenu = ({ open, onClose, pages, legalPages, posts = [], contact
           const destination = new URL(link.href, window.location.href)
           if (destination.origin === window.location.origin) onClose()
         }}
-        className="fixed inset-0 left-0 top-0 block h-dvh w-screen max-w-none translate-x-0 translate-y-0 gap-0 overflow-hidden rounded-none border-0 bg-[#0A0A0A] p-0 text-white shadow-none !animate-none transition-opacity duration-300 data-[state=open]:opacity-100 data-[state=closed]:opacity-0 sm:rounded-none"
+        className="fixed inset-0 left-0 top-0 block h-dvh w-screen max-w-none translate-x-0 translate-y-0 gap-0 overflow-hidden rounded-none border-0 bg-background p-0 text-foreground shadow-none !animate-none transition-opacity duration-300 data-[state=open]:opacity-100 data-[state=closed]:opacity-0 sm:rounded-none"
       >
         <DialogTitle className="sr-only">OD LABS navigation</DialogTitle>
         <DialogDescription className="sr-only">Primary site navigation and contextual information for the current route.</DialogDescription>
