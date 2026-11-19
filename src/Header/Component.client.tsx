@@ -29,7 +29,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   return (
     <header
       className="site-header relative z-20 bg-surface/80 backdrop-blur-md"
-      {...(theme ? { 'data-theme': theme === 'od-dark' || theme === 'dark' ? 'od-dark' : 'od-light' } : {})}
+      {...(headerTheme ? { 'data-theme': headerTheme } : {})}
     >
       <div className="flex items-center justify-between border-b border-border-default px-6 py-5">
         <Link href="/" className="flex items-center gap-2">
