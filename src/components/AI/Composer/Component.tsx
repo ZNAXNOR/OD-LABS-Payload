@@ -40,13 +40,13 @@ export const Composer = ({
     <div
       id="ai-chat-composer"
       className={[
-        'relative shrink-0 border-t border-zinc-800/90 bg-black',
+        'relative shrink-0 border-t border-border-default bg-surface',
         sticky ? 'sticky bottom-0 z-30' : '',
       ].join(' ')}
     >
       <div className="mx-auto w-full max-w-5xl px-5 pt-4 pb-3 sm:px-8 lg:px-10">
         <PromptInput
-          className="focus-within:border-odl/70 rounded-xl border border-zinc-700 bg-zinc-950 transition-colors"
+          className="focus-within:border-focus-ring rounded-xl border border-border-default bg-surface-inset transition-colors"
           onSubmit={(_message, event) => onSubmit(event)}
         >
           <PromptInputBody>
@@ -55,14 +55,14 @@ export const Composer = ({
               onChange={(event) => setInput(event.target.value)}
               placeholder={placeholder || "Ask about OD LABS..."}
               aria-label="Message the OD LABS AI assistant"
-              className="min-h-14 rounded-t-xl px-4 py-3 text-base leading-6 text-zinc-100 placeholder:text-zinc-600"
+              className="min-h-14 rounded-t-xl px-4 py-3 text-base leading-6 text-text-primary placeholder:text-text-muted"
             />
           </PromptInputBody>
 
           <PromptInputFooter className="px-3 pb-3">
             <PromptInputTools className="min-w-0 flex-wrap gap-2">
-              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-zinc-600 uppercase">
-                <Sparkles className="text-odl size-3" aria-hidden="true" />
+              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-text-muted uppercase">
+                <Sparkles className="text-brand size-3" aria-hidden="true" />
                 Knowledge assistant is using
               </span>
               <PromptInputSelect
@@ -72,7 +72,7 @@ export const Composer = ({
               >
                 <PromptInputSelectTrigger
                   aria-label="Search content category"
-                  className="focus:ring-odl/50 h-8 w-auto min-w-28 rounded-md border border-zinc-800 px-2.5 text-xs text-zinc-300 hover:border-zinc-600 hover:bg-zinc-900 focus:ring-1"
+                  className="focus:ring-focus-ring/50 h-8 w-auto min-w-28 rounded-md border border-zinc-800 px-2.5 text-xs text-text-secondary hover:border-border-strong hover:bg-surface-subtle focus:ring-1"
                 >
                   <PromptInputSelectValue placeholder="All content" />
                 </PromptInputSelectTrigger>
@@ -87,7 +87,7 @@ export const Composer = ({
                   ))}
                 </PromptInputSelectContent>
               </PromptInputSelect>
-              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-zinc-600 uppercase">
+              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-text-muted uppercase">
                 to answer your queries
               </span>
             </PromptInputTools>
@@ -98,7 +98,7 @@ export const Composer = ({
                   ? 'Stop generating'
                   : 'Send message'
               }
-              className="bg-odl hover:bg-odl/80 size-10 rounded-full text-white transition-colors disabled:pointer-events-none disabled:opacity-30"
+              className="bg-brand-hover hover:bg-brand-hover/80 size-10 rounded-full text-text-inverted transition-colors disabled:pointer-events-none disabled:opacity-30"
               disabled={
                 !input.trim() &&
                 status !== 'streaming' &&
@@ -110,7 +110,7 @@ export const Composer = ({
           </PromptInputFooter>
         </PromptInput>
 
-        <p className="mt-2 text-center text-[11px] leading-5 text-zinc-600">
+        <p className="mt-2 text-center text-[11px] leading-5 text-text-muted">
           AI can make mistakes. Verify important information.
         </p>
       </div>
