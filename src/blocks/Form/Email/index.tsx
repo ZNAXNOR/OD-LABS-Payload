@@ -19,7 +19,7 @@ export const Email: React.FC<
     <Width width={width}>
       <FieldLabel htmlFor={name} label={label} required={required} />
       <Input
-        className="h-12 rounded-none border-zinc-800 bg-black text-sm text-zinc-100 shadow-none placeholder:text-zinc-600 focus-visible:ring-1 focus-visible:ring-odl focus-visible:ring-offset-0"
+        className="h-12 rounded-none border-border-default bg-surface-inset text-sm text-text-primary shadow-none placeholder:text-text-muted focus-visible:ring-1 focus-visible:ring-focus-ring focus-visible:ring-offset-0"
         defaultValue={defaultValue}
         id={name}
         placeholder={placeholder || ''}
