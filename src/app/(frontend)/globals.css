@@ -797,11 +797,16 @@ html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .text-zinc-50
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .text-zinc-600 {
   color: var(--text-secondary);
 }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .text-zinc-700 {
+  color: var(--text-primary);
+}
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .border-zinc-600,
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .border-zinc-700,
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .border-zinc-800,
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .border-zinc-900 {
   border-color: var(--border-default);
 }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .bg-black,
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .bg-zinc-950,
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) .bg-zinc-900 {
   background-color: var(--surface-subtle);
@@ -827,9 +832,12 @@ html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .text-zinc-300 { color: #D4D4D4; }
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .text-zinc-400 { color: #A1A1AA; }
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .text-zinc-500 { color: #71717A; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .text-zinc-700 { color: #3F3F46; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .border-zinc-600 { border-color: #52525B; }
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .border-zinc-700 { border-color: #3F3F46; }
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .border-zinc-800 { border-color: #27272A; }
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .border-zinc-900 { border-color: #18181B; }
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .bg-black { background-color: #000000; }
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .bg-zinc-950 { background-color: #09090B; }
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .bg-zinc-900 { background-color: #18181B; }
 html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] .bg-zinc-800 { background-color: #27272A; }
