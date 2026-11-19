@@ -805,9 +805,9 @@ export const FormBlock: React.FC<{ id?: string } & FormBlockType> = ({
                                     : viewing
                                       ? 'font-medium text-text-primary'
                                       : completed
-                                        ? 'text-success group-hover:text-emerald-300'
+                                        ? 'text-success group-hover:text-success'
                                         : pending
-                                          ? 'text-amber-300'
+                                          ? 'text-warning'
                                           : partiallyFilled
                                             ? 'text-text-secondary group-hover:text-text-primary'
                                             : 'text-text-muted'
