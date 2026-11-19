@@ -45,7 +45,7 @@ export const ConversationNavigator = ({
           <div ref={railRef} className="flex items-center gap-3">
             <div className="flex flex-col items-end justify-center">
               {hasMoreBefore && (
-                <div className="h-px w-1 bg-zinc-700" aria-hidden="true" />
+                <div className="h-px w-1 bg-border-default" aria-hidden="true" />
               )}
 
               {visibleSections.map((section, index) => {
@@ -63,7 +63,7 @@ export const ConversationNavigator = ({
                       'group pointer-events-auto relative flex h-7 w-6 shrink-0',
                       'items-center justify-end',
                       'cursor-pointer',
-                      'focus-visible:ring-odl/60 focus-visible:ring-2 focus-visible:outline-none',
+                      'focus-visible:ring-focus-ring/60 focus-visible:ring-2 focus-visible:outline-none',
                     ].join(' ')}
                   >
                     <span
@@ -71,7 +71,7 @@ export const ConversationNavigator = ({
                         'block h-1 rounded-full transition-all duration-200',
                         active
                           ? 'bg-odl w-5'
-                          : 'w-2 bg-zinc-600 group-hover:w-5 group-hover:bg-zinc-400',
+                          : 'w-2 bg-border-strong group-hover:w-5 group-hover:bg-text-muted',
                       ].join(' ')}
                     />
                   </button>
@@ -79,7 +79,7 @@ export const ConversationNavigator = ({
               })}
 
               {hasMoreAfter && (
-                <div className="h-px w-1 bg-zinc-700" aria-hidden="true" />
+                <div className="h-px w-1 bg-border-default" aria-hidden="true" />
               )}
             </div>
 
@@ -91,9 +91,9 @@ export const ConversationNavigator = ({
                 'px-1 py-2',
                 'text-xs font-medium tracking-[0.25em]',
                 '[writing-mode:vertical-rl]',
-                'text-zinc-600 transition-colors',
-                'hover:text-zinc-300',
-                'focus-visible:text-odl focus-visible:outline-none',
+                'text-text-muted transition-colors',
+                'hover:text-text-secondary',
+                'focus-visible:text-link focus-visible:outline-none',
               ].join(' ')}
               aria-label="Expand conversation sections"
             >
