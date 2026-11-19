@@ -77,7 +77,9 @@ export const AppearanceControls: React.FC = () => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
     event.preventDefault()
     const nextTab: SettingsTab =
-      event.key === 'Home' || (event.key === 'ArrowLeft' && activeTab === 'reading')
+      event.key === 'Home' ||
+      (event.key === 'ArrowLeft' && activeTab === 'reading') ||
+      (event.key === 'ArrowRight' && activeTab === 'appearance')
         ? 'appearance'
         : 'reading'
     setActiveTab(nextTab)
