@@ -3,7 +3,7 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { useMegaMenu } from '@/providers/MegaMenu'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Menu as MenuIcon } from 'lucide-react'
 
 import type { Header } from '@/payload-types'
@@ -20,11 +20,14 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const { openMenu } = useMegaMenu()
   const pathname = usePathname()
+  const previousPathname = useRef(pathname)
 
   useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
+    if (previousPathname.current !== pathname) {
+      previousPathname.current = pathname
+      setHeaderTheme(null)
+    }
+  }, [pathname, setHeaderTheme])
 
   return (
     <header
