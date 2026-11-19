@@ -290,3 +290,10 @@ You can also deploy your app manually, check out the [deployment documentation](
 ## Questions
 
 If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+
+
+## Project documentation
+
+- [Documentation index](docs/README.md)
+- [Design system audit and roadmap](docs/design-system/README.md)
+- [Database and media backup operations](docs/operations/database-backups.md)
