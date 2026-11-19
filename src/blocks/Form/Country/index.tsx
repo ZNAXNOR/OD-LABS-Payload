@@ -35,13 +35,13 @@ export const Country: React.FC<
 
           return (
             <Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
-              <SelectTrigger className="h-12 w-full rounded-none border-zinc-800 bg-black text-sm text-zinc-200 shadow-none focus:ring-1 focus:ring-odl focus:ring-offset-0" id={name}>
+              <SelectTrigger className="h-12 w-full rounded-none border-border-default bg-surface-inset text-sm text-text-primary shadow-none focus:ring-1 focus:ring-focus-ring focus:ring-offset-0" id={name}>
                 <SelectValue placeholder={placeholder || label} />
               </SelectTrigger>
-              <SelectContent className="rounded-none border-zinc-800 bg-zinc-950 text-zinc-200">
+              <SelectContent className="rounded-none border-border-default bg-surface text-text-primary">
                 {countryOptions.map(({ label, value }) => {
                   return (
-                    <SelectItem className="rounded-none focus:bg-zinc-800 focus:text-white" key={value} value={value}>
+                    <SelectItem className="rounded-none focus:bg-surface-subtle focus:text-text-primary" key={value} value={value}>
                       {label}
                     </SelectItem>
                   )
