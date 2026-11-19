@@ -3,7 +3,7 @@
 import React from 'react'
 
 import { useTheme } from '..'
-import type { Theme, ThemePreference } from '../types'
+import type { ThemePreference } from '../types'
 
 type BaseTheme = 'system' | 'light' | 'dark'
 type Variant = 'standard' | 'contrast'
