@@ -19,23 +19,23 @@ export const ContextBreadcrumb = ({ items }: { items: ContextBreadcrumbItem[] })
 
   return (
     <Breadcrumb className="min-w-0">
-      <BreadcrumbList className="flex-wrap gap-1.5 font-mono text-[10px] tracking-wide text-zinc-500 sm:gap-2">
+      <BreadcrumbList className="flex-wrap gap-1.5 font-mono text-[10px] tracking-wide text-text-muted sm:gap-2">
         {items.map((item, index) => {
           const isCurrent = index === items.length - 1
           return (
             <Fragment key={`${item.label}-${index}`}>
               <BreadcrumbItem>
                 {isCurrent ? (
-                  <BreadcrumbPage className="whitespace-normal break-words text-zinc-300">{item.label}</BreadcrumbPage>
+                  <BreadcrumbPage className="whitespace-normal break-words text-text-secondary">{item.label}</BreadcrumbPage>
                 ) : item.href ? (
-                  <BreadcrumbLink asChild className="text-zinc-500 hover:text-white">
+                  <BreadcrumbLink asChild className="text-text-muted hover:text-text-primary">
                     <Link href={item.href}>{item.label}</Link>
                   </BreadcrumbLink>
                 ) : (
-                  <span className="text-zinc-500">{item.label}</span>
+                  <span className="text-text-muted">{item.label}</span>
                 )}
               </BreadcrumbItem>
-              {!isCurrent && <BreadcrumbSeparator className="text-zinc-700" />}
+              {!isCurrent && <BreadcrumbSeparator className="text-text-muted" />}
             </Fragment>
           )
         })}
