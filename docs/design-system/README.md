@@ -9,7 +9,7 @@ Use one semantic token system across the public application. Components should c
 | Phase | Status |
 |---|---|
 | A — Existing application audit | Complete as a static source audit; see [audit.md](audit.md) |
-| B — Token vocabulary and theme specification | Pending |
+| B — Token vocabulary and theme specification | Complete; see [Phase B specification](phase-b-specification.md) |
 | C — Token implementation and component migration | Pending |
 | D — Theme and component verification | Pending |
 
@@ -27,4 +27,5 @@ Phase A changed documentation only. No runtime theme or component code was chang
 ## Documents
 
 - [Phase A audit](audit.md)
+- [Phase B specification](phase-b-specification.md)
 - [Stitch design reference](references/stitch-design.md)
