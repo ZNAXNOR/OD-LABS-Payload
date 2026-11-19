@@ -85,7 +85,7 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
 
   return (
     <section ref={heroRef} className="relative isolate mb-4 overflow-hidden">
-      <div className="relative z-10 container grid min-h-[36rem] sm:min-h-[40rem] lg:min-h-[42rem] grid-cols-1 items-center gap-12 py-8 lg:grid-cols-12 lg:gap-8 xl:gap-12">
+      <div className="relative z-10 container grid min-h-[36rem] sm:min-h-[40rem] lg:min-h-[42rem] grid-cols-1 items-center gap-12 pt-28 pb-8 lg:grid-cols-12 lg:gap-8 xl:gap-12">
         {/* Left: Content */}
         <div className="min-w-0 lg:col-span-8">
           <Eyebrow eyebrow={introductionEyebrow} sectionNumber="01" />
