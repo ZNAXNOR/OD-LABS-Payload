@@ -88,39 +88,39 @@
 
 :root {
   color-scheme: light;
-  --background: oklch(100% 0 0deg);
+  --background: oklch(98.5% 0 0deg);
   --foreground: oklch(14.5% 0 0deg);
-  --card: oklch(96.5% 0.005 265deg);
+  --card: oklch(100% 0 0deg);
   --card-foreground: oklch(14.5% 0 0deg);
   --popover: oklch(100% 0 0deg);
   --popover-foreground: oklch(14.5% 0 0deg);
   --primary: oklch(20.5% 0 0deg);
   --primary-foreground: oklch(98.5% 0 0deg);
-  --secondary: oklch(97% 0 0deg);
+  --secondary: oklch(96% 0 0deg);
   --secondary-foreground: oklch(20.5% 0 0deg);
-  --muted: oklch(97% 0 0deg);
-  --muted-foreground: oklch(55.6% 0 0deg);
-  --accent: oklch(97% 0 0deg);
+  --muted: oklch(96% 0 0deg);
+  --muted-foreground: oklch(45% 0 0deg);
+  --accent: oklch(96% 0 0deg);
   --accent-foreground: oklch(20.5% 0 0deg);
   --destructive: oklch(57.7% 0.245 27.325deg);
   --destructive-foreground: oklch(57.7% 0.245 27.325deg);
-  --border: oklch(92.2% 0 0deg);
-  --input: oklch(92.2% 0 0deg);
-  --ring: oklch(70.8% 0 0deg);
+  --border: oklch(86% 0 0deg);
+  --input: oklch(86% 0 0deg);
+  --ring: oklch(55.6% 0 0deg);
   --chart-1: oklch(64.6% 0.222 41.116deg);
   --chart-2: oklch(60% 0.118 184.704deg);
   --chart-3: oklch(39.8% 0.07 227.392deg);
   --chart-4: oklch(82.8% 0.189 84.429deg);
   --chart-5: oklch(76.9% 0.188 70.08deg);
   --radius: 0.625rem;
-  --sidebar: oklch(98.5% 0 0deg);
+  --sidebar: oklch(96% 0 0deg);
   --sidebar-foreground: oklch(14.5% 0 0deg);
   --sidebar-primary: oklch(20.5% 0 0deg);
   --sidebar-primary-foreground: oklch(98.5% 0 0deg);
   --sidebar-accent: oklch(97% 0 0deg);
   --sidebar-accent-foreground: oklch(20.5% 0 0deg);
-  --sidebar-border: oklch(92.2% 0 0deg);
-  --sidebar-ring: oklch(70.8% 0 0deg);
+  --sidebar-border: oklch(86% 0 0deg);
+  --sidebar-ring: oklch(55.6% 0 0deg);
   --success: oklch(78% 0.08 200deg);
   --warning: oklch(89% 0.1 75deg);
   --error: oklch(75% 0.15 25deg);
@@ -146,17 +146,23 @@
   --brand-subtle: color-mix(in oklab, #E94235 12%, var(--background));
   --action-primary: var(--primary);
   --action-primary-foreground: var(--primary-foreground);
+  --button-primary: #D6382D;
+  --button-primary-foreground: #FFFFFF;
+  --button-primary-hover: #C93228;
+  --button-primary: #D6382D;
+  --button-primary-foreground: #FFFFFF;
+  --button-primary-hover: #C93228;
   --action-secondary: var(--secondary);
   --action-secondary-foreground: var(--secondary-foreground);
-  --link: #E94235;
-  --link-hover: #C93228;
-  --success-foreground: var(--foreground);
+  --link: #C93228;
+  --link-hover: #A82922;
+  --success-foreground: oklch(42% 0.1 195deg);
   --success-surface: color-mix(in oklab, var(--success) 18%, var(--background));
   --success-border: var(--success);
-  --warning-foreground: var(--foreground);
+  --warning-foreground: oklch(43% 0.1 75deg);
   --warning-surface: color-mix(in oklab, var(--warning) 22%, var(--background));
   --warning-border: var(--warning);
-  --error-foreground: var(--foreground);
+  --error-foreground: oklch(45% 0.16 25deg);
   --error-surface: color-mix(in oklab, var(--error) 18%, var(--background));
   --error-border: var(--error);
   --info: var(--chart-3);
@@ -227,13 +233,13 @@
   --action-secondary-foreground: var(--secondary-foreground);
   --link: #FF756A;
   --link-hover: #FF9B93;
-  --success-foreground: var(--foreground);
+  --success-foreground: oklch(78% 0.12 190deg);
   --success-surface: color-mix(in oklab, var(--success) 28%, var(--background));
   --success-border: var(--success);
-  --warning-foreground: var(--foreground);
+  --warning-foreground: oklch(82% 0.12 80deg);
   --warning-surface: color-mix(in oklab, var(--warning) 28%, var(--background));
   --warning-border: var(--warning);
-  --error-foreground: var(--foreground);
+  --error-foreground: oklch(75% 0.15 25deg);
   --error-surface: color-mix(in oklab, var(--error) 28%, var(--background));
   --error-border: var(--error);
   --info: var(--chart-3);
@@ -294,6 +300,9 @@
   --brand-subtle: color-mix(in oklab, #E94235 12%, #FFFFFF);
   --action-primary: #000000;
   --action-primary-foreground: #FFFFFF;
+  --button-primary: #D6382D;
+  --button-primary-foreground: #FFFFFF;
+  --button-primary-hover: #C93228;
   --action-secondary: #F0F0F0;
   --action-secondary-foreground: #000000;
   --link: #A51D16;
@@ -439,6 +448,9 @@
   --color-brand-subtle: var(--brand-subtle);
   --color-action-primary: var(--action-primary);
   --color-action-primary-foreground: var(--action-primary-foreground);
+  --color-button-primary: var(--button-primary);
+  --color-button-primary-foreground: var(--button-primary-foreground);
+  --color-button-primary-hover: var(--button-primary-hover);
   --color-action-secondary: var(--action-secondary);
   --color-action-secondary-foreground: var(--action-secondary-foreground);
   --color-link: var(--link);
@@ -576,14 +588,14 @@ html[data-reading-width='wide'] .payload-richtext.reading-content { --reading-wi
 .site-header[data-theme='od-light'] {
   --background: oklch(100% 0 0deg);
   --foreground: oklch(14.5% 0 0deg);
-  --surface: oklch(96.5% 0.005 265deg);
+  --surface: oklch(100% 0 0deg);
   --surface-raised: oklch(100% 0 0deg);
-  --surface-subtle: oklch(97% 0 0deg);
+  --surface-subtle: oklch(96% 0 0deg);
   --text-primary: oklch(14.5% 0 0deg);
-  --text-secondary: oklch(55.6% 0 0deg);
-  --text-muted: oklch(55.6% 0 0deg);
-  --border-default: oklch(92.2% 0 0deg);
-  --focus-ring: oklch(70.8% 0 0deg);
+  --text-secondary: oklch(45% 0 0deg);
+  --text-muted: oklch(45% 0 0deg);
+  --border-default: oklch(86% 0 0deg);
+  --focus-ring: oklch(55.6% 0 0deg);
 }
 /* Default to dark artwork on light surfaces; switch to white artwork on dark surfaces. */
 .odl-logo-dark { display: block; }
@@ -755,4 +767,10 @@ html[data-theme$='-contrast'] [data-theme='od-dark'] {
 }
 .od-theme-preview[data-preview='auto'] .od-theme-preview__content span {
   background: linear-gradient(90deg, #737373 0 50%, #d4d4d4 50% 100%);
+}
+
+
+/* Dark contrast makes every button boundary explicit, including icon-only controls. */
+html[data-theme='od-dark-contrast'] :is(button, [role='button'], [data-ui-button='true']) {
+  border: 1px solid var(--border-default);
 }
