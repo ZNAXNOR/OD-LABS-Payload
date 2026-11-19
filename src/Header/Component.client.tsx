@@ -35,10 +35,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
   return (
     <header
-      className="relative z-20 bg-zinc-950/80 backdrop-blur-md"
-      {...(theme ? { 'data-theme': theme } : {})}
+      className="site-header relative z-20 bg-surface/90 backdrop-blur-md"
+      {...(theme ? { 'data-theme': theme === 'dark' ? 'od-dark' : 'od-light' } : {})}
     >
-      <div className="flex items-center justify-between border-b border-[#4B525F] px-6 py-5">
+      <div className="flex items-center justify-between border-b border-border-default px-6 py-5">
         <Link href="/" className="flex items-center gap-2">
           <Logo
             loading="eager"
