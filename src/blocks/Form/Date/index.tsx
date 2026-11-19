@@ -91,7 +91,7 @@ export const Date: React.FC<
                       className={cn(
                         'group flex h-12 w-full items-center justify-between rounded-none border border-border-default bg-surface-inset px-4 text-sm shadow-none transition-colors text-left',
                         'hover:border-border-default focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus-ring focus-visible:ring-offset-0',
-                        errors[name] && 'border-red-500/80',
+                        errors[name] && 'border-error-border/80',
                       )}
                     >
                       <span
@@ -128,7 +128,7 @@ export const Date: React.FC<
                         ) : null}
                         <CalendarDays
                           aria-hidden="true"
-                          className="size-4 text-text-secondary group-hover:text-odl transition-colors"
+                          className="size-4 text-text-secondary group-hover:text-link transition-colors"
                         />
                       </div>
                     </button>
@@ -159,7 +159,7 @@ export const Date: React.FC<
                           onChange(formatDateToISO(new NativeDate()))
                           setOpen(false)
                         }}
-                        className="text-text-secondary hover:text-odl transition-colors uppercase tracking-[0.12em]"
+                        className="text-text-secondary hover:text-link transition-colors uppercase tracking-[0.12em]"
                       >
                         Today
                       </button>
