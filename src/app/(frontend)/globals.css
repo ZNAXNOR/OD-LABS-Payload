@@ -556,3 +556,10 @@ html[data-reading-width='wide'] .reading-content { --reading-width: 60rem; }
     transition-duration: 0.01ms !important;
   }
 }
+
+.appearance-popover {
+  position: fixed;
+  bottom: 1rem;
+  left: clamp(1rem, calc((100vw - 95rem) / 2 + 5.5rem), calc(100vw - 17rem));
+  width: 16rem;
+}
