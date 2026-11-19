@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import logoSrc from './ODLABS-full.svg'
