@@ -9,7 +9,7 @@ import Eyebrow from '@/components/Eyebrow'
 
 export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richText, eyebrow }) => {
   return (
-    <div className="">
+    <div className="pt-24">
       <div className="container mb-8">
         <Eyebrow eyebrow={eyebrow} sectionNumber="01" />
         {richText && <RichText className="mb-6" data={richText} enableGutter={false} />}
