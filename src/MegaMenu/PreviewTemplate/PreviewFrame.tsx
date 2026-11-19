@@ -13,7 +13,7 @@ export const PreviewFrame = ({ entry, metadata, showSections = false }: { entry:
     <div className={['grid min-h-0 min-w-0 grid-cols-1 gap-4 sm:gap-6', showVisual ? 'sm:grid-cols-[minmax(180px,0.8fr)_minmax(0,1.7fr)]' : ''].join(' ')}>
       {showVisual && <div className="min-w-0 select-none"><ContextImage image={showImage ? entry.image : null} title={entry.title} compact placeholder={showPlaceholder} /></div>}
       <div className="flex min-w-0 flex-col items-start">
-        <h2 className="line-clamp-3 font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{entry.title}</h2>
+        <h2 className="line-clamp-3 font-mono text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">{entry.title}</h2>
         {entry.description && <p className="mt-2 line-clamp-2 max-w-3xl font-sans text-xs leading-relaxed text-text-secondary sm:text-sm">{entry.description}</p>}
         {metadata && <div className="mt-3 flex flex-wrap items-center gap-3">{metadata}</div>}
         <div className="mt-4"><Button asChild variant="outline" size="sm" className="!px-4 !py-2"><Link href={entry.href}>View {entry.destinationLabel}<SquareArrowOutUpRight aria-hidden="true" /></Link></Button></div>
