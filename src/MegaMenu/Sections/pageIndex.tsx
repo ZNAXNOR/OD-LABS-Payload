@@ -20,11 +20,11 @@ export const MegaMenu_PageIndex = ({
   return (
     <section className="mt-8 flex min-h-0 flex-1 flex-col pt-5 lg:mt-10 lg:pt-6">
       <div className="mb-4 flex shrink-0 items-center justify-between gap-4">
-        <div className="font-mono text-xs tracking-widest text-zinc-500 uppercase">Index</div>
-        <div className="font-mono text-[10px] text-zinc-600">{String(category.entries.length).padStart(2, '0')} ITEMS</div>
+        <div className="font-mono text-xs tracking-widest text-text-muted uppercase">Index</div>
+        <div className="font-mono text-[10px] text-text-muted">{String(category.entries.length).padStart(2, '0')} ITEMS</div>
       </div>
 
-      <div role="tablist" aria-label="Content categories" className="mb-4 flex shrink-0 items-center gap-5 border-b border-zinc-800/80">
+      <div role="tablist" aria-label="Content categories" className="mb-4 flex shrink-0 items-center gap-5 border-b border-border-default/80">
         {categories.map((item) => {
           const selected = item.slug === category.slug
           return (
@@ -38,7 +38,7 @@ export const MegaMenu_PageIndex = ({
               onClick={() => onCategoryChange(item.slug)}
               className={[
                 'relative -mb-px shrink-0 border-b-2 px-0.5 py-3 font-mono text-xs tracking-wide transition-colors',
-                selected ? 'border-odl text-white' : 'border-transparent text-zinc-500 hover:text-zinc-200',
+                selected ? 'border-odl text-white' : 'border-transparent text-text-muted hover:text-text-primary',
               ].join(' ')}
             >
               {item.label}
@@ -69,7 +69,7 @@ export const MegaMenu_PageIndex = ({
                 onFocus={() => onEntryHover(entry)}
                 onBlur={onEntryLeave}
                 onClick={() => onEntrySelect(entry)}
-                className="group flex min-h-16 w-full items-center justify-between gap-5 border-b border-zinc-800/70 pb-5 pt-1 text-left font-mono text-xl font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl sm:text-2xl lg:text-3xl"
+                className="group flex min-h-16 w-full items-center justify-between gap-5 border-b border-border-default/70 pb-5 pt-1 text-left font-mono text-xl font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring sm:text-2xl lg:text-3xl"
               >
                 <span className="inline-flex min-w-0 items-center">
                   <span
@@ -93,7 +93,7 @@ export const MegaMenu_PageIndex = ({
                 </span>
                 <span className={[
                   'shrink-0 font-mono text-xs font-normal transition-colors duration-300 sm:pr-6 lg:pr-10',
-                  selected || current ? 'text-odl' : 'text-zinc-500',
+                  selected || current ? 'text-odl' : 'text-text-muted',
                 ].join(' ')}>
                   {String(index + 1).padStart(2, '0')}
                 </span>
