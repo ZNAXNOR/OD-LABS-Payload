@@ -15,7 +15,11 @@ const initialContext: ThemeContextType = {
 const ThemeContext = createContext(initialContext)
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setThemeState] = useState<Theme>(defaultTheme)
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof document === 'undefined') return defaultTheme
+    const initialTheme = document.documentElement.getAttribute('data-theme')
+    return themeIsValid(initialTheme) ? initialTheme : defaultTheme
+  })
   const [preference, setPreference] = useState<ThemePreference>('auto')
 
   const setTheme = useCallback((themeToSet: Theme | null) => {
