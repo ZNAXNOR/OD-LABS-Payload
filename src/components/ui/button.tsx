@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
 
-        fill: 'h-auto rounded-none bg-brand-hover px-8 py-4 text-text-inverted font-mono text-xs font-semibold uppercase tracking-wider hover:brightness-95',
+        fill: 'h-auto rounded-none border border-button-primary bg-button-primary px-8 py-4 font-mono text-xs font-semibold uppercase tracking-wider text-button-primary-foreground hover:border-button-primary-hover hover:bg-button-primary-hover',
 
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
