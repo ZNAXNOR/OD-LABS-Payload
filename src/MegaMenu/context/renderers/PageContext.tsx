@@ -22,25 +22,25 @@ export const PageContext = ({ context, mode }: PageContextProps) => {
     <section className="space-y-3">
       <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{context.title}</h2>
       {context.description && (
-        <p className="max-w-2xl font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">{context.description}</p>
+        <p className="max-w-2xl font-sans text-xs leading-relaxed text-text-secondary sm:text-sm">{context.description}</p>
       )}
     </section>
 
     {mode === 'preview' && context.sections.length > 0 && (
       <section className="space-y-3">
-        <div className="border-b border-zinc-700/60 pb-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase">On This Page</div>
+        <div className="border-b border-border-default/60 pb-2 font-mono text-[11px] tracking-widest text-text-muted uppercase">On This Page</div>
         <nav aria-label={`${context.title} page sections`} className="space-y-1.5">
           {context.sections.map((section, index) => (
             <Link
               key={section.id}
               href={section.href}
-              className="group flex min-h-9 items-center justify-between gap-3 border border-zinc-800 bg-zinc-900/50 px-3 py-2 font-mono text-xs text-zinc-300 transition-colors hover:border-zinc-600 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
+              className="group flex min-h-9 items-center justify-between gap-3 border border-border-default bg-surface-raised/50 px-3 py-2 font-mono text-xs text-text-secondary transition-colors hover:border-border-strong hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
             >
               <span className="flex min-w-0 items-center gap-2">
                 <span className="shrink-0 text-odl">{String(index + 1).padStart(2, '0')}</span>
                 <span className="truncate">{section.label}</span>
               </span>
-              <SquareArrowOutUpRight className="size-3.5 shrink-0 text-zinc-500 transition-colors group-hover:text-odl" aria-hidden="true" />
+              <SquareArrowOutUpRight className="size-3.5 shrink-0 text-text-muted transition-colors group-hover:text-odl" aria-hidden="true" />
             </Link>
           ))}
         </nav>
