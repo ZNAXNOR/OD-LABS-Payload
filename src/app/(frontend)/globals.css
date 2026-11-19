@@ -469,14 +469,8 @@
   }
 }
 
-html {
-  opacity: 0;
-}
-
-html[data-theme='dark'],
-html[data-theme='light'] {
-  opacity: initial;
-}
+html { color-scheme: light; }
+html[data-theme^='od-dark'] { color-scheme: dark; }
 
 
 /* AI chat transcript: scroll internally within the bounded workspace. */
