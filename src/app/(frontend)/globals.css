@@ -202,9 +202,9 @@
   --sidebar-accent-foreground: oklch(98.5% 0 0deg);
   --sidebar-border: oklch(26.9% 0 0deg);
   --sidebar-ring: oklch(43.9% 0 0deg);
-  --success: oklch(28% 0.1 200deg);
-  --warning: oklch(35% 0.08 70deg);
-  --error: oklch(45% 0.1 25deg);
+  --success: oklch(70% 0.12 190deg);
+  --warning: oklch(78% 0.12 80deg);
+  --error: oklch(68% 0.15 25deg);
 
   --surface: var(--card);
   --surface-raised: var(--card);
@@ -772,4 +772,51 @@ html[data-theme$='-contrast'] [data-theme='od-dark'] {
 /* Dark contrast makes every button boundary explicit, including icon-only controls. */
 html[data-theme='od-dark-contrast'] :is(button, [role='button'], [data-ui-button='true']) {
   border: 1px solid var(--border-default);
+}
+
+
+/*
+ * Light-theme compatibility layer for legacy zinc/white utility classes.
+ * New components should use semantic tokens; this keeps existing content
+ * readable while those older styles are migrated. Explicit dark hero regions
+ * retain their image-overlay palette.
+ */
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) {
+  & .text-white,
+  & [class*='text-white/'] { color: var(--text-primary); }
+  & .text-zinc-50,
+  & .text-zinc-100,
+  & .text-zinc-200,
+  & .text-zinc-300 { color: var(--text-primary); }
+  & .text-zinc-400,
+  & .text-zinc-500,
+  & .text-zinc-600 { color: var(--text-secondary); }
+  & .border-zinc-700,
+  & .border-zinc-800,
+  & .border-zinc-900 { border-color: var(--border-default); }
+  & .bg-zinc-950,
+  & .bg-zinc-900 { background-color: var(--surface-subtle); }
+  & .bg-zinc-800 { background-color: var(--surface); }
+  & .bg-black\/40,
+  & .bg-black\/50 { background-color: color-mix(in oklab, var(--surface-subtle) 88%, transparent); }
+  & .bg-white\/5,
+  & .bg-white\/10 { background-color: var(--surface-subtle); }
+}
+
+/* Preserve intentional dark image-led hero treatments inside light site themes. */
+html:is([data-theme='od-light'], [data-theme='od-light-contrast']) [data-theme='od-dark'] {
+  & .text-white,
+  & [class*='text-white/'] { color: #FFFFFF; }
+  & .text-zinc-50 { color: #FAFAFA; }
+  & .text-zinc-100 { color: #F5F5F5; }
+  & .text-zinc-200 { color: #E5E5E5; }
+  & .text-zinc-300 { color: #D4D4D4; }
+  & .text-zinc-400 { color: #A1A1AA; }
+  & .text-zinc-500 { color: #71717A; }
+  & .border-zinc-700 { border-color: #3F3F46; }
+  & .border-zinc-800 { border-color: #27272A; }
+  & .border-zinc-900 { border-color: #18181B; }
+  & .bg-zinc-950 { background-color: #09090B; }
+  & .bg-zinc-900 { background-color: #18181B; }
+  & .bg-zinc-800 { background-color: #27272A; }
 }
