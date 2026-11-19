@@ -15,7 +15,7 @@ export const PostHero: React.FC<{
   const { setHeaderTheme } = useHeaderTheme()
 
   useEffect(() => {
-    setHeaderTheme('dark')
+    setHeaderTheme('od-dark')
   })
 
   const hasAuthors =
