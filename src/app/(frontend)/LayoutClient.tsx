@@ -49,7 +49,7 @@ const LayoutClientContent = ({
     <>
       <div className="mx-auto grid w-full max-w-380 grid-cols-1 lg:grid-cols-[72px_minmax(0,1fr)_72px]">
         {leftRail}
-        <div className="flex min-h-screen min-w-0 flex-col">
+        <div className="relative flex min-h-screen min-w-0 flex-col">
           {header}
           <main id="main-content" className="flex-1">{children}</main>
           {footer}
