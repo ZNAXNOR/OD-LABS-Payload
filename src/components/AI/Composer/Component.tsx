@@ -72,7 +72,7 @@ export const Composer = ({
               >
                 <PromptInputSelectTrigger
                   aria-label="Search content category"
-                  className="focus:ring-focus-ring/50 h-8 w-auto min-w-28 rounded-md border border-zinc-800 px-2.5 text-xs text-text-secondary hover:border-border-strong hover:bg-surface-subtle focus:ring-1"
+                  className="focus:ring-focus-ring/50 h-8 w-auto min-w-28 rounded-md border border-border-default px-2.5 text-xs text-text-secondary hover:border-border-strong hover:bg-surface-subtle focus:ring-1"
                 >
                   <PromptInputSelectValue placeholder="All content" />
                 </PromptInputSelectTrigger>
