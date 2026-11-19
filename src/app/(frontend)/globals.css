@@ -689,54 +689,40 @@ html[data-theme$='-contrast'] [data-theme='od-dark'] {
 /* CSS-only theme thumbnails used by the appearance preset selector. */
 .od-theme-preview {
   --preview-bg: #fff;
-  --preview-panel: #f5f5f5;
-  --preview-line: #a3a3a3;
-  --preview-text: #262626;
+  --preview-line: #737373;
   --preview-border: #d4d4d4;
+  position: relative;
   background: var(--preview-bg);
 }
 .od-theme-preview[data-preview='dark'],
 .od-theme-preview[data-preview='dark-contrast'] {
   --preview-bg: oklch(14.5% 0 0deg);
-  --preview-panel: oklch(17% 0 0deg);
   --preview-line: oklch(70.8% 0 0deg);
-  --preview-text: #fff;
   --preview-border: oklch(26.9% 0 0deg);
 }
 .od-theme-preview[data-preview='light-contrast'] {
   --preview-bg: #fff;
-  --preview-panel: #f0f0f0;
   --preview-line: #333;
-  --preview-text: #000;
   --preview-border: #333;
 }
 .od-theme-preview[data-preview='dark-contrast'] {
   --preview-bg: #000;
-  --preview-panel: #080808;
   --preview-line: #fff;
-  --preview-text: #fff;
-  --preview-border: #fff;
+  --preview-border: #737373;
 }
 .od-theme-preview[data-preview='auto'] {
   background: linear-gradient(90deg, #fff 0 50%, oklch(14.5% 0 0deg) 50% 100%);
 }
-.od-theme-preview__rail {
+.od-theme-preview__divider {
   position: absolute;
-  inset: 0 auto 0 0;
-  width: 14%;
-  border-right: 1px solid var(--preview-border);
-  background: var(--preview-panel);
-}
-.od-theme-preview__top {
-  position: absolute;
-  inset: 0 0 auto 14%;
-  height: 20%;
-  border-bottom: 1px solid var(--preview-border);
-  background: var(--preview-panel);
+  inset: 0 auto 0 50%;
+  width: 1px;
+  background: var(--preview-border);
+  transform: translateX(-50%);
 }
 .od-theme-preview__content {
   position: absolute;
-  inset: 34% 12% auto 25%;
+  inset: 25% 12% auto;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -759,15 +745,9 @@ html[data-theme$='-contrast'] [data-theme='od-dark'] {
   border-radius: 2px;
   background: #E94235;
 }
-.od-theme-preview[data-preview='auto'] .od-theme-preview__rail,
-.od-theme-preview[data-preview='auto'] .od-theme-preview__top {
-  background: linear-gradient(90deg, #f5f5f5 0 50%, #171717 50% 100%);
-  border-color: #888;
-}
 .od-theme-preview[data-preview='auto'] .od-theme-preview__content span {
   background: linear-gradient(90deg, #737373 0 50%, #d4d4d4 50% 100%);
 }
-
 
 /* Dark contrast makes every button boundary explicit, including icon-only controls. */
 html[data-theme='od-dark-contrast'] :is(button, [role='button'], [data-ui-button='true']) {
