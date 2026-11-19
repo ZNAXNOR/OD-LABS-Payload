@@ -32,17 +32,17 @@ const presentation: Record<
 > = {
   operational: {
     dot: 'bg-success shadow-[0_0_0_3px_rgba(52,211,153,0.12)]',
-    text: 'text-success',
+    text: 'text-success-foreground',
     description: 'All systems operational',
   },
   degraded: {
     dot: 'bg-warning shadow-[0_0_0_3px_rgba(251,191,36,0.12)]',
-    text: 'text-warning',
+    text: 'text-warning-foreground',
     description: 'Some services experiencing issues',
   },
   outage: {
     dot: 'bg-error shadow-[0_0_0_3px_rgba(248,113,113,0.14)]',
-    text: 'text-error',
+    text: 'text-error-foreground',
     description: 'Service disruption detected',
   },
   unknown: {
