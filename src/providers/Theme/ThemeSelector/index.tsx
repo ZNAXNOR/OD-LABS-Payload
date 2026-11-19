@@ -36,7 +36,7 @@ export const ThemeSelector: React.FC = () => {
           const selected = preference === value
           return (
             <label
-              className="group flex min-w-0 cursor-pointer flex-col gap-2 rounded-md border border-border-default bg-surface-raised p-2 transition-colors hover:border-brand aria-[checked=true]:border-brand aria-[checked=true]:bg-brand-subtle focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus-ring"
+              className="group flex min-w-0 cursor-pointer flex-col gap-2 rounded-md border border-border-default bg-surface-raised p-2 transition-colors hover:border-brand has-[:checked]:border-brand has-[:checked]:bg-brand-subtle focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus-ring"
               key={value}
             >
               <input
