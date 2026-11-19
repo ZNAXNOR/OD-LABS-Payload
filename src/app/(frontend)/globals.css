@@ -166,6 +166,11 @@
 
 /* OD Dark — cool charcoal foundation with restrained slate surfaces. */
 [data-theme='od-dark'] {
+  --chart-1: #FF9B90;
+  --chart-2: #78D7BE;
+  --chart-3: #A8C9E8;
+  --chart-4: #FFD18A;
+  --chart-5: #C9A7F5;
   color-scheme: dark;
   --background: #0B0F14;
   --foreground: #F4F7FA;
@@ -238,6 +243,11 @@
 
 /* OD Dark High Contrast. */
 [data-theme='od-dark-contrast'] {
+  --chart-1: #FFB4AA;
+  --chart-2: #9BE8D3;
+  --chart-3: #B8D9F5;
+  --chart-4: #FFE0A8;
+  --chart-5: #DCC5FF;
   color-scheme: dark;
   --background: #000000;
   --foreground: #FFFFFF;
@@ -310,6 +320,11 @@
 
 /* OD Light High Contrast. */
 [data-theme='od-light-contrast'] {
+  --chart-1: #A51D16;
+  --chart-2: #145B4C;
+  --chart-3: #174A78;
+  --chart-4: #704500;
+  --chart-5: #684A8E;
   color-scheme: light;
   --background: #FFFFFF;
   --foreground: #000000;
