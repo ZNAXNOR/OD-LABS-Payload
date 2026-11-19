@@ -6,6 +6,7 @@ Project documentation is maintained here. The root `README.md` remains the repos
 - [Design system overview](design-system/README.md)
 - [Phase A — existing application audit](design-system/audit.md)
 - [Phase B — semantic tokens, theme presets, and accessibility specification](design-system/phase-b-specification.md)
+- [Phase C — implementation record and verification status](design-system/phase-c-implementation.md)
 - [Stitch design reference](design-system/references/stitch-design.md)
 
 ## Operations
