@@ -89,15 +89,15 @@ export const Date: React.FC<
                       type="button"
                       aria-label={label || 'Select date'}
                       className={cn(
-                        'group flex h-12 w-full items-center justify-between rounded-none border border-zinc-800 bg-black px-4 text-sm shadow-none transition-colors text-left',
-                        'hover:border-zinc-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-odl focus-visible:ring-offset-0',
+                        'group flex h-12 w-full items-center justify-between rounded-none border border-border-default bg-surface-inset px-4 text-sm shadow-none transition-colors text-left',
+                        'hover:border-border-default focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus-ring focus-visible:ring-offset-0',
                         errors[name] && 'border-red-500/80',
                       )}
                     >
                       <span
                         className={cn(
                           'truncate font-mono text-xs sm:text-sm',
-                          hasValue ? 'text-zinc-100 font-medium' : 'text-zinc-600',
+                          hasValue ? 'text-text-primary font-medium' : 'text-text-muted',
                         )}
                       >
                         {hasValue
@@ -121,14 +121,14 @@ export const Date: React.FC<
                                 onChange('')
                               }
                             }}
-                            className="p-1 text-zinc-500 hover:text-zinc-200 transition-colors focus-visible:outline-none cursor-pointer"
+                            className="p-1 text-text-muted hover:text-text-primary transition-colors focus-visible:outline-none cursor-pointer"
                           >
                             <X className="size-3.5" />
                           </span>
                         ) : null}
                         <CalendarDays
                           aria-hidden="true"
-                          className="size-4 text-zinc-400 group-hover:text-odl transition-colors"
+                          className="size-4 text-text-secondary group-hover:text-odl transition-colors"
                         />
                       </div>
                     </button>
@@ -136,7 +136,7 @@ export const Date: React.FC<
                   <PopoverContent
                     align="start"
                     sideOffset={6}
-                    className="w-auto p-0 rounded-none border border-zinc-800 bg-zinc-950 text-zinc-100 shadow-2xl"
+                    className="w-auto p-0 rounded-none border border-border-default bg-surface text-text-primary shadow-2xl"
                   >
                     <Calendar
                       mode="single"
@@ -152,14 +152,14 @@ export const Date: React.FC<
                       }}
                       autoFocus
                     />
-                    <div className="flex items-center justify-between border-t border-zinc-800/80 px-6 py-3 bg-black/40 font-mono text-[11px]">
+                    <div className="flex items-center justify-between border-t border-border-default/80 px-6 py-3 bg-surface-inset/40 font-mono text-[11px]">
                       <button
                         type="button"
                         onClick={() => {
                           onChange(formatDateToISO(new NativeDate()))
                           setOpen(false)
                         }}
-                        className="text-zinc-400 hover:text-odl transition-colors uppercase tracking-[0.12em]"
+                        className="text-text-secondary hover:text-odl transition-colors uppercase tracking-[0.12em]"
                       >
                         Today
                       </button>
@@ -170,12 +170,12 @@ export const Date: React.FC<
                             onChange('')
                             setOpen(false)
                           }}
-                          className="text-zinc-500 hover:text-zinc-200 transition-colors uppercase tracking-[0.12em]"
+                          className="text-text-muted hover:text-text-primary transition-colors uppercase tracking-[0.12em]"
                         >
                           Clear
                         </button>
                       ) : (
-                        <span className="text-zinc-600 uppercase tracking-[0.12em]">
+                        <span className="text-text-muted uppercase tracking-[0.12em]">
                           No date selected
                         </span>
                       )}
