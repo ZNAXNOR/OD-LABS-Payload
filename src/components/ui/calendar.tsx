@@ -68,7 +68,7 @@ function Calendar({
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
-          "has-focus:border-odl border-border-default shadow-xs has-focus:ring-focus-ring/50 has-focus:ring-1 relative rounded-none border bg-surface-inset",
+          "has-focus:border-brand border-border-default shadow-xs has-focus:ring-focus-ring/50 has-focus:ring-1 relative rounded-none border bg-surface-inset",
           defaultClassNames.dropdown_root
         ),
         dropdown: cn(
@@ -99,17 +99,17 @@ function Calendar({
           defaultClassNames.day
         ),
         range_start: cn(
-          "bg-odl text-text-primary rounded-none",
+          "bg-brand-hover text-text-inverted rounded-none",
           defaultClassNames.range_start
         ),
-        range_middle: cn("bg-odl/20 text-text-primary rounded-none", defaultClassNames.range_middle),
-        range_end: cn("bg-odl text-text-primary rounded-none", defaultClassNames.range_end),
+        range_middle: cn("bg-brand-subtle text-text-primary rounded-none", defaultClassNames.range_middle),
+        range_end: cn("bg-brand-hover text-text-inverted rounded-none", defaultClassNames.range_end),
         today: cn(
-          "border border-odl/50 text-odl font-mono font-semibold rounded-none",
+          "border border-brand/50 text-link font-mono font-semibold rounded-none",
           defaultClassNames.today
         ),
         outside: cn(
-          "text-zinc-700 opacity-40 aria-selected:text-text-muted",
+          "text-text-disabled opacity-40 aria-selected:text-text-muted",
           defaultClassNames.outside
         ),
         disabled: cn(
@@ -198,11 +198,11 @@ function CalendarDayButton({
       className={cn(
         "flex aspect-square h-auto w-full min-w-[--cell-size] flex-col items-center justify-center font-mono text-sm rounded-none transition-all duration-150",
         "text-text-primary hover:bg-surface-subtle hover:text-text-primary",
-        "data-[selected-single=true]:bg-odl data-[selected-single=true]:text-text-primary data-[selected-single=true]:hover:bg-odl/90 data-[selected-single=true]:font-semibold",
+        "data-[selected-single=true]:bg-odl data-[selected-single=true]:text-text-primary data-[selected-single=true]:hover:bg-brand-hover data-[selected-single=true]:font-semibold",
         "data-[range-start=true]:bg-odl data-[range-start=true]:text-text-primary",
         "data-[range-end=true]:bg-odl data-[range-end=true]:text-text-primary",
         "data-[range-middle=true]:bg-odl/20 data-[range-middle=true]:text-text-primary",
-        "group-data-[focused=true]/day:border-odl group-data-[focused=true]/day:ring-1 group-data-[focused=true]/day:ring-odl group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10",
+        "group-data-[focused=true]/day:border-brand group-data-[focused=true]/day:ring-1 group-data-[focused=true]/day:ring-focus-ring group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10",
         "disabled:pointer-events-none disabled:opacity-30 disabled:text-text-muted disabled:hover:bg-transparent disabled:hover:text-text-muted disabled:line-through",
         defaultClassNames.day,
         className
