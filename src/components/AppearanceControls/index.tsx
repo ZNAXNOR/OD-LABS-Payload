@@ -1,8 +1,9 @@
 'use client'
 
-import { BookOpenText } from 'lucide-react'
+import { BookOpenText, X } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 
 type ReadingSize = 'small' | 'standard' | 'large'
@@ -29,6 +30,7 @@ const applyPreferences = ({ size, width }: Preferences) => {
 }
 
 export const AppearanceControls: React.FC = () => {
+  const [open, setOpen] = useState(false)
   const [preferences, setPreferences] = useState<Preferences>(DEFAULTS)
 
   useEffect(() => {
@@ -63,50 +65,80 @@ export const AppearanceControls: React.FC = () => {
   ]
 
   return (
-    <details className="group relative">
-      <summary
-        aria-label="Open appearance and reading settings"
-        className="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-md text-text-secondary transition-colors hover:bg-surface-subtle hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring [&::-webkit-details-marker]:hidden"
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          aria-label="Open appearance and reading settings"
+          aria-expanded={open}
+          className="flex h-10 w-10 items-center justify-center rounded-md text-text-secondary transition-colors hover:bg-surface-subtle hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
+          type="button"
+        >
+          <BookOpenText aria-hidden="true" className="h-5 w-5" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        align="start"
+        className="z-[1000] max-h-[min(80vh,42rem)] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto rounded-md border border-border-default bg-surface-overlay p-4 text-text-primary shadow-2xl"
+        side="right"
+        sideOffset={12}
       >
-        <BookOpenText aria-hidden="true" className="h-5 w-5" />
-      </summary>
-      <div className="appearance-popover z-[100] w-64 rounded-lg border border-border-default bg-surface-overlay p-4 text-text-primary shadow-xl">
-        <div className="mb-4">
+        <div className="mb-4 flex items-center justify-between border-b border-border-default pb-3">
+          <div>
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-brand">OD LABS / DISPLAY</p>
+            <h2 className="mt-1 text-sm font-semibold text-text-primary">Display settings</h2>
+          </div>
+          <button
+            aria-label="Close display settings"
+            className="rounded p-1 text-text-muted hover:bg-surface-subtle hover:text-text-primary"
+            onClick={() => setOpen(false)}
+            type="button"
+          >
+            <X aria-hidden="true" className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="mb-5">
           <ThemeSelector />
         </div>
-        <fieldset className="mb-4">
-          <legend className="mb-2 text-xs font-medium text-text-secondary">Reading text size</legend>
-          <div className="grid grid-cols-3 gap-1">
-            {sizes.map(({ value, label }) => (
-              <button
-                aria-pressed={preferences.size === value}
-                className="rounded border border-border-default px-2 py-1.5 text-xs hover:bg-surface-subtle aria-pressed:border-border-interactive aria-pressed:bg-surface-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
-                key={value}
-                onClick={() => update({ ...preferences, size: value })}
-                type="button"
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend className="mb-2 text-xs font-medium text-text-secondary">Reading width</legend>
-          <div className="grid grid-cols-3 gap-1">
-            {widths.map(({ value, label }) => (
-              <button
-                aria-pressed={preferences.width === value}
-                className="rounded border border-border-default px-2 py-1.5 text-xs hover:bg-surface-subtle aria-pressed:border-border-interactive aria-pressed:bg-surface-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
-                key={value}
-                onClick={() => update({ ...preferences, width: value })}
-                type="button"
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </fieldset>
-      </div>
-    </details>
+
+        <div className="border-t border-border-default pt-4">
+          <p className="mb-3 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-text-muted">
+            Reading
+          </p>
+          <fieldset className="mb-4">
+            <legend className="mb-2 text-xs font-medium text-text-secondary">Text size</legend>
+            <div className="grid grid-cols-3 gap-1">
+              {sizes.map(({ value, label }) => (
+                <button
+                  aria-pressed={preferences.size === value}
+                  className="rounded-sm border border-border-default px-2 py-1.5 text-xs text-text-primary hover:bg-surface-subtle aria-pressed:border-brand aria-pressed:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
+                  key={value}
+                  onClick={() => update({ ...preferences, size: value })}
+                  type="button"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend className="mb-2 text-xs font-medium text-text-secondary">Content width</legend>
+            <div className="grid grid-cols-3 gap-1">
+              {widths.map(({ value, label }) => (
+                <button
+                  aria-pressed={preferences.width === value}
+                  className="rounded-sm border border-border-default px-2 py-1.5 text-xs text-text-primary hover:bg-surface-subtle aria-pressed:border-brand aria-pressed:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
+                  key={value}
+                  onClick={() => update({ ...preferences, width: value })}
+                  type="button"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+        </div>
+      </PopoverContent>
+    </Popover>
   )
 }
