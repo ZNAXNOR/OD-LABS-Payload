@@ -38,7 +38,7 @@ export const MegaMenu_PageIndex = ({
               onClick={() => onCategoryChange(item.slug)}
               className={[
                 'relative -mb-px shrink-0 border-b-2 px-0.5 py-3 font-mono text-xs tracking-wide transition-colors',
-                selected ? 'border-odl text-white' : 'border-transparent text-text-muted hover:text-text-primary',
+                selected ? 'border-odl text-text-primary' : 'border-transparent text-text-muted hover:text-text-primary',
               ].join(' ')}
             >
               {item.label}
@@ -80,7 +80,7 @@ export const MegaMenu_PageIndex = ({
                   </span>
                   <span className={[
                     'truncate transition-colors duration-300',
-                    selected ? 'text-odl' : 'text-white group-hover:text-odl',
+                    selected ? 'text-odl' : 'text-text-primary group-hover:text-odl',
                   ].join(' ')}>
                     {entry.title}
                   </span>
