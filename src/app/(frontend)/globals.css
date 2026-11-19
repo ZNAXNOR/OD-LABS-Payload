@@ -419,17 +419,6 @@ html[data-reading-width='wide'] .payload-richtext.reading-content { --reading-wi
   }
 }
 
- .appearance-popover {
-  position: fixed;
-  bottom: 1rem;
-  left: 1rem;
-  width: 16rem;
-}
-@media (min-width: 64rem) {
-  .appearance-popover {
-    left: max(5.5rem, calc((100vw - 95rem) / 2 + 5.5rem));
-  }
-}
 
 /* The header can deliberately use a contrasting theme over image-led heroes. */
 .site-header[data-theme='od-dark'] {
