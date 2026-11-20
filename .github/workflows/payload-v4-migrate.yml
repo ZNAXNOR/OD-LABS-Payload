@@ -43,6 +43,8 @@ jobs:
           cache: pnpm
 
       - name: Run official Payload v3 to v4 mechanical upgrade
+        env:
+          CI: "false"
         run: pnpm dlx @payloadcms/codemod@beta upgrade run --tag beta
 
       - name: Switch to the officially templated pnpm major
