@@ -7,6 +7,8 @@ on:
       - upgrade/payload-4-beta
     paths:
       - .github/workflows/payload-v4-migrate.yml
+      - src/payload.config.ts
+      - src/plugins/index.ts
 
 permissions:
   contents: read
