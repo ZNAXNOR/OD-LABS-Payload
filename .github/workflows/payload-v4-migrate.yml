@@ -47,6 +47,15 @@ jobs:
           CI: "false"
         run: pnpm dlx @payloadcms/codemod@beta upgrade run --tag beta
 
+      - name: Install the Payload 4 Sharp transformer required by the migration
+        env:
+          CI: "false"
+        shell: bash
+        run: |
+          set -euo pipefail
+          PAYLOAD_VERSION="$(node -p "require('./package.json').dependencies.payload")"
+          pnpm add --save-exact "@payloadcms/transformer-sharp@${PAYLOAD_VERSION}"
+
       - name: Switch to the officially templated pnpm major
         shell: bash
         run: |
