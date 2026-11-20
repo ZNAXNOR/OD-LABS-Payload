@@ -56,7 +56,7 @@ export function SocialLinks({
             rel="noreferrer noopener"
             aria-label={label}
             title={label}
-            className="grid size-11 place-items-center border border-zinc-800 text-zinc-400 transition-colors hover:border-odl hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-odl"
+            className="grid size-11 place-items-center border border-border-default text-text-secondary transition-colors hover:border-brand-hover hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
           >
             <SocialIcon platform={platform} />
           </a>

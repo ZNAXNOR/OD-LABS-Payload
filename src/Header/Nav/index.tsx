@@ -15,9 +15,9 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
     <nav className="text-md flex items-center gap-6 font-mono tracking-wide">
       {navItems.map(({ link }, i) => (
         <React.Fragment key={i}>
-          {i > 0 && <span className="text-zinc-800 select-none">•</span>}
+          {i > 0 && <span className="text-text-muted select-none">•</span>}
           <CMSLink
-            className="group relative inline-flex items-center text-zinc-400 hover:text-white"
+            className="group relative inline-flex items-center text-text-secondary hover:text-text-primary"
             {...link}
             label={null}
           >
@@ -28,13 +28,13 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
         </React.Fragment>
       ))}
 
-      <span className="text-zinc-800 select-none">|</span>
+      <span className="text-text-muted select-none">|</span>
       <Link href="/search">
         <span className="sr-only">Search</span>
-        <SearchIcon className="w-5 text-zinc-400 hover:text-white" />
+        <SearchIcon className="w-5 text-text-secondary hover:text-text-primary" />
       </Link>
-      <span className="text-zinc-800 select-none">|</span>
-      <div className="text-zinc-400 hover:text-white">
+      <span className="text-text-muted select-none">|</span>
+      <div className="text-text-secondary hover:text-text-primary">
         <div className="text-md font-mono tracking-wide select-none" title="India Standard Time · UTC+5:30">
           {time ?? '--:-- --'}<span> IST</span>
         </div>

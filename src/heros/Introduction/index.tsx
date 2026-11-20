@@ -85,18 +85,18 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
 
   return (
     <section ref={heroRef} className="relative isolate mb-4 overflow-hidden">
-      <div className="relative z-10 container grid min-h-[75vh] grid-cols-1 items-center gap-12 py-8 lg:grid-cols-12 lg:gap-8 xl:gap-12">
+      <div className="relative z-10 container grid min-h-[36rem] sm:min-h-[40rem] lg:min-h-[42rem] grid-cols-1 items-center gap-12 pt-28 pb-8 lg:grid-cols-12 lg:gap-8 xl:gap-12">
         {/* Left: Content */}
         <div className="min-w-0 lg:col-span-8">
           <Eyebrow eyebrow={introductionEyebrow} sectionNumber="01" />
 
           {/* Heading */}
           <div className="space-y-3 sm:space-y-4">
-            <h1 className="text-5xl leading-[1.04] font-bold tracking-[-0.04em] text-[#F4F4F0] sm:text-7xl lg:text-8xl">
+            <h1 className="text-5xl leading-[1.04] font-bold tracking-[-0.04em] text-text-primary sm:text-7xl lg:text-8xl">
               {introductionHeader}
             </h1>
 
-            <div className="flex flex-wrap items-baseline gap-x-3.5 text-3xl leading-[1.15] font-medium tracking-[-0.03em] text-zinc-400 sm:text-5xl lg:text-6xl">
+            <div className="flex flex-wrap items-baseline gap-x-3.5 text-3xl leading-[1.15] font-medium tracking-[-0.03em] text-text-secondary sm:text-5xl lg:text-6xl">
               <span>I build</span>
 
               <TextType
@@ -106,13 +106,13 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
                     ? phrases
                     : ['Websites', 'AI Systems', 'Cloud Solutions']
                 }
-                className="border-b border-zinc-600 pb-0.5 font-semibold text-zinc-200"
+                className="border-b border-border-default pb-0.5 font-semibold text-text-primary"
                 typingSpeed={75}
                 deletingSpeed={35}
                 pauseDuration={1800}
                 initialDelay={300}
                 cursorStyle="bar"
-                cursorColor="#FF3B30"
+                cursorColor="#E94235"
                 cursorBlinkDuration={0.5}
                 typeEffect="rise"
                 loop
@@ -121,7 +121,7 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
             </div>
           </div>
           {introductionDescription && (
-            <p className="mt-8 max-w-xl text-base leading-7 text-white/65 sm:text-lg">
+            <p className="mt-8 max-w-xl text-base leading-7 text-text-secondary sm:text-lg">
               {introductionDescription}
             </p>
           )}
@@ -134,14 +134,14 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
                   ? 'noopener noreferrer'
                   : undefined
               }
-              className="group hover:border-odl/70 mt-8 flex max-w-lg items-center justify-between gap-6 border border-white/15 p-5 transition-colors"
+              className="group hover:border-odl/70 mt-8 flex max-w-lg items-center justify-between gap-6 border border-border-default p-5 transition-colors"
             >
               <div>
-                <h2 className="text-base font-medium text-zinc-200">
+                <h2 className="text-base font-medium text-text-primary">
                   {introductionAICTA.label || 'Explore my AI interface'}
                 </h2>
                 {introductionAICTA.description && (
-                  <p className="mt-2 text-sm leading-6 text-white/55">
+                  <p className="mt-2 text-sm leading-6 text-text-secondary">
                     {introductionAICTA.description}
                   </p>
                 )}
@@ -149,7 +149,7 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
 
               <span
                 aria-hidden="true"
-                className="group-hover:text-odl shrink-0 text-xl text-white/60 transition-transform group-hover:translate-x-1"
+                className="group-hover:text-brand shrink-0 text-xl text-text-secondary transition-transform group-hover:translate-x-1"
               >
                 <ArrowRight size={30} />
               </span>
@@ -167,14 +167,14 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
         </div>
         {/* Right: Portrait */}
         <div className="relative mx-auto w-full max-w-90 lg:col-span-4 lg:mx-0 lg:ml-auto">
-          <div className="relative border border-zinc-800 bg-zinc-900 p-3 transition-colors duration-200 hover:border-zinc-700">
+          <div className="relative border border-border-default bg-surface p-3 transition-colors duration-200 hover:border-border-strong">
             {/* Decorative corner accents */}
             <span className="border-odl absolute top-0 left-0 h-5 w-5 border-t-2 border-l-2" />
             <span className="border-odl absolute right-0 bottom-0 h-5 w-5 border-r-2 border-b-2" />
 
             {introductionPortrait &&
               typeof introductionPortrait === 'object' && (
-                <div className="relative aspect-3/4 overflow-hidden border border-zinc-800 bg-zinc-950">
+                <div className="relative aspect-3/4 overflow-hidden border border-border-default bg-surface-inset">
                   <Media
                     fill
                     priority
@@ -191,10 +191,10 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
                     <UserRound
                       size={14}
                       strokeWidth={1.5}
-                      className="text-odl shrink-0"
+                      className="text-brand shrink-0"
                       aria-hidden="true"
                     />
-                    <p className="font-mono text-xs font-semibold tracking-[0.12em] text-zinc-200 uppercase">
+                    <p className="font-mono text-xs font-semibold tracking-[0.12em] text-text-primary uppercase">
                       {introductionPortrait.alt || 'Omkar Dalvi'}
                     </p>
                   </div>
@@ -203,17 +203,17 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
           </div>
         </div>
       </div>
-      <div className="container flex items-center justify-between border-b border-white/10 py-5">
+      <div className="container flex items-center justify-between border-b border-border-default py-5">
         <a
           href={scrollTargetHref}
           onClick={handleScrollDown}
-          className="group mb-8 inline-flex items-center gap-3 font-mono text-sm tracking-[0.2em] text-white/50 uppercase transition-colors hover:text-white"
+          className="group mb-8 inline-flex items-center gap-3 font-mono text-sm tracking-[0.2em] text-text-muted uppercase transition-colors hover:text-text-primary"
         >
           <span>Scroll down</span>
           <ArrowDown
             size={18}
             strokeWidth={1.5}
-            className="group-hover:text-odl transition-transform duration-200 group-hover:translate-y-1"
+            className="group-hover:text-brand transition-transform duration-200 group-hover:translate-y-1"
             aria-hidden="true"
           />
         </a>
@@ -222,10 +222,10 @@ export const IntroductionHero: React.FC<IntroductionHeroProps> = (props) => {
           <MapPinHouse
             size={18}
             strokeWidth={1.5}
-            className="text-white/60"
+            className="text-text-secondary"
             aria-hidden="true"
           />
-          <p className="font-mono text-sm tracking-[0.2em] text-white/60 uppercase">
+          <p className="font-mono text-sm tracking-[0.2em] text-text-secondary uppercase">
             {introductionLocation || 'Vashi, Navi Mumbai, Maharashtra, India'}
           </p>
         </div>

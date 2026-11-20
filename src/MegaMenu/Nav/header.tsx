@@ -8,7 +8,7 @@ interface MegaMenuHeaderProps {
 }
 
 export const MegaMenuHeader = ({ onClose }: MegaMenuHeaderProps) => (
-  <header className="flex w-full shrink-0 items-center justify-between border-b border-[#4B525F] px-6 py-5 lg:px-12">
+  <header className="flex w-full shrink-0 items-center justify-between border-b border-border-default px-6 py-5 lg:px-12">
     <Link href="/" className="flex items-center gap-2" onClick={onClose} aria-label="OD LABS home">
       <Logo loading="eager" priority="high" className="h-[18px]" />
     </Link>
@@ -17,7 +17,7 @@ export const MegaMenuHeader = ({ onClose }: MegaMenuHeaderProps) => (
         type="button"
         data-menu-close
         aria-label="Close navigation"
-        className="group flex cursor-pointer items-center text-zinc-400 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-odl"
+        className="group flex cursor-pointer items-center text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus-ring"
       >
         <span className="mr-1 pr-1 text-2xl font-bold text-odl opacity-0 transition-opacity duration-100 group-hover:opacity-100" aria-hidden="true">[</span>
         <span className="mt-1 mr-1 font-mono text-md">Close</span>

@@ -7,13 +7,13 @@ export const ErrorDiagnostic = ({ context }: { context: ErrorContextData }) => (
         <AlertTriangle className="size-4" aria-hidden="true" />
         Error context
       </span>
-      <span className="text-zinc-500">HTTP {context.code}</span>
+      <span className="text-text-muted">HTTP {context.code}</span>
     </div>
     <div className="font-mono text-6xl font-bold leading-none tracking-tighter sm:text-7xl" aria-label={'Error ' + context.code}>
       <span className="text-odl">[</span><span className="text-white">{context.code}</span><span className="text-odl">]</span>
     </div>
     <h2 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">{context.title}</h2>
-    <p className="font-sans text-xs leading-relaxed text-zinc-400 sm:text-sm">{context.description}</p>
-    {context.error?.digest && <p className="font-mono text-[11px] text-zinc-500">INCIDENT // <code className="text-zinc-300">{context.error.digest}</code></p>}
+    <p className="font-sans text-xs leading-relaxed text-text-secondary sm:text-sm">{context.description}</p>
+    {context.error?.digest && <p className="font-mono text-[11px] text-text-muted">INCIDENT // <code className="text-text-secondary">{context.error.digest}</code></p>}
   </div>
 )

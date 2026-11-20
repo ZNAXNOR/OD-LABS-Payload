@@ -33,7 +33,7 @@ export async function Footer({
   const socialLinks = formatSocialLinks(contactSocials?.socialLinks)
 
   return (
-    <footer className="relative z-20 mt-auto w-full border-t border-zinc-600 bg-black text-white">
+    <footer className="relative z-20 mt-auto w-full border-t border-border-default bg-background text-foreground">
       <div className="px-6 py-20 sm:px-8 lg:p-12">
         <div className="grid grid-cols-1 gap-16 pt-10 lg:grid-cols-12">
           <div className="lg:col-span-6">
@@ -42,12 +42,12 @@ export async function Footer({
             </Link>
 
             {homePage?.description && (
-              <p className="mt-8 max-w-lg font-sans text-base text-zinc-400 sm:text-lg">
+              <p className="mt-8 max-w-lg font-sans text-base text-text-secondary sm:text-lg">
                 {homePage.description}
               </p>
             )}
 
-            <p className="py-6 font-mono text-xs tracking-wider text-zinc-500 uppercase">
+            <p className="py-6 font-mono text-xs tracking-wider text-text-muted uppercase">
               Web · Data · Automation · Engineering
             </p>
 
@@ -56,7 +56,7 @@ export async function Footer({
               <div className="mb-8 max-w-md space-y-6">
                 {contactActions.length > 0 && (
                   <div className="space-y-3">
-                    <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
+                    <div className="font-mono text-xs tracking-widest text-text-secondary uppercase">
                       Contacts
                     </div>
                     <ContactActions actions={contactActions} />
@@ -65,7 +65,7 @@ export async function Footer({
 
                 {socialLinks.length > 0 && (
                   <div className="space-y-3">
-                    <div className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
+                    <div className="font-mono text-xs tracking-widest text-text-secondary uppercase">
                       Socials
                     </div>
                     <SocialLinks links={socialLinks} />
@@ -76,13 +76,13 @@ export async function Footer({
 
             <ServiceStatus
               variant="compact"
-              className="hover:border-odl border border-transparent px-3 py-2 transition-all duration-300 ease-in-out hover:bg-zinc-950 hover:text-white"
+              className="hover:border-odl border border-transparent px-3 py-2 transition-all duration-300 ease-in-out hover:bg-surface-subtle hover:text-foreground"
             />
           </div>
 
           {/* Navigation Links */}
-          <div className="lg:col-span-6 lg:border-l lg:border-zinc-600 lg:pl-10">
-            <div className="font-mono text-[11px] tracking-widest text-zinc-600 uppercase">
+          <div className="lg:col-span-6 lg:border-l lg:border-border-default lg:pl-10">
+            <div className="font-mono text-[11px] tracking-widest text-text-muted uppercase">
               Pages
             </div>
             <div className="mt-4">
@@ -93,33 +93,33 @@ export async function Footer({
 
         {/* Signature Divider */}
         <div className="my-15 flex w-full items-center gap-6">
-          <div className="h-px flex-1 bg-zinc-600" />
-          <span className="px-2 font-serif text-lg font-normal tracking-wide text-white/90 italic sm:text-xl">
+          <div className="h-px flex-1 bg-border-default" />
+          <span className="px-2 font-serif text-lg font-normal tracking-wide text-foreground/90 italic sm:text-xl">
             Omkar Dalvi
           </span>
-          <div className="h-px flex-1 bg-zinc-600" />
+          <div className="h-px flex-1 bg-border-default" />
         </div>
 
         {/* Copyright, live service status, and utility action */}
-        <div className="flex flex-col items-center justify-between gap-4 border-zinc-900 pt-5 font-mono text-xs text-zinc-400 sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 border-border-default pt-5 font-mono text-xs text-text-secondary sm:flex-row">
           <div className="flex flex-wrap items-center gap-6">
             <span>© {new Date().getFullYear()} OD LABS. All rights reserved.</span>{' '}
             {legalPagesData.length > 0 && (
               <LegalPageLinks
                 pages={legalPagesData}
-                className="max-w-full [&_a:hover]:text-zinc-200"
+                className="max-w-full [&_a:hover]:text-text-primary"
               />
             )}
             <Link
               href="/sitemap"
-              className="text-zinc-400 hover:text-white transition-colors"
+              className="text-text-secondary hover:text-foreground transition-colors"
             >
               Sitemap
             </Link>
             <ReportIssue
               variant="link"
               label="Report an Issue"
-              className="text-zinc-400 hover:text-white"
+              className="text-text-secondary hover:text-foreground"
             />
           </div>
 

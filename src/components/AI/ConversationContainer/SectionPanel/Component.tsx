@@ -38,8 +38,8 @@ export const SectionPanel = ({
           'absolute inset-y-0 right-0',
           'w-[min(24rem,82vw)]',
           'overflow-hidden',
-          'border-l border-zinc-700/40',
-          'bg-zinc-950/75',
+          'border-l border-border-default/40',
+          'bg-surface-overlay/95',
           'shadow-[-20px_0_60px_rgba(0,0,0,0.45)]',
           'backdrop-blur-xl',
 
@@ -48,7 +48,7 @@ export const SectionPanel = ({
           'before:absolute before:inset-y-0 before:-left-16',
           'before:w-16',
           'before:bg-linear-to-r',
-          'before:from-transparent before:to-zinc-950/70',
+          'before:from-transparent before:to-surface-overlay/70',
           'before:content-[""]',
         ].join(' ')}
         role="dialog"
@@ -57,13 +57,13 @@ export const SectionPanel = ({
       >
         <div className="relative flex h-full flex-col">
           {/* Header */}
-          <header className="flex shrink-0 items-start justify-between border-b border-zinc-800/70 px-6 py-5">
+          <header className="flex shrink-0 items-start justify-between border-b border-border-default/70 px-6 py-5">
             <div className="min-w-0">
-              <p className="text-[9px] tracking-[0.3em] text-zinc-600 uppercase">
+              <p className="text-[9px] tracking-[0.3em] text-text-muted uppercase">
                 Conversation
               </p>
 
-              <p className="mt-1 line-clamp-2 text-sm leading-5 text-zinc-300">
+              <p className="mt-1 line-clamp-2 text-sm leading-5 text-text-secondary">
                 {currentSection?.text ?? 'Sections'}
               </p>
             </div>
@@ -71,7 +71,7 @@ export const SectionPanel = ({
             <button
               type="button"
               onClick={onClose}
-              className="group flex cursor-pointer items-center pt-2 text-zinc-400 hover:text-white"
+              className="group flex cursor-pointer items-center pt-2 text-text-secondary hover:text-text-primary"
             >
               <span className="text-odl mr-1 pr-1 text-2xl font-bold opacity-0 transition-opacity duration-100 group-hover:opacity-100">
                 {'['}
@@ -104,13 +104,13 @@ export const SectionPanel = ({
                       'transition-colors',
                       active
                         ? 'border-odl'
-                        : 'border-zinc-800 hover:border-zinc-600',
+                        : 'border-border-default hover:border-border-strong',
                     ].join(' ')}
                   >
                     <span
                       className={[
                         'mt-1 shrink-0 font-mono text-[9px]',
-                        active ? 'text-odl' : 'text-zinc-700',
+                        active ? 'text-odl' : 'text-text-muted',
                       ].join(' ')}
                     >
                       {String(section.index + 1).padStart(2, '0')}
@@ -121,7 +121,7 @@ export const SectionPanel = ({
                         'min-w-0 text-sm leading-6 transition-colors',
                         active
                           ? 'text-odl'
-                          : 'text-zinc-500 group-hover:text-zinc-200',
+                          : 'text-text-muted group-hover:text-text-primary',
                       ].join(' ')}
                     >
                       {section.text}
@@ -133,14 +133,14 @@ export const SectionPanel = ({
           </div>
 
           {/* Footer */}
-          <footer className="shrink-0 border-t border-zinc-800/70 px-6 py-4">
+          <footer className="shrink-0 border-t border-border-default/70 px-6 py-4">
             <label className="flex cursor-pointer items-center justify-between gap-4">
               <span className="min-w-0">
-                <span className="block text-[10px] tracking-[0.2em] text-zinc-500 uppercase">
+                <span className="block text-[10px] tracking-[0.2em] text-text-muted uppercase">
                   Section navigation
                 </span>
 
-                <span className="mt-1 flex gap-2 text-xs text-zinc-700">
+                <span className="mt-1 flex gap-2 text-xs text-text-muted">
                   Arrow keys jump between questions
                   <ChevronUpIcon className="size-3" />
                   <ChevronDownIcon className="size-3" />
