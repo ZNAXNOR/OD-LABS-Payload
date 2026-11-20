@@ -9,6 +9,7 @@ on:
       - .github/workflows/payload-v4-migrate.yml
       - src/payload.config.ts
       - src/plugins/index.ts
+      - src/collections/Media.ts
 
 permissions:
   contents: read
@@ -53,6 +54,11 @@ jobs:
         env:
           CI: "false"
         run: pnpm dlx @payloadcms/codemod@beta --transform migrate-storage-adapters-to-config
+
+      - name: Apply official Payload Sharp transformer migration
+        env:
+          CI: "false"
+        run: pnpm dlx @payloadcms/codemod@beta --transform migrate-sharp-to-transformer
 
       - name: Diagnose Payload plugin registrations
         shell: bash
