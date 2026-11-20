@@ -4,7 +4,6 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
-import { s3Storage } from '@payloadcms/storage-s3'
 import type { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import type { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
@@ -88,22 +87,6 @@ export const plugins: Plugin[] = [
     },
   }),
   ...vectorizePlugins,
-  s3Storage({
-    enabled: Boolean(process.env.AWS_S3_BUCKET),
-    collections: {
-      media: true,
-    },
-    bucket: process.env.AWS_S3_BUCKET!,
-    config: {
-      endpoint: process.env.AWS_ENDPOINT_URL_S3,
-      region: process.env.AWS_REGION,
-      forcePathStyle: true,
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-      },
-    },
-  }),
 ]
 
 export { formBuilder, formBuilderPluginConfig } from './formBuilder'
