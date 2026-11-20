@@ -52,6 +52,12 @@ jobs:
           CI: "false"
         run: pnpm dlx @payloadcms/codemod@beta --transform migrate-storage-adapters-to-config
 
+      - name: Diagnose Payload plugin registrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm exec tsx -e "import { plugins } from './src/plugins/index.ts'; const invalid = plugins.map((plugin, index) => ({ index, type: typeof plugin, name: typeof plugin === 'function' ? (plugin.name || '(anonymous)') : String(plugin) })).filter((plugin) => plugin.type !== 'function'); console.log('Registered plugins:', plugins.map((plugin, index) => ({ index, type: typeof plugin, name: typeof plugin === 'function' ? (plugin.name || '(anonymous)') : String(plugin) }))); if (invalid.length) { console.error('Invalid plugin entries:', invalid); process.exit(1) }"
+
       - name: Install the Payload 4 Sharp transformer required by the migration
         env:
           CI: "false"
