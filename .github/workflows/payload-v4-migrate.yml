@@ -47,6 +47,11 @@ jobs:
           CI: "false"
         run: pnpm dlx @payloadcms/codemod@beta upgrade run --tag beta
 
+      - name: Apply official Payload storage-adapter migration
+        env:
+          CI: "false"
+        run: pnpm dlx @payloadcms/codemod@beta --transform migrate-storage-adapters-to-config
+
       - name: Install the Payload 4 Sharp transformer required by the migration
         env:
           CI: "false"
