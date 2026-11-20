@@ -1,14 +1,10 @@
-name: One-time Payload 4 beta migration
+name: Payload 4 beta migration (review only)
 
 on:
-  push:
-    branches:
-      - upgrade/payload-4-beta
-    paths:
-      - .github/workflows/payload-v4-migrate.yml
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: payload-v4-migration
@@ -16,10 +12,12 @@ concurrency:
 
 jobs:
   migrate:
+    if: github.ref_name == 'upgrade/payload-4-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
-      DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+      PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET || 'temporary-build-only-secret-not-for-deployment' }}
+      DATABASE_URL: postgres://payload:payload@127.0.0.1:5432/payload_upgrade_check
       NEXT_PUBLIC_SERVER_URL: http://localhost:3000
     steps:
       - name: Check out upgrade branch
@@ -27,117 +25,74 @@ jobs:
         with:
           ref: upgrade/payload-4-beta
 
-      - name: Set up pnpm
+      - name: Set up pnpm 11
         uses: pnpm/action-setup@v4
         with:
-          version: 12.16.1
+          version: 11.0.0
           run_install: false
 
-      - name: Set up Node.js
+      - name: Set up Node.js 24
         uses: actions/setup-node@v4
         with:
           node-version: 24.22.3
           cache: pnpm
 
-      - name: Validate staging database secret
+      - name: Align package manager metadata before invoking pnpm
+        run: node --input-type=module -e "import fs from 'node:fs'; const p=JSON.parse(fs.readFileSync('package.json','utf8')); p.packageManager='pnpm@11.0.0'; fs.writeFileSync('package.json', JSON.stringify(p,null,2)+'\\n')"
+
+      - name: Run official Payload v3 to v4 mechanical upgrade
+        run: pnpm dlx @payloadcms/codemod@beta upgrade run --tag beta
+
+      - name: Align Next.js with the official Payload website template
+        run: |
+          pnpm add --save-exact next@16.4.6
+          pnpm add --save-dev --save-exact eslint-config-next@16.4.6
+
+      - name: Update Docker runtime and package manager
         shell: bash
         run: |
           set -euo pipefail
-          if [[ -z "${DATABASE_URL:-}" ]]; then
-            echo "::error::STAGING_DATABASE_URL is required for Payload build-time data access."
-            exit 1
-          fi
+          sed -i \
+            -e 's/node:22.17.0-alpine/node:24.22.3-alpine/g' \
+            -e 's/pnpm@12.16.1/pnpm@11.0.0/g' \
+            Dockerfile Dockerfile.ci
+          grep -nE '^FROM node:|pnpm@' Dockerfile Dockerfile.ci
 
-      - name: Run official Payload v4 codemods
-        run: pnpm dlx @payloadcms/codemod@beta
-
-      - name: Select the latest published v4 beta for each Payload package
-        shell: bash
-        run: |
-          node --input-type=module <<'NODE'
-          import { readFileSync, writeFileSync } from 'node:fs'
-          import { execFileSync } from 'node:child_process'
-
-          const file = JSON.parse(readFileSync('package.json', 'utf8'))
-          const sections = ['dependencies', 'devDependencies', 'optionalDependencies']
-          const names = new Set(['payload'])
-
-          for (const section of sections) {
-            for (const name of Object.keys(file[section] ?? {})) {
-              if (name.startsWith('@payloadcms/')) names.add(name)
-            }
-          }
-
-          for (const name of [...names].sort()) {
-            const version = execFileSync('npm', ['view', name + '@beta', 'version'], {
-              encoding: 'utf8',
-              stdio: ['ignore', 'pipe', 'inherit'],
-            }).trim()
-
-            if (!/^4\.0\.0-beta\./.test(version)) {
-              throw new Error(name + '@beta resolved to unexpected version: ' + version)
-            }
-
-            const section = name === 'payload'
-              ? 'dependencies'
-              : sections.find((key) => file[key]?.[name])
-
-            if (!section) throw new Error('No package.json section found for ' + name)
-            file[section][name] = version
-            console.log(name + ' -> ' + version)
-          }
-
-          file.dependencies.next = '16.4.6'
-          file.devDependencies['eslint-config-next'] = '16.4.6'
-          file.devDependencies.typescript = '6.0.3'
-          file.devDependencies['@types/node'] = '^24.0.0'
-          file.engines = {
-            ...file.engines,
-            node: '^24.22.3 || >=26.13.1',
-          }
-
-          writeFileSync('package.json', JSON.stringify(file, null, 2) + '\n')
-          NODE
-
-      - name: Update Docker runtime images
-        shell: bash
-        run: |
-          set -euo pipefail
-          sed -i 's/node:22.17.0-alpine/node:24.22.3-alpine/g' Dockerfile Dockerfile.ci
-          grep -n '^FROM node:' Dockerfile Dockerfile.ci
-
-      - name: Resolve dependencies and regenerate pnpm lockfile
+      - name: Regenerate lockfile with the supported package manager
         run: pnpm install --no-frozen-lockfile
 
-      - name: Regenerate Payload types and import map
+      - name: Generate Payload types and import map
         run: |
           pnpm exec payload generate:types
           pnpm exec payload generate:importmap
 
-      - name: Generate Next.js types
+      - name: Generate Next.js route types
         run: pnpm exec next typegen
 
       - name: Type-check
         run: pnpm exec tsc --noEmit
 
-      - name: Configure ephemeral build-only Payload secret
-        shell: bash
-        run: echo "PAYLOAD_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+      - name: Lint
+        run: pnpm lint
 
-      - name: Production build
-        run: pnpm build
-
-      - name: Commit verified migration
+      - name: Prepare reviewable migration diff
+        if: always()
         shell: bash
         run: |
-          set -euo pipefail
-          rm .github/workflows/payload-v4-migrate.yml
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No migration changes were produced."
-            exit 1
-          fi
-          git commit -m "chore: upgrade Payload to v4 beta"
-          git push origin HEAD:upgrade/payload-4-beta
+          set +e
+          git add -N .
+          git diff --binary > payload-v4-migration.patch
+          git status --short > payload-v4-migration-status.txt
+          git diff --stat > payload-v4-migration-stat.txt
+
+      - name: Upload migration diff for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: payload-v4-migration-review
+          path: |
+            payload-v4-migration.patch
+            payload-v4-migration-status.txt
+            payload-v4-migration-stat.txt
+          if-no-files-found: warn
+          retention-days: 14
