@@ -2,7 +2,6 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import pg from 'pg'
 import { resendAdapter } from '@payloadcms/email-resend'
 
-import { sharpTransformer } from '@payloadcms/transformer-sharp'
 import { s3Storage } from '@payloadcms/storage-s3'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -87,9 +86,6 @@ export default buildConfig({
       },
     }),
   ],
-  upload: {
-    transformers: [sharpTransformer()],
-  },
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
