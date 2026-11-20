@@ -62,6 +62,8 @@ jobs:
           pnpm --version
 
       - name: Run the official Next.js upgrade codemod
+        env:
+          CI: "false"
         run: pnpm dlx @next/codemod@canary upgrade latest --yes --skip-react-upgrade
 
       - name: Update Docker runtime and package manager
