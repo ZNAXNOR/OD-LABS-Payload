@@ -17,7 +17,7 @@ concurrency:
 jobs:
   migrate:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     env:
       DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
       NEXT_PUBLIC_SERVER_URL: http://localhost:3000
@@ -39,12 +39,12 @@ jobs:
           node-version: 24.22.3
           cache: pnpm
 
-      - name: Validate staging build secret
+      - name: Validate staging database secret
         shell: bash
         run: |
           set -euo pipefail
           if [[ -z "${DATABASE_URL:-}" ]]; then
-            echo "::error::STAGING_DATABASE_URL is required for the production build check."
+            echo "::error::STAGING_DATABASE_URL is required for Payload build-time data access."
             exit 1
           fi
 
@@ -74,7 +74,7 @@ jobs:
               stdio: ['ignore', 'pipe', 'inherit'],
             }).trim()
 
-            if (!/^4\\.0\\.0-beta\\./.test(version)) {
+            if (!/^4\.0\.0-beta\./.test(version)) {
               throw new Error(name + '@beta resolved to unexpected version: ' + version)
             }
 
@@ -96,14 +96,14 @@ jobs:
             node: '^24.22.3 || >=26.13.1',
           }
 
-          writeFileSync('package.json', JSON.stringify(file, null, 2) + '\\n')
+          writeFileSync('package.json', JSON.stringify(file, null, 2) + '\n')
           NODE
 
       - name: Update Docker runtime images
         shell: bash
         run: |
           set -euo pipefail
-          sed -i 's/FROM node:22\\.17\\.0-alpine AS base/FROM node:24.22.3-alpine AS base/' Dockerfile Dockerfile.ci
+          sed -i 's/node:22.17.0-alpine/node:24.22.3-alpine/g' Dockerfile Dockerfile.ci
           grep -n '^FROM node:' Dockerfile Dockerfile.ci
 
       - name: Resolve dependencies and regenerate pnpm lockfile
@@ -114,7 +114,20 @@ jobs:
           pnpm exec payload generate:types
           pnpm exec payload generate:importmap
 
-      - name: Remove one-time migration workflow and commit migration
+      - name: Generate Next.js types
+        run: pnpm exec next typegen
+
+      - name: Type-check
+        run: pnpm exec tsc --noEmit
+
+      - name: Configure ephemeral build-only Payload secret
+        shell: bash
+        run: echo "PAYLOAD_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+
+      - name: Production build
+        run: pnpm build
+
+      - name: Commit verified migration
         shell: bash
         run: |
           set -euo pipefail
@@ -128,14 +141,3 @@ jobs:
           fi
           git commit -m "chore: upgrade Payload to v4 beta"
           git push origin HEAD:upgrade/payload-4-beta
-
-      - name: Generate Next.js types
-        run: pnpm exec next typegen
-
-      - name: Type-check
-        run: pnpm exec tsc --noEmit
-
-      - name: Production build
-        env:
-          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_BUILD_SECRET }}
-        run: pnpm build
