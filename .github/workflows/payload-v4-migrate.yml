@@ -2,6 +2,11 @@ name: Payload 4 beta migration (review only)
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - upgrade/payload-4-beta
+    paths:
+      - .github/workflows/payload-v4-migrate.yml
 
 permissions:
   contents: read
@@ -54,10 +59,8 @@ jobs:
           NODE
           pnpm --version
 
-      - name: Align Next.js with the official Payload website template
-        run: |
-          pnpm add --save-exact next@16.4.6
-          pnpm add --save-dev --save-exact eslint-config-next@16.4.6
+      - name: Run the official Next.js upgrade codemod
+        run: pnpm dlx @next/codemod@canary upgrade latest --yes --skip-react-upgrade
 
       - name: Update Docker runtime and package manager
         shell: bash
