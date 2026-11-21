@@ -51,6 +51,16 @@ jobs:
           CI: "false"
         run: pnpm dlx @payloadcms/codemod@beta upgrade run --tag beta
 
+      - name: Apply official Payload request creation migration
+        env:
+          CI: "false"
+        run: pnpm dlx @payloadcms/codemod@beta --transform migrate-payload-request-creation
+
+      - name: Preserve Payload 3 versioning behavior
+        env:
+          CI: "false"
+        run: pnpm dlx @payloadcms/codemod@beta --transform migrate-versions-default
+
       - name: Apply official Payload storage-adapter migration
         env:
           CI: "false"
