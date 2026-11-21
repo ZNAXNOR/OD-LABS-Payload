@@ -115,7 +115,7 @@ export function ExternalEmbed({ embed }: Props) {
   }, [embed])
 
   const preset = embed?.preset || 'custom'
-  let containerId = embed?.containerID || undefined
+  const containerId = embed?.containerID || undefined
   let containerClassName = embed?.containerClass || undefined
 
   if (preset === 'usercentrics') {
