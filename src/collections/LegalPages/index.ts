@@ -18,7 +18,6 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { slugField } from 'payload'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidateLegalPage } from './hooks/revalidateLegalPage'
 
@@ -327,7 +326,11 @@ export const LegalPages: CollectionConfig = {
         },
       ],
     },
-    slugField(),
+    {
+      name: 'slug',
+      type: 'slug',
+      useAsSlug: 'title',
+    },
     {
       name: 'scriptPreview',
       type: 'ui',
@@ -352,4 +355,5 @@ export const LegalPages: CollectionConfig = {
     },
     maxPerDoc: 50,
   },
+  authorship: false,
 }

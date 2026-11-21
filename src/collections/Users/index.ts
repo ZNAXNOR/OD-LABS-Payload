@@ -47,4 +47,6 @@ export const Users: CollectionConfig = {
     },
   ],
   timestamps: true,
+  versions: false,
+  authorship: false,
 }

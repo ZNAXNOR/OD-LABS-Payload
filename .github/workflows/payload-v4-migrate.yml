@@ -2,18 +2,18 @@ name: Payload 4 beta migration (review only)
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - upgrade/payload-4-beta
-    paths:
-      - .github/workflows/payload-v4-migrate.yml
-      - src/payload.config.ts
-      - src/plugins/index.ts
-      - 'src/**'
-      - tsconfig.json
-      - eslint.config.mjs
-      - package.json
-      - pnpm-lock.yaml
+  # push:
+  #   branches:
+  #     - upgrade/payload-4-beta
+  #   paths:
+  #     - .github/workflows/payload-v4-migrate.yml
+  #     - src/payload.config.ts
+  #     - src/plugins/index.ts
+  #     - 'src/**'
+  #     - tsconfig.json
+  #     - eslint.config.mjs
+  #     - package.json
+  #     - pnpm-lock.yaml
 
 permissions:
   contents: read

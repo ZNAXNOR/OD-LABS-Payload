@@ -10,7 +10,6 @@ import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { AIBlock } from '../../blocks/AIBlock/config'
 import { CalBooking } from '../../blocks/CalBooking/config'
 import { hero } from '@/heros/config'
-import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
@@ -145,7 +144,11 @@ export const Pages: CollectionConfig = {
         position: 'sidebar',
       },
     },
-    slugField(),
+    {
+      name: 'slug',
+      type: 'slug',
+      useAsSlug: 'title',
+    },
   ],
   hooks: {
     afterChange: [revalidatePage],
@@ -161,4 +164,5 @@ export const Pages: CollectionConfig = {
     },
     maxPerDoc: 50,
   },
+  authorship: false,
 }

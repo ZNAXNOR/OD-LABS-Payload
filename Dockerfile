@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:1.7
 
-FROM node:22.17.0-alpine AS base
+FROM node:24.22.3-alpine AS base
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Install dependencies only when needed
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
-RUN npm install --global pnpm@12.16.1
+RUN npm install --global pnpm@11.0.0
 WORKDIR /app
 
 # Copy dependency manifests first so source changes do not invalidate this layer.

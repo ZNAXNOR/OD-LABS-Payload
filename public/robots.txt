@@ -5,7 +5,7 @@ Disallow: /admin/*
 Disallow: /api/*
 Disallow: /next/*
 
-# AI Bots Directives
+# GPTBot
 User-agent: GPTBot
 Allow: /
 Allow: /posts/*
@@ -15,6 +15,7 @@ Disallow: /admin/*
 Disallow: /api/*
 Disallow: /next/*
 
+# ClaudeBot
 User-agent: ClaudeBot
 Allow: /
 Allow: /posts/*
@@ -24,6 +25,7 @@ Disallow: /admin/*
 Disallow: /api/*
 Disallow: /next/*
 
+# PerplexityBot
 User-agent: PerplexityBot
 Allow: /
 Allow: /posts/*
@@ -33,6 +35,7 @@ Disallow: /admin/*
 Disallow: /api/*
 Disallow: /next/*
 
+# Applebot-Extended
 User-agent: Applebot-Extended
 Allow: /
 Allow: /posts/*
@@ -42,6 +45,7 @@ Disallow: /admin/*
 Disallow: /api/*
 Disallow: /next/*
 
+# Google-Extended
 User-agent: Google-Extended
 Allow: /
 Allow: /posts/*
@@ -52,10 +56,10 @@ Disallow: /api/*
 Disallow: /next/*
 
 # Host
-Host: https://odtechlab.com
+Host: http://localhost:3000
 
 # Sitemaps
-Sitemap: https://odtechlab.com/sitemap.xml
-Sitemap: https://odtechlab.com/pages-sitemap.xml
-Sitemap: https://odtechlab.com/posts-sitemap.xml
-Sitemap: https://odtechlab.com/legal-pages-sitemap.xml
+Sitemap: http://localhost:3000/sitemap.xml
+Sitemap: http://localhost:3000/pages-sitemap.xml
+Sitemap: http://localhost:3000/posts-sitemap.xml
+Sitemap: http://localhost:3000/legal-pages-sitemap.xml

@@ -43,6 +43,7 @@ const getPagesDataUncached = async (): Promise<PagesData[]> => {
       layout: true,
       meta: { description: true, image: true, showSeoImageInMegaMenu: true, showCssPreviewInMegaMenu: true },
     },
+    overrideAccess: true,
   })
 
   return result.docs

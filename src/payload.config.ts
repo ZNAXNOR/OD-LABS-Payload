@@ -22,6 +22,7 @@ import { getServerSideURL } from './utilities/getURL'
 import { TestDocuments } from './collections/AI_Knowledgebase/TestDocments'
 import { vectorIntegration } from './vectorize/config'
 import { plugins } from './plugins'
+import { sharpTransformer } from '@payloadcms/transformer-sharp'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -128,4 +129,42 @@ export default buildConfig({
       { cron: '* * * * *', queue: 'odlabs-vectorize-bulk-poll', limit: 10 },
     ],
   },
+  upload: { transformers: [sharpTransformer({ collections: { media: { formatOptions: {
+        format: 'webp',
+        options: {
+            quality: 82,
+        },
+    }, variants: [
+        {
+            name: 'thumbnail',
+            width: 300,
+        },
+        {
+            name: 'square',
+            width: 500,
+            height: 500,
+        },
+        {
+            name: 'small',
+            width: 600,
+        },
+        {
+            name: 'medium',
+            width: 900,
+        },
+        {
+            name: 'large',
+            width: 1400,
+        },
+        {
+            name: 'xlarge',
+            width: 1920,
+        },
+        {
+            name: 'og',
+            width: 1200,
+            height: 630,
+            crop: 'center',
+        },
+    ], focalPoint: true } } })] },
 })

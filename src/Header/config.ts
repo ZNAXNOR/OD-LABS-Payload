@@ -29,4 +29,6 @@ export const Header: GlobalConfig = {
   hooks: {
     afterChange: [revalidateHeader],
   },
+  versions: false,
+  authorship: false,
 }

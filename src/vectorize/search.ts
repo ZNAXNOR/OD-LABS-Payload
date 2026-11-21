@@ -80,6 +80,7 @@ export async function searchKnowledge(
           collection: source.collection,
           id: source.id,
           depth: 0,
+          overrideAccess: true,
         })
         const meta = doc.meta as
           | { excludeFromIndex?: boolean | null }
