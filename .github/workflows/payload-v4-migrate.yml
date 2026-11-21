@@ -10,6 +10,7 @@ on:
       - src/payload.config.ts
       - src/plugins/index.ts
       - src/collections/Media.ts
+      - tsconfig.json
 
 permissions:
   contents: read
