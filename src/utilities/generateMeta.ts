@@ -4,6 +4,7 @@ import type { Media, Page, Post, Config } from '../payload-types'
 
 import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
+import { withBrandSuffix } from './withBrandSuffix'
 
 const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   const serverUrl = getServerSideURL()
@@ -26,12 +27,7 @@ export const generateMeta = async (args: {
 
   const ogImage = getImageURL(doc?.meta?.image)
 
-  const rawTitle = doc?.meta?.title?.trim()
-  const title = rawTitle
-    ? /\s\|\sOD LABS$/i.test(rawTitle)
-      ? rawTitle
-      : `${rawTitle} | OD LABS`
-    : 'OD LABS'
+  const title = withBrandSuffix(doc?.meta?.title)
 
   return {
     description: doc?.meta?.description,
