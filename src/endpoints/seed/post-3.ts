@@ -17,6 +17,7 @@ export const post3: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
           {
             type: 'block',
             fields: {
+              id: 'seed-post-3-block-1',
               blockName: 'Disclaimer',
               blockType: 'banner',
               content: {
@@ -72,6 +73,7 @@ export const post3: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
                       format: '',
                       indent: 0,
                       textFormat: 1,
+                      textStyle: ''
                       version: 1,
                     },
                   ],
@@ -140,11 +142,13 @@ export const post3: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
             format: '',
             indent: 0,
             textFormat: 0,
+                      textStyle: ''
             version: 1,
           },
           {
             type: 'block',
             fields: {
+              id: 'seed-post-3-block-2',
               blockName: '',
               blockType: 'mediaBlock',
               media: blockImage.id,
@@ -188,6 +192,7 @@ export const post3: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
             format: '',
             indent: 0,
             textFormat: 0,
+                      textStyle: ''
             version: 1,
           },
           {
@@ -207,11 +212,13 @@ export const post3: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
             format: '',
             indent: 0,
             textFormat: 0,
+                      textStyle: ''
             version: 1,
           },
           {
             type: 'block',
             fields: {
+              id: 'seed-post-3-block-3',
               blockName: 'Dynamic components',
               blockType: 'banner',
               content: {
@@ -235,6 +242,7 @@ export const post3: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
                       format: '',
                       indent: 0,
                       textFormat: 0,
+                      textStyle: ''
                       version: 1,
                     },
                   ],
