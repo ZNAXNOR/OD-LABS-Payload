@@ -28,6 +28,42 @@ type FormStepDescription = NonNullable<
   NonNullable<RequiredDataFromCollectionSlug<'forms'>['steps']>[number]['description']
 >
 
+type FormEmailMessage = NonNullable<
+  NonNullable<RequiredDataFromCollectionSlug<'forms'>['emails']>[number]['message']
+>
+
+const formEmailMessage = (text: string): FormEmailMessage => ({
+  root: {
+    type: 'root',
+    children: [
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'text',
+            detail: 0,
+            format: 0,
+            mode: 'normal',
+            style: '',
+            text,
+            version: 1,
+          },
+        ],
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        textFormat: 0,
+        textStyle: '',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    version: 1,
+  },
+})
+
 const formStepDescription = (text: string): FormStepDescription => ({
   root: {
     type: 'root',
@@ -384,13 +420,13 @@ export const seed = async ({
           emailFrom: '"OD LABS" <omkar@notifications.odtechlab.com>',
           emailTo: '{{workEmail}}',
           subject: 'We received your project inquiry',
-          message: contactFormData.confirmationMessage,
+          message: formEmailMessage('Thank you for your project inquiry. We have received your details and will be in touch soon.'),
         },
         {
           emailFrom: '"OD LABS" <omkar@notifications.odtechlab.com>',
           emailTo: 'omkar@odtechlab.com',
           subject: 'New OD LABS project inquiry',
-          message: contactFormData.confirmationMessage,
+          message: formEmailMessage('Thank you for your project inquiry. We have received your details and will be in touch soon.'),
         },
       ],
     },
