@@ -1,9 +1,11 @@
-import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
+import { buildEditorState } from '@payloadcms/richtext-lexical'
+import type { FormBlock } from '@/payload-types'
 
-const headingAndTextToLexical = (heading: string, text: string): DefaultTypedEditorState => ({
-  root: {
-    type: 'root',
-    children: [
+type ContactDescription = NonNullable<NonNullable<FormBlock['multiForms']>[number]['description']>
+
+const headingAndTextToLexical = (heading: string, text: string): ContactDescription =>
+  buildEditorState<ContactDescription>({
+    nodes: [
       {
         type: 'heading',
         children: [
@@ -17,10 +19,10 @@ const headingAndTextToLexical = (heading: string, text: string): DefaultTypedEdi
             version: 1,
           },
         ],
-        direction: 'ltr' as const,
-        format: '' as const,
+        direction: 'ltr',
+        format: '',
         indent: 0,
-        tag: 'h3' as const,
+        tag: 'h3',
         version: 1,
       },
       {
@@ -36,22 +38,16 @@ const headingAndTextToLexical = (heading: string, text: string): DefaultTypedEdi
             version: 1,
           },
         ],
-        direction: 'ltr' as const,
-        format: '' as const,
+        direction: 'ltr',
+        format: '',
         indent: 0,
         textFormat: 0,
         textStyle: '',
         version: 1,
       },
     ],
-    direction: 'ltr' as const,
-    format: '' as const,
-    indent: 0,
-    version: 1,
-  },
-})
+  })
 
-import type { Form } from '@/payload-types'
 import type { RequiredDataFromCollectionSlug } from 'payload'
 
 type ContactArgs = {
