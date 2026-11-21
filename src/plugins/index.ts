@@ -12,18 +12,12 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import type { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { withBrandSuffix } from '@/utilities/withBrandSuffix'
 
 import { formBuilder } from './formBuilder'
 import { vectorizePlugins } from './vectorize'
 
-const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  const title = doc?.title?.trim()
-
-  if (!title) return 'OD LABS'
-
-  // Avoid duplicating the brand suffix when the document title already includes it.
-  return /\s\|\sOD LABS$/i.test(title) ? title : `${title} | OD LABS`
-}
+const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => withBrandSuffix(doc?.title)
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   const url = getServerSideURL()
