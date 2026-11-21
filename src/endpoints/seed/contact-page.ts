@@ -1,5 +1,6 @@
 import { buildEditorState } from '@payloadcms/richtext-lexical'
-import type { FormBlock } from '@/payload-types'
+import type { RequiredDataFromCollectionSlug } from 'payload'
+import type { Form, FormBlock } from '@/payload-types'
 
 type ContactDescription = NonNullable<NonNullable<FormBlock['multiForms']>[number]['description']>
 
@@ -47,8 +48,6 @@ const headingAndTextToLexical = (heading: string, text: string): ContactDescript
       },
     ],
   })
-
-import type { RequiredDataFromCollectionSlug } from 'payload'
 
 type ContactArgs = {
   generalForm: Form
