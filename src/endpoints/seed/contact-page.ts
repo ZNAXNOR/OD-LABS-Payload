@@ -1,6 +1,5 @@
 import { buildEditorState } from '@payloadcms/richtext-lexical'
-import type { RequiredDataFromCollectionSlug } from 'payload'
-import type { Form, FormBlock } from '@/payload-types'
+import type { Config, Form, FormBlock } from '@/payload-types'
 
 type ContactDescription = NonNullable<NonNullable<FormBlock['multiForms']>[number]['description']>
 
@@ -54,7 +53,7 @@ type ContactArgs = {
   projectInquiryForm: Form
 }
 
-export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
+export const contact: (args: ContactArgs) => Config['collectionsInput']['pages'] = ({
   generalForm,
   projectInquiryForm,
 }) => ({
