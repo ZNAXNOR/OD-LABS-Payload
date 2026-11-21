@@ -17,7 +17,12 @@ import { formBuilder } from './formBuilder'
 import { vectorizePlugins } from './vectorize'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | OD LABS` : 'OD LABS'
+  const title = doc?.title?.trim()
+
+  if (!title) return 'OD LABS'
+
+  // Avoid duplicating the brand suffix when the document title already includes it.
+  return /\s\|\sOD LABS$/i.test(title) ? title : `${title} | OD LABS`
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
