@@ -1,4 +1,4 @@
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
+import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File, RequiredDataFromCollectionSlug } from 'payload'
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
@@ -20,9 +20,45 @@ const collections: CollectionSlug[] = [
   'search',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer']
+const globals = ['header', 'footer'] as const satisfies GlobalSlug[]
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
+
+type FormStepDescription = NonNullable<
+  NonNullable<RequiredDataFromCollectionSlug<'forms'>['steps']>[number]['description']
+>
+
+const formStepDescription = (text: string): FormStepDescription => ({
+  root: {
+    type: 'root',
+    children: [
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'text',
+            detail: 0,
+            format: 0,
+            mode: 'normal',
+            style: '',
+            text,
+            version: 1,
+          },
+        ],
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        textFormat: 0,
+        textStyle: '',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    version: 1,
+  },
+})
 
 // Next.js revalidation errors are normal when seeding the database without a server running
 // i.e. running `yarn seed` locally instead of using the admin UI within an active app
@@ -43,21 +79,26 @@ export const seed = async ({
   // the custom `/api/seed` endpoint does not
   payload.logger.info(`— Clearing collections and globals...`)
 
-  // clear the database
-  await Promise.all(
-    globals.map((global) =>
+  // Reset globals before deleting collection documents. Include ContactSocials
+  // so repeated seed runs cannot retain stale actions or social profiles.
+  await Promise.all([
+    ...globals.map((global) =>
       payload.updateGlobal({
         slug: global,
-        data: {
-          navItems: [],
-        } as any,
+        data: { navItems: [] },
         depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
+        context: { disableRevalidate: true },
+        overrideAccess: true,
       }),
     ),
-  )
+    payload.updateGlobal({
+      slug: 'contact-socials',
+      data: { contactActions: [], socialLinks: [] },
+      depth: 0,
+      context: { disableRevalidate: true },
+      overrideAccess: true,
+    }),
+  ])
 
   await Promise.all(
     collections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
@@ -79,22 +120,23 @@ export const seed = async ({
         equals: 'demo-author@example.com',
       },
     },
+    overrideAccess: true,
   })
 
   payload.logger.info(`— Seeding media...`)
 
   const [image1Buffer, image2Buffer, image3Buffer, hero1Buffer] = await Promise.all([
     fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-post1.webp',
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post1.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-post2.webp',
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post2.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-post3.webp',
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post3.webp',
     ),
     fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-hero1.webp',
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-hero1.webp',
     ),
   ])
 
@@ -106,37 +148,43 @@ export const seed = async ({
         email: 'demo-author@example.com',
         password: 'password',
       },
+      overrideAccess: true,
     }),
     payload.create({
       collection: 'media',
       data: image1,
       file: image1Buffer,
+      overrideAccess: true,
     }),
     payload.create({
       collection: 'media',
       data: image2,
       file: image2Buffer,
+      overrideAccess: true,
     }),
     payload.create({
       collection: 'media',
       data: image2,
       file: image3Buffer,
+      overrideAccess: true,
     }),
     payload.create({
       collection: 'media',
       data: imageHero1,
       file: hero1Buffer,
+      overrideAccess: true,
     }),
+  ])
+
+  await Promise.all(
     categories.map((category) =>
       payload.create({
         collection: 'categories',
-        data: {
-          title: category,
-          slug: category,
-        },
+        data: { title: category, slug: category },
+        overrideAccess: true,
       }),
     ),
-  ])
+  )
 
   payload.logger.info(`— Seeding posts...`)
 
@@ -149,6 +197,7 @@ export const seed = async ({
       disableRevalidate: true,
     },
     data: post1({ heroImage: image1Doc, blockImage: image2Doc, author: demoAuthor }),
+    overrideAccess: true,
   })
 
   const post2Doc = await payload.create({
@@ -158,6 +207,7 @@ export const seed = async ({
       disableRevalidate: true,
     },
     data: post2({ heroImage: image2Doc, blockImage: image3Doc, author: demoAuthor }),
+    overrideAccess: true,
   })
 
   const post3Doc = await payload.create({
@@ -167,6 +217,7 @@ export const seed = async ({
       disableRevalidate: true,
     },
     data: post3({ heroImage: image3Doc, blockImage: image1Doc, author: demoAuthor }),
+    overrideAccess: true,
   })
 
   // update each post with related posts
@@ -176,6 +227,7 @@ export const seed = async ({
     data: {
       relatedPosts: [post2Doc.id, post3Doc.id],
     },
+    overrideAccess: true,
   })
   await payload.update({
     id: post2Doc.id,
@@ -183,6 +235,7 @@ export const seed = async ({
     data: {
       relatedPosts: [post1Doc.id, post3Doc.id],
     },
+    overrideAccess: true,
   })
   await payload.update({
     id: post3Doc.id,
@@ -190,6 +243,7 @@ export const seed = async ({
     data: {
       relatedPosts: [post1Doc.id, post2Doc.id],
     },
+    overrideAccess: true,
   })
 
   payload.logger.info(`— Seeding contact form...`)
@@ -237,6 +291,7 @@ export const seed = async ({
       ],
       steps: [],
     },
+    overrideAccess: true,
   })
 
   const projectInquiryForm = await payload.create({
@@ -255,7 +310,7 @@ export const seed = async ({
       steps: [
         {
           title: 'About You',
-          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Tell us how to reach you.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
+          description: formStepDescription('Tell us how to reach you.'),
           fields: [
             { blockType: 'text', name: 'fullName', label: 'Full Name', required: true, width: 100 },
             { blockType: 'email', name: 'workEmail', label: 'Work Email', required: true, width: 100 },
@@ -264,7 +319,7 @@ export const seed = async ({
         },
         {
           title: 'Project',
-          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"What are you looking to build or improve?","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
+          description: formStepDescription('What are you looking to build or improve?'),
           fields: [
             {
               blockType: 'select',
@@ -296,7 +351,7 @@ export const seed = async ({
         },
         {
           title: 'Scope',
-          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Share your expected budget and timeline, if known.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
+          description: formStepDescription('Share your expected budget and timeline, if known.'),
           fields: [
             { blockType: 'select', name: 'budget', label: 'Budget', required: false, options: [
               { label: 'Not decided', value: 'undecided' },
@@ -317,7 +372,7 @@ export const seed = async ({
         },
         {
           title: 'Goals',
-          description: {"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"Describe the project and what success would look like.","version":1}],"direction":"ltr","format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":"ltr","format":"","indent":0,"version":1}},
+          description: formStepDescription('Describe the project and what success would look like.'),
           fields: [
             { blockType: 'textarea', name: 'summary', label: 'Project Summary', required: true, width: 100 },
             { blockType: 'textarea', name: 'successCriteria', label: 'Success Criteria', required: false, width: 100 },
@@ -339,6 +394,7 @@ export const seed = async ({
         },
       ],
     },
+    overrideAccess: true,
   })
 
   payload.logger.info(`— Seeding pages...`)
@@ -348,11 +404,13 @@ export const seed = async ({
       collection: 'pages',
       depth: 0,
       data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
+      overrideAccess: true,
     }),
     payload.create({
       collection: 'pages',
       depth: 0,
       data: contactPageData({ generalForm: contactForm, projectInquiryForm }),
+      overrideAccess: true,
     }),
   ])
 
@@ -382,6 +440,7 @@ export const seed = async ({
           },
         ],
       },
+      overrideAccess: true,
     }),
     payload.updateGlobal({
       slug: 'footer',
@@ -404,6 +463,7 @@ export const seed = async ({
           },
         ],
       },
+      overrideAccess: true,
     }),
     payload.updateGlobal({
       slug: 'contact-socials',
@@ -448,6 +508,7 @@ export const seed = async ({
           },
         ],
       },
+      overrideAccess: true,
     }),
   ])
 
