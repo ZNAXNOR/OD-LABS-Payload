@@ -107,7 +107,7 @@ export const post1: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
                       format: '',
                       indent: 0,
                       textFormat: 0,
-                      textStyle: ''
+                      textStyle: '',
                       version: 1,
                     },
                   ],
@@ -158,7 +158,7 @@ export const post1: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
             format: '',
             indent: 0,
             textFormat: 0,
-                      textStyle: ''
+                      textStyle: '',
             version: 1,
           },
           {
@@ -228,7 +228,7 @@ export const post1: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
             format: '',
             indent: 0,
             textFormat: 0,
-                      textStyle: ''
+                      textStyle: '',
             version: 1,
           },
           {
@@ -248,7 +248,7 @@ export const post1: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
             format: '',
             indent: 0,
             textFormat: 0,
-                      textStyle: ''
+                      textStyle: '',
             version: 1,
           },
           {
@@ -289,7 +289,7 @@ export const post1: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
                       format: '',
                       indent: 0,
                       textFormat: 0,
-                      textStyle: ''
+                      textStyle: '',
                       version: 1,
                     },
                   ],
