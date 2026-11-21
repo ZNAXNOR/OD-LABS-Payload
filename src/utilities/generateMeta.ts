@@ -26,8 +26,11 @@ export const generateMeta = async (args: {
 
   const ogImage = getImageURL(doc?.meta?.image)
 
-  const title = doc?.meta?.title
-    ? `${doc?.meta?.title} | OD LABS`
+  const rawTitle = doc?.meta?.title?.trim()
+  const title = rawTitle
+    ? /\s\|\sOD LABS$/i.test(rawTitle)
+      ? rawTitle
+      : `${rawTitle} | OD LABS`
     : 'OD LABS'
 
   return {
