@@ -101,6 +101,7 @@ export default buildConfig({
   plugins: [...plugins],
   secret: process.env.PAYLOAD_SECRET,
   typescript: {
+    generateInputTypes: true,
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   jobs: {
