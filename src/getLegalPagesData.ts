@@ -35,6 +35,7 @@ const getLegalPagesDataUncached = async (): Promise<LegalPagesData[]> => {
       updatedAt: true,
       meta: { description: true, image: true, showSeoImageInMegaMenu: true, showCssPreviewInMegaMenu: true },
     },
+    overrideAccess: true,
   })
 
   return result.docs.map((page) => ({

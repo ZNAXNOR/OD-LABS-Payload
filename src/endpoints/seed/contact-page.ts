@@ -1,4 +1,9 @@
-const headingAndTextToLexical = (heading: string, text: string) => ({
+import type { Form, FormBlock } from '@/payload-types'
+import type { RequiredDataFromCollectionSlug } from 'payload'
+
+type ContactDescription = NonNullable<NonNullable<FormBlock['multiForms']>[number]['description']>
+
+const headingAndTextToLexical = (heading: string, text: string): ContactDescription => ({
   root: {
     type: 'root',
     children: [
@@ -15,10 +20,10 @@ const headingAndTextToLexical = (heading: string, text: string) => ({
             version: 1,
           },
         ],
-        direction: 'ltr' as const,
-        format: '' as const,
+        direction: 'ltr',
+        format: '',
         indent: 0,
-        tag: 'h3' as const,
+        tag: 'h3',
         version: 1,
       },
       {
@@ -34,23 +39,20 @@ const headingAndTextToLexical = (heading: string, text: string) => ({
             version: 1,
           },
         ],
-        direction: 'ltr' as const,
-        format: '' as const,
+        direction: 'ltr',
+        format: '',
         indent: 0,
         textFormat: 0,
         textStyle: '',
         version: 1,
       },
     ],
-    direction: 'ltr' as const,
-    format: '' as const,
+    direction: 'ltr',
+    format: '',
     indent: 0,
     version: 1,
   },
 })
-
-import type { Form } from '@/payload-types'
-import type { RequiredDataFromCollectionSlug } from 'payload'
 
 type ContactArgs = {
   generalForm: Form

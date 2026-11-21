@@ -4,6 +4,7 @@ import type { Media, Page, Post, Config } from '../payload-types'
 
 import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
+import { withBrandSuffix } from './withBrandSuffix'
 
 const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   const serverUrl = getServerSideURL()
@@ -11,7 +12,7 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   let url = serverUrl + '/ODLABS-OG.webp'
 
   if (image && typeof image === 'object' && 'url' in image) {
-    const ogUrl = image.sizes?.og?.url
+    const ogUrl = image.variants?.og?.url
 
     url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url
   }
@@ -26,9 +27,7 @@ export const generateMeta = async (args: {
 
   const ogImage = getImageURL(doc?.meta?.image)
 
-  const title = doc?.meta?.title
-    ? `${doc?.meta?.title} | OD LABS`
-    : 'OD LABS'
+  const title = withBrandSuffix(doc?.meta?.title)
 
   return {
     description: doc?.meta?.description,

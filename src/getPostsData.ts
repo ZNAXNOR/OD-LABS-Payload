@@ -44,6 +44,7 @@ const getPostsDataUncached = async (): Promise<PostsData[]> => {
       categories: true,
       relatedPosts: true,
     },
+    overrideAccess: true,
   })
 
   return result.docs.map((post) => ({

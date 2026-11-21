@@ -17,4 +17,6 @@ export const TestDocuments: CollectionConfig = {
       required: true,
     },
   ],
+  versions: false,
+  authorship: false,
 }

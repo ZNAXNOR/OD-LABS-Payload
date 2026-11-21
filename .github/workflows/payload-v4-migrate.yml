@@ -1,0 +1,148 @@
+name: Payload 4 beta migration (review only)
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - upgrade/payload-4-beta
+  #   paths:
+  #     - .github/workflows/payload-v4-migrate.yml
+  #     - src/payload.config.ts
+  #     - src/plugins/index.ts
+  #     - 'src/**'
+  #     - tsconfig.json
+  #     - eslint.config.mjs
+  #     - package.json
+  #     - pnpm-lock.yaml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: payload-v4-migration
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    if: github.ref_name == 'upgrade/payload-4-beta'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET || 'temporary-build-only-secret-not-for-deployment' }}
+      DATABASE_URL: postgres://payload:payload@127.0.0.1:5432/payload_upgrade_check
+      NEXT_PUBLIC_SERVER_URL: http://localhost:3000
+    steps:
+      - name: Check out upgrade branch
+        uses: actions/checkout@v4
+        with:
+          ref: upgrade/payload-4-beta
+
+      - name: Set up bootstrap pnpm 12
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.16.1
+          run_install: false
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.3
+          cache: pnpm
+
+      - name: Run official Payload v3 to v4 mechanical upgrade
+        env:
+          CI: "false"
+        run: pnpm dlx @payloadcms/codemod@beta upgrade run --tag beta
+
+      - name: Apply official Payload storage-adapter migration
+        env:
+          CI: "false"
+        run: pnpm dlx @payloadcms/codemod@beta --transform migrate-storage-adapters-to-config
+
+      - name: Apply official Payload Sharp transformer migration
+        env:
+          CI: "false"
+        run: pnpm dlx @payloadcms/codemod@beta --transform migrate-sharp-to-transformer
+
+      - name: Diagnose Payload plugin registrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm exec tsx -e "import { plugins } from './src/plugins/index.ts'; const invalid = plugins.map((plugin, index) => ({ index, type: typeof plugin, name: typeof plugin === 'function' ? (plugin.name || '(anonymous)') : String(plugin) })).filter((plugin) => plugin.type !== 'function'); console.log('Registered plugins:', plugins.map((plugin, index) => ({ index, type: typeof plugin, name: typeof plugin === 'function' ? (plugin.name || '(anonymous)') : String(plugin) }))); if (invalid.length) { console.error('Invalid plugin entries:', invalid); process.exit(1) }"
+
+      - name: Install the Payload 4 Sharp transformer required by the migration
+        env:
+          CI: "false"
+        shell: bash
+        run: |
+          set -euo pipefail
+          PAYLOAD_VERSION="$(node -p "require('./package.json').dependencies.payload")"
+          pnpm add --save-exact "@payloadcms/transformer-sharp@${PAYLOAD_VERSION}"
+
+      - name: Switch to the officially templated pnpm major
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --global pnpm@11.0.0
+          echo "$(npm prefix -g)/bin" >> "$GITHUB_PATH"
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs'
+          const p = JSON.parse(fs.readFileSync('package.json', 'utf8'))
+          p.packageManager = 'pnpm@11.0.0'
+          fs.writeFileSync('package.json', JSON.stringify(p, null, 2) + '\n')
+          NODE
+          pnpm --version
+
+      - name: Run the official Next.js upgrade codemod
+        env:
+          CI: "false"
+        run: pnpm dlx @next/codemod@canary upgrade latest --yes --skip-react-upgrade
+
+      - name: Update Docker runtime and package manager
+        shell: bash
+        run: |
+          set -euo pipefail
+          sed -i \
+            -e 's/node:22.17.0-alpine/node:24.22.3-alpine/g' \
+            -e 's/pnpm@12.16.1/pnpm@11.0.0/g' \
+            Dockerfile Dockerfile.ci
+          grep -nE '^FROM node:|pnpm@' Dockerfile Dockerfile.ci
+
+      - name: Regenerate lockfile with the supported package manager
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Generate Payload types and import map
+        run: |
+          pnpm exec payload generate:types
+          pnpm exec payload generate:importmap
+
+      - name: Generate Next.js route types
+        run: pnpm exec next typegen
+
+      - name: Type-check
+        run: pnpm exec tsc --noEmit
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Prepare reviewable migration diff
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          git add -N .
+          git diff --binary > payload-v4-migration.patch
+          git status --short > payload-v4-migration-status.txt
+          git diff --stat > payload-v4-migration-stat.txt
+
+      - name: Upload migration diff for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: payload-v4-migration-review
+          path: |
+            payload-v4-migration.patch
+            payload-v4-migration-status.txt
+            payload-v4-migration-stat.txt
+          if-no-files-found: warn
+          retention-days: 14

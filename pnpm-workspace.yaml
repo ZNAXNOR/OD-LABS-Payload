@@ -8,6 +8,29 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
 
+minimumReleaseAgeExclude:
+  - '@payloadcms/admin-bar@4.0.0-beta.11'
+  - '@payloadcms/db-postgres@4.0.0-beta.11'
+  - '@payloadcms/drizzle@4.0.0-beta.11'
+  - '@payloadcms/email-resend@4.0.0-beta.11'
+  - '@payloadcms/graphql@4.0.0-beta.11'
+  - '@payloadcms/live-preview-react@4.0.0-beta.11'
+  - '@payloadcms/live-preview@4.0.0-beta.11'
+  - '@payloadcms/next@4.0.0-beta.11'
+  - '@payloadcms/plugin-cloud-storage@4.0.0-beta.11'
+  - '@payloadcms/plugin-form-builder@4.0.0-beta.11'
+  - '@payloadcms/plugin-nested-docs@4.0.0-beta.11'
+  - '@payloadcms/plugin-redirects@4.0.0-beta.11'
+  - '@payloadcms/plugin-search@4.0.0-beta.11'
+  - '@payloadcms/plugin-sentry@4.0.0-beta.11'
+  - '@payloadcms/plugin-seo@4.0.0-beta.11'
+  - '@payloadcms/richtext-lexical@4.0.0-beta.11'
+  - '@payloadcms/storage-s3@4.0.0-beta.11'
+  - '@payloadcms/translations@4.0.0-beta.11'
+  - '@payloadcms/ui@4.0.0-beta.11'
+  - payload@4.0.0-beta.11
+  - '@payloadcms/transformer-sharp@4.0.0-beta.11'
+
 overrides:
   react: '19.3.1'
   react-dom: '19.3.1'

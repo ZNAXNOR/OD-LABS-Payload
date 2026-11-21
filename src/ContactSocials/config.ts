@@ -109,4 +109,6 @@ export const ContactSocials: GlobalConfig = {
       ],
     },
   ],
+  versions: false,
+  authorship: false,
 }
