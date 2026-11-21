@@ -1,4 +1,6 @@
-const headingAndTextToLexical = (heading: string, text: string) => ({
+import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
+
+const headingAndTextToLexical = (heading: string, text: string): DefaultTypedEditorState => ({
   root: {
     type: 'root',
     children: [
