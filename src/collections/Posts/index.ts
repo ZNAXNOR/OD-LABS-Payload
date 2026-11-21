@@ -27,7 +27,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from 'payload'
 
-export const Posts: CollectionConfig<'posts'> = {
+export const Posts: CollectionConfig = {
   slug: 'posts',
   access: {
     create: authenticated,
