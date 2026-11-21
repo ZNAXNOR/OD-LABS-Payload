@@ -101,7 +101,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 })
 
 type Props = {
-  data: TypedEditorState<NodeTypes>
+  data: TypedEditorState<any>
   enableGutter?: boolean
   enableProse?: boolean
   readingContent?: boolean
