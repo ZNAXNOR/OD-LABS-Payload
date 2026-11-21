@@ -22,7 +22,7 @@ import { slugField } from 'payload'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidateLegalPage } from './hooks/revalidateLegalPage'
 
-export const LegalPages: CollectionConfig<'legal-pages'> = {
+export const LegalPages: CollectionConfig = {
   slug: 'legal-pages',
   access: {
     create: authenticated,
